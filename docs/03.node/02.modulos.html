@@ -1,0 +1,483 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.2. Módulos &#8212; documentación de Javascript - 0.1</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="4. Programación en el cliente (Webpack)" href="../04.client/index.html" />
+    <link rel="prev" title="3.1. Preparación" href="01.nodejs.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../04.client/index.html" title="4. Programación en el cliente (Webpack)"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="01.nodejs.html" title="3.1. Preparación"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - 0.1</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">3. NodeJS</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="modulos">
+<span id="js-modules"></span><h1>3.2. Módulos<a class="headerlink" href="#modulos" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Cuando se requiere programar una aplicación de mediano tamaño es indispensable
+disponer de un mencanismo para encapsular el código, de modo que esta se
+componga de una serie de módulos independientes que interrelacionan entre sí.
+Solo muy recientemente <em>Javascript</em> ha facilitado mecanismos para llevar a cabo
+esta tarea.</p>
+<p>Expondremos aquí dos de los mecanismos para la definición y uso de módulos:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>, que es la base
+en la que se basa el sistema de módulos de <strong class="program">NodeJS</strong>.</li>
+<li>El sistema propuesto en el estándar ECMAScript2015 que tiene soporte
+experimental en <strong class="program">NodeJS</strong>, pero que es soportando sin problemas por
+<a class="reference internal" href="../04.client/index.html#webpack"><span class="std std-ref">webpack</span></a>.</li>
+</ul>
+<p>Primero, sin embargo, describiremos qué se estructuraba el código antes de la
+aparación de estos sistemas.</p>
+<div class="section" id="el-patron-del-modulo">
+<h2>3.2.1. El <em>patrón del módulo</em><a class="headerlink" href="#el-patron-del-modulo" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El <em>patrón del módulo</em> (y sus variantes) logran la encapsulación mediante el uso
+de una función envolvente que actúa como clausura y que expone al exterior sólo
+aquello que se desea hacer visible. Un ejemplo de este patrón (en realidad, de
+su variante <abbr title="Revealing Module Patron">RMP</abbr> o patrón del módulo revelado) es la siguiente:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">circunferencia</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+   <span class="kd">var</span> <span class="nx">default_r</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+   <span class="kd">function</span> <span class="nx">calcLongitud</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">r</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">default_r</span><span class="p">;</span>
+      <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="kd">function</span> <span class="nx">calcArea</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">r</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">default_r</span><span class="p">;</span>
+      <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">calcLongitud</span><span class="o">:</span> <span class="nx">calcLongitud</span><span class="p">,</span>
+      <span class="nx">calcArea</span><span class="o">:</span> <span class="nx">calcArea</span>
+   <span class="p">}</span>
+<span class="p">})();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circunferencia</span><span class="p">.</span><span class="nx">calLongitud</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>Este mismo patrón es el que usa se para encapsular la definición de una clase de
+objetos a partir de su constructor:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Persona</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+   <span class="c1">// Constructor de objetos.</span>
+   <span class="kd">function</span> <span class="nx">Persona</span><span class="p">(</span><span class="nx">nombre</span><span class="p">,</span> <span class="nx">nacimiento</span><span class="p">,</span> <span class="nx">sexo</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">nombre</span> <span class="o">=</span> <span class="nx">nombre</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">nacimiento</span> <span class="o">=</span> <span class="nx">nacimiento</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">sexo</span> <span class="o">=</span> <span class="nx">sexo</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">defuncion</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">matar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fecha</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">defuncion</span> <span class="o">=</span> <span class="nx">fecha</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">estaMuerto</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">defuncion</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="c1">// Se devuelve el constructor</span>
+   <span class="k">return</span> <span class="nx">Persona</span><span class="p">;</span>
+
+<span class="p">}();</span>
+
+<span class="nx">pepe</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Persona</span><span class="p">(</span><span class="s2">&quot;Pepe Monagas&quot;</span><span class="p">,</span> <span class="s2">&quot;2000-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;Varón&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>La estrategia que se sigue es acoplar la definición (<em>circunferencia</em> o
+<em>Persona</em> en nuestros ejemplos) al objeto global, que en el caso de un navegador
+es el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/API/Window">window</a>. De esta manera, la
+definición esta disponible siempre en el resto del código.</p>
+</div>
+<div class="section" id="commonjs">
+<span id="module-commonjs"></span><h2>3.2.2. CommonJS<a class="headerlink" href="#commonjs" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Advertencia</p>
+<p class="last">Tanto para este sistema como para el siguiente, obsérvese que al
+importar ficheros las rutas relativas se hacen siempre explícitas
+(<code class="file docutils literal notranslate"><span class="pre">./modulo.js</span></code> y no.  simplemente, <code class="file docutils literal notranslate"><span class="pre">modulo.js</span></code>). Esto es debido
+a que cuando no se hace explícita la ruta, el sistema sobreentiende que debe
+buscar el módulo el la ruta donde se instalan los módulos local o
+globalmente.</p>
+</div>
+<p>En el módulo, para hacer accesible a aquello que se desea exportar, basta con
+usar <code class="code docutils literal notranslate"><span class="pre">exports</span></code>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// circunferencia.js</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">calcLongitud</span> <span class="o">=</span> <span class="nx">r</span> <span class="p">=&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">calcArea</span> <span class="o">=</span> <span class="nx">r</span> <span class="p">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Y en el código invocante usar <code class="code docutils literal notranslate"><span class="pre">require</span></code> para acceder a lo exportado:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// main.js</span>
+<span class="kr">const</span> <span class="nx">circ</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./circunferencia.js&quot;</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circ</span><span class="p">.</span><span class="nx">calcArea</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Si no se expresa ruta, el módulo se busca en el directorio
+<code class="file docutils literal notranslate"><span class="pre">node_modules</span></code>.</p>
+</div>
+<p>Si el módulo es más complejo, posiblemente requiera varios ficheros y su propio
+directorio. En ese caso, basta con que lo exportable se encuentre en el fichero
+<code class="file docutils literal notranslate"><span class="pre">index.js</span></code> del directorio:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+-- circunferencia
+         +-- index.js
+</pre></div>
+</div>
+<p>Además puede encontrarse en cualquier localización, si se añade al
+<code class="file docutils literal notranslate"><span class="pre">package.json</span></code> el atributo <em>main</em>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;main&quot;</span><span class="o">:</span> <span class="s2">&quot;lib/index.js&quot;</span>
+</pre></div>
+</div>
+<p>Con lo cual el módulo podría ser así:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+-- circunferencia
+         +-- package.json
+         +-- lib
+              +-- index.js
+</pre></div>
+</div>
+<p>Cuando se desea exporta desde un módulo un objeto único ha de tenerse encuenta
+una cosa muy importante <code class="code docutils literal notranslate"><span class="pre">require</span></code> devuelve el valor de
+<code class="code docutils literal notranslate"><span class="pre">module.exports</span></code>, no de <code class="code docutils literal notranslate"><span class="pre">exports</span></code>, aunque en nuestro ejemplo hayamos
+añadido atributos al objeto <code class="code docutils literal notranslate"><span class="pre">exports</span></code>. Lo que ocurre es que inicialmente
+<code class="code docutils literal notranslate"><span class="pre">module.exports</span></code> y <code class="code docutils literal notranslate"><span class="pre">exports</span></code> apuntan al mismo objeto. Por tanto, si
+se quiere exportar un objeto debe usarse <code class="code docutils literal notranslate"><span class="pre">module.exports</span></code>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// circunferencia.js</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="nx">calcLongitud</span><span class="o">:</span> <span class="nx">r</span> <span class="p">=&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">,</span>
+   <span class="nx">calcArea</span><span class="o">:</span> <span class="nx">r</span> <span class="p">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ecmascript2015">
+<span id="module-es2015"></span><h2>3.2.3. ECMAScript2015<a class="headerlink" href="#ecmascript2015" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Advertencia</p>
+<p>El estándar propuesto en ES2015 es soportado experimentalmente por
+<em>NodeJS</em> y requiere dos cosas:</p>
+<ul class="last">
+<li><p class="first">Que la extensión de los ficheros sea <code class="code docutils literal notranslate"><span class="pre">.mjs</span></code>, no <code class="code docutils literal notranslate"><span class="pre">.js</span></code>.</p>
+</li>
+<li><p class="first">Ejecutar con el argumento <code class="code docutils literal notranslate"><span class="pre">--experimental-modules</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> nodejs --experimental-modules script.mjs
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>La principal característica del estándar es que, a diferencia del sistema
+anterior que sirve únicamente para programación en el lado del servidor, éste
+funciona también en los navegadores (<a class="reference external" href="https://caniuse.com/#feat=es6-module">muy modernos</a>, eso sí).</p>
+<div class="section" id="lado-del-servidor">
+<h3>3.2.3.1. Lado del servidor<a class="headerlink" href="#lado-del-servidor" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>En el módulo se exporta lo que se precisa mediante la palabra <code class="code docutils literal notranslate"><span class="pre">export</span></code>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// circunferencia.mjs</span>
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">PI</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="kd">function</span> <span class="nx">calcLongitud</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">reutrn</span> <span class="mi">2</span><span class="o">*</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="kd">function</span> <span class="nx">calcArea</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Y en el código invocante, dene usarse <code class="code docutils literal notranslate"><span class="pre">import</span></code> del siguiente modo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// main.mjs</span>
+<span class="kr">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">circ</span> <span class="nx">from</span> <span class="s2">&quot;./circunferencia.mjs&quot;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circ</span><span class="p">.</span><span class="nx">calcLongitud</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circ</span><span class="p">.</span><span class="nx">calcArea</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>También puede exportarse al espacio de nombres del código principal:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// main.mjs</span>
+<span class="kr">import</span> <span class="p">{</span><span class="nx">PI</span><span class="p">,</span> <span class="nx">calcLongitud</span><span class="p">,</span> <span class="nx">calcArea</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./circunferencia.mjs&quot;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">calcLongitud</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">calcArea</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>A la vez que se importa, se puede cambiar de nombre:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span><span class="nx">PI</span> <span class="nx">as</span> <span class="nx">pi</span><span class="p">,</span> <span class="nx">calcLongitud</span><span class="p">,</span> <span class="nx">calcArea</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./circunferencia.mjs&quot;</span>
+</pre></div>
+</div>
+<p>Al exportar es posible también declarar primero lo exportable y usar luego
+<code class="code docutils literal notranslate"><span class="pre">export</span></code>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// circunferencia.mjs</span>
+<span class="kr">const</span> <span class="nx">PI</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">calcLongitud</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">reutrn</span> <span class="mi">2</span><span class="o">*</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">calcArea</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="p">{</span><span class="nx">PI</span><span class="p">,</span> <span class="nx">calcLongitud</span><span class="p">,</span> <span class="nx">calcArea</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Además es posible importar por defecto una función anónima:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Módulo modulo.mjs</span>
+<span class="kr">export</span> <span class="nx">funcion</span> <span class="nx">doble</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="nx">x</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kr">export</span> <span class="nx">defaults</span> <span class="nx">x</span> <span class="p">=&gt;</span> <span class="nx">x</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>En este caso, se puede dar un nombre cualquier en el código invocante a la
+definición:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">mitad</span> <span class="nx">from</span> <span class="s2">&quot;./modulo.mjs&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>y si se quiere importar también el resto de definiciones:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">mitad</span><span class="p">,</span> <span class="p">{</span><span class="nx">doble</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./modulo.mjs&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Si el módulo lo compone un directorio, es aplicable todo lo explicado para
+<a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Cuando la carga de un módulo no exporta nada, puede usarse la
+sintaxis:</p>
+<div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;./modulo_sin_export.mjs&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="lado-del-cliente">
+<h3>3.2.3.2. Lado del cliente<a class="headerlink" href="#lado-del-cliente" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Para el cliente los ficheros se escriben exactamente de la misma forma y se
+cargan en el navegador así:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;module&quot;</span> <span class="na">script</span><span class="o">=</span><span class="s">&quot;main.mjs&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">nomodule</span> <span class="na">script</span><span class="o">=</span><span class="s">&quot;fallback.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>En un navegador moderno el código anterior cargará <code class="file docutils literal notranslate"><span class="pre">main.mjs</span></code> (el cual a
+su vez será capaz de cargar <code class="file docutils literal notranslate"><span class="pre">circunferencia.mjs</span></code>) y saltará el siguiente
+elemento, puesto que tiene el atributo <em>nomodule</em>. En un navagador no tan
+moderno, en cambio, se cargarán ambos <em>scripts</em>, el primero de los cuales
+fallará, por lo cual podrá usarse el segundo para implementar lo que en
+principio debería haber hecho el primero.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Si escribimos módulos para el cliente, es totalmente lícita la
+siguiente carga:</p>
+<div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">circ</span> <span class="nx">from</span> <span class="s2">&quot;https://server.com/js/circunferencia.mjs&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Los módulos se ejecutan en diferido, esto es, una vez que se ha
+completado la carga de la página. En cambio, en un navegador antiguo, que no
+entiende de módulos, el segundo <em>script</em> se ejecutará inmediatamente después
+de haberse cargado, con lo cual es muy probable que nos interese indicar
+explicitamente que la ejecución debe hacerse en diferido:</p>
+<div class="last highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nomodule</span> <span class="na">defer</span> <span class="na">script</span><span class="o">=</span><span class="s">&quot;fallback.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="otros-sistemas">
+<h2>3.2.4. Otros sistemas<a class="headerlink" href="#otros-sistemas" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="amd">
+<h3>3.2.4.1. <abbr title="Asynchronous Module Definition">AMD</abbr><a class="headerlink" href="#amd" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este sistema permite la carga asíncrona de módulos (a diferencia de <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>).
+La definición de un módulo que depende de <a class="reference external" href="https://jquery.com">JQuery</a> y <a class="reference external" href="https://leafletjs.com">Leaflet</a> se llevaría a cabo
+así:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">define</span><span class="p">([</span><span class="s2">&quot;jquery&quot;</span><span class="p">,</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">L</span><span class="p">)</span> <span class="p">{</span>
+   <span class="c1">// Aquí la implementación del módulo</span>
+
+   <span class="kd">function</span> <span class="nx">fn1</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// Implementación de la función</span>
+   <span class="p">}</span>
+
+   <span class="kr">const</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>
+
+   <span class="c1">// Esto es lo exportable</span>
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">fn1</span><span class="o">:</span> <span class="nx">fn1</span><span class="p">,</span>
+      <span class="nx">c</span><span class="o">:</span> <span class="nx">c</span>
+   <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="umd">
+<h3>3.2.4.2. <abbr title="Universal Module Definition">UMD</abbr><a class="headerlink" href="#umd" title="Enlazar permanentemente con este título">¶</a></h3>
+<p><abbr title="Universal Module Definition">UMD</abbr> no es, en realidad, otro sistema de módulos, sino un patrón de
+programación que permite cargar código cuando el intérprete soporta uno de estos
+tres sistemas:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>.</li>
+<li><abbr title="Asynchronous Module Definition">AMD</abbr>.</li>
+<li>El método tradicional mediante un atributo ligado al objeto global.</li>
+</ul>
+<p>El patrón no es demasiado estético, pero funciona. Supongamos que tenemos un
+módulo que depende de <a class="reference external" href="https://jquery.com">JQuery</a> y <a class="reference external" href="https://leafletjs.com">Leaflet</a>. Supongamos, además, que nuestra
+intención es que esté accesible a través del nombre «MiLibreria» y que:</p>
+<ul class="simple">
+<li>Si el intérprete soporta <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> las dependencias se cargan a través de los
+nombres «<em>jquery</em>» y «<em>leaflet</em>» respectivamente.</li>
+<li>Si soporta <abbr title="Asynchronous Module Definition">AMD</abbr>, otro tanto.</li>
+<li>Si usa el método tradicional están disponibles a través de las objetos <code class="docutils literal notranslate"><span class="pre">$</span></code> y
+<code class="docutils literal notranslate"><span class="pre">L</span></code> (en realidad, <code class="docutils literal notranslate"><span class="pre">window.$</span></code> y <code class="docutils literal notranslate"><span class="pre">window.L</span></code>).</li>
+</ul>
+<p>En estas condiciones el patrón se implementa así:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">global</span><span class="p">,</span> <span class="nx">factory</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">define</span> <span class="o">===</span> <span class="s2">&quot;function&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">define</span><span class="p">.</span><span class="nx">amd</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">define</span><span class="p">([</span><span class="s2">&quot;jquery&quot;</span><span class="p">,</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">],</span> <span class="nx">factory</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">exports</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">factory</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;jquery&quot;</span><span class="p">),</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;leafter&quot;</span><span class="p">));</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">global</span><span class="p">.</span><span class="nx">MiLibreria</span> <span class="o">=</span> <span class="nx">factory</span><span class="p">(</span><span class="nx">global</span><span class="p">.</span><span class="nx">$</span><span class="p">,</span> <span class="nx">glonal</span><span class="p">.</span><span class="nx">L</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">L</span><span class="p">)</span> <span class="p">{</span>
+   <span class="c1">// Implementación del módulo (usando $ y L)</span>
+
+    <span class="k">return</span> <span class="nx">resultado</span><span class="p">;</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>Como se aprecia, el patrón prueba si el intérprete soporta <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>, si no es
+el caso, prueba si soporta <abbr title="Asynchronous Module Definition">AMD</abbr>; y, si tampoco, exporta el resultado del módulo
+mediante la variable global <em>MiLibreria</em>.</p>
+<p>Lo interesante de este patrón es que permite usar módulos incluso en navegadores
+no tan recientes<a class="footnote-reference" href="#id2" id="id1">[1]</a>. Por esa razón, se usa para la <a class="reference internal" href="../04.client/index.html#webpack-ej-plugin"><span class="std std-ref">creación de librerías</span></a>.</p>
+<p class="rubric">Enlaces de interés</p>
+<ul class="simple">
+<li><a class="reference external" href="https://programacionymas.com/blog/modulos-javascript-commonjs-amd-ecmascript">¿Qué son los módulos de Javascript</a></li>
+<li><a class="reference external" href="https://www.davidbcalhoun.com/2014/what-is-amd-commonjs-and-umd/">What is AMD, CommonJS, and UMD?</a></li>
+<li><a class="reference external" href="https://flaviocopes.com/es-modules/#what-about-browsers-that-do-not-support-modules">Introduction to ES Modules</a></li>
+<li><a class="reference external" href="https://v8.dev/features/modules">JavaScript modules</a></li>
+</ul>
+<p class="rubric">Notas al pie</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>En navegadores modernos podría usarse ES2015 directamente.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.2. Módulos</a><ul>
+<li><a class="reference internal" href="#el-patron-del-modulo">3.2.1. El <em>patrón del módulo</em></a></li>
+<li><a class="reference internal" href="#commonjs">3.2.2. CommonJS</a></li>
+<li><a class="reference internal" href="#ecmascript2015">3.2.3. ECMAScript2015</a><ul>
+<li><a class="reference internal" href="#lado-del-servidor">3.2.3.1. Lado del servidor</a></li>
+<li><a class="reference internal" href="#lado-del-cliente">3.2.3.2. Lado del cliente</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#otros-sistemas">3.2.4. Otros sistemas</a><ul>
+<li><a class="reference internal" href="#amd">3.2.4.1. <abbr title="Asynchronous Module Definition">AMD</abbr></a></li>
+<li><a class="reference internal" href="#umd">3.2.4.2. <abbr title="Universal Module Definition">UMD</abbr></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="01.nodejs.html"
+                        title="capítulo anterior">3.1. Preparación</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="../04.client/index.html"
+                        title="próximo capítulo">4. Programación en el cliente (Webpack)</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/03.node/02.modulos.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Ir a" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../04.client/index.html" title="4. Programación en el cliente (Webpack)"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="01.nodejs.html" title="3.1. Preparación"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - 0.1</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >3. NodeJS</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

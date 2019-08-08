@@ -1,0 +1,244 @@
+.. highlight:: console
+
+Preparación
+***********
+NodeJS_ es un entorno para la programación de *Javascript* basado en el motor
+`V8 de Google`_. Sobre el se correrán las utilidades para programar tanto para
+el cliente como el servidor.
+
+Por lo general, su filosofía se basa en preparar un directorio de trabajo (ya se
+verá cómo) y desarrollar dentro de él un proyecto, de manera que para cada
+proyecto que desarrollemos crearemos un directorio de trabajo distinto.
+
+Instalación
+===========
+No reviste demasiado problema si se dispone de una distribución de linux. En una
+basada en *Debian*::
+
+   # apt install npm
+
+que instala el gestor de paquetes de NodeJS_ que indirectamente instala el
+proprio entorno.
+
+Consola
+=======
+Instalado el entorno, se puede acceder a una consola interactiva en la que
+pueden ejecutarse evaluaciones e instrucciones de *Javascript*::
+
+   $ node
+   > 1+1
+   2
+   > console.error("Esto es un error gordísimo")
+   Esto es un error gordísimo
+   undefined
+
+Ejecución de scripts
+====================
+Las aplicaciones de NodeJS_ pueden perfectamente ejecutarse desde
+la consola de comandos si tiene sentido que se ejecuten desde ella. Por ejemplo,
+el fichero :file:`holamundo.py`:
+
+.. code-block:: js
+
+   #!/usr/bin/env node
+
+   console.log("¡Hola, mundo!");
+
+Puede probarse. simplemente, con::
+
+   $ node holamundo.py
+   ¡Hola, mundo!
+
+o, gracias a la línea de *sheebang*, dar permisos de ejecución y ejecutar
+directamente::
+
+   $ chmod +x holamundo.py
+   $ ./holamundo.py
+
+Algunos :ref:`paquetes npm <npm-paquetes>` contienen *scripts* pensados para
+ejecutarse directamente desde la línea de órdenes, pero al no encontrarse dentro
+del alguno de los directorio del *PATH* es engorrosa su ejecución. Para
+solventarlo, existe :command:`npx` que es capaz de buscar ejecutables también en
+los paquetes globales y locales::
+
+   $ npx webpack --mode production
+
+.. _workdir:
+
+Directorio de trabajo
+=====================
+Lo último de esta parte preparatoria sobre NodeJS_ se dedica a la configuración
+de un directorio de trabajo para el desarrollo de una aplicación.
+
+Configuración general
+---------------------
+Al preparar un directorio para un nuevo proyecto, ya veremos que es necesario
+crear un fichero de descripción llamado :file:`package.json`. Antes, no
+obstante, es recomensable fijar los valores predeterminados con que se cree este
+fichero para lo cual::
+
+   $ npm set init.author.name "Mi nombre"
+   $ npm set init.author.email "micorreo@electroni.co"
+   $ npm set init.license MIT
+
+.. note:: Estos valores se almacenan dentro del fichero :file:`~/.npmrc`.
+
+.. _prep_workdir:
+
+Preparación
+-----------
+La preparación del directorio consite básicamente en crear el fichero
+:file:`package.json` que describe el proyecto. Muy comúnmente también conviene
+preparar el directorio para que sea un repositorio *git*. Para lo primero,
+:command:`npm` trae la posibilidad de ejecutar :code:`npm init`::
+
+   $ mkdir App
+   $ cd App
+   $ npm init
+
+pero podemos alterar el comportamiento de éste comando para lograr también lo
+segundo. Para ello, podemos usar (o adaptar) este :download:`~/.npm-init.js
+<files/npm-init.js>`:
+
+.. literalinclude:: files/npm-init.js
+   :language: js
+
+y crear el directorio así::
+
+   $ mkdir App
+   $ cd App
+   $ npm init -y
+
+Al utilizar este *script* conseguimos algunas ventajas:
+
+* Se nos preguntará cuál es el fichero principal a menos que esté definida
+  la variable de entorno *NPM_MAIN*, en cuyo caso, se usará su valor. El
+  *script*, además, se encargará de crear el directorio que contendrá este
+  fichero principal. Por ejemplo, si establecemos que tal fichero es
+  :file:`src/index.js`, se creará automáticamente el directorio :file:`src`.
+
+* Si está definido en :file:`~/.npmrc` nuestro usuario de Github_ a través de
+  la variable *init.git.user*, se preparará el directorio como repositorio *Git*
+  y además se definirán en :file:`package.json` algunas variables relacionadas::
+
+   $ npm set init.git.user sio2sio2
+  
+  .. note:: Como nombre del repositorio, se usará el nombre del directorio,
+     por lo que el proyecto será :code:`https://github.com/sio2sio2/App`.
+
+* Si se tiene definido en Github_ un token apropiado\ [#]_ y añadido a la
+  configuración a través de *init.git.token*::
+
+   $ npm set init.git.token XXXXXXXX
+
+  se nos preguntará si queremos crear el repositorio remoto en Github_ y se
+  creará en caso de que respondamos afirmativamente.
+
+  .. warning:: El *token* debería ser secreto, así que es más que conveniente
+     que ajustemos los permisos del :file:`~/.npmrc`::
+
+      $ chmod 600 ~/-npmrc
+
+No obstante, aún será indispensable crear los ficheros :file:`README.rst` (o
+:file:`README.md`) y :file:`LICENSE`. Para este último podemos tomar una licencia
+libre como la `licencia MIT <https://es.wikipedia.org/wiki/Licencia_MIT>`_.
+
+.. seealso:: Échele un ojo al :ref:`primer ejemplo de creación de un proyecto
+   para ver cómo subir el proyecto <webpack-ej-plugin>` una vez se haya escrito.
+
+.. todo:: Preparar para crear documentación con sphinx.
+
+.. _npm-paquetes:
+
+Paquetes
+========
+Hay muchas librerías y aplicaciones que se distribuyen en paquetes ``npm`` y que
+podemos integrar en nuestros propios desarrollos. Se pueden instalar:
+
+- **Globalmente**, para que estén disponibles en todo nuestros desarrollos.
+- En el :ref:`directorio de trabajo <workdir>` de la aplicación que estamos
+  desarrollando.
+
+.. rubric:: Instalación
+
+Para una instalación global::
+
+   # npm install -g [nombre-paquete]
+
+Si la instalación es local, debemos situarnos en el directorio de trabajo y
+prescindir de la opción :code:`-g`, y podemos añadir las opciones ``--save`` o
+``--save-dev``. Ambas opciones registran el paquete instalado en el fichero
+:file:`packages.json` del directorio de trabajo pero con distinto significado:
+
+* Si es ``--save-dev``, el paquete se trata de una aplicación que nos servirá para
+  desarrollar, pero que no constituye una dependencia de la aplicación. Por
+  ejemplo, :ref:`webpack <webpack>`::
+
+   $ npm install --save-dev webpack
+
+* Si es ``--save``, el paquete se trata de una librería que deseamos incorporar
+  a nuestra aplicación y que, por tanto, se incorporará al resultado final::
+
+   $ npm install --save leaflet
+
+  .. note:: Al instalar en local, puede prescindirse de esta opción porque se
+     sobreentiende.
+
+.. note:: Si ya dispone de un fichero :file:`package.json` con las dependencias
+   del proyecto (por ejemplo, porque se ha clonado un proyecto escrito por un
+   tercero) basta con hacer::
+
+      $ npm install
+
+   para instalar todos los paquetes de dependencia.
+
+La instalación global tiene la ventaja de que permite compartir una misma
+instalación entre todos los proyectos que desarrollemos. En cambio, no deja
+registro en :file:`package.json`; y, en consecuencia, dificulta la
+reproducibilidad del proyecto, esto es, que un tercero pueda descargar el
+repositorio del proyecto y, sin demasiadas preocupaciones, pueda instalar el
+*software* necesario.
+
+.. note:: Es también posible instalar directamente un repositorio de Github_ si
+   éste está construido apropiadamente (tiene un fichero :file:`package.json`)::
+
+      $ npm install git+https://github.com/usuario/proyecto.git
+
+.. rubric:: Búsqueda
+
+Podemos buscar paquetes instalables con :code:`npm search`::
+
+   $ npm search webpack
+
+Y paquetes instalados con :code:`npm list`::
+
+   $ npm list -g --depth=0
+   $ npm list --depth=0
+
+La primera orden busca exclusivamente paquetes instalados globalmente. Además,
+incluyendo :code:`--depth=0` no se listan dependencias.
+
+.. rubric:: Eliminación
+
+Puede usar :code:`npm uninstall` (o su sinónimo :code:`npm remove`)::
+
+   $ npm uninstall leaflet
+
+.. Publicar tu propio paquete en npm:
+   https://zellwk.com/blog/publish-to-npm/
+
+.. rubric:: Notas al pie
+
+.. [#] Github_ permite `definir tokens <https://github.com/settings/tokens>`_
+   que habilitan la realización de operaciones a través de una `API REST
+   <https://developer.github.com/v3/repos/>`_.  Para poder crear repositorios
+   públicos, el *token* requiere al menos tener habilitado el `scope public_repo
+   <https://developer.github.com/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/#available-scopes>`_.
+
+.. _NodeJS: https://nodejs.org/es/
+.. _SASS: https://sass-lang.com/
+.. _V8 de Google: https://v8.dev/
+.. _Babel: https://babeljs.io/
+.. _Github: https://github.com
+
+.. |CSS| replace:: :abbr:`CSS (Cascading Style Sheets)`

@@ -1,0 +1,17 @@
+div.note {
+   background-color: #cdf;
+   border: 1px solid #9ae;
+}
+
+div.admonition-todo {
+   background-color: #dfd;
+   border: 1px solid #384;
+}
+
+.highlight .hll {
+   background-color: #ed9;
+}
+
+blockquote {
+   color: #555;
+}
