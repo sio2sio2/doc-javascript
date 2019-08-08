@@ -16,7 +16,7 @@ help:
 
 html:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	rm -f "${DESTDIR}"
+	rm -rf "${DESTDIR}"
 	mv "$(BUILDDIR)/html" "${DESTDIR}"
 
 # Catch-all target: route all unknown targets to Sphinx using the new

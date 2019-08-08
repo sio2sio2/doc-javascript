@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3.1. Preparación &#8212; documentación de Javascript - 0.1</title>
+    <title>3.1. Uso &#8212; documentación de Javascript - 0.1</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
@@ -22,7 +22,7 @@
     
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Búsqueda" href="../search.html" />
-    <link rel="next" title="3.2. Módulos" href="02.modulos.html" />
+    <link rel="next" title="3.2. Paquetes" href="02.npm.html" />
     <link rel="prev" title="3. NodeJS" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -32,7 +32,7 @@
           <a href="../genindex.html" title="Índice General"
              accesskey="I">índice</a></li>
         <li class="right" >
-          <a href="02.modulos.html" title="3.2. Módulos"
+          <a href="02.npm.html" title="3.2. Paquetes"
              accesskey="N">siguiente</a> |</li>
         <li class="right" >
           <a href="index.html" title="3. NodeJS"
@@ -47,26 +47,28 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="preparacion">
-<h1>3.1. Preparación<a class="headerlink" href="#preparacion" title="Enlazar permanentemente con este título">¶</a></h1>
+  <div class="section" id="uso">
+<h1>3.1. Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h1>
 <p><a class="reference external" href="https://nodejs.org/es/">NodeJS</a> es un entorno para la programación de <em>Javascript</em> basado en el motor
 <a class="reference external" href="https://v8.dev/">V8 de Google</a>. Sobre el se correrán las utilidades para programar tanto para
 el cliente como el servidor.</p>
 <p>Por lo general, su filosofía se basa en preparar un directorio de trabajo (ya se
 verá cómo) y desarrollar dentro de él un proyecto, de manera que para cada
 proyecto que desarrollemos crearemos un directorio de trabajo distinto.</p>
+<div class="section" id="primeros-pasos">
+<h2>3.1.1. Primeros pasos<a class="headerlink" href="#primeros-pasos" title="Enlazar permanentemente con este título">¶</a></h2>
 <div class="section" id="instalacion">
-<h2>3.1.1. Instalación<a class="headerlink" href="#instalacion" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>No reviste demasiado problema si se dispone de una distribución de linux. En una
-basada en <em>Debian</em>:</p>
+<h3>3.1.1.1. Instalación<a class="headerlink" href="#instalacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>La instalación no reviste demasiado problema si se dispone de una distribución
+de linux. En una basada en <em>Debian</em>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> apt install npm
 </pre></div>
 </div>
 <p>que instala el gestor de paquetes de <a class="reference external" href="https://nodejs.org/es/">NodeJS</a> que indirectamente instala el
 proprio entorno.</p>
 </div>
-<div class="section" id="consola">
-<h2>3.1.2. Consola<a class="headerlink" href="#consola" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="consola-interactiva">
+<h3>3.1.1.2. Consola interactiva<a class="headerlink" href="#consola-interactiva" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Instalado el entorno, se puede acceder a una consola interactiva en la que
 pueden ejecutarse evaluaciones e instrucciones de <em>Javascript</em>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> node
@@ -79,7 +81,7 @@ pueden ejecutarse evaluaciones e instrucciones de <em>Javascript</em>:</p>
 </div>
 </div>
 <div class="section" id="ejecucion-de-scripts">
-<h2>3.1.3. Ejecución de scripts<a class="headerlink" href="#ejecucion-de-scripts" title="Enlazar permanentemente con este título">¶</a></h2>
+<h3>3.1.1.3. Ejecución de scripts<a class="headerlink" href="#ejecucion-de-scripts" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Las aplicaciones de <a class="reference external" href="https://nodejs.org/es/">NodeJS</a> pueden perfectamente ejecutarse desde
 la consola de comandos si tiene sentido que se ejecuten desde ella. Por ejemplo,
 el fichero <code class="file docutils literal notranslate"><span class="pre">holamundo.py</span></code>:</p>
@@ -99,7 +101,7 @@ directamente:</p>
 <span class="gp">$</span> ./holamundo.py
 </pre></div>
 </div>
-<p>Algunos <a class="reference internal" href="#npm-paquetes"><span class="std std-ref">paquetes npm</span></a> contienen <em>scripts</em> pensados para
+<p>Algunos <a class="reference internal" href="02.npm.html#npm"><span class="std std-ref">paquetes npm</span></a> contienen <em>scripts</em> pensados para
 ejecutarse directamente desde la línea de órdenes, pero al no encontrarse dentro
 del alguno de los directorio del <em>PATH</em> es engorrosa su ejecución. Para
 solventarlo, existe <strong class="command">npx</strong> que es capaz de buscar ejecutables también en
@@ -108,12 +110,13 @@ los paquetes globales y locales:</p>
 </pre></div>
 </div>
 </div>
+</div>
 <div class="section" id="directorio-de-trabajo">
-<span id="workdir"></span><h2>3.1.4. Directorio de trabajo<a class="headerlink" href="#directorio-de-trabajo" title="Enlazar permanentemente con este título">¶</a></h2>
+<span id="workdir"></span><h2>3.1.2. Directorio de trabajo<a class="headerlink" href="#directorio-de-trabajo" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Lo último de esta parte preparatoria sobre <a class="reference external" href="https://nodejs.org/es/">NodeJS</a> se dedica a la configuración
 de un directorio de trabajo para el desarrollo de una aplicación.</p>
 <div class="section" id="configuracion-general">
-<h3>3.1.4.1. Configuración general<a class="headerlink" href="#configuracion-general" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3>3.1.2.1. Configuración general<a class="headerlink" href="#configuracion-general" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Al preparar un directorio para un nuevo proyecto, ya veremos que es necesario
 crear un fichero de descripción llamado <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>. Antes, no
 obstante, es recomensable fijar los valores predeterminados con que se cree este
@@ -128,8 +131,8 @@ fichero para lo cual:</p>
 <p class="last">Estos valores se almacenan dentro del fichero <code class="file docutils literal notranslate"><span class="pre">~/.npmrc</span></code>.</p>
 </div>
 </div>
-<div class="section" id="prep-workdir">
-<span id="id1"></span><h3>3.1.4.2. Preparación<a class="headerlink" href="#prep-workdir" title="Enlazar permanentemente con este título">¶</a></h3>
+<div class="section" id="preparacion">
+<span id="prep-workdir"></span><h3>3.1.2.2. Preparación<a class="headerlink" href="#preparacion" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>La preparación del directorio consite básicamente en crear el fichero
 <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> que describe el proyecto. Muy comúnmente también conviene
 preparar el directorio para que sea un repositorio <em>git</em>. Para lo primero,
@@ -284,7 +287,7 @@ y además se definirán en <code class="file docutils literal notranslate"><span
 por lo que el proyecto será <code class="code docutils literal notranslate"><span class="pre">https://github.com/sio2sio2/App</span></code>.</p>
 </div>
 </li>
-<li><p class="first">Si se tiene definido en <a class="reference external" href="https://github.com">Github</a> un token apropiado<a class="footnote-reference" href="#id3" id="id2">[1]</a> y añadido a la
+<li><p class="first">Si se tiene definido en <a class="reference external" href="https://github.com">Github</a> un token apropiado<a class="footnote-reference" href="#id2" id="id1">[1]</a> y añadido a la
 configuración a través de <em>init.git.token</em>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm <span class="nb">set</span> init.git.token XXXXXXXX
 </pre></div>
@@ -313,96 +316,16 @@ para ver cómo subir el proyecto</span></a> una vez se haya escrito.</p>
 <p class="first admonition-title">Por hacer</p>
 <p class="last">Preparar para crear documentación con sphinx.</p>
 </div>
-</div>
-</div>
-<div class="section" id="paquetes">
-<span id="npm-paquetes"></span><h2>3.1.5. Paquetes<a class="headerlink" href="#paquetes" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Hay muchas librerías y aplicaciones que se distribuyen en paquetes <code class="docutils literal notranslate"><span class="pre">npm</span></code> y que
-podemos integrar en nuestros propios desarrollos. Se pueden instalar:</p>
-<ul class="simple">
-<li><strong>Globalmente</strong>, para que estén disponibles en todo nuestros desarrollos.</li>
-<li>En el <a class="reference internal" href="#workdir"><span class="std std-ref">directorio de trabajo</span></a> de la aplicación que estamos
-desarrollando.</li>
-</ul>
-<p class="rubric">Instalación</p>
-<p>Para una instalación global:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> npm install -g <span class="o">[</span>nombre-paquete<span class="o">]</span>
-</pre></div>
-</div>
-<p>Si la instalación es local, debemos situarnos en el directorio de trabajo y
-prescindir de la opción <code class="code docutils literal notranslate"><span class="pre">-g</span></code>, y podemos añadir las opciones <code class="docutils literal notranslate"><span class="pre">--save</span></code> o
-<code class="docutils literal notranslate"><span class="pre">--save-dev</span></code>. Ambas opciones registran el paquete instalado en el fichero
-<code class="file docutils literal notranslate"><span class="pre">packages.json</span></code> del directorio de trabajo pero con distinto significado:</p>
-<ul>
-<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">--save-dev</span></code>, el paquete se trata de una aplicación que nos servirá para
-desarrollar, pero que no constituye una dependencia de la aplicación. Por
-ejemplo, <a class="reference internal" href="../04.client/index.html#webpack"><span class="std std-ref">webpack</span></a>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack
-</pre></div>
-</div>
-</li>
-<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">--save</span></code>, el paquete se trata de una librería que deseamos incorporar
-a nuestra aplicación y que, por tanto, se incorporará al resultado final:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save leaflet
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">Al instalar en local, puede prescindirse de esta opción porque se
-sobreentiende.</p>
-</div>
-</li>
-</ul>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p>Si ya dispone de un fichero <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> con las dependencias
-del proyecto (por ejemplo, porque se ha clonado un proyecto escrito por un
-tercero) basta con hacer:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install
-</pre></div>
-</div>
-<p class="last">para instalar todos los paquetes de dependencia.</p>
-</div>
-<p>La instalación global tiene la ventaja de que permite compartir una misma
-instalación entre todos los proyectos que desarrollemos. En cambio, no deja
-registro en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>; y, en consecuencia, dificulta la
-reproducibilidad del proyecto, esto es, que un tercero pueda descargar el
-repositorio del proyecto y, sin demasiadas preocupaciones, pueda instalar el
-<em>software</em> necesario.</p>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p>Es también posible instalar directamente un repositorio de <a class="reference external" href="https://github.com">Github</a> si
-éste está construido apropiadamente (tiene un fichero <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>):</p>
-<div class="last highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install git+https://github.com/usuario/proyecto.git
-</pre></div>
-</div>
-</div>
-<p class="rubric">Búsqueda</p>
-<p>Podemos buscar paquetes instalables con <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">search</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm search webpack
-</pre></div>
-</div>
-<p>Y paquetes instalados con <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">list</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm list -g --depth<span class="o">=</span><span class="m">0</span>
-<span class="gp">$</span> npm list --depth<span class="o">=</span><span class="m">0</span>
-</pre></div>
-</div>
-<p>La primera orden busca exclusivamente paquetes instalados globalmente. Además,
-incluyendo <code class="code docutils literal notranslate"><span class="pre">--depth=0</span></code> no se listan dependencias.</p>
-<p class="rubric">Eliminación</p>
-<p>Puede usar <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">uninstall</span></code> (o su sinónimo <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">remove</span></code>):</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm uninstall leaflet
-</pre></div>
-</div>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id3" rules="none">
+<table class="docutils footnote" frame="void" id="id2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><a class="reference external" href="https://github.com">Github</a> permite <a class="reference external" href="https://github.com/settings/tokens">definir tokens</a>
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="https://github.com">Github</a> permite <a class="reference external" href="https://github.com/settings/tokens">definir tokens</a>
 que habilitan la realización de operaciones a través de una <a class="reference external" href="https://developer.github.com/v3/repos/">API REST</a>.  Para poder crear repositorios
 públicos, el <em>token</em> requiere al menos tener habilitado el <a class="reference external" href="https://developer.github.com/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/#available-scopes">scope public_repo</a>.</td></tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 
@@ -414,16 +337,18 @@ públicos, el <em>token</em> requiere al menos tener habilitado el <a class="ref
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">3.1. Preparación</a><ul>
-<li><a class="reference internal" href="#instalacion">3.1.1. Instalación</a></li>
-<li><a class="reference internal" href="#consola">3.1.2. Consola</a></li>
-<li><a class="reference internal" href="#ejecucion-de-scripts">3.1.3. Ejecución de scripts</a></li>
-<li><a class="reference internal" href="#directorio-de-trabajo">3.1.4. Directorio de trabajo</a><ul>
-<li><a class="reference internal" href="#configuracion-general">3.1.4.1. Configuración general</a></li>
-<li><a class="reference internal" href="#prep-workdir">3.1.4.2. Preparación</a></li>
+<li><a class="reference internal" href="#">3.1. Uso</a><ul>
+<li><a class="reference internal" href="#primeros-pasos">3.1.1. Primeros pasos</a><ul>
+<li><a class="reference internal" href="#instalacion">3.1.1.1. Instalación</a></li>
+<li><a class="reference internal" href="#consola-interactiva">3.1.1.2. Consola interactiva</a></li>
+<li><a class="reference internal" href="#ejecucion-de-scripts">3.1.1.3. Ejecución de scripts</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#paquetes">3.1.5. Paquetes</a></li>
+<li><a class="reference internal" href="#directorio-de-trabajo">3.1.2. Directorio de trabajo</a><ul>
+<li><a class="reference internal" href="#configuracion-general">3.1.2.1. Configuración general</a></li>
+<li><a class="reference internal" href="#preparacion">3.1.2.2. Preparación</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -432,8 +357,8 @@ públicos, el <em>token</em> requiere al menos tener habilitado el <a class="ref
   <p class="topless"><a href="index.html"
                         title="capítulo anterior">3. NodeJS</a></p>
   <h4>Próximo tema</h4>
-  <p class="topless"><a href="02.modulos.html"
-                        title="próximo capítulo">3.2. Módulos</a></p>
+  <p class="topless"><a href="02.npm.html"
+                        title="próximo capítulo">3.2. Paquetes</a></p>
   <div role="note" aria-label="source link">
     <h3>Esta página</h3>
     <ul class="this-page-menu">
@@ -464,7 +389,7 @@ públicos, el <em>token</em> requiere al menos tener habilitado el <a class="ref
           <a href="../genindex.html" title="Índice General"
              >índice</a></li>
         <li class="right" >
-          <a href="02.modulos.html" title="3.2. Módulos"
+          <a href="02.npm.html" title="3.2. Paquetes"
              >siguiente</a> |</li>
         <li class="right" >
           <a href="index.html" title="3. NodeJS"

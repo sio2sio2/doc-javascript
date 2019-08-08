@@ -1,0 +1,266 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.2. Paquetes &#8212; documentación de Javascript - 0.1</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="3.3. Módulos" href="03.modulos.html" />
+    <link rel="prev" title="3.1. Uso" href="01.nodejs.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="03.modulos.html" title="3.3. Módulos"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="01.nodejs.html" title="3.1. Uso"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - 0.1</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">3. NodeJS</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="paquetes">
+<span id="npm"></span><h1>3.2. Paquetes<a class="headerlink" href="#paquetes" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Hay muchas librerías y aplicaciones que se distribuyen en paquetes <code class="docutils literal notranslate"><span class="pre">npm</span></code> y que
+podemos integrar en nuestros propios desarrollos. Por otro lado, también
+podemos contribuir a la comunidad aportando nuestros propios desarrollos.</p>
+<div class="section" id="gestion">
+<h2>3.2.1. Gestión<a class="headerlink" href="#gestion" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="instalacion">
+<h3>3.2.1.1. Instalación<a class="headerlink" href="#instalacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Antes de proceder a la instalación de cualquier paquete es necesario saber que
+estos se pueden instalar:</p>
+<ul class="simple">
+<li><strong>Globalmente</strong>, para que estén disponibles en todo nuestros desarrollos.</li>
+<li><strong>Localmente</strong> al <a class="reference internal" href="01.nodejs.html#workdir"><span class="std std-ref">directorio de trabajo</span></a> de la aplicación
+que estamos desarrollando.</li>
+</ul>
+<p>Para una instalación <strong>global</strong>, desde cualquier lugar del sistema de ficheros
+podemos hacer:</p>
+<blockquote>
+<div># npm install -g [nombre-paquete]</div></blockquote>
+<p>La instalación es local, en cambio, requiere situarnos en el directorio de
+trabajo y prescindir de la opción <code class="code docutils literal notranslate"><span class="pre">-g</span></code>. Además, al instlar podemos
+distinguir entre dos clases de paquetes distintos según sea la dependencia que
+de ellos tenga nuestro desarrollo.:</p>
+<ul>
+<li><p class="first">Paquetes cuya función es permitirnos desarrollar y generar la aplicación.
+Por ejemplo, si desarrollamos una aplicación de cliente, necesitaremos
+<a class="reference internal" href="../04.client/index.html#webpack"><span class="std std-ref">webpack</span></a> para darle forma de aplicación de cliente.</p>
+<blockquote>
+<div><p>Para instalar paquetes de desarrollo, es necesario añadir la opción
+<code class="docutils literal notranslate"><span class="pre">--save-dev</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Paquetes necesarios para que la aplicación desarrollada se ejecute. Por
+ejemplo, si desarrollamos una aplicación <abbr title="Geographic Information System">GIS</abbr>, podemos basarnos en la
+libreria <a class="reference external" href="https://leafletjs.com">Leaflet</a>.</p>
+<p>En este caso es necesario añadir la opción <code class="docutils literal notranslate"><span class="pre">--save</span></code> (o nada en absoluto):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save leaflet
+</pre></div>
+</div>
+</li>
+</ul>
+<p>En ambos casos, las instalaciones se registran en el fichero <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>,
+lo cual posibilita que si se obtiene un directorio de una tercera persona (por
+ejemplo, porque haya subido el desarrollo a <a class="reference external" href="https://github.com">Github</a> y nosotros lo hayamos clonado),
+podemos instalar todas las dependencias simplemente haciendo:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install
+</pre></div>
+</div>
+<p>La instalación global tiene la ventaja de que permite compartir una misma
+instalación entre todos los proyectos que desarrollemos. En cambio, no deja
+registro en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>; y, en consecuencia, dificulta la
+reproducibilidad del proyecto, esto es, que un tercero pueda descargar el
+repositorio del proyecto y, sin demasiadas preocupaciones, pueda instalar el
+<em>software</em> necesario.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Es también posible instalar directamente un repositorio de <a class="reference external" href="https://github.com">Github</a> si
+éste está construido apropiadamente (tiene un fichero <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>):</p>
+<div class="last highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install git+https://github.com/usuario/proyecto.git
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="busqueda">
+<h3>3.2.1.2. Búsqueda<a class="headerlink" href="#busqueda" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Podemos buscar paquetes instalables con <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">search</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm search webpack
+</pre></div>
+</div>
+<p>Y paquetes instalados con <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">list</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm list -g --depth<span class="o">=</span><span class="m">0</span>
+<span class="gp">$</span> npm list --depth<span class="o">=</span><span class="m">0</span>
+</pre></div>
+</div>
+<p>La primera orden busca exclusivamente paquetes instalados globalmente. Además,
+incluyendo <code class="code docutils literal notranslate"><span class="pre">--depth=0</span></code> no se listan dependencias.</p>
+</div>
+<div class="section" id="actualizacion">
+<h3>3.2.1.3. Actualización<a class="headerlink" href="#actualizacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Para actualizar un paquete concreto, puede usarse:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm update paquete
+</pre></div>
+</div>
+<p>y para actualizar todos, basta con prescindir de cualquier nombre:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm update
+</pre></div>
+</div>
+</div>
+<div class="section" id="desinstalacion">
+<h3>3.2.1.4. Desinstalación<a class="headerlink" href="#desinstalacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Puede usar <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">uninstall</span></code> (o su sinónimo <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">remove</span></code>):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm uninstall leaflet
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="publicacion">
+<h2>3.2.2. Publicación<a class="headerlink" href="#publicacion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Si lo consideramos oportuno, también es posible publicar nuestros propios
+desarrollos en los repositorios de <strong class="program">npm</strong>. Lo indispensable es tener
+guardado el desarrollo en un <a class="reference internal" href="01.nodejs.html#workdir"><span class="std std-ref">directorio de trabajo</span></a> (o sea, que
+disponga de un fichero <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>).</p>
+<div class="section" id="registro">
+<h3>3.2.2.1. Registro<a class="headerlink" href="#registro" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Lo primero es registrar nuestro propio usuario en la <a class="reference external" href="https://www.npmjs.com/">página oficial</a>, para lo cual nos requerirán un nombre de usuario,
+una contraseña y un correo electrónico.</p>
+</div>
+<div class="section" id="subida">
+<h3>3.2.2.2. Subida<a class="headerlink" href="#subida" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>La subida del paquete es sumamente sencilla. Basta con situarse en el directorio
+de trabajo y:</p>
+<ol class="arabic">
+<li><p class="first">Ingreso:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm login
+</pre></div>
+</div>
+<p>El ingreso nos proporcionará un <em>token</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm token list
+</pre></div>
+</div>
+<p>que servirá como método de autenticación al publicar el paquete.</p>
+</li>
+<li><p class="first">Publicación del paquete:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm publish
+</pre></div>
+</div>
+</li>
+<li><p class="first">Opcionalmente, podemos deslogearnos:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm <span class="nb">logout</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.2. Paquetes</a><ul>
+<li><a class="reference internal" href="#gestion">3.2.1. Gestión</a><ul>
+<li><a class="reference internal" href="#instalacion">3.2.1.1. Instalación</a></li>
+<li><a class="reference internal" href="#busqueda">3.2.1.2. Búsqueda</a></li>
+<li><a class="reference internal" href="#actualizacion">3.2.1.3. Actualización</a></li>
+<li><a class="reference internal" href="#desinstalacion">3.2.1.4. Desinstalación</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#publicacion">3.2.2. Publicación</a><ul>
+<li><a class="reference internal" href="#registro">3.2.2.1. Registro</a></li>
+<li><a class="reference internal" href="#subida">3.2.2.2. Subida</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="01.nodejs.html"
+                        title="capítulo anterior">3.1. Uso</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="03.modulos.html"
+                        title="próximo capítulo">3.3. Módulos</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/03.node/02.npm.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Ir a" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="03.modulos.html" title="3.3. Módulos"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="01.nodejs.html" title="3.1. Uso"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - 0.1</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >3. NodeJS</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

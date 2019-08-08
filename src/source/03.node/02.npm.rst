@@ -1,0 +1,140 @@
+.. highlight:: console
+
+.. _npm:
+
+Paquetes
+********
+Hay muchas librerías y aplicaciones que se distribuyen en paquetes ``npm`` y que
+podemos integrar en nuestros propios desarrollos. Por otro lado, también
+podemos contribuir a la comunidad aportando nuestros propios desarrollos.
+
+Gestión
+=======
+Instalación
+-----------
+Antes de proceder a la instalación de cualquier paquete es necesario saber que
+estos se pueden instalar:
+
+- **Globalmente**, para que estén disponibles en todo nuestros desarrollos.
+- **Localmente** al :ref:`directorio de trabajo <workdir>` de la aplicación
+  que estamos desarrollando.
+
+Para una instalación **global**, desde cualquier lugar del sistema de ficheros
+podemos hacer:
+
+   # npm install -g [nombre-paquete]
+
+La instalación es local, en cambio, requiere situarnos en el directorio de
+trabajo y prescindir de la opción :code:`-g`. Además, al instlar podemos
+distinguir entre dos clases de paquetes distintos según sea la dependencia que
+de ellos tenga nuestro desarrollo.:
+
+- Paquetes cuya función es permitirnos desarrollar y generar la aplicación.
+  Por ejemplo, si desarrollamos una aplicación de cliente, necesitaremos
+  :ref:`webpack <webpack>` para darle forma de aplicación de cliente.
+
+   Para instalar paquetes de desarrollo, es necesario añadir la opción
+   ``--save-dev``::
+
+   $ npm install --save-dev webpack
+
+- Paquetes necesarios para que la aplicación desarrollada se ejecute. Por
+  ejemplo, si desarrollamos una aplicación |GIS|, podemos basarnos en la
+  libreria Leaflet_. 
+
+  En este caso es necesario añadir la opción ``--save`` (o nada en absoluto)::
+
+   $ npm install --save leaflet
+
+En ambos casos, las instalaciones se registran en el fichero :file:`package.json`,
+lo cual posibilita que si se obtiene un directorio de una tercera persona (por
+ejemplo, porque haya subido el desarrollo a Github_ y nosotros lo hayamos clonado),
+podemos instalar todas las dependencias simplemente haciendo::
+
+   $ npm install
+
+La instalación global tiene la ventaja de que permite compartir una misma
+instalación entre todos los proyectos que desarrollemos. En cambio, no deja
+registro en :file:`package.json`; y, en consecuencia, dificulta la
+reproducibilidad del proyecto, esto es, que un tercero pueda descargar el
+repositorio del proyecto y, sin demasiadas preocupaciones, pueda instalar el
+*software* necesario.
+
+.. note:: Es también posible instalar directamente un repositorio de Github_ si
+   éste está construido apropiadamente (tiene un fichero :file:`package.json`)::
+
+      $ npm install git+https://github.com/usuario/proyecto.git
+
+Búsqueda
+--------
+Podemos buscar paquetes instalables con :code:`npm search`::
+
+   $ npm search webpack
+
+Y paquetes instalados con :code:`npm list`::
+
+   $ npm list -g --depth=0
+   $ npm list --depth=0
+
+La primera orden busca exclusivamente paquetes instalados globalmente. Además,
+incluyendo :code:`--depth=0` no se listan dependencias.
+
+Actualización
+-------------
+Para actualizar un paquete concreto, puede usarse::
+
+   $ npm update paquete
+
+y para actualizar todos, basta con prescindir de cualquier nombre::
+
+   $ npm update
+
+Desinstalación
+--------------
+Puede usar :code:`npm uninstall` (o su sinónimo :code:`npm remove`)::
+
+   $ npm uninstall leaflet
+
+.. Publicar tu propio paquete en npm:
+   https://zellwk.com/blog/publish-to-npm/
+
+Publicación
+===========
+Si lo consideramos oportuno, también es posible publicar nuestros propios
+desarrollos en los repositorios de :program:`npm`. Lo indispensable es tener
+guardado el desarrollo en un :ref:`directorio de trabajo <workdir>` (o sea, que
+disponga de un fichero :file:`package.json`).
+
+Registro
+--------
+Lo primero es registrar nuestro propio usuario en la `página oficial
+<https://www.npmjs.com/>`_, para lo cual nos requerirán un nombre de usuario,
+una contraseña y un correo electrónico.
+
+Subida
+------
+La subida del paquete es sumamente sencilla. Basta con situarse en el directorio
+de trabajo y:
+
+#. Ingreso::
+
+      $ npm login
+
+   El ingreso nos proporcionará un *token*::
+
+      $ npm token list
+
+   que servirá como método de autenticación al publicar el paquete.
+
+#. Publicación del paquete::
+
+      $ npm publish
+
+#. Opcionalmente, podemos deslogearnos::
+
+      $ npm logout
+
+.. |GIS| replace:: :abbr:`GIS (Geographic Information System)`
+
+.. _Github: https://github.com
+.. _Leaflet: https://leafletjs.com
