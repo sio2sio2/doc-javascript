@@ -72,7 +72,7 @@ que obramos un cambio.</li>
 </ul>
 <p>Existe varias alternativas para lograr este objetivo (<a class="reference external" href="https://gulpjs.com/">Gulp</a>+ <a class="reference external" href="http://browserify.org/">Browserify</a>
 podría ser una de ellas), aunque aquí nos centraremos en analizar
-<strong class="program">webpack</strong><a class="footnote-reference" href="#id12" id="id1">[1]</a>.</p>
+<strong class="program">webpack</strong><a class="footnote-reference" href="#id14" id="id1">[1]</a>.</p>
 <div class="section" id="instalacion">
 <h2>4.1. Instalación<a class="headerlink" href="#instalacion" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Lo primero es <a class="reference internal" href="../03.node/01.nodejs.html#prep-workdir"><span class="std std-ref">preparar el directorio de trabajo</span></a> para
@@ -314,12 +314,12 @@ existir. Por supuesto, podemos establecer el valor que queramos, por ejemplo:</p
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">contentBase</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">).</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>En este caso, fusionaremos todo el contenido del directorio de trabajo<a class="footnote-reference" href="#id13" id="id2">[2]</a> con
+<p>En este caso, fusionaremos todo el contenido del directorio de trabajo<a class="footnote-reference" href="#id15" id="id2">[2]</a> con
 los ficheros resultantes. La otra opción, <em>open</em>, rige qué se hace al levantar el
 servidor:</p>
 <ul>
 <li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">false</span></code>, que es su valor predeterminado al no haber incluido el
-argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id14" id="id3">[3]</a> en el <em>script</em> añadido a <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no
+argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id16" id="id3">[3]</a> en el <em>script</em> añadido a <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no
 se abre una ventana con la aplicación en el navegador, así que tendremos que
 abri manualmente nosotros la aplicación en:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span>
@@ -329,7 +329,7 @@ abri manualmente nosotros la aplicación en:</p>
 <li><p class="first">Si toma valor, debe ser una cadena que indique el navegador con el que se
 quiere ver la aplicación.</p>
 </li>
-<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema[#].</p>
+<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema<a class="footnote-reference" href="#id17" id="id4">[4]</a>.</p>
 </li>
 </ul>
 <div class="admonition note">
@@ -517,7 +517,7 @@ hacer:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>lo cual tendrá el efecto de embutir ambos <em>scripts</em><a class="footnote-reference" href="#id15" id="id4">[4]</a> en un único fichero
+<p>lo cual tendrá el efecto de embutir ambos <em>scripts</em><a class="footnote-reference" href="#id18" id="id5">[5]</a> en un único fichero
 resultante. Esto es necesario porque al ser dos <em>scripts</em> independientes
 utilizar el primero u el segundo como punto de entrada no incluiría al otro en
 la salida. Otra variante es:</p>
@@ -530,10 +530,10 @@ la salida. Otra variante es:</p>
 <p>que mantendrá ambos <em>scripts</em> separados creando dos ficheros de salida.</p>
 </div>
 <div class="section" id="babel">
-<span id="id5"></span><h3>4.2.3. Babel<a class="headerlink" href="#babel" title="Enlazar permanentemente con este título">¶</a></h3>
+<span id="id6"></span><h3>4.2.3. Babel<a class="headerlink" href="#babel" title="Enlazar permanentemente con este título">¶</a></h3>
 <p><strong class="program">Babel</strong> es un componente fundamental de nuestro propósito puesto que
 permite sustituir sintaxis demasiado nueva por otra compatible con versiones más
-antiguas de <em>Javascript</em>. Para usarlo y que transpile de forma que quede una
+antiguas de <em>Javascript</em>. Para usarlo y que transpile<a class="footnote-reference" href="#id19" id="id7">[6]</a> de forma que quede una
 sintaxis ampliamente soportada, podemos añadir algunas líneas a
 <code class="file docutils literal notranslate"><span class="pre">webpack/webpack.production.js</span></code>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
@@ -736,16 +736,16 @@ instalar algunos paquetes más:</p>
 </pre></div>
 </div>
 <p>Por último, habrá que cambiar la configuración de <strong class="program">webpack</strong> para que se
-procesen los ficheros <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>, de modo que a continuación de<a class="footnote-reference" href="#id16" id="id6">[5]</a> las líneas:</p>
+procesen los ficheros <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>, de modo que en sustitución de las líneas:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/</span><span class="p">,</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
    <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span> <span class="s2">&quot;css-loader&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>habrá que incluir:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.sass$/</span><span class="p">,</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.sass$/i</span><span class="p">,</span>
    <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
          <span class="s2">&quot;css-loader&quot;</span><span class="p">,</span>
          <span class="s2">&quot;sass-loader&quot;</span><span class="p">]</span>
@@ -769,7 +769,7 @@ algunos paquetes opciones:</p>
 <p>y modifiquemos la configuración de <code class="file docutils literal notranslate"><span class="pre">webpack/webpack.common.js</span></code> para
 habilitar la transformación:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.sass$/</span><span class="p">,</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.sass$/i</span><span class="p">,</span>
    <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
          <span class="s2">&quot;css-loader&quot;</span><span class="p">,</span>
 <span class="hll">         <span class="p">{</span>
@@ -788,8 +788,99 @@ habilitar la transformación:</p>
 prefijos que debe añadir, así que es aplicable lo explicado para <a class="reference internal" href="#babel"><span class="std std-ref">babel</span></a>.</p>
 </div>
 </div>
+<div class="section" id="procesamiento-de-css">
+<h3>4.2.6. Procesamiento de <abbr title="Cascading Style Sheets">CSS</abbr><a class="headerlink" href="#procesamiento-de-css" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Es interesante discutir sobre la forma de procesar el código <abbr title="Cascading Style Sheets">CSS</abbr>, porque
+dependiendo de nuestras intenciones puede interesarnos alterar las intrucciones
+vertidas hasta el momento. Algunas puntualizaciones, son aplicables al uso de
+cargadores para otros tipos de ficheros. En principio hemos postulado:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
+   <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span> <span class="s2">&quot;css-loader&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>y si el origen es un fichero <abbr title="Syntactically Awesome Style Sheets">SASS</abbr><a class="footnote-reference" href="#id20" id="id8">[7]</a>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(css|sass)$/i</span><span class="p">,</span>
+   <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span> <span class="s2">&quot;css-loader&quot;</span><span class="p">,</span> <span class="s2">&quot;sass-loader&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>por lo que se puede adivinar que el procesamiento es de derecha a izquierda.  El
+resultado del procesamiento de <strong class="program">css-loader</strong> es un módulo que debemos
+seguir procesando para que nos resulte útil.
+<strong class="program">MiniCssExtractPlugin.loader</strong> toma todos estos módulos y los compone en
+un único fichero <abbr title="Cascading Style Sheets">CSS</abbr> que se coloca en el directorio de salida (el definido
+mediante <em>output</em>). Sin embargo, hay otras soluciones:</p>
+<dl class="docutils">
+<dt><strong class="program">style-loader</strong></dt>
+<dd><p class="first">Que es capaz de tomar los módulos e incluirlos dentro de un elemento <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style">style</a>
+em eñ <abbr title="HyperText Markup Language">HTML</abbr>:</p>
+<div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
+   <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;style-loader&quot;</span><span class="p">,</span> <span class="s2">&quot;css-loader&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong class="program">file-loader</strong>+<strong class="program">extract-loader</strong></dt>
+<dd><p class="first"><strong class="program">extract-loader</strong> permite tomar los módulos y generar cadenas de
+texto, mientras que <strong class="program">file-loader</strong> es capaz de tomar esas cadenas de
+texto y generar ficheros de salida, uno por cadena (o sea, por fichero de
+entrada) con lo que obtendré multiples ficheros en vez de uno solamente como
+al usar <strong class="program">MiniCssExtractPlugin.loader</strong>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
+   <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;file-loader?name=[path][name].css&quot;</span><span class="p">,</span> <span class="s2">&quot;extract-loader&quot;</span><span class="p">,</span> <span class="s2">&quot;css-loader&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="last admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Esto, en principio, puede resultar algo absurdo, porque no se obra
+modificación alguna y en ese caso, casi es mejor o usar únicamente
+<em>file-loader</em> o copiar los ficheros de origen en un destino como hace
+<a class="reference external" href="https://github.com/webpack-contrib/copy-webpack-plugin">CopyPlugin</a> y que trataremos en los ejemplos, pero notemos que el origen
+no tienen por qué ser ficheros <abbr title="Cascading Style Sheets">CSS</abbr>, sino <abbr title="Syntactically Awesome Style Sheets">SASS</abbr> si añadimos
+<strong class="program">sass-loader</strong> a la lista de cargadores.</p>
+</div>
+</dd>
+</dl>
+<p>Es también interesante reseñar que <em>use</em> puede ser también una función que
+devuelva el array de cargadores, lo que permite generar de forma dinámica qué
+transformaciones se obrarán:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
+   <span class="nx">use</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Procesando... &quot;</span><span class="p">,</span> <span class="nx">file</span><span class="p">.</span><span class="nx">resource</span><span class="p">);</span>
+      <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;style-loader&quot;</span><span class="p">,</span> <span class="s2">&quot;css-loader&quot;</span><span class="p">];</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>También es útil saber que:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
+   <span class="nx">use</span><span class="o">:</span> <span class="p">[{</span>
+      <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;file-loader&quot;</span><span class="p">,</span>
+      <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+         <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;[name].[ext]&quot;</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>equivale a:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
+   <span class="nx">user</span> <span class="p">[</span><span class="s2">&quot;file-loader?name=[name].[ext]&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="imagenes">
-<h3>4.2.6. Imágenes<a class="headerlink" href="#imagenes" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3>4.2.7. Imágenes<a class="headerlink" href="#imagenes" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Imaginemos que incluimos en nuestro <abbr title="HyperText Markup Language">HTML</abbr> de ejemplo alguna imagen:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;es&quot;</span><span class="p">&gt;</span>
@@ -893,12 +984,12 @@ un minimizador de imágenes:</p>
 </div>
 </div>
 <div class="section" id="multiples-entornos">
-<h3>4.2.7. Múltiples entornos<a class="headerlink" href="#multiples-entornos" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3>4.2.8. Múltiples entornos<a class="headerlink" href="#multiples-entornos" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Con la configuración hecha hasta aquí, tenemos dos configuraciones distintas:
 una para producción y otra para desarrollo que se logran cargando ficheros
 de configuración distintos. Sin embargo, <strong class="program">webpack</strong> permite pasar por
 línea de comandos variables que pueden utilizarse dentro del <em>script</em> que
-constituye la configuración<a class="footnote-reference" href="#id17" id="id7">[6]</a>. Jugar con los valores de estas variables posibilita
+constituye la configuración<a class="footnote-reference" href="#id21" id="id9">[8]</a>. Jugar con los valores de estas variables posibilita
 crear una amplia variedad de configuraciones de manera sencilla.</p>
 <p>Para ilustrarlo crearemos una configuración con los siguientes ficheros:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+-- webpack.config.js
@@ -942,12 +1033,7 @@ puede asimilarse a <code class="code docutils literal notranslate"><span class="
             <span class="p">}</span>
          <span class="p">},</span>
          <span class="p">{</span>
-            <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/</span><span class="p">,</span>
-            <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
-                  <span class="s2">&quot;css-loader&quot;</span><span class="p">]</span>
-         <span class="p">},</span>
-         <span class="p">{</span>
-            <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.sass$/</span><span class="p">,</span>
+            <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(css|sass)$/</span><span class="p">,</span>
             <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
                   <span class="s2">&quot;css-loader&quot;</span><span class="p">,</span>
                   <span class="p">{</span> 
@@ -1047,9 +1133,9 @@ de <a class="reference internal" href="#babel"><span class="std std-ref">babel</
 </ul>
 </div>
 <div class="section" id="carga-de-modulos">
-<h3>4.2.8. Carga de módulos<a class="headerlink" href="#carga-de-modulos" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3>4.2.9. Carga de módulos<a class="headerlink" href="#carga-de-modulos" title="Enlazar permanentemente con este título">¶</a></h3>
 <div class="section" id="sistema-de-modulos">
-<h4>4.2.8.1. Sistema de módulos<a class="headerlink" href="#sistema-de-modulos" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4>4.2.9.1. Sistema de módulos<a class="headerlink" href="#sistema-de-modulos" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Como se verá en los <a class="reference internal" href="#webpack-ejemplos"><span class="std std-ref">ejemplos posteriores</span></a>, lo habitual
 es que el código se deba cargar otros módulos propios o ajenos. <strong class="program">webpack</strong>
 permite que se usa tanto el sistema <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> como el <em>ES2015</em>. Aconsejamos:</p>
@@ -1058,12 +1144,12 @@ permite que se usa tanto el sistema <a class="reference external" href="https://
 que <em>NodeJS</em> tiene soporte.</li>
 <li>Usar <em>ES2015</em> dentro del código de la propia aplicación, ya que es el estándar
 aprobado y bajo determinadas circunstancias (como no importar aplicaciones de
-terceros<a class="footnote-reference" href="#id18" id="id8">[7]</a> dentro del propio código), genera un código directamente usable
+terceros<a class="footnote-reference" href="#id22" id="id10">[9]</a> dentro del propio código), genera un código directamente usable
 en navegadores modernos.</li>
 </ul>
 </div>
 <div class="section" id="importacion-en-la-configuracion">
-<span id="webpack-conf-import"></span><h4>4.2.8.2. Importación en la configuración<a class="headerlink" href="#importacion-en-la-configuracion" title="Enlazar permanentemente con este título">¶</a></h4>
+<span id="webpack-conf-import"></span><h4>4.2.9.2. Importación en la configuración<a class="headerlink" href="#importacion-en-la-configuracion" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Ya se ha visto que para cargar módulos (al estilo <em>ES2015</em>, por ejemplo) es
 necesario:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>import L from &quot;leaflet&quot;;
@@ -1231,7 +1317,7 @@ hasta que desarrollemos el próximo caso.</p>
 </dd>
 </dl>
 </li>
-<li><p class="first">Instalamos los paquetes necesarios<a class="footnote-reference" href="#id19" id="id9">[8]</a>:</p>
+<li><p class="first">Instalamos los paquetes necesarios<a class="footnote-reference" href="#id23" id="id11">[10]</a>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
 <span class="gp">$</span> npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
 <span class="gp">$</span> npm install core-js leaflet
@@ -1710,7 +1796,7 @@ el propia plugin que previamente hemos desarrollado.</p>
 </pre></div>
 </div>
 <p><a class="reference download internal" download="" href="../_downloads/f1946b7a9623ea433f15f3ddf1a1405b/webpack.common.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack/webpack.common.js</span></code></a>, que
-hace que los ficheros resultantes se generen dentro de <code class="file docutils literal notranslate"><span class="pre">docs/</span></code><a class="footnote-reference" href="#id20" id="id10">[9]</a>:</p>
+hace que los ficheros resultantes se generen dentro de <code class="file docutils literal notranslate"><span class="pre">docs/</span></code><a class="footnote-reference" href="#id24" id="id12">[11]</a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.common.js</span>
 <span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">),</span>
       <span class="nx">HtmlWebPackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;html-webpack-plugin&quot;</span><span class="p">),</span>
@@ -1738,12 +1824,7 @@ hace que los ficheros resultantes se generen dentro de <code class="file docutil
                <span class="p">}</span>
             <span class="p">},</span>
             <span class="p">{</span>
-               <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/</span><span class="p">,</span>
-               <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
-                     <span class="s2">&quot;css-loader&quot;</span><span class="p">]</span>
-            <span class="p">},</span>
-            <span class="p">{</span>
-               <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.sass$/</span><span class="p">,</span>
+               <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(css|sass)$/</span><span class="p">,</span>
                <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
                      <span class="s2">&quot;css-loader&quot;</span><span class="p">,</span>
                      <span class="p">{</span> 
@@ -1872,7 +1953,7 @@ cual se consigue escribiendo a mano los ficheros que componen el ejemplo e
 impidiendo que <strong class="program">webpack</strong> pueda obrar transformación alguna.</p>
 <p>Siguiendo este principio, tomemos el directorio de trabajo del <a class="reference internal" href="#webpack-ej-plugin"><span class="std std-ref">ejemplo de
 desarrollo del plugin</span></a> y añadamos un directorio
-<code class="file docutils literal notranslate"><span class="pre">examples/</span></code><a class="footnote-reference" href="#id21" id="id11">[10]</a> con todo el código que desarrolla el ejemplo:</p>
+<code class="file docutils literal notranslate"><span class="pre">examples/</span></code><a class="footnote-reference" href="#id25" id="id13">[12]</a> con todo el código que desarrolla el ejemplo:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+-- examples
       +-- index.html
       +-- js/
@@ -2121,21 +2202,21 @@ puede informar de algunos aspectos adicionales a los explicados en la primera
 entrada</li>
 </ul>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id12" rules="none">
+<table class="docutils footnote" frame="void" id="id14" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Por lo general, los que saben de esto suelen recomendar el uso de
 <strong class="program">webpack</strong>. Por ejemplo, éche un vistazo a <a class="reference external" href="https://openwebinars.net/blog/webpack-vs-gulp-comparacion-en-espanol-actualizado/">esta justificación</a></td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id13" rules="none">
+<table class="docutils footnote" frame="void" id="id15" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Tengamos presente que <code class="code docutils literal notranslate"><span class="pre">__dirname</span></code> es <code class="file docutils literal notranslate"><span class="pre">webpack</span></code>, ya que la
 configuración se encuentra en <code class="file docutils literal notranslate"><span class="pre">webpack/webpack.development.js</span></code>.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id14" rules="none">
+<table class="docutils footnote" frame="void" id="id16" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td><p class="first">Si se usa <code class="code docutils literal notranslate"><span class="pre">--open</span></code> sin argumento adicional:</p>
@@ -2152,7 +2233,7 @@ través de la configuración.</p>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id15" rules="none">
+<table class="docutils footnote" frame="void" id="id17" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
@@ -2164,15 +2245,15 @@ así:</p>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id16" rules="none">
+<table class="docutils footnote" frame="void" id="id18" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id6">[5]</a></td><td>Entiéndase que los dos scripts no tienen por qué corresponderse con dos
+<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>Entiéndase que los dos scripts no tienen por qué corresponderse con dos
 ficheros. Cada uno de ellos puede estar programado de forma modular y
 componerse de múltiples ficheros.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id17" rules="none">
+<table class="docutils footnote" frame="void" id="id19" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id7">[6]</a></td><td><em>Transpilar</em> (y transpilación y transpilador) es un término
@@ -2184,16 +2265,14 @@ más antiguas del intérprete. Traducir de <a class="reference external" href="h
 <em>Javascript</em> también es <em>transpilar</em>.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id18" rules="none">
+<table class="docutils footnote" frame="void" id="id20" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id8">[7]</a></td><td>¿Por qué «<em>a continuación de</em>» y no «<em>en sustitución de</em>»? La respuesta es
-que puede que existan ficheros <code class="docutils literal notranslate"><span class="pre">.css</span></code> además de los <code class="docutils literal notranslate"><span class="pre">.sass</span></code>; por ejemplo,
-porque en nuestra aplicación usamos librerías de terceros que vienen
-acompañadas por un <abbr title="Cascading Style Sheets">CSS</abbr> propio; <a class="reference external" href="https://getbootstrap.com/">Bootstrap</a> o <a class="reference external" href="https://leafletjs.com">Leaflet</a> son dos ejemplos.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id8">[7]</a></td><td>También podemos usar <strong class="program">postcss-loader</strong>, entre <strong class="program">css-loader</strong>
+y <strong class="program">sass-loader</strong>, pero importa poco a efectos de esta discusión.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id19" rules="none">
+<table class="docutils footnote" frame="void" id="id21" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id9">[8]</a></td><td><p class="first">Las variables de entorno que se pasan de forma estándar (véase <em>NODE_ENV</em>
@@ -2205,7 +2284,7 @@ script a través de <code class="code docutils literal notranslate"><span class=
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id20" rules="none">
+<table class="docutils footnote" frame="void" id="id22" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id10">[9]</a></td><td>A menos claro está que hayamos hecho una copia incluida en nuestro
@@ -2216,7 +2295,7 @@ localización no es alcanzable por un cliente web. Otra solución es usar el
 plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a>, que se explica a continuación.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id21" rules="none">
+<table class="docutils footnote" frame="void" id="id23" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id11">[10]</a></td><td>La necesidad de incluir los cuatro últimos paquetes se debe a que
@@ -2224,20 +2303,20 @@ nuestra intención es ser capaces de procesar el <abbr title="Cascading Style Sh
 el script <em>bundle</em>, y tal fichero <em>refiere</em>, además, algunas imágenes.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id22" rules="none">
+<table class="docutils footnote" frame="void" id="id24" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[11]</td><td>Esta aparente excentricidad tiene una explicación totalmente ajena a la
+<tr><td class="label"><a class="fn-backref" href="#id12">[11]</a></td><td>Esta aparente excentricidad tiene una explicación totalmente ajena a la
 aplicación en sí: entre otras alternativas, <a class="reference external" href="https://github.com">Github</a> permite publicar el
 contenida del directorio <code class="file docutils literal notranslate"><span class="pre">/docs</span></code>, así que hay se almacena el resultado
 para que éste se publique en la dirección
 <a class="reference external" href="https://sio2sio2.github.io/test.iconizoom">https://sio2sio2.github.io/test.iconizoom</a></td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id23" rules="none">
+<table class="docutils footnote" frame="void" id="id25" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[12]</td><td>La elección no es arbitraria: es el directorio donde la <a class="reference external" href="https://leafletjs.com/2013/06/28/leaflet-plugin-authoring-guide.html#code">Guía de Leaflet</a>
+<tr><td class="label"><a class="fn-backref" href="#id13">[12]</a></td><td>La elección no es arbitraria: es el directorio donde la <a class="reference external" href="https://leafletjs.com/2013/06/28/leaflet-plugin-authoring-guide.html#code">Guía de Leaflet</a>
 prescribe que se dispongan los ejemplos.</td></tr>
 </tbody>
 </table>
@@ -2267,11 +2346,12 @@ prescribe que se dispongan los ejemplos.</td></tr>
 <li><a class="reference internal" href="#babel">4.2.3. Babel</a></li>
 <li><a class="reference internal" href="#sass">4.2.4. <abbr title="Syntactically Awesome Style Sheets">SASS</abbr></a></li>
 <li><a class="reference internal" href="#autoprefixer">4.2.5. Autoprefixer</a></li>
-<li><a class="reference internal" href="#imagenes">4.2.6. Imágenes</a></li>
-<li><a class="reference internal" href="#multiples-entornos">4.2.7. Múltiples entornos</a></li>
-<li><a class="reference internal" href="#carga-de-modulos">4.2.8. Carga de módulos</a><ul>
-<li><a class="reference internal" href="#sistema-de-modulos">4.2.8.1. Sistema de módulos</a></li>
-<li><a class="reference internal" href="#importacion-en-la-configuracion">4.2.8.2. Importación en la configuración</a></li>
+<li><a class="reference internal" href="#procesamiento-de-css">4.2.6. Procesamiento de <abbr title="Cascading Style Sheets">CSS</abbr></a></li>
+<li><a class="reference internal" href="#imagenes">4.2.7. Imágenes</a></li>
+<li><a class="reference internal" href="#multiples-entornos">4.2.8. Múltiples entornos</a></li>
+<li><a class="reference internal" href="#carga-de-modulos">4.2.9. Carga de módulos</a><ul>
+<li><a class="reference internal" href="#sistema-de-modulos">4.2.9.1. Sistema de módulos</a></li>
+<li><a class="reference internal" href="#importacion-en-la-configuracion">4.2.9.2. Importación en la configuración</a></li>
 </ul>
 </li>
 </ul>

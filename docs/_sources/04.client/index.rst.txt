@@ -313,7 +313,7 @@ servidor:
 - Si toma valor, debe ser una cadena que indique el navegador con el que se
   quiere ver la aplicación.
 
-- Si es ``true``, se usa el navegador predefinido por el sistema\ [#].
+- Si es ``true``, se usa el navegador predefinido por el sistema\ [#]_.
 
 .. note:: Aunque tenga un interés muy relativo, también es posible hacer
    que los ficheros resultantes se escriban en disco.
@@ -510,7 +510,7 @@ Babel
 =====
 :program:`Babel` es un componente fundamental de nuestro propósito puesto que
 permite sustituir sintaxis demasiado nueva por otra compatible con versiones más
-antiguas de *Javascript*. Para usarlo y que transpile de forma que quede una
+antiguas de *Javascript*. Para usarlo y que transpile\ [#]_ de forma que quede una
 sintaxis ampliamente soportada, podemos añadir algunas líneas a
 :file:`webpack/webpack.production.js`:
 
@@ -643,12 +643,12 @@ y, en sustitución del borrado, importar este fichero en :file:`js/index.js`:
    import style from "../_sass/main.sass";
 
 Por último, habrá que cambiar la configuración de :program:`webpack` para que se
-procesen los ficheros |SASS|, de modo que a continuación de\ [#]_ las líneas:
+procesen los ficheros |SASS|, de modo que en sustitución de las líneas:
 
 .. code-block:: js
 
    {
-      test: /\.css$/,
+      test: /\.css$/i,
       use: [MiniCssExtractPlugin.loader, "css-loader"]
    }
 
@@ -657,7 +657,7 @@ habrá que incluir:
 .. code-block:: js
 
    {
-      test: /\.sass$/,
+      test: /\.sass$/i,
       use: [MiniCssExtractPlugin.loader,
             "css-loader", 
             "sass-loader"]
@@ -686,7 +686,7 @@ habilitar la transformación:
    :emphasize-lines: 5-10
 
    {
-      test: /\.sass$/,
+      test: /\.sass$/i,
       use: [MiniCssExtractPlugin.loader,
             "css-loader",
             { 
@@ -701,6 +701,105 @@ habilitar la transformación:
 .. note:: El *plugin* también usa :program:`browserslist` para determinar los
    prefijos que debe añadir, así que es aplicable lo explicado para :ref:`babel
    <babel>`.
+
+Procesamiento de |CSS|
+======================
+Es interesante discutir sobre la forma de procesar el código |CSS|, porque
+dependiendo de nuestras intenciones puede interesarnos alterar las intrucciones
+vertidas hasta el momento. Algunas puntualizaciones, son aplicables al uso de
+cargadores para otros tipos de ficheros. En principio hemos postulado:
+
+.. code-block:: js
+
+   {
+      test: /\.css$/i,
+      use: [MiniCssExtractPlugin.loader, "css-loader"]
+   }
+
+y si el origen es un fichero |SASS|\ [#]_:
+
+.. code-block:: js
+
+   {
+      test: /\.(css|sass)$/i,
+      use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+   }
+
+por lo que se puede adivinar que el procesamiento es de derecha a izquierda.  El
+resultado del procesamiento de :program:`css-loader` es un módulo que debemos
+seguir procesando para que nos resulte útil.
+:program:`MiniCssExtractPlugin.loader` toma todos estos módulos y los compone en
+un único fichero |CSS| que se coloca en el directorio de salida (el definido
+mediante *output*). Sin embargo, hay otras soluciones:
+
+:program:`style-loader`
+   Que es capaz de tomar los módulos e incluirlos dentro de un elemento style_
+   em eñ |HTML|:
+
+   .. code-block:: js
+
+      {
+         test: /\.css$/i,
+         use: ["style-loader", "css-loader"]
+      }
+
+:program:`file-loader`\ +\ :program:`extract-loader`
+   :program:`extract-loader` permite tomar los módulos y generar cadenas de
+   texto, mientras que :program:`file-loader` es capaz de tomar esas cadenas de
+   texto y generar ficheros de salida, uno por cadena (o sea, por fichero de
+   entrada) con lo que obtendré multiples ficheros en vez de uno solamente como
+   al usar :program:`MiniCssExtractPlugin.loader`:
+
+   .. code-block:: js
+
+      {
+         test: /\.css$/i,
+         use: ["file-loader?name=[path][name].css", "extract-loader", "css-loader"]
+      }
+
+   .. note:: Esto, en principio, puede resultar algo absurdo, porque no se obra
+      modificación alguna y en ese caso, casi es mejor o usar únicamente
+      *file-loader* o copiar los ficheros de origen en un destino como hace
+      CopyPlugin_ y que trataremos en los ejemplos, pero notemos que el origen
+      no tienen por qué ser ficheros |CSS|, sino |SASS| si añadimos
+      :program:`sass-loader` a la lista de cargadores.
+
+Es también interesante reseñar que *use* puede ser también una función que
+devuelva el array de cargadores, lo que permite generar de forma dinámica qué
+transformaciones se obrarán:
+
+.. code-block:: js
+
+   {
+      test: /\.css$/i,
+      use: function(file) {
+         console.log("Procesando... ", file.resource);
+         return ["style-loader", "css-loader"];
+      }
+   }
+
+También es útil saber que:
+
+.. code-block:: js
+
+   {
+      test: /\.css$/i,
+      use: [{
+         loader: "file-loader",
+         options: {
+            name: "[name].[ext]"
+         }
+      }
+   }
+
+equivale a:
+
+.. code-block:: js
+
+   {
+      test: /\.css$/i,
+      user ["file-loader?name=[name].[ext]"]
+   }
 
 Imágenes
 ========
@@ -1429,10 +1528,8 @@ encuentra colgado `el ejemplo de uso
    más antiguas del intérprete. Traducir de `CoffeeScript`_ o `TypeScript`_ a
    *Javascript* también es *transpilar*.
 
-.. [#] ¿Por qué "*a continuación de*" y no "*en sustitución de*"? La respuesta es
-   que puede que existan ficheros ``.css`` además de los ``.sass``; por ejemplo,
-   porque en nuestra aplicación usamos librerías de terceros que vienen
-   acompañadas por un |CSS| propio; Bootstrap_ o Leaflet_ son dos ejemplos.
+.. [#] También podemos usar :program:`postcss-loader`, entre :program:`css-loader`
+   y :program:`sass-loader`, pero importa poco a efectos de esta discusión.
 
 .. [#] Las variables de entorno que se pasan de forma estándar (véase *NODE_ENV*
    cuando se trataba :ref:`babel <babel>`) se encuentran disponibles en el
@@ -1481,6 +1578,7 @@ encuentra colgado `el ejemplo de uso
 .. _Browserify: http://browserify.org/
 .. _NodeJS: https://nodejs.org/
 .. _CopyPlugin: https://github.com/webpack-contrib/copy-webpack-plugin
+.. _style: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style
 
 .. |HTML| replace:: :abbr:`HTML (HyperText Markup Language)`
 .. |CSS| replace:: :abbr:`CSS (Cascading Style Sheets)`
