@@ -757,12 +757,15 @@ mediante *output*). Sin embargo, hay otras soluciones:
          use: ["file-loader?name=[path][name].css", "extract-loader", "css-loader"]
       }
 
-   .. note:: Esto, en principio, puede resultar algo absurdo, porque no se obra
-      modificación alguna y en ese caso, casi es mejor o usar únicamente
-      *file-loader* o copiar los ficheros de origen en un destino como hace
-      CopyPlugin_ y que trataremos en los ejemplos, pero notemos que el origen
-      no tienen por qué ser ficheros |CSS|, sino |SASS| si añadimos
-      :program:`sass-loader` a la lista de cargadores.
+   .. note:: Obsérvese que, aunque el resultado es obterner un fichero de
+      salida por cada fichero de entrada, tal como se obtendría usando
+      únicamente *file-loader* o el plugin CopyPlugin_ que se introducirá al
+      tratar los ejemplos, hay una gran diferencia en esta configuración:
+      :program:`css-loader` entiende y analiza los ficheros |CSS| y es capaz de
+      reconocer enlaces a otros ficheros incluidos en su contenido a través de
+      cláusulas :code:`@import` o :code:`url()`. El efecto es que esos ficheros
+      referidos también pasarán a formar parte del procesamiento sin necesidad
+      de referirlos explícitamente como punto de entrada.
 
 Es también interesante reseñar que *use* puede ser también una función que
 devuelva el array de cargadores, lo que permite generar de forma dinámica qué
@@ -1549,6 +1552,9 @@ encuentra colgado `el ejemplo de uso
 .. [#] La necesidad de incluir los cuatro últimos paquetes se debe a que
    nuestra intención es ser capaces de procesar el |CSS| de Leaflet_ para
    el script *bundle*, y tal fichero *refiere*, además, algunas imágenes.
+   Una alternativa a esta solución :program:`MiniCssExtractPlugin`\ +\
+   :program:`css.loader` es utilizar :program:`file-loader`\ +\
+   :program:`extract-loader`\ +\ :program:`css-loader`.
 
 .. [#] Esta aparente excentricidad tiene una explicación totalmente ajena a la
    aplicación en sí: entre otras alternativas, Github_ permite publicar el

@@ -95,15 +95,22 @@ Puede usar :code:`npm uninstall` (o su sinónimo :code:`npm remove`)::
 
    $ npm uninstall leaflet
 
-.. Publicar tu propio paquete en npm:
-   https://zellwk.com/blog/publish-to-npm/
-
 Publicación
 ===========
 Si lo consideramos oportuno, también es posible publicar nuestros propios
 desarrollos en los repositorios de :program:`npm`. Lo indispensable es tener
 guardado el desarrollo en un :ref:`directorio de trabajo <workdir>` (o sea, que
-disponga de un fichero :file:`package.json`).
+disponga de un fichero :file:`package.json`). Es especialmente importante que en
+:file:`package.json` estén perfectamente definidos:
+
+- *name*, con el nombre de la aplicación.
+- *version*, con el número de versión apropiado.
+- *description*, con la descripción.
+- *keywords*, con una lista de palabras clave.
+
+La importancia estriba en que :program:`npm` lee este fichero para extraer los
+datos de la aplicación, por lo que exclusivamente esos valores serán los que
+permitan al servicio de paquetería identificar y clasificar al *software*.
 
 Registro
 --------

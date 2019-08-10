@@ -838,12 +838,15 @@ al usar <strong class="program">MiniCssExtractPlugin.loader</strong>:</p>
 </div>
 <div class="last admonition note">
 <p class="first admonition-title">Nota</p>
-<p class="last">Esto, en principio, puede resultar algo absurdo, porque no se obra
-modificación alguna y en ese caso, casi es mejor o usar únicamente
-<em>file-loader</em> o copiar los ficheros de origen en un destino como hace
-<a class="reference external" href="https://github.com/webpack-contrib/copy-webpack-plugin">CopyPlugin</a> y que trataremos en los ejemplos, pero notemos que el origen
-no tienen por qué ser ficheros <abbr title="Cascading Style Sheets">CSS</abbr>, sino <abbr title="Syntactically Awesome Style Sheets">SASS</abbr> si añadimos
-<strong class="program">sass-loader</strong> a la lista de cargadores.</p>
+<p class="last">Obsérvese que, aunque el resultado es obterner un fichero de
+salida por cada fichero de entrada, tal como se obtendría usando
+únicamente <em>file-loader</em> o el plugin <a class="reference external" href="https://github.com/webpack-contrib/copy-webpack-plugin">CopyPlugin</a> que se introducirá al
+tratar los ejemplos, hay una gran diferencia en esta configuración:
+<strong class="program">css-loader</strong> entiende y analiza los ficheros <abbr title="Cascading Style Sheets">CSS</abbr> y es capaz de
+reconocer enlaces a otros ficheros incluidos en su contenido a través de
+cláusulas <code class="code docutils literal notranslate"><span class="pre">&#64;import</span></code> o <code class="code docutils literal notranslate"><span class="pre">url()</span></code>. El efecto es que esos ficheros
+referidos también pasarán a formar parte del procesamiento sin necesidad
+de referirlos explícitamente como punto de entrada.</p>
 </div>
 </dd>
 </dl>
@@ -2300,7 +2303,8 @@ plugin <a class="reference external" href="https://webpack.js.org/plugins/provid
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id11">[10]</a></td><td>La necesidad de incluir los cuatro últimos paquetes se debe a que
 nuestra intención es ser capaces de procesar el <abbr title="Cascading Style Sheets">CSS</abbr> de <a class="reference external" href="https://leafletjs.com">Leaflet</a> para
-el script <em>bundle</em>, y tal fichero <em>refiere</em>, además, algunas imágenes.</td></tr>
+el script <em>bundle</em>, y tal fichero <em>refiere</em>, además, algunas imágenes.
+Una alternativa a esta solución <strong class="program">MiniCssExtractPlugin</strong>+<strong class="program">css.loader</strong> es utilizar <strong class="program">file-loader</strong>+<strong class="program">extract-loader</strong>+<strong class="program">css-loader</strong>.</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id24" rules="none">
