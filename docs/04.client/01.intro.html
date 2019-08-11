@@ -135,8 +135,8 @@ resultado para producción y otra para generar un resultado apto para depurar
 durante el desarrollo. Para ello vamos a crear así los <em>scripts</em> en
 <code class="file docutils literal notranslate"><span class="pre">packages.json</span></code>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
-  <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --config webpack/webpack.production.js&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;watch&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --config webpack/webpack.development.js --watch&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --mode production --progress&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;watch&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --mode development --progress --watch&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -147,46 +147,24 @@ durante el desarrollo. Para ello vamos a crear así los <em>scripts</em> en
 de modo que se queda expectante a cualquier cambio posterior que hagamos
 para recomponer sobre la marcha el resultado.</li>
 </ul>
-<p>Dentro del directorio de trabajo, debemos también crear un directorio de
-configuración para <strong class="program">webpack</strong> con el siguiente contenido:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+ webpack
-     +-- webpack.common.js
-     +-- webpack.production.js
-     +-- webpack.development.js
-</pre></div>
-</div>
-<p><code class="file docutils literal notranslate"><span class="pre">webpack.common.js</span></code> contendrá lo siguiente:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
-   <span class="nx">entry</span><span class="o">:</span> <span class="s2">&quot;./src/js/index.js&quot;</span><span class="p">,</span>
-   <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span>
+<p>El fichero de configuración <code class="file docutils literal notranslate"><span class="pre">webpack.config.js</span></code> es este:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
+</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">env</span><span class="p">,</span> <span class="nx">argv</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+
+   <span class="c1">// Configuración común a ambos modos.</span>
+   <span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">entry</span><span class="o">:</span> <span class="s2">&quot;./src/js/index.js&quot;</span><span class="p">,</span>
+      <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+         <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span>
+      <span class="p">}</span>
    <span class="p">}</span>
-<span class="p">}</span>
 
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
-</pre></div>
-</div>
-<p><code class="file docutils literal notranslate"><span class="pre">webpack.production.js</span></code> esto:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
-   <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;production&quot;</span><span class="p">,</span>
-<span class="p">});</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
-</pre></div>
-</div>
-<p>y, por su parte, <code class="file docutils literal notranslate"><span class="pre">webpack.development.js</span></code> esto otro:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">),</span>
-      <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
-   <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;development&quot;</span><span class="p">,</span>
-   <span class="nx">devtool</span><span class="o">:</span> <span class="s1">&#39;inline-source-map&#39;</span>
-<span class="p">});</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
+<span class="hll">   <span class="k">return</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">smart</span><span class="p">(</span>
+</span><span class="hll">      <span class="nx">config</span><span class="p">,</span>
+</span><span class="hll">      <span class="nx">argv</span><span class="p">.</span><span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;production&quot;</span><span class="o">?</span><span class="kc">null</span><span class="o">:</span><span class="p">{</span><span class="nx">devtool</span><span class="o">:</span> <span class="s2">&quot;inline-source-map&quot;</span><span class="p">}</span>
+</span><span class="hll">   <span class="p">);</span>
+</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>Con ello, además del script <code class="docutils literal notranslate"><span class="pre">build</span></code> podemos hacer:</p>
@@ -195,6 +173,41 @@ configuración para <strong class="program">webpack</strong> con el siguiente co
 </div>
 <p>que creará el fichero pero se quedará vigilando cualquier cambio en el fichero
 fuente para regenerarlo inmediatamente.</p>
+<p>En esta configuración hay dos novedades que merecen comentario:</p>
+<ul>
+<li><p class="first">Se usa <code class="code docutils literal notranslate"><span class="pre">merge</span></code> que permite componer una configuración a partir de varias.
+La composición se entiende de modo muy sencillo con un ejemplo:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;</span> merge<span class="o">(</span>
+<span class="go">...  {a: [1, 2], b: 10, c: 100}</span>
+<span class="go">...  {a: [3], b: 20, d: 1000}</span>
+<span class="go">... );</span>
+<span class="go">{a: [1, 2, 3], b: 20, c: 1000, d:1000}</span>
+</pre></div>
+</div>
+<p>O sea, los objetos se fusionan juntando atributos de todas las fuentes (caso
+de los dos objetos raíces), los arrays concatenando elementos (caso de <em>a</em>), y
+los valores primitivos se sustituyen de manera que queda el valor del último
+objeto (caso de <em>b</em>).</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Cuando se usa <code class="code docutils literal notranslate"><span class="pre">merge.smart</span></code> la función es capaz de entender
+cuándo se quieren fusionar <a class="reference internal" href="02.part.html#webpack-process"><span class="std std-ref">arrays de cargadores</span></a>
+y en ocasiones, en vez de concatenarlos sin más, es capaz de hacer
+sustituciones. Más adelante se verá algún ejemplo. En este punto en que
+estamos, <code class="code docutils literal notranslate"><span class="pre">merge.start</span></code> y <code class="code docutils literal notranslate"><span class="pre">merge</span></code> generan el mismo resultado.</p>
+</div>
+</li>
+<li><p class="first"><code class="file docutils literal notranslate"><span class="pre">webpack.config.js</span></code> puede exportar directamente la configuración (que es
+lo que se hizo en la primera configuración) como una función que devuelve la
+configuración. En este segundo caso, tal función recibe dos parámetros:</p>
+<ul class="simple">
+<li><em>env</em>, objeto de entorno que introduciremos más adelante.</li>
+<li><em>argv</em>, objeto que contiene las argumentos pasados a <strong class="program">webpack</strong>.
+En este caso, lo usamos para saber si se actúa en modo producción o en modo
+desarrollo.</li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="section" id="aplicacion-simple">
 <h2>4.1.4. Aplicación simple<a class="headerlink" href="#aplicacion-simple" title="Enlazar permanentemente con este título">¶</a></h2>
@@ -204,7 +217,7 @@ obtiene como resultado una página web, tiene sentido poder depurar la página d
 modo interactivo, esto es, que se levante un servidor web y que la página cambie
 automáticamente al realizarse algún cambio en alguno de los ficheros fuente.
 Para ello, añadimos un tercer <em>script</em>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --config webpack/webpack.development.js&quot;</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --mode development&quot;</span>
 </pre></div>
 </div>
 <p>El código fuente se compone de los siguientes ficheros:</p>
@@ -253,46 +266,41 @@ que se usa esta técnica. La contraprestación es que la dependencia no está
 contenida en el código fuente y, en consecuencia, sólo es patente si se
 procesa el desarrollo con <strong class="program">webpack</strong>.</p>
 </div>
-<p>Hay, ademas, que modificar imperiosamente <code class="file docutils literal notranslate"><span class="pre">webpack/webpack.development.js</span></code> para
-alterar el comportamiento de <strong class="program">webpack-dev-server</strong>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">),</span>
-      <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
-   <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;development&quot;</span><span class="p">,</span>
-<span class="hll">   <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
-</span><span class="hll">      <span class="nx">contentBase</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class="hll">      <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
-</span><span class="hll">   <span class="p">},</span>
-</span>   <span class="nx">devtool</span><span class="o">:</span> <span class="s1">&#39;inline-source-map&#39;</span>
-<span class="p">});</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
+<p>Con la configuración ya vista, bastaría para correr el <em>script</em> que acabamos de
+definir (<em>debug</em>), pero añadiremos una configuración específica para
+<strong class="program">webpack-dev-server</strong>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">smart</span><span class="p">(</span>
+   <span class="nx">config</span><span class="p">,</span>
+   <span class="nx">argv</span><span class="p">.</span><span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;production&quot;</span><span class="o">?</span><span class="kc">null</span><span class="o">:</span><span class="p">{</span>
+      <span class="nx">devtool</span><span class="o">:</span> <span class="s2">&quot;inline-source-map&quot;</span><span class="p">,</span>
+<span class="hll">      <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">         <span class="nx">contentBase</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="hll">         <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
+</span><span class="hll">      <span class="p">}</span>
+</span>   <span class="p">}</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>Para entender esta configuración, es indispensable conocer cómo funciona, en
 realidad, <strong class="program">webpack-dev-server</strong>: en principio, sirve desde un directorio
-virtual creado en la memoria los ficheros resultantes del procesamiento. En
-consecuencia, ni tales ficheros resultantes se escriben en disco ni los ficheros
-de disco están disponibles en el servidor web levantado. Ahora bien, la opción
-<em>contentBase</em>, permite indicar un directorio del sistema real de ficheros  que
-se fusionará con este directorio virtual a fin de que sus contenidos sí sean
-accesibles. Si el valor es <code class="docutils literal notranslate"><span class="pre">false</span></code>, como es el caso, sólo se sirven los
-ficheros del directorio virtual (o sea, sólo los ficheros resultantes del
-procesamiento). Su valor predeterminado es <code class="file docutils literal notranslate"><span class="pre">dist/</span></code>, así que si no se
-incluye la opción, estará accesible el contenido de este directorio en caso de
-existir. Por supuesto, podemos establecer el valor que queramos, por ejemplo:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">contentBase</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">).</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">)</span>
+virtual creado en la memoria los ficheros resultantes del procesamiento. Además,
+fusiona este directorio virtual con el directorio de salida (<code class="file docutils literal notranslate"><span class="pre">dist/</span></code> en
+principio si no se configura otra cosa). Ahora bien, la opción <em>contentBase</em>,
+permite indicar un directorio distinto del sistema real de ficheros para la
+fusión. Si el valor es <code class="docutils literal notranslate"><span class="pre">false</span></code>, como es el caso, sólo se sirven los ficheros
+del directorio virtual (o sea, sólo los ficheros resultantes del procesamiento).
+Por supuesto, podemos establecer el valor que queramos, por ejemplo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">contentBase</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">).</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>En este caso, fusionaremos todo el contenido del directorio de trabajo<a class="footnote-reference" href="#id4" id="id1">[1]</a> con
-los ficheros resultantes. La otra opción, <em>open</em>, rige qué se hace al levantar el
+<p>En este caso, fusionaremos todo el contenido del directorio de trabajo con los
+ficheros resultantes. La otra opción, <em>open</em>, rige qué se hace al levantar el
 servidor:</p>
 <ul>
 <li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">false</span></code>, que es su valor predeterminado al no haber incluido el
-argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id5" id="id2">[2]</a> en el <em>script</em> añadido a <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no
-se abre una ventana con la aplicación en el navegador, así que tendremos que
-abri manualmente nosotros la aplicación en:</p>
+argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id4" id="id1">[1]</a> en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no se abre una ventana
+con la aplicación en el navegador, así que tendremos que abrir manualmente
+nosotros la página eni la dirección:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span>
 </pre></div>
 </div>
@@ -300,7 +308,7 @@ abri manualmente nosotros la aplicación en:</p>
 <li><p class="first">Si toma valor, debe ser una cadena que indique el navegador con el que se
 quiere ver la aplicación.</p>
 </li>
-<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema<a class="footnote-reference" href="#id6" id="id3">[3]</a>.</p>
+<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema<a class="footnote-reference" href="#id5" id="id2">[2]</a>.</p>
 </li>
 </ul>
 <div class="admonition note">
@@ -314,8 +322,8 @@ que los ficheros resultantes se escriban en disco.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p class="last">En este caso, se escribirán los ficheros resultantes en <code class="file docutils literal notranslate"><span class="pre">dist</span></code> (a menos
-que lo modifiquemos) y el servidor publicará el contenido de este directorio.</p>
+<p class="last">En este caso, además de publicarse el contenido a través del servidor, se
+escribirán los ficheros resultantes en el directorio de salida.</p>
 </div>
 <p id="webpack-simple-html">Por su parte, <code class="file docutils literal notranslate"><span class="pre">index.html</span></code> puede ser el siguiente:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
@@ -332,7 +340,7 @@ que lo modifiquemos) y el servidor publicará el contenido de este directorio.</
 </div>
 <p>Obsérvese que es necesario incluir las etiquetas <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head">&lt;head&gt;</a> y <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body">&lt;body&gt;</a> para el
 plugin <strong class="program">HtmlWebpackPlugin</strong> inserte correctamente el <em>script</em> dentro del
-<abbr title="HyperText Markup Language">HTML</abbr>. Por otro lado. el <abbr title="Cascading Style Sheets">CSS</abbr> es éste:</p>
+<abbr title="HyperText Markup Language">HTML</abbr>. Para ilustrar cómo manejar <abbr title="Cascading Style Sheets">CSS</abbr>, creemos <code class="file docutils literal notranslate"><span class="pre">css/index.css</span></code>.</p>
 <div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">body</span> <span class="p">{</span>
    <span class="n">blackground-color</span><span class="p">:</span> <span class="kc">yellow</span><span class="p">;</span>
 <span class="p">}</span>
@@ -340,12 +348,10 @@ plugin <strong class="program">HtmlWebpackPlugin</strong> inserte correctamente 
 </div>
 <p>Como puede verse, no hay referencia en el <abbr title="HyperText Markup Language">HTML</abbr> ni al <em>script</em> ni a la hoja de
 estilos, ya que se pretende que <strong class="program">webpack</strong> se encargue de incorpar las
-referencias pertinentes. La configuración, en este caso, debe añadirse a
-<code class="file docutils literal notranslate"><span class="pre">webpack/webpack.common.js</span></code>, ya que tanto en producción como en
-desarrollo se tendrá que llevar a cabo la tarea:</p>
-<div class="highlight-js notranslate" id="webpack-simple"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">HtmlWebPackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;html-webpack-plugin&quot;</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mini-css-extract-plugin&quot;</span><span class="p">);</span>
-
+referencias pertinentes. Modifiquemos, por último, en <code class="file docutils literal notranslate"><span class="pre">webpack.config.js</span></code>
+la configuración común, ya que tanto en producción como en desarrollo hay que
+procesar <abbr title="HyperText Markup Language">HTML</abbr> y <abbr title="Cascading Style Sheets">CSS</abbr>:</p>
+<div class="highlight-js notranslate" id="webpack-simple"><div class="highlight"><pre><span></span><span class="c1">// Configuración común a ambos modos</span>
 <span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
    <span class="nx">entry</span><span class="o">:</span> <span class="s2">&quot;./src/js/index.js&quot;</span><span class="p">,</span>
    <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
@@ -378,8 +384,6 @@ desarrollo se tendrá que llevar a cabo la tarea:</p>
       <span class="p">})</span>
    <span class="p">]</span>
 <span class="p">}</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
 </pre></div>
 </div>
 <p>Podemos ahora generar el resultado con:</p>
@@ -387,7 +391,7 @@ desarrollo se tendrá que llevar a cabo la tarea:</p>
 </pre></div>
 </div>
 <p>pero como en esta ocasión sí tenemos un <abbr title="HyperText Markup Language">HTML</abbr>, podría interesarnos levantar un
-servidor web y recargar la aplicación cada vez que hagamos un cambio en el
+servidor web para que recargue la aplicación cada vez que hagamos un cambio en el
 código fuente:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ npm run debug
 </pre></div>
@@ -399,25 +403,25 @@ código fuente:</p>
 <p>los errores que genere la ejecución del código (en nuestro ejemplo hemos
 incluido una línea que hace referencia a una función inexistente) referirán los
 ficheros originales (<code class="file docutils literal notranslate"><span class="pre">src/js/index.js</span></code>) e incluso podremos fijar sobre
-ellos puntos de ruptura para llevar a cabo la depuración del código.</p>
+ellos puntos de ruptura para llevar a cabo la depuración del código<a class="footnote-reference" href="#id6" id="id3">[3]</a>.</p>
 <p>Por defecto, los mapeos se escriben como comentarios dentro de los propios
 ficheros <code class="docutils literal notranslate"><span class="pre">.js</span></code>. Podemos hacer que se escriban en fichero aparte modificando
-la configuración:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">),</span>
-      <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">),</span>
-      <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack&quot;</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
-   <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;development&quot;</span><span class="p">,</span>
-   <span class="nx">devtool</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-   <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-      <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">SourceMapDevToolPlugin</span><span class="p">({</span>
-         <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;js/[name].js.map&#39;</span>
-      <span class="p">})</span>
-   <span class="p">]</span>
-<span class="p">});</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
+la configuración referida al desarrollo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">smart</span><span class="p">(</span>
+   <span class="nx">config</span><span class="p">,</span>
+   <span class="nx">argv</span><span class="p">.</span><span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;production&quot;</span><span class="o">?</span><span class="kc">null</span><span class="o">:</span><span class="p">{</span>
+<span class="hll">      <span class="nx">devtool</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="hll">      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+</span><span class="hll">         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">SourceMapDevToolPlugin</span><span class="p">({</span>
+</span><span class="hll">            <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;js/[name].js.map&#39;</span>
+</span><span class="hll">         <span class="p">})</span>
+</span><span class="hll">      <span class="p">]</span>
+</span>      <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+         <span class="nx">contentBase</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+         <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p class="rubric">Enlaces de interés</p>
@@ -432,14 +436,7 @@ entrada</li>
 <table class="docutils footnote" frame="void" id="id4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Tengamos presente que <code class="code docutils literal notranslate"><span class="pre">__dirname</span></code> es <code class="file docutils literal notranslate"><span class="pre">webpack</span></code>, ya que la
-configuración se encuentra en <code class="file docutils literal notranslate"><span class="pre">webpack/webpack.development.js</span></code>.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id5" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><p class="first">Si se usa <code class="code docutils literal notranslate"><span class="pre">--open</span></code> sin argumento adicional:</p>
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><p class="first">Si se usa <code class="code docutils literal notranslate"><span class="pre">--open</span></code> sin argumento adicional:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --mode development --open&quot;</span>
 </pre></div>
 </div>
@@ -453,16 +450,23 @@ través de la configuración.</p>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id6" rules="none">
+<table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
 así:</p>
 <div class="last highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> xdg-settings get default-web-browser
 <span class="go">firefox-esr.desktop</span>
 </pre></div>
 </div>
 </td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Los ficheros fuente podremos encontrarlos en el navegador dentro del ítem
+<code class="code docutils literal notranslate"><span class="pre">webpack://</span></code>.</td></tr>
 </tbody>
 </table>
 </div>

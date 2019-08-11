@@ -242,7 +242,7 @@ Podemos distinguir tres casos:
   En este caso :code:`X` devolverá directamente :code:`true` y el resto
   de exportaciones no está disponible.
 
-.. _webpack_process:
+.. _webpack-process:
 
 Procesamiento
 =============

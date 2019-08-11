@@ -105,9 +105,9 @@ module.exports = Object.assign({
    version: config.get("init.version") || "0.1.0",
    main: getMainFile(),
    scripts: {
-      build: "webpack --env.output=min",
-      dev: "webpack --env.output=debug",
-      debug: "webpack-dev-server --env.output=debug"
+      build: "webpack --env.output=min --progress",
+      dev: "webpack --env.output=debug --progress",
+      debug: "webpack-dev-server --env.output=debug --progress"
    },
    license: config.get("init.license") || "MIT",
    keywords: prompt("Palabras clave (separadas por espacio)", "", res => res.replace(/\s+/g, " ").split(" ")),
