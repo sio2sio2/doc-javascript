@@ -245,7 +245,7 @@ Además es posible importar por defecto una función anónima:
    export funcion doble(x) {
       return 2*x;
    }
-   export defaults x => x/2;
+   export default x => x/2;
 
 En este caso, se puede dar un nombre cualquier en el código invocante a la
 definición:
@@ -330,6 +330,8 @@ así:
          c: c
       }
    });
+
+.. _mod-umd:
 
 |UMD|
 -----

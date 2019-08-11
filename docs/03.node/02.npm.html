@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3.2. Paquetes &#8212; documentación de Javascript - 0.1</title>
+    <title>3.2. Paquetes &#8212; documentación de Javascript - </title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="01.nodejs.html" title="3.1. Uso"
              accesskey="P">anterior</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - 0.1</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">3. NodeJS</a> &#187;</li> 
       </ul>
     </div>  
@@ -152,7 +152,17 @@ incluyendo <code class="code docutils literal notranslate"><span class="pre">--d
 <p>Si lo consideramos oportuno, también es posible publicar nuestros propios
 desarrollos en los repositorios de <strong class="program">npm</strong>. Lo indispensable es tener
 guardado el desarrollo en un <a class="reference internal" href="01.nodejs.html#workdir"><span class="std std-ref">directorio de trabajo</span></a> (o sea, que
-disponga de un fichero <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>).</p>
+disponga de un fichero <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>). Es especialmente importante que en
+<code class="file docutils literal notranslate"><span class="pre">package.json</span></code> estén perfectamente definidos:</p>
+<ul class="simple">
+<li><em>name</em>, con el nombre de la aplicación.</li>
+<li><em>version</em>, con el número de versión apropiado.</li>
+<li><em>description</em>, con la descripción.</li>
+<li><em>keywords</em>, con una lista de palabras clave.</li>
+</ul>
+<p>La importancia estriba en que <strong class="program">npm</strong> lee este fichero para extraer los
+datos de la aplicación, por lo que exclusivamente esos valores serán los que
+permitan al servicio de paquetería identificar y clasificar al <em>software</em>.</p>
 <div class="section" id="registro">
 <h3>3.2.2.1. Registro<a class="headerlink" href="#registro" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Lo primero es registrar nuestro propio usuario en la <a class="reference external" href="https://www.npmjs.com/">página oficial</a>, para lo cual nos requerirán un nombre de usuario,
@@ -254,7 +264,7 @@ de trabajo y:</p>
         <li class="right" >
           <a href="01.nodejs.html" title="3.1. Uso"
              >anterior</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - 0.1</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >3. NodeJS</a> &#187;</li> 
       </ul>
     </div>

@@ -1,0 +1,795 @@
+Particularidades
+****************
+
+.. _webpack-entry-point:
+
+Punto de entrada
+================
+Hasta ahora hemos definido el punto de entrada de la manera más simple posible:
+
+.. code-block:: js
+
+   entry: "./src/js/index.js"
+
+que equivale a:
+
+.. code-block:: js
+
+   entry: {
+      main: "./src/js/index.js"
+   }
+
+Esta equivalencia es la que provoca que para :program:`webpack` ``[name]`` se
+sustituya por *main*, por lo que:
+
+.. code-block:: js
+
+   output: {
+      filename: "js/[name].bundle.js"
+   }
+
+provoca que el fichero de salida sea :file:`js/main.bundle.js` (dentro de
+:file:`dist/`, por supuesto). Como ya se ha explicado, este fichero no contiene
+únicamente el punto de entrada :file:`src/js/index.js`, sino que cualquier
+script en javascript que se importe dentro de él y, a se vez, los importados por
+los importados, pasarán a formar parte de este fichero resultante. Los ficheros
+de otra naturaleza importados en el propio código *Javascript* o a través del
+código |HTML| o |CSS| de la aplicación también se procesarán pero para ello será
+necesario el uso de plugins y cargadores (como ya se ha practicado) y,
+obviamente, el resultado acabará en otros ficheros distintos.
+
+Por tanto, una primera variante es alternar ese nombre predeterminado para
+que ``[name]`` cambie a otro valor más apropiado:
+
+.. code-block:: js
+
+   entry: {
+      "leaflet.mipluginmolon": "./src/js/index.js"
+   }
+
+AHora bien, esto no acaba aquí. Si estamos desarrollando una aplicación que se
+compone de dos páginas web distintas, las cuales usan sendos scripts, podemos
+hacer:
+
+.. code-block:: js
+
+   entry: {
+      "site": ["./src/js/page1.js", "./src/js/page2.js"]
+   }
+
+lo cual tendrá el efecto de embutir ambos *scripts*\ [#]_ en un único fichero
+resultante. Esto es necesario porque al ser dos *scripts* independientes
+utilizar el primero u el segundo como punto de entrada no incluiría al otro en
+la salida. Otra variante es:
+
+.. code-block:: js
+
+   entry: {
+      "page1": "./src/js.page1.js",
+      "page2": "./src/js.page2.js",
+   }
+
+que mantendrá ambos *scripts* separados creando dos ficheros de salida.
+
+Carga de módulos
+================
+Sistema de módulos
+------------------
+Como se verá en los :ref:`ejemplos posteriores <webpack-ejemplos>`, lo habitual
+es que el código se deba cargar otros módulos propios o ajenos. :program:`webpack`
+permite que se usa tanto el sistema CommonJS_ como el *ES2015*. Aconsejamos:
+
++ Usar CommonJS_ en los ficheros de configuración, ya que es el sistema para el
+  que NodeJS_ tiene soporte.
++ Usar *ES2015* dentro del código de la propia aplicación, ya que es el estándar
+  aprobado y bajo determinadas circunstancias (como no importar aplicaciones de
+  terceros\ [#]_ dentro del propio código), genera un código directamente usable
+  en navegadores modernos.
+
+.. _webpack-conf-import:
+
+Importación en la configuración
+-------------------------------
+Ya se ha visto que para cargar módulos (al estilo *ES2015*, por ejemplo) es
+necesario::
+
+   import L from "leaflet";
+   import $ from "jquery";
+
+Ahora bien, con :program:`webpack` es también posible hacer esta importación 
+a través de la configuración, haciendo uso del plugin Provide_:
+
+.. code-block:: js
+
+   // webpack.config.js
+   const webpack = require("webpack");
+
+   module.exports = {
+      // ...
+      plugins: [
+         new webpack.ProvidePlugin({
+            L: "leaflet",
+            $: "jquery"
+         })
+      ]
+   }
+
+Esta alternativa es provechosa para dos situaciones:
+
+* Cuando se usan librerías de terceros, ya que :program:`webpack` será capaz de
+  construir los ficheros resultantes (contengan o no estas librerías de terceros),
+  pero su importación no se encuentra en el código, por lo que si hemos usando
+  el estilo *ES2015* y el navegador es moderno y lo soporta, podremos usar
+  directamente el código fuente a través de la etiqueta script_, añadiendo las
+  librerías de terceros a través de otras etiquetas script_.
+
+  .. code-block:: html
+
+     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+     <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+     <script type="module" src="src/js/index.js"></script>
+  
+
+* Cuando requirimos importar repetidamente las librerías en distintos ficheros
+  de nuestra aplicación.
+
+Salida
+======
+Hasta el momento, la definición de nuestra salida se ha reducido a:
+
+.. code-block:: js
+
+   output: {
+      filename: "js/[name].bundle.js"
+   }   
+
+o sea, a definir el nombre que tendrá cada :ref:`punto de entrada
+<webpack-entry-point>`. Además, por defecto, el directorio predeterminado de
+salida es :file:`dist`, de modo que, si un punto de entrada se llama
+*leaflet.mipluginmolon*, la salida se almacenará en
+:file:`dist/js/leaflet.mipluginmolon.bundle.js`.
+
+Ruta
+----
+Un primer cambio consiste en alterar el fichero predeterminado:
+
+.. code-block:: js
+   :emphasize-lines: 1, 2, 7
+
+   const config = {
+      entry: "./src/js/index.js",
+      output: {
+         path: path.resolve(__dirname, "docs"),
+         filename: "js/[name].bundle.js"
+      }
+   }
+
+   module.exports = config
+
+.. _webpack-output-formato:
+
+Formato
+-------
+Un segundo aspecto muy importante es el formato de salida del módulo, porque es
+indispensable que el código sea accesible, si se ejecuta en un navegador.
+Podemos distinguir tres casos:
+
+- Si nuestro código no necesita exportar nada, no importa ninguna librería, o
+  si la necesita está incluida en el código *Javascript* resultante\ [#]_, no
+  necesitamos hacer ninguna definición especial sobre el formato.
+
+- Si nuestro código no necesita exportar nada, pero importa alguna librería
+  externa a la que se acceda a través de una variable global\ [#]_, entonces
+  es necesario que tenga :ref:`formato UMD <mod-umd>`:
+
+  .. code-block:: js
+
+     output : {
+        filename: "js/[name].bundle.js",
+        libraryTarget: "umd",
+        umdNamedDefine: false
+     }
+ 
+- Si nuestro código necesita exportar al ambiente global, entonces debemos hacer
+  también un módulo |UMD|, pero asignando un nombre a lo exportado:
+
+  .. code-block:: js
+
+     output : {
+        filename: "js/[name].bundle.js",
+        libraryTarget: "umd",
+        umdNamedDefine: true,
+        library: "X"
+     }
+
+  Al hacer esto, aquello que exporte nuestro código estará disponible a través
+  de la variable global *X*. Por ejemplo, si nuestro desarrollo es este:
+
+  .. code-block:: js
+
+     function saludo() {
+         console.log("Hola, soy tu aplicación");
+     }
+
+     const version = "0.1",
+           predeterminado = true;
+
+     export {saludo, version};
+     export default predeterminado;
+
+  Al cargar el *script* resultante en un navegador:
+
+  .. code-block:: html
+
+     <script src="dist/codigo.js"></script>
+
+  Dispondremos de :code:`X.version`, :code:`X.saludo()` y :code:`X.default`.
+  Incluso aunque sólo se exporte una entidad y está se defina como
+  predeterminada, tendremos que usar :code:`X.default`. Si se quiere que
+  una de las entidades exportadas esté accesible directamente a través de
+  :code:`X`, entonces puede añadirse *libraryExport*:
+
+  .. code-block:: js
+
+     output : {
+        filename: "js/[name].bundle.js",
+        libraryTarget: "umd",
+        umdNamedDefine: true,
+        library: "X",
+        libraryExport: "default"
+     }
+
+  En este caso :code:`X` devolverá directamente :code:`true` y el resto
+  de exportaciones no está disponible.
+
+.. _webpack_process:
+
+Procesamiento
+=============
+En principio, :program:`webpack` procesa de forma nativa sólo código
+*Javascript* por lo que cualquier otro tipo de fichero requiere declarar
+mediante qié cargador debe procesarse. Esto precisamente es lo que se nos
+presentó al :ref:`configurar la aplicación simple <webpack-simple>` que tenía
+ficheros |HTML| y |CSS|.
+
+Para llevar a cabo el procesamiento de ficheros no *Javascript* se requiere
+definir un conjunto de reglas para cada una de las cuales se defina al menos
+sobre qué tipo de ficheros se aplica y cuál es el cargador o lista de cargadores
+que usará. En el ejemplo anteriormente desarrollado se encontraban estas dos
+reglas:
+
+.. code-block:: js
+
+   module: {
+      rules: [
+         {
+            test: /\.css$/i,
+            use: [MiniCssExtractPlugin.loader,
+                  "css-loader"]
+         }
+      ]
+   }
+
+esto es, una para la página web, que usa el cargador *html-loader*, y otra para
+el |CSS| que usa los cargadores *css-loader* y
+:program:`MiniCssExtractPlugin.loader`.
+
+En el ejemplo, hay dos aspectos interesantes a destacar:
+
+* Los cargadores, como en el caso de la primera regla admiten opciones. En este
+  caso, además de la sintaxis indica arriba, se puede usar otra más compacta:
+
+  .. code-block:: js
+
+      {
+         test: /\.html$/,
+         use: "hml-loader?minimize=true"
+      }
+
+  en la que las opciones del cargador pueden proporcionarse con una sintaxis
+  parecida a la *query string* de una |URL|.
+
+* En cada regla (como en el caso de la segunda) pueden aplicarse varios
+  cargadores encadenadamente, Contrariamente a lo que podría parecer más natural
+  el orden de aplicación es de derecha a izquierda.
+
+Hay, además, otros atributos que pueden añadir `condiciones
+<https://webpack.js.org/configuration/module/#condition>`_ a las reglas como
+`include <https://webpack.js.org/configuration/module/#ruleinclude>`_, `exclude
+<https://webpack.js.org/configuration/module/#ruleexclud>`_, o `issuer
+<https://webpack.js.org/configuration/module/#ruleissuer>`_, esta última
+aplicable no al nombre del recurso que se procesa, sino al nombre del fichero en
+el que se encontra la invocación al recurso. También es interesante `oneOf
+<https://webpack.js.org/configuration/module/#ruleoneof>`_ para proporcionar una
+lista de reglas, de las que sólo se procesará la primera que se ajuste a las
+condiciones indicadas.
+
+.. seealso:: Esta `respuesta en stackoverflow.com
+   <https://stackoverflow.com/a/46769010>`_ es bastante elocuente para entender
+   cómo se aplican las condiciones.
+
+Es también interesante reseñar que *use* puede ser una función que devuelva el
+array de cargadores, lo que permite generar tal lista dinámicamente:
+
+.. code-block:: js
+
+   {
+      test: /\.css$/i,
+      use: function(rsc) {
+         console.log("Procesando... ", src.resource);
+         return ["style-loader", "css-loader"];
+      }
+   }
+
+Ficheros en general
+-------------------
+Si retomamos el :ref:`HTML de la aplicación simple <webpack-simple-html>` y añadimos
+alguna imagen:
+
+.. code-block:: html
+
+   <!DOCTYPE html>
+   <html lang="es">
+   <head>
+      <meta charset="UTF-8">
+      <title>Aplicación simple</title>
+   </head>
+   <body>
+      <h1>Aplicación simple</h1>
+      <img src="images/logo512.png" alt="Logo HTML grande">
+      <img src="images/logo64.png" alt="Logo HTML pequeño">
+   </body>
+   </html>
+
+.. note:: Para las imágenes se han tomando el logo de |HTML|\ 5, descargado de
+   la `página oficial <https://www.w3.org/html/logo/>`_, en tamaño de 512px y
+   64px.
+
+Si probáramos inmediatamente a regenerar el *bundle*, veríamos que escupe un
+error como consecuencia de que no sabe manejar este tipo de ficheros. Para
+evitarlo es preciso usar :program:`file-loader`:
+
+.. code-block:: console
+
+   $ npm install file-loader
+
+un cargador que es capaz de tomar cualquier fichero y copiarlo en la salida que
+indiquemos:
+
+.. code-block:: js
+
+   {
+      test: /\.(png|jpe?g|gif|svg)$/i,
+      use: ['file-loader?name=images/[name].[ext]']
+   }
+   
+.. note:: En el ejemplo, se utiliza únicamente para imágenes, pero puede ser
+   cualquier tipo de fichero, incluido |CSS|. Sin embargo, no es recomendable
+   utilizarlo para hojas de estilo en algunos casos. Profundizaremos en el
+   :ref:`procesamiento de CSS más adelante <webpack-css>`.
+
+Una alternativa a :program:`file-loader` es :program:`url-loader` (que
+internamente necesita :program:`file-loader`)
+
+.. code-block:: console
+
+   $ npm install file-loader url-loader
+
+y que se encarga de dos cosas:
+
+- Copiar el fichero al resultado final.
+- Si el fichero es menor que el límite definido (en el ejemplo 4K), en vez
+  de copiar el fichero genera una dataURI_ en Base64.
+
+Su uso es idéntico al de :program:`file-loader` excepto porque debemos indicar
+cuál es el límite:
+
+.. code-block:: js
+
+   {
+      test: /\.(png|jpe?g|gif|svg)$/i,
+      use: ['url-loader?limit=4096&name=images/[name].[ext]']
+   }
+
+Para imágenes exclusivamente puede incorporarse, además, :program:`img-loader`
+que funciona como minimizador:
+
+.. code-block:: console
+
+      # npm install --save-dev img-loader
+
+con una configuración:
+
+.. code-block:: js
+
+   {
+      test: /\.(png|jpe?g|gif|svg)$/i,
+      use: [
+         'url-loader?limit=4096&name=images/[name].[ext]',
+         'img-loader'
+      ]
+   }
+
+.. note:: Obsérvese que :program:`file-loader` copia ficheros sin alterarlos,
+   pero no mantiene la estructura de directorios. En todos los ejemplos que
+   hemos expuesto, las imágenes estén donde estén, acaban en un subdirectorio
+   llamado :file:`images`. Para copiar una estructura completa es necesario
+   recurrir al plugin CopyPlugin_ que se utilizará más adelante al contruir un
+   :ref:`plugin con ejemplo de uso <webpack-plugin-ej>`.
+
+.. _webpack-css:
+
+|CSS|
+-----
+El procesamiento de ficheros |CSS| admite variantes dependiendo de cuál queremos
+que sea el resultado del procesamiento. Sin demasiadas explicaciones utilizamos
+esta:
+
+.. code-block:: js
+
+   {
+      test: /\.css$/i,
+      use: [MiniCssExtractPlugin.loader, "css-loader"]
+   }
+
+:program:`css-loader` procesa el |CSS| que se enlaza con la clausula
+:code:`import` o se incluye como punto de entrada y genera un módulo de
+*Javascript*. Como esta salida es aún inútil, se presentan varias alternativas:
+
+:program:`MiniCssExtractPlugin.loader`
+   Toma todos los módulos y los compone en un único fichero |CSS| que se coloca
+   en el directorio de salida definico mediante *output* y con el nombre que
+   se proporcione al plugin al incorporarlo a la sección *plugins*.
+
+:program:`style-loader`
+   Toma los módulos y los incluye dentro de un elemento style_ del |HTML|:
+
+   .. code-block:: js
+
+      {
+         test: /\.css$/i,
+         use: ["style-loader", "css-loader"]
+      }
+
+:program:`file-loader`\ +\ :program:`extract-loader`
+   :program:`extract-loader` permite tomar los módulos y generar cadenas de
+   texto, mientras que :program:`file-loader` es capaz de tomar esas cadenas de
+   texto y generar ficheros de salida, uno por cadena (o sea, por fichero de
+   entrada) con lo que se obtendrán multiples ficheros en vez de uno solamente
+   como al usar :program:`MiniCssExtractPlugin.loader`:
+
+   .. code-block:: js
+
+      {
+         test: /\.css$/i,
+         use: ["file-loader?name=[path][name].css",
+               "extract-loader",
+               "css-loader"]
+      }
+
+   .. note:: Obsérvese que, aunque se obtiene un fichero de salida por cada
+      fichero de entrada, que es lo que obtendría usando únicamente
+      *file-loader*, hay una gran diferencia en esta configuración:
+      :program:`css-loader` entiende y analiza los ficheros |CSS| por lo que es
+      capaz de reconocer enlaces a otros ficheros incluidos en su contenido a
+      través de cláusulas :code:`@import` o :code:`url()`. El efecto es que esos
+      ficheros referidos también pasarán a procesarse sin necesidad de
+      referirlos explícitamente como punto de entrada o importarlos en el código
+      *Javascript* con :code:`import`.
+
+Por otro lado, también se puede añadir cargadores que actúan **antes** de la
+intervención de :program:`css-loader`:
+
+:program:`postcss-loader`
+   Opera sobre el |CSS| realizando transformaciones que nos resulten
+   pertinentes. Una muy recurrida, es la que realiza el plugin
+   :program:`autoprefixer`, que añade prefijos del vendedor a
+   las opciones cuando es preciso. Obviamente, debe operar justamente antes de
+   :program:`tcss-loader`. Para su instalación:
+
+   .. code-block:: console
+
+      $ npm install --save-dev postcss-loader autoprefixer
+
+   La configuración, suponiendo que queramos obtener un único |CSS|, quedará
+   del siguiente modo:
+
+   .. code-block:: js
+      :emphasize-lines: 5-10
+
+      {
+         test: /\.css$/i,
+         use: [MiniCssExtractPlugin.loader,
+               "css-loader",
+               { 
+                  loader: "postcss-loader",
+                  options: {
+                     plugins: () => [require("autoprefixer")]
+                  }
+               }]
+      }
+
+   .. note:: Para saber para qué navegadores debe añadir prefijos, este *plugin*
+      usa la :ref:`librería browserlist <browserlist>`, que introduciremos al
+      tratar :ref:`babel <babel>`.
+
+   .. note:: Para comprobar que este cargador realmente actúa, podemos
+      añadir al |CSS| de algún ejemplo, las líneas:
+
+      .. code-block:: js
+
+         ::placeholder {
+            color: gray;
+         }
+
+:program:`sass-loader` o :program:`less-loader` u otra cargador semejante.
+   Cuando no escribimos el estilo en |CSS| sino en otro lenguaje como |SASS| o
+   Less_, requerimos de otro cargador previo que sea capaz de cargar el traductor
+   que realice la tranformación a |CSS|. Por ejemplo:
+
+   .. code-block:: console
+
+      $ npm install --save-dev sass-loader node-sass
+      $ npm install --save-dev less-loader node-less
+
+   Si optamos por |SASS|, la configuración podría ser esta:
+
+   .. code-block:: js
+
+      {
+         test: /\.(css|sass)$/i,
+         use: [MiniCssExtractPlugin.loader,
+               "css-loader", 
+               // Aquí en medio podríamos postcss-loader
+               "sass-loader"]
+      }
+
+   Como el procesador de |SASS| no lleva a cabo ninguna transformación si se
+   topa con un fichero |CSS|, la regla anterior es perfectamente válida también
+   para ficheros |CSS|.
+
+   Con esta regla, podríamos escribir el estilo:
+
+   .. code-block:: sass
+
+      /* Fichero sass/main.sass */
+      $fondo: yellow
+
+      body
+         background-color: $fondo
+
+.. _babel:
+
+Compatibilidad
+==============
+:program:`Babel` es un componente fundamental de nuestro propósito puesto que
+permite sustituir sintaxis demasiado nueva por otra compatible con versiones más
+antiguas de *Javascript*. Para usarlo y que transpile\ [#]_ de forma que quede una
+sintaxis ampliamente soportada, podemos añadir algunas líneas a
+:file:`webpack/webpack.production.js`:
+
+.. literalinclude:: files/webpack.production.babel.js
+   :language: js
+
+e instalar los paquetes pertinentes:
+
+.. code-block:: console
+
+   $ npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
+
+.. _browserlist:
+
+Este es el uso más simple, pero podemos ser bastante precisos y afinar mucho más
+cuáles son los navegadores que pretendemos soportar. Para ello, debemos tener
+presente que :program:`babel` es capaz de usar `la librería browserslist
+<https://github.com/browserslist/browserslist>`_, en cuya documentación puede
+leerse cómo expresar el grado de compatibilidad que se pretende conferir al
+código. Hay varios modos de incluir este grado de compatibilidad, pero la
+documentación recomienda el de incluirlo en :file:`package.json` a través de
+la propiedad *browserslist*:
+
+.. code-block:: js
+
+   "browserslist": {
+     "production": [
+        "cover 95% in ES"
+     ],
+     "oneplus": [
+        "> 1% in ES"
+     ],
+     "ie10": [
+        "> .25% in ES",
+        "ie >= 10"
+     ],
+     "relaxed": [
+        "cover 80% in ES"
+     ]
+   }
+
+Para probar la lista de navegadores que soportará el código podemos usar la
+orden::
+
+   $ npx browserslist
+
+que usa la definición dada por *production*, pero podemos aplicar cualquier otra,
+dando un valor a la variable de ambiente *NODE_ENV*::
+
+   $ NODE_ENV=relaxed npx browserslist
+
+Por tanto, podemos componer nuestra aplicación con::
+
+   $ npm run build
+   $ NODE_ENV=relaxed npm run build
+
+.. rubric:: Polyfill
+
+Si se requiere dar soporte en navegadores antiguos a funciones como Promise_,
+Object.assign_ o `Array.from`_ es precisa una configuración más que depende de
+si disponemos de una versión de :program:`babel` anterior a la **7.4**.
+
+Para versiones anteriores se debe:
+
+#. Instalar el paquete *@babel/polyfill*::
+
+      # npm install --save @babel/pollyfill
+
+   .. note:: No hay errata. Se debe instalar como dependencia y no como
+      dependencia de desarrollo.
+
+#. Modificar la configuración de :program:`webpack` para añadir una opción a
+   :program:`babel`:
+
+   .. literalinclude:: files/webpack.production.babel.polyfill.js
+      :language: js
+      :emphasize-lines: 17
+
+   Con esa opción, sólo se añadirán al código *Javascript* resultante, el
+   codigo necesario para implementar las funciones pertienen que hayamos
+   incorporado al código.
+
+A partir de la versión *7.4.0*, `la documentación recomienda usar core-js
+<https://babeljs.io/docs/en/babel-polyfill>`_ para lo cual:
+
+#. Instalamos el paquete correspondiente::
+
+      # npm install --save core-js@3
+
+#. Modificamos la configuración de :program:`webpack` para añadir un par de
+   opciones a :program:`babel`:
+
+   .. literalinclude:: files/webpack.production.babel.polyfill2.js
+      :language: js
+      :emphasize-lines: 17, 18
+
+.. note:: Para probar la configuración, podemos añadir alguna sentencia sencilla
+   al nuestro código *Javscript* que requiera *polyfill* como, por ejemplo:
+
+   .. code-block:: js
+
+      Object.assign({}, {a:1});
+
+   Si probamos a generar le código con y sin la sentencia anterior y comparamos
+   cuánto pesan ambos ficheros veremos una ostensible diferencia, ya que con la
+   sentencia propuesta se tendrá que añadir el código necesario para implementar
+   la función. Como sólo se añade el código indispensable para implementar las
+   funciones necesarias, es buena idea configurar siempre *polyfill*.
+
+Múltiples entornos
+==================
+Con la configuración hecha hasta aquí, tenemos dos configuraciones distintas:
+una para producción y otra para desarrollo que se logran cargando ficheros
+de configuración distintos. Sin embargo, :program:`webpack` permite pasar por
+línea de comandos variables que pueden utilizarse dentro del *script* que
+constituye la configuración\ [#]_. Jugar con los valores de estas variables posibilita
+crear una amplia variedad de configuraciones de manera sencilla.
+
+Para ilustrarlo crearemos una configuración con los siguientes ficheros:
+
+.. code-block:: none
+
+   +-- webpack.config.js
+   +-- webpack/
+         +-- webpack.common.js
+         +-- webpack.production.js
+         +-- webpack.development.js
+
+que invocaremos del siguiente modo:
+
+.. code-block:: js
+
+   "scripts": {
+      "build": "webpack --env.production",
+      "watch": "webpack --env --watch",
+      "debug": "webpack-dev-server --env --open chromium"
+   },
+
+En el caso de :code:`build` se pasa la variable *production* con un valor
+verdadero, ya que no indicar su valor indica tal cosa
+(:code:`--env.foobar=valor` permitiría pasar para una variable un valor
+concreto). En los otros dos casos debe usarse :code:`--env` para que se creen el
+objeto *env*, pero al no pasarlo *production* queda indefinido y, por tanto,
+puede asimilarse a :code:`false`.
+
+Los ficheros de configuración quedan así:
+
+.. literalinclude:: files/webpack.common.f.js
+   :language: js
+
+.. literalinclude:: files/webpack.production.f.js
+   :language: js
+   :emphasize-lines: 17
+
+.. literalinclude:: files/webpack.development.f.js
+   :language: js
+
+.. literalinclude:: files/webpack.config.f.js
+   :language: js
+   :emphasize-lines: 2
+
+Para precisar la configuración se usan dos variables:
+
+* *production*, ya introducida anteriormente.
+* *debug*, que permite definir si se quieren mensajes de depuración
+  de :ref:`babel <babel>`. 
+
+.. rubric:: Notas al pie
+
+.. [#] Entiéndase que los dos scripts no tienen por qué corresponderse con dos
+   ficheros. Cada uno de ellos puede estar programado de forma modular y
+   componerse de múltiples ficheros.
+
+.. [#] A menos claro está que hayamos hecho una copia incluida en nuestro
+   desarrollo de ese módulo ajeno, porque el problema de las librerías de
+   terceros es que se encuentran alojadas fuera del directorio de trabajo (en
+   :file:`node_modules` o en el directorio global de instalación) y esa
+   localización no es alcanzable por un cliente web. Otra solución es usar el
+   plugin Provide_, que se explica a continuación.
+
+.. [#] Hasta el momento, sólo sabemos crear código *Javascript* que incluye
+   en el propio código todas las dependencias, pero ya veremos que hay forma
+   de no hacerlo.
+
+.. [#] Sería el caso, por ejemplo, de que crearamos un desarrollo que usa
+   JQuery_ pero configurarámos :program:`webpack` para que esa librería externa
+   no se incluyera dentro del código resultante, lo cual :ref:`veremos más
+   adeltante que es posible <webpack-ej-plugin>`.`
+
+.. [#] También podemos usar :program:`postcss-loader`, entre :program:`css-loader`
+   y :program:`sass-loader`, pero importa poco a efectos de esta discusión.
+
+.. [#] *Transpilar* (y transpilación y transpilador) es un término
+   construido por analogía con el verbo *compilar*. De un modo análogo al que 
+   :dfn:`compilar` sea convertir código de programación en código máquina,
+   :dfn:`transpilar` es traducir còdigo de programación a una versión distinta,
+   por ejemplo, a una más antigua para mantener la compatibilidad con versiones
+   más antiguas del intérprete. Traducir de `CoffeeScript`_ o `TypeScript`_ a
+   *Javascript* también es *transpilar*.
+
+.. [#] Las variables de entorno que se pasan de forma estándar (véase *NODE_ENV*
+   cuando se trataba :ref:`babel <babel>`) se encuentran disponibles en el
+   script a través de :code:`process.env`:
+
+   .. code-block:: js
+
+      console.log(process.env.HOME)
+
+.. _script: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script
+.. _CoffeeScript: https://coffeescript.org/#introduction
+.. _TypeScript: https://www.typescriptlang.org/
+.. _Object.assign: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+.. _Promise: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+.. _Array.from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from
+.. _dataURI: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+.. _CommonJS: https://nodejs.org/docs/latest/api/modules.html
+.. _Provide: https://webpack.js.org/plugins/provide-plugin/
+.. _NodeJS: https://nodejs.org/
+.. _CopyPlugin: https://github.com/webpack-contrib/copy-webpack-plugin
+.. _style: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style
+.. _Less: http://lesscss.org/
+.. _JQuery: https://jquery.com/
+
+.. |HTML| replace:: :abbr:`HTML (HyperText Markup Language)`
+.. |CSS| replace:: :abbr:`CSS (Cascading Style Sheets)`
+.. |SASS| replace:: :abbr:`SASS (Syntactically Awesome Style Sheets)`
+.. |URL| replace:: :abbr:`URL (Uniform Resource Locator)`
+.. |UMD| replace:: :abbr:`UMD (Universal Module Definition)`

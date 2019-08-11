@@ -1,0 +1,543 @@
+.. _webpack-ejemplos:
+
+Ejemplos
+********
+Los ejemplos de aplicación los construiremos en torno a  Leaflet_, la excelente
+librería |GIS| y trataremos tres casos:
+
+#. La creación de un plugin para esta librería, lo cual supone no crear una
+   aplicación web en sí, sino tan sólo código *Javascript* intermedio que puede
+   usarse posteriormente en la creación de una aplicación web.
+
+#. La creación del plugin comentado, pero con la adición de algún ejemplo de uso
+   que permita, no sólamente ilustrar cómo se utiliza, si no también, comprobar
+   el código del plugin mientras se desarrolla. Es en realidad este caso, el que
+   se debe llevar a la práctica, porque es evidente que cualquier desarrollo
+   exige un proceso continuo de comprobación del código.
+
+#. La creación de una aplicación web que use el plugin anterior, lo cual
+   significa que el resultado final será una página |HTML| (con todos sus
+   avíos).
+
+.. _webpack-ej-plugin:
+
+Plugin
+======
+Trataremos de hacer un plugin que implemente el efecto de agrandar un icono al
+pasar el punto del ratón sobre él. Tal plugin es bastante sencillo y no requiere
+más que escribir unas pocas líneas en un único fichero ``.js``. A pesar de esta
+simpleza, hay particularidad: como nuestro código utiliza una librería de
+terceros (Leaflet_), el código resultante puede o no contenerla:
+
+* Si la contiene, puede servirnos para utilizarlo directamente en una aplicación
+  web sin necesidad de cargar también Leaflet_.
+* Si no la contiene, puede servirnos tanto como librería para hacer desarrollos
+  posteriores con NodeJS_ (por supuesto, instalando también Leaflet_), como para
+  utlizarla directamente en una aplicación web cargando Leaflet_ con otra
+  etiqueta script_.
+
+#. Preparemos el directorio de trabajo:
+
+   .. code-block:: console
+
+      $ mkdir leaflet.iconzoom
+      $ cd leaflet.iconzoom
+      $ npm init -y
+
+   .. note:: Se supone que estamos usando la configuración 
+      :download:`~/.npm-init.js <../03.node/files/npm-init.js>` propuesta al
+      explicar :ref:`cómo crear un  directorio de trabajo para NodeJS <prep_workdir>`.
+
+   A la pregunta de cuál será el fichero principal contestaremos que
+   :file:`dist/leaflet.iconzoom.js`. Esta pregunta no es baladí, ya que este
+   será el fichero que se importará cuando un aplicación ulterior use este
+   plugin, importándolo con la línea:
+
+   .. code-block:: js
+
+      import "leaflet.iconzoom";
+
+   La razón de que este sea el fichero apropiado es que es perfectamente
+   funcional, portable y está optimizado.
+
+#. Editamos :file:`package.json` para dejar los *scripts* del siguiente modo:
+
+   .. code-block:: js
+
+      "scripts": {
+         "build": "webpack --env.output=min",
+         "bundle": "webpack --env.output=bundle",
+         "src": "webpack --env.output=src",
+         "debug": "webpack-dev-server --env.output=debug --open"
+      }
+
+   *build*
+      Código para producción **sin** Leaflet_:
+
+      .. code-block:: html
+
+         <!-- Leaflet -->
+         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css">
+         <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+
+         <!-- Plugin -->
+         <script src="../dist/leaflet.iconzoom.js"></script>
+
+   *bundle*
+      Código para producción que incluye Leaflet_.
+
+      .. code-block:: html
+
+         <!-- Leaflet+Plugin -->
+         <link rel="stylesheet" href="../dist/leaflet.iconzoom.bundle.css">
+         <script src="../dist/leaflet.iconzoom.bundle.js"></script>
+
+      .. note:: En este caso, el *plugin* es muy sencillo y no requiere |CSS|
+         adicional, por lo que el |CSS| generado será una copia, sin más, del de
+         Leaflet_.
+
+   *src*
+      Código para depuración **sin** Leaflet_ para su carga desde un navegador:
+      .. code-block:: html
+
+         <!-- Leaflet -->
+         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css">
+         <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+
+         <!-- Plugin para depuración -->
+         <script src="../dist/leaflet.iconzoom-src.js"></script>
+
+      En principio, es útil para que terceros puedan inspeccionar el código y
+      cazar *bugs* sin necesidad de usar de instalar NodeJS_ y preparar un
+      directorio de trabajo con el código fuente.
+
+      .. note:: Si el navegador fuera moderno, podríamos utilizar directamente
+         el código fuente, en vez de este fichero:
+
+         .. code-block:: html
+
+            <!-- Leaflet -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css">
+            <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+
+            <!-- Plugin para depuración -->
+            <script type="module" src="../src/index.js"></script>
+
+   *debug*
+      Script para depuración interactiva. Como esto requiere crear un ejemplo de
+      uso y una configuración más compleja de :program:`webpack`, no será operativo
+      hasta que desarrollemos el próximo caso.
+
+#. Instalamos los paquetes necesarios\ [#]_:
+
+   .. code-block:: console
+
+      $ npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
+      $ npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
+      $ npm install core-js leaflet
+      $ npm install --save-dev css-loader mini-css-extract-plugin
+      $ npm install --save-dev url-loader file-loader
+
+#. Escribimos el plugin en :download:`src/leaflet.iconzoom.js
+   <files/leaflet.iconzoom.js>`:
+
+   .. literalinclude:: files/leaflet.iconzoom.js
+      :language: js
+
+   .. note:: Del código pueden resultar chocantes varios aspectos:
+
+      - El módulo se limita a alterar el objeto global :code:`L` por lo
+        que no es preciso exportar nada. De haber exportado algo, se habría
+        usado el sistema de módulos de *ES2015*.
+
+      - No se importa dentro del código nada procedente de Leaflet_, porque:
+
+        + El código *Javascript* se importará a través del :ref:`plugin Provide
+          <webpack-conf-import>` por ser la librería de terceros.
+        + El código |CSS| se incluirá en el punto de entrada, para
+          lograr que se lleve a cabo el procesamiento sólo si obtiene la
+          variante *bundle* del p*lugin*.
+
+#. Y el verdadero meollo, configuramos :program:`webpack` de forma modular. Por
+   un lado, :download:`webpack.config.js <files/webpack.config.f.js>`:
+
+   .. literalinclude:: files/webpack.config.f.js
+      :language: js
+
+   En la parte común de la configuración, :download:`webpack/webpack.common.js
+   <files/plugin/webpack.common.js>`, que es esta:
+
+   .. _webpack-plugin-webpack.common.js:
+   
+   .. literalinclude:: files/plugin/webpack.common.js
+      :language: js
+      :emphasize-lines: 9-19, 29-31, 36, 63-76
+
+   Hay algunas aclaraciones pertinentes:
+
+   * El nombre del fichero de salida, cambia dependiendo de qué versión queramos
+     obtener. Esto permite generarlas todas y poder elegir cuál se usará desde
+     otra aplicación.
+
+   * Se importa el javascript de Leaflet_ mediante el plugin Provide_, tal como
+     se enticipó al mostrar el código del *plugin*.
+
+   * Para la versión *bundle* se añade al punto de entrada el |CSS| de Leaflet_,
+     a fin de que sólamente genere el |CSS| en esta versión. En consonancia,
+     sólo es necesario tratar el |CSS| y los ficheros externos en esta versión.
+
+   * Para el resto de versiones que no incluyen Leaflet_:
+
+     a. Añadiendo `externals <https://webpack.js.org/configuration/externals/>`_
+        se logra eliminar Leaflet_ del fichero resultante, pero hay que indicar
+        cómo estará disponible la librería dependiendo de cómo se cargue.
+        Obviamente, esto es posible porque:
+   
+     #. A *output* se añaden unos atributos que permiten construir un módulo |UMD|
+        que es válido tanto para usarlo directamente en el navegador (con
+        `script`_) como para usarlo en NodeJS_ (ya que puede cargarse con
+        :ref:`CommonJS <module-commonjs>`). El valor de *library* es el nombre de
+        la variable global que contendrá el objeto que exporta el módulo. Por
+        tanto, en este ejemplo, si la librería se carga directamente en el
+        navegador, :code:`window.Lcz` contendrá lo exportado. Como el módulo no
+        exporta nada, carece por completo de interés.
+
+     .. seealso:: Échele un ojo a la documentación oficial sobre la `creación de
+        módulos con webpack <https://webpack.js.org/guides/author-libraries/>`_.
+
+   :download:`webpack/webpack.development.js
+   <files/plugin/webpack.development.js>` no presenta novedades destacables;
+   simplemente, se ha optado por colocar los mapeos por separado:
+
+   .. literalinclude:: files/plugin/webpack.development.js
+      :language: js
+
+   .. _webpack-externals:
+
+   Del mismo modo, tampoco, :download:`webpack/webpack.production.js
+   <files/plugin/webpack.production.js>` presenta novedades:
+
+   .. literalinclude:: files/plugin/webpack.production.js
+      :language: js
+
+#. Generamos los ficheros resultantes:
+
+   .. code-block:: console
+
+      $ npm run build
+      $ npm run src
+      $ npm run bundle
+
+   .. note:: Es importante recordar que en :file:`packages.json` hemos notado
+      como el fichero principal a :file:`dist/leaflet.iconzoom.js`, así que
+      conviene que al menos éste se genere.
+
+#. Hecho todo lo anterior, podemos rematar el repositorio *git*:
+
+   .. code-block:: console
+
+      $ vim README.rst
+      $ vim LICENSE
+      $ git add .
+      $ git commit "Primera implementación"
+
+   crear en Github_ un repositorio homónimo (*leaflet.iconzoom*) sin inicializar
+   con nuestro usuario, y subir el código a él:
+
+   .. code-block:: console
+
+      $ git remote add origin https://github.com/miusuario/leaflet.iconzoom.git
+      $ git push -u origin master
+
+El resultado es `este repositorio de Github
+<https://github.com/sio2sio2/leaflet.iconzoom/tree/v0.1.0>`_.
+
+Aplicación web
+==============
+La aplicación web desarrolla una página muy simple que usa el *plugin* anterior.
+Como es una aplicación final, a diferencia del caso del *plugin*, sólo
+necesita dos sabores:
+
+- El optimizado y portable para producción, que incluirá todas las dependencias
+  (Leaflet_ en este caso).
+
+- El apropiado para la depuración, durante el desarrollo.
+
+#. Preparamos el directorio de trabajo:
+
+   .. code-block:: console
+
+      $ mkdir test.leaflet.iconzoom
+      $ cd test.leaflet.iconzoom
+      $ npm init -y
+
+#. Instalamos el *software* preciso:
+
+   .. code-block:: console
+   
+      $ npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
+      $ npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
+      $ npm install --save-dev html-loader html-webpack-plugin
+      $ npm install --save-dev css-loader mini-css-extract-plugin
+      $ npm install --save-dev url-loader file-loader
+      $ npm install --save-dev sass-loader node-sass
+      $ npm install --save-dev postcss-loader autoprefixer
+      $ npm install core-js leaflet
+      $ npm install git+https://github.com/sio2sio2/leaflet.iconzoom.git
+
+#. Configuramos los *scripts*:
+
+   .. code-block:: js
+
+      "scripts": {
+        "build": "webpack --env.output=min",
+        "debug": "webpack-dev-server --env.output=debug --open"
+      },
+
+   El primero de los cuales, genera la aplicación para producción y el segundo
+   es útil para depurar la aplicación.
+
+#. Creamos los ficheros que conforman el proyecto:
+
+   .. code-block:: none
+
+      + src
+         +-- index.html
+         +-- js
+         |    +-- index.js
+         +-- sass
+              +-- index.sass
+
+   a. Creamos la página :download:`src/index.html <files/page/index.html>`:
+
+      .. literalinclude:: files/page/index.html
+         :language: html
+
+      Como puede verse, es la página cruda sin enlaces a Leaflet_, el plugin
+      anterior o el *script* que crea el mapa.
+
+   b. Definimos el estilo (con |SASS|) en :download:`src/sass/index.sass <files/page/index.sass>`:
+
+      .. literalinclude:: files/page/index.sass
+         :language: sass
+
+   c. Y el propio *script* :download:`src/js/index.js <files/page/index.js>`:
+
+      .. literalinclude:: files/page/index.js
+         :language: js
+
+      .. note:: En este caso, como desarrollamos una aplicación final, no
+         necesitamos tener ninguna prevención sobre cómo importamos Leaflet_ o
+         el propia plugin que previamente hemos desarrollado.
+
+#. Y creamos la configuración para :program:`webpack` con
+
+   :download:`webpack.config.js <files/page/webpack.config.js>`:
+
+   .. literalinclude:: files/page/webpack.config.js
+      :language: js
+
+   :download:`webpack/webpack.common.js <files/page/webpack.common.js>`, que
+   hace que los ficheros resultantes se generen dentro de :file:`docs/`\ [#]_:
+
+   .. literalinclude:: files/page/webpack.common.js
+      :language: js
+      :emphasize-lines: 10
+
+   :download:`webpack.production.js <files/page/webpack.production.js>`:
+
+   .. literalinclude:: files/page/webpack.production.js
+      :language: js
+
+   :download:`webpack.development.js <files/page/webpack.development.js>`:
+
+   .. literalinclude:: files/page/webpack.development.js
+      :language: js
+
+#. Generamos el resultado:
+
+   .. code-block:: console
+
+      $ npm run build
+
+#. Por último, se remata y publica el repositorio:
+
+   .. code-block:: console
+
+      $ vim README.rst
+      $ vim LICENSE
+      $ git add --all .
+      $ git commit -m "Primera implementación"
+
+      $ git remote add origin https://github.com/sio2sio2/test.iconzoom.git
+      $ git push -u origin master
+
+   .. note:: Para que el ejemplo sea visitable, en Github_ dentro de *Settings*,
+      la publicación del directorio :file:`/docs` de la rama *master*.
+
+El resultado está publicado en `este segundo repositorio
+<https://github.com/sio2sio2/test.iconzoom>`_.
+
+.. _webpack-plugin-ej:
+
+Plugin con ejemplo
+==================
+Cuando se desarrolla una librería y no una aplicación, es indispensable crear al
+menos una página de ejemplo de aplicación por dos razones:
+
+#. Porque un ejemplo de aplicación que ilustre el uso es muy recomendable para
+   mostrar a terceros cómo debe programar con la librería
+#. Porque la propia página sirve para probar y depurar el código.
+
+La primera razón implica que todo el código del ejemplo (|HTML|, |CSS| y
+*Javascript*) sea absolutamente claro a la lectura de un programador humano, lo
+cual se consigue escribiendo a mano los ficheros que componen el ejemplo e
+impidiendo que :program:`webpack` pueda obrar transformación alguna. 
+
+Siguiendo este principio, tomemos el directorio de trabajo del :ref:`ejemplo de
+desarrollo del plugin <webpack-ej-plugin>` y añadamos un directorio
+:file:`examples/`\ [#]_ con todo el código que desarrolla el ejemplo:
+
+.. code-block:: none
+
+   +-- examples
+         +-- index.html
+         +-- js/
+         |   +-- main.js
+         +-- css/
+             +-- main.css
+
+:download:`index.html <files/page-e/index.html>`, que escribimos por completo a
+mano tendrá este contenido:
+
+.. literalinclude:: files/page-e/index.html
+   :language: html
+
+:download:`js/main.js <files/page-e/main.js>`, este otro:
+
+.. literalinclude:: files/page-e/main.js
+   :language: js
+
+y :download:`css/main.css <files/page-e/main.css>`, finalmente, este:
+
+.. literalinclude:: files/page-e/main.css
+   :language: css
+
+Si se han generado los ficheros en :file:`dist/`, el ejemplo es perfectamente
+funcional y, si se ejecuta en el directorio de trabajo
+:program:`webpack-dev-server` mediante esta orden:
+
+.. code-block:: console
+
+   $ npx webpack-dev-server --env.output debug --contentBase $(realpath .)
+
+podremos ver la página en la dirección:
+
+.. code-block:: none
+
+   http://localhost:8080/examples
+
+Podríamos trasladar esta forma de arrancar el servidor a la configuración, pero
+hay un problema y es la segunda razón por la que es interesante el ejemplo: la
+depuración durante el desarrollo. Al estar constituido el ejemplo por ficheros
+estáticos accesibles al servidor a través de la opción *contentBase*, sólo se
+mandará orden de recarga cuando se cambie el código del plugin (que sí se genera
+con :program:`webpack`, pero no cuando cambie el código del ejemplo; y lo
+interesante es que la recarga se produzca ante cualquier cambio.
+
+La solución viene de la mano del plugin de :program:`webpack` CopyPlugin_ que le
+facilita copiar en crudo ficheros y directorios. La estrategia es copiar
+:file:`examples`, porque de este modo sí se procesará el contenido y, en
+consecuencia, cualquier cambio en él también provocará la recarga de la página.
+Lo primero es instalar el plugin:
+
+.. code-block:: console
+
+   $ npm install --save-dev copy-webpack-plugin
+
+Y, lo siguiente, alterar :download:`webpack/webpack.development.js
+<files/page-e/webpack.development.js>`:
+
+.. literalinclude:: files/page-e/webpack.development.js
+   :language: js
+   :emphasize-lines: 3, 9, 14-18, 25-35
+
+El fichero se ha modificado exclusivamente para modelar cómo se comporta
+*webpack* en el sabor *debug* y las claves de los cambios son:
+
+* CopyPlugin_ copia el contenido de :file:`examples/` en el propio directorio
+  virtual, pero obviando los ficheros de backup de :program:`vi` para evitar
+  que, si se usa este editor, el proceso de edición provoque la continua
+  recarga de la página. Si se usa otra herramienta para el desarrollo, es
+  probable que deba cambiar la lista de ignorados.
+
+* También en el directorio virtual se generían los ficheros resultantes de la
+  transformación del plugin, pero en el ejemplo se encuentra escrito:
+
+  .. code-block:: html
+
+     <!-- Plugin -->
+     <script src="../dist/leaflet.iconzoom.js"></script>
+
+  Para que siga funcionando en este sabor el enlace, es necesario modificar la
+  salida y añadir :file:`dist/` antes del nombre.
+
+* En :ref:`webpack/webpack.common.js <webpack-plugin-webpack.common.js>` hay un
+  detalle que es conveniente aclarar ahora: el nombre del fichero resultante
+  para el sabor *min* y *debug* es el mismo, lo que provoca que, cuando se
+  visite el ejemplo durante la depuración podamos seguir la ejecución del código
+  en los ficheros originales, mientras que cuando se visita el ejemplo a través
+  de las páginas de Github_, se utiliza el código optimizado.
+
+El resultado se encuentra en `su repositorio de Github
+<https://github.com/sio2sio2/leaflet.iconzoom>`_ y en las páginas de Github_ se
+encuentra colgado `el ejemplo de uso
+<https://sio2sio2.github.io/leaflet.iconzoom/examples>`_.
+
+
+.. rubric:: Enlaces de interés
+
+* En el interesante `blog de Valentino Gagliardi
+  <https://www.valentinog.com/blog/>`_ hay una entrada de `introducción a
+  Webpack4 <https://www.valentinog.com/blog/webpack/>`_ y otra para describir
+  `cómo hacer con Webpack4 tareas que se hacen con Gulp
+  <https://www.valentinog.com/blog/from-gulp-to-webpack-4-tutorial/>`_ y que
+  puede informar de algunos aspectos adicionales a los explicados en la primera
+  entrada
+
+.. ¿Merecen estos scripts la pena?
+   https://www.robinwieruch.de/javascript-project-setup-tutorial/
+   https://www.robinwieruch.de/webpack-advanced-setup-tutorial/
+
+.. rubric:: Notas al pie
+
+.. [#] La necesidad de incluir los cuatro últimos paquetes se debe a que
+   nuestra intención es ser capaces de procesar el |CSS| de Leaflet_ para
+   el script *bundle*, y tal fichero *refiere*, además, algunas imágenes.
+   Una alternativa a esta solución :program:`MiniCssExtractPlugin`\ +\
+   :program:`css.loader` es utilizar :program:`file-loader`\ +\
+   :program:`extract-loader`\ +\ :program:`css-loader`.
+
+.. [#] Esta aparente excentricidad tiene una explicación totalmente ajena a la
+   aplicación en sí: entre otras alternativas, Github_ permite publicar el
+   contenida del directorio :file:`/docs`, así que hay se almacena el resultado
+   para que éste se publique en la dirección
+   `https://sio2sio2.github.io/test.iconizoom <https://sio2sio2.github.io/test.iconizoom>`_
+
+.. [#] La elección no es arbitraria: es el directorio donde la `Guía de Leaflet
+   <https://leafletjs.com/2013/06/28/leaflet-plugin-authoring-guide.html#code>`_
+   prescribe que se dispongan los ejemplos.
+
+.. _script: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script
+.. _Leaflet: https://leafletjs.com
+.. _Github: https://github.com
+.. _CommonJS: https://nodejs.org/docs/latest/api/modules.html
+.. _Provide: https://webpack.js.org/plugins/provide-plugin/
+.. _NodeJS: https://nodejs.org/
+.. _CopyPlugin: https://github.com/webpack-contrib/copy-webpack-plugin
+
+.. |HTML| replace:: :abbr:`HTML (HyperText Markup Language)`
+.. |CSS| replace:: :abbr:`CSS (Cascading Style Sheets)`
+.. |SASS| replace:: :abbr:`SASS (Syntactically Awesome Style Sheets)`
+.. |GIS| replace:: :abbr:`GIS (Geographic information system)`
+.. |UMD| replace::  :abbr:`UMD (Universal Module Definition)`

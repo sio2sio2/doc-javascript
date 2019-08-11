@@ -1,0 +1,423 @@
+Configuración básica
+********************
+Lo primero es :ref:`preparar el directorio de trabajo <prep_workdir>` para
+después:
+
+Paquetes
+=========
+Para todo lo que pretendemos necesitamos al menos los siguientes paquetes:
+
+.. code-block:: console
+
+   $ npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
+
+Bases la de configuración
+=========================
+Como nuestro objetivo es utilizar :program:`webpack` como aglutinante de nuestro
+código, debemos añadir a :file:`package.json` los siguientes scripts:
+
+.. code-block:: js
+
+   "script": {
+      "build": "webpack --mode production"
+   }
+
+Por otra parte, necesitamos un fichero para la configuración de
+:program:`webpack` llamado :file:`webpack.config.js` con una primera
+configuración como ésta:
+
+.. code-block:: js
+
+   const config = {
+      entry: "./src/js/index.js",
+      output: {
+         filename: "js/[name].bundle.js"
+      }
+   }
+
+   module.exports = config
+
+Esta configuración simplicísima supone que el punto de entrada de nuestra
+aplicación es :file:`src/js/index.js` y que el resultado de la acción de
+:program:`webpack` se guardará en :file:`dist/js/main.bundle.js`.
+
+.. note:: La configuración hace más de lo que aparenta. No sólo copia el
+   fichero, sino que lo minimiza; y, si hemos descompuesto nuestro código en
+   varios ficheros (:ref:`módulos <js-modules>`) que se llaman entre sí o
+   importa librerías de terceros, reunirá todo dentro del mismo fichero.
+   Para excluir módulos del fichero resultante único, consulte más adelante
+   :ref:`externals <webpack-externals>`.
+
+El por qué el indicado es el fichero resultante se debe a dos razones:
+
+- Sin configuración adicional, se toma como directorio de resultados
+  :file:`/dist`. Veremos más adelante cómo alterar esto.
+
+- El nombre es "*main*", porque la línea que define la entrada es:
+
+  .. code-block:: js
+
+     entry: "./src.js/index.js"
+
+  .. seealso:: Consulte el apartado sobre :ref:`la definición del punto de
+     entrada <webpack-entry-point>` para una explicación del hecho.
+
+Por último, debemos crear un código de ejemplo en :file:`src/js/index.js`:
+
+.. code-block:: js
+
+   const foobar = (text) => {
+      console.log(`${text}`);
+   }
+
+   let mensaje = "Esto es una prueba";
+   foobar(mensaje);
+
+en que usamos algunas características nuevas de *Javascript* para ilustrar más
+adelante la transpilación con :ref:`babel <babel>`. Escrito el fichero podemos
+obtener el resultado con::
+
+   $ npm run build
+
+que creará el fichero :file:`dist/js/main.bundle.js`. Si le echamos un vistazo
+veremos que el código se encuentra ofuscado y minimizado.
+
+Desarrollo
+==========
+La configuración anterior es un ejemplo tan simple que carece por completo de
+utilidad, ya que hace inviable la corrección y depuración del código. Es
+necesario, crear al menos dos configuraciones: una apropiada para generar el
+resultado para producción y otra para generar un resultado apto para depurar
+durante el desarrollo. Para ello vamos a crear así los *scripts* en
+:file:`packages.json`:
+
+.. code-block:: js
+
+  "scripts": {
+    "build": "webpack --config webpack/webpack.production.js",
+    "watch": "webpack --config webpack/webpack.development.js --watch",
+  }
+
+cuyo sentido es el siguiente:
+
+* :code:`build` compone el resultado para usarlo en producción.
+* :code:`watch` compone el resultado para usarlo mientras desarrollamos,
+  de modo que se queda expectante a cualquier cambio posterior que hagamos
+  para recomponer sobre la marcha el resultado.
+
+Dentro del directorio de trabajo, debemos también crear un directorio de
+configuración para :program:`webpack` con el siguiente contenido:
+
+.. code-block:: none
+
+   + webpack
+        +-- webpack.common.js
+        +-- webpack.production.js
+        +-- webpack.development.js
+
+:file:`webpack.common.js` contendrá lo siguiente:
+
+.. code-block:: js
+
+   const config = {
+      entry: "./src/js/index.js",
+      output: {
+         filename: "js/[name].bundle.js"
+      }
+   }
+
+   module.exports = config
+
+:file:`webpack.production.js` esto:
+
+.. code-block:: js
+
+   const merge = require('webpack-merge');
+   const common = require('./webpack.common.js');
+
+   const config = merge(common, {
+      mode: "production",
+   });
+
+   module.exports = config
+
+y, por su parte, :file:`webpack.development.js` esto otro:
+
+.. code-block:: js
+
+   const merge = require('webpack-merge'),
+         common = require('./webpack.common.js');
+
+   const config = merge(common, {
+      mode: "development",
+      devtool: 'inline-source-map'
+   });
+
+   module.exports = config
+
+Con ello, además del script ``build`` podemos hacer::
+
+   $ npm run watch
+
+que creará el fichero pero se quedará vigilando cualquier cambio en el fichero
+fuente para regenerarlo inmediatamente.
+
+Aplicación simple
+=================
+Trataremos ahora de montar una aplicación (bastante inútil, todo sea dicho) que
+incluya |HTML| y |CSS| y montarla con :program:`webpack`. En este caso, como se
+obtiene como resultado una página web, tiene sentido poder depurar la página de
+modo interactivo, esto es, que se levante un servidor web y que la página cambie
+automáticamente al realizarse algún cambio en alguno de los ficheros fuente.
+Para ello, añadimos un tercer *script*:
+
+.. code-block:: js
+
+    "debug": "webpack-dev-server --config webpack/webpack.development.js"
+
+El código fuente se compone de los siguientes ficheros:
+
+.. code-block:: none
+
+   src
+    +-- index.html
+    |
+    +-- js
+    |    +-- index.js
+    |
+    +-- css
+         +-- main.css
+
+En este caso, deberemos instalar paquetes adicionales:
+
+.. code-block:: console
+
+   $ npm install --save-dev html-loader html-webpack-plugin
+   $ npm install --save-dev css-loader mini-css-extract-plugin
+   $ npm install --save-dev url-loader file-loader
+
+Para el *script* podemos usar el ya escrito, con la adición de una línea que
+posibilita el procesamiento del |CSS|:
+
+.. code-block:: js
+   :emphasize-lines: 1
+
+   import "../css/main.css";
+
+   const foobar = (text) => {
+      console.log(`${text}`);
+   }
+
+   let mensaje = "Esto es una prueba";
+   foobar(mensaje);
+   no_existe();  // Esto debe provocar un error en la consola.
+
+.. note:: Hay otra forma de provocar que se procese el fichero |CSS| (o
+   cualquier otro tipo de fichero): añadirlo al punto de entrada de
+   :program:`webpack`:
+
+   .. code-block:: js
+
+      entry: [ "./src/js/index.js", "./css/main.css" ]
+
+   Esta alternativa puede ser interesante, si el |CSS| procede de código ajeno y
+   pretendemos crear una configuración condicional que incluya o no en los
+   ficheros resultantes el código de terceros. Más adelante, puede echarle un
+   vistazo al :ref:`ejemplo de construcción de un plugin <webpack-ej-plugin>` en
+   que se usa esta técnica. La contraprestación es que la dependencia no está
+   contenida en el código fuente y, en consecuencia, sólo es patente si se
+   procesa el desarrollo con :program:`webpack`.
+      
+Hay, ademas, que modificar imperiosamente :file:`webpack/webpack.development.js` para
+alterar el comportamiento de :program:`webpack-dev-server`:
+
+.. code-block:: js
+   :emphasize-lines: 6-9
+
+   const merge = require('webpack-merge'),
+         common = require('./webpack.common.js');
+
+   const config = merge(common, {
+      mode: "development",
+      devServer: {
+         contentBase: false,
+         open: "chromium"
+      },
+      devtool: 'inline-source-map'
+   });
+
+   module.exports = config
+
+Para entender esta configuración, es indispensable conocer cómo funciona, en
+realidad, :program:`webpack-dev-server`: en principio, sirve desde un directorio
+virtual creado en la memoria los ficheros resultantes del procesamiento. En
+consecuencia, ni tales ficheros resultantes se escriben en disco ni los ficheros
+de disco están disponibles en el servidor web levantado. Ahora bien, la opción
+*contentBase*, permite indicar un directorio del sistema real de ficheros  que
+se fusionará con este directorio virtual a fin de que sus contenidos sí sean
+accesibles. Si el valor es ``false``, como es el caso, sólo se sirven los
+ficheros del directorio virtual (o sea, sólo los ficheros resultantes del
+procesamiento). Su valor predeterminado es :file:`dist/`, así que si no se
+incluye la opción, estará accesible el contenido de este directorio en caso de
+existir. Por supuesto, podemos establecer el valor que queramos, por ejemplo:
+
+.. code-block:: js
+
+   contentBase: require("path").resolve(__dirname, "..")
+
+En este caso, fusionaremos todo el contenido del directorio de trabajo\ [#]_ con
+los ficheros resultantes. La otra opción, *open*, rige qué se hace al levantar el
+servidor:
+
+- Si es ``false``, que es su valor predeterminado al no haber incluido el
+  argumento :code:`--open`\ [#]_ en el *script* añadido a :file:`package.json`, no
+  se abre una ventana con la aplicación en el navegador, así que tendremos que
+  abri manualmente nosotros la aplicación en::
+
+   http://localhost:8080
+
+- Si toma valor, debe ser una cadena que indique el navegador con el que se
+  quiere ver la aplicación.
+
+- Si es ``true``, se usa el navegador predefinido por el sistema\ [#]_.
+
+.. note:: Aunque tenga un interés muy relativo, también es posible hacer
+   que los ficheros resultantes se escriban en disco.
+
+   .. code-block:: js
+
+      devServer: {
+         writeToDisk: true,
+         contentBase: false
+         open: "chromium"
+      }
+
+   En este caso, se escribirán los ficheros resultantes en :file:`dist` (a menos
+   que lo modifiquemos) y el servidor publicará el contenido de este directorio.
+
+.. _webpack-simple-html:
+
+Por su parte, :file:`index.html` puede ser el siguiente:
+
+.. code-block:: html
+
+   <!DOCTYPE html>
+   <html lang="es">
+   <head>
+      <meta charset="UTF-8">
+      <title>Aplicación simple</title>
+   </head>
+   <body>
+      <h1>Aplicación simple</h1>
+   </body>
+   </html>
+
+Obsérvese que es necesario incluir las etiquetas `<head>
+<https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head>`_ y `<body>
+<https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body>`_ para el
+plugin :program:`HtmlWebpackPlugin` inserte correctamente el *script* dentro del
+|HTML|. Por otro lado. el |CSS| es éste:
+
+.. code-block:: css
+
+   body {
+      blackground-color: yellow;
+   }
+
+Como puede verse, no hay referencia en el |HTML| ni al *script* ni a la hoja de
+estilos, ya que se pretende que :program:`webpack` se encargue de incorpar las
+referencias pertinentes. La configuración, en este caso, debe añadirse a
+:file:`webpack/webpack.common.js`, ya que tanto en producción como en
+desarrollo se tendrá que llevar a cabo la tarea:
+
+.. _webpack-simple:
+
+.. literalinclude:: files/webpack.common.simple.js
+   :language: js
+
+Podemos ahora generar el resultado con::
+
+   $ npm run build
+
+pero como en esta ocasión sí tenemos un |HTML|, podría interesarnos levantar un
+servidor web y recargar la aplicación cada vez que hagamos un cambio en el
+código fuente::
+
+   $ npm run debug
+
+Además, gracias a que hemos incluido la línea::
+
+   devtool: 'inline-source-map'
+
+los errores que genere la ejecución del código (en nuestro ejemplo hemos
+incluido una línea que hace referencia a una función inexistente) referirán los
+ficheros originales (:file:`src/js/index.js`) e incluso podremos fijar sobre
+ellos puntos de ruptura para llevar a cabo la depuración del código.
+
+Por defecto, los mapeos se escriben como comentarios dentro de los propios
+ficheros ``.js``. Podemos hacer que se escriban en fichero aparte modificando
+la configuración:
+
+.. code-block:: js
+
+   const merge = require('webpack-merge'),
+         common = require('./webpack.common.js'),
+         webpack = require("webpack");
+
+   const config = merge(common, {
+      mode: "development",
+      devtool: false,
+      plugins: [
+         new webpack.SourceMapDevToolPlugin({
+            filename: 'js/[name].js.map'
+         })
+      ]
+   });
+
+   module.exports = config
+
+.. rubric:: Enlaces de interés
+
+* En el interesante `blog de Valentino Gagliardi
+  <https://www.valentinog.com/blog/>`_ hay una entrada de `introducción a
+  Webpack4 <https://www.valentinog.com/blog/webpack/>`_ y otra para describir
+  `cómo hacer con Webpack4 tareas que se hacen con Gulp
+  <https://www.valentinog.com/blog/from-gulp-to-webpack-4-tutorial/>`_ y que
+  puede informar de algunos aspectos adicionales a los explicados en la primera
+  entrada
+
+.. ¿Merecen estos scripts la pena?
+   https://www.robinwieruch.de/javascript-project-setup-tutorial/
+   https://www.robinwieruch.de/webpack-advanced-setup-tutorial/
+
+.. rubric:: Notas al pie
+
+.. [#] Tengamos presente que :code:`__dirname` es :file:`webpack`, ya que la
+   configuración se encuentra en :file:`webpack/webpack.development.js`.
+
+.. [#] Si se usa :code:`--open` sin argumento adicional:
+
+   .. code-block:: js
+
+      "debug": "webpack-dev-server --mode development --open"
+
+   tomará como valor :code:`true`. Sin embargo, puedo añadirse el navegador que
+   se quiere usar:
+
+   .. code-block:: js
+
+      "debug": "webpack-dev-server --mode development --open chromium"
+
+   Se prefiere, no obstante, no incluir el argumento y darle valor a *open* a
+   través de la configuración.
+
+.. [#] En los sistemas *linux*, el navegador predefinido es el que se obtiene
+   así:
+
+   .. code-block:: console
+
+      $ xdg-settings get default-web-browser
+      firefox-esr.desktop
+
+.. |HTML| replace:: :abbr:`HTML (HyperText Markup Language)`
+.. |CSS| replace:: :abbr:`CSS (Cascading Style Sheets)`
