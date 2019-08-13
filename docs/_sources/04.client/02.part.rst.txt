@@ -116,22 +116,61 @@ a través de la configuración, haciendo uso del plugin Provide_:
 
 Esta alternativa es provechosa para dos situaciones:
 
-* Cuando se usan librerías de terceros, ya que :program:`webpack` será capaz de
-  construir los ficheros resultantes (contengan o no estas librerías de terceros),
-  pero su importación no se encuentra en el código, por lo que si hemos usando
-  el estilo *ES2015* y el navegador es moderno y lo soporta, podremos usar
-  directamente el código fuente a través de la etiqueta script_, añadiendo las
-  librerías de terceros a través de otras etiquetas script_.
+* Cuando se usan librerías de terceros, pero se ha contruido el *Javascript*
+  resultante sin ellas (usando :ref:`externals <webpack-externals>`). En este
+  caso y si se ha usado el estilo *ES2015*, al incluirse importación sólo a
+  otros ficheros fuente, el fichero principal es directamente usable en ordenadores
+  modernos con que se cargue mediante una etqueta script_ con atributo :code:`type=module`
+  y en etiquetas script_ aparte las dependencias de terceros.
 
   .. code-block:: html
 
-     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-     <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+     <script src="https://unpkg.com/leaflet"></script>
+     <script src="https://unpkg.com/jquery"></script>
      <script type="module" src="src/js/index.js"></script>
   
 
 * Cuando requirimos importar repetidamente las librerías en distintos ficheros
   de nuestra aplicación.
+
+Es muy útil notar que, cuando de un libería externa no se usa todo su contenido, 
+lo más juicioso es incluir en nuestro desarrollo sólo el código estrictamente
+necesario. Si en cambio, se usa esto:
+
+.. code-block:: js
+
+   plugins: [
+      new webpack.ProvidePlugin({
+         turf: "@turf/turf"
+      });
+   ]
+
+se estará importando esa mastodóntica librería. Si nuestra intención, es
+mantener el objeto un objeto llamado *turf*, pero en el que sólo están
+disponibles :code:`turf.difference` y :code:`booleanPointInPolygon`, porque sólo
+estas herramientas son las que utilizamos, podemos hacer lo siguiente:
+
+.. code-block:: js
+
+   import difference from "@turf/difference/index.js";
+   import booleanPointInPolygon from "@turf/boolean-point-in-polygon/index.js";
+
+   export default {difference, booleanPointInPolygon};
+
+
+y con Provide_ usar este fichero intermedio:
+
+.. code-block:: js
+
+   plugins: [
+      new webpack.ProvidePlugin({
+         turf: "./turf.js"
+      });
+   ]
+
+lo cual permitirá usar dentro del código :code:`turf.difference` y
+:code:`turf.booleanPointInPolygon` y qué la incoporación del código externo haya
+el mínimo indispensable para que funcionen.
 
 Salida
 ======
@@ -414,8 +453,7 @@ con una configuración:
    pero no mantiene la estructura de directorios. En todos los ejemplos que
    hemos expuesto, las imágenes estén donde estén, acaban en un subdirectorio
    llamado :file:`images`. Para copiar una estructura completa es necesario
-   recurrir al plugin CopyPlugin_ que se utilizará más adelante al contruir un
-   :ref:`plugin con ejemplo de uso <webpack-plugin-ej>`.
+   recurrir al plugin CopyPlugin_.
 
 .. _webpack-css:
 
@@ -674,8 +712,134 @@ A partir de la versión *7.4.0*, `la documentación recomienda usar core-js
    la función. Como sólo se añade el código indispensable para implementar las
    funciones necesarias, es buena idea configurar siempre *polyfill*.
 
+.. _webpack-debug:
+
+Depuración
+==========
+Para un desarrollo ágil de la aplicación es fundamental que configuremos
+adecuadamente :program:`webpack-dev-server`, a fin de que podamos comprobar
+sobre la marcha los cambios que aplicamos al código. Esta configuración se hace
+a través del atributo *devServer*:
+
+.. code-block:: js
+
+   devServer: {
+      open: "chromium"
+   }
+
+En principio, sirve a través del servidor web (en la dirección
+:file:`http:/localhost:8080`) los ficheros resultantes del procesamiento, los
+cuales **no** llegan a escribirse en disco.  Además, fusiona con ellos el
+directorio raíz del proyecto. En consecuencia, si nuestro proyecto tiene unos
+ficheros originales :file:`src/index.html` y :file:`src/index.js` que se
+transforman en :file:`dist/index.html` y :file:`dist/index.bundle.js` resultará
+que:
+
+============================  =============================================
+Fichero                       Accesible mediante
+============================  =============================================
+:file:`src/index.html`        :file:`http://localhost:8080/src/index.html`
+:file:`src/index.js`          :file:`http://localhost:8080/src/index.js`
+:file:`dist/index.html`       :file:`http://localhost:8080/index.html`
+:file:`dist/index.bundle.js`  :file:`http://localhost:8080/index.bundle.js`
+============================  =============================================
+
+.. warning:: Obsérvese que la ruta relativa entre los ficheros generados
+   y los fichero no generados cambia en el servidor web. Esto no quiere
+   decir que el directorio :file:`dist/` desaparezca. Si existía previamente
+   y contenía ficheros de anteriores procesamientos estos continuarán siendo
+   accesibles dentro de :file:`http://localhost:8080/dist`. Son los ficheros
+   generados, que no se llegan a escribir físicamente en disco, los que aparecen
+   en la raíz del servidor.
+
+Este comportamiento, sin embargo. puede alterarse con algunas opciones:
+
+* *contentBase* indica un directorio del sistema de ficheros que se
+  quiere fusionar con la directorio raíz del servidor wen. Su valor
+  predeterminado es el directorio raíz del proyecto, de ahí que resulte lo que
+  acabamos de explicar.  Podemos, no obstante, definir otro cualquiera (usando
+  una ruta relativa, eso sí). Por ejemplo:
+
+  .. code-block:: js
+
+     devServer: {
+        contentBase: path.resolve(__dirname, "examples"),
+        //watchContentBase: true,
+        open: "chromium"
+     }
+
+   en cuyo caso, se fusionará el subdirectorio :file:`examples`. Si, además,
+   añadimos *watchContentBase* el servidor no sólo vigilará cambios en los
+   ficheros generados, sino también cambios en los ficheros estáticos contenidos
+   en :file:`examples`.
+
+   Si el valor de *contentBase* es ``false``, sólo estarán disponibles los
+   ficheros generados.
+
+* *publicPath* permite cambiar la ruta en el servidor donde aparecerán los
+  ficheros generados. En consecuencia, esta configuración:
+
+  .. code-block:: js
+
+     devServer: {
+        publicPath: "/dist/",
+        open: "chromium"
+     }
+
+  provocará este efecto:
+
+  ============================ ===================================================
+  Fichero                       Accesible mediante
+  ============================ ===================================================
+  :file:`src/index.html`        :file:`http://localhost:8080/src/index.html`
+  :file:`src/index.js`          :file:`http://localhost:8080/src/index.js`
+  :file:`dist/index.html`       :file:`http://localhost:8080/dist/index.html`
+  :file:`dist/index.bundle.js`  :file:`http://localhost:8080/dist/index.bundle.js`
+  ============================ ===================================================
+
+  Como puede verse, los ficheros estáticos del sistema de ficheros siguen
+  compartiéndose en la raíz del servidor web.
+
+Por su parte, la otra opción, *open*, rige qué se hace al levantar el
+servidor:
+
+- Si es ``false``, que es su valor predeterminado al no haber incluido el
+  argumento :code:`--open`\ [#]_ en :file:`package.json`, no se abre una ventana
+  con la aplicación en el navegador, así que tendremos que abrir manualmente
+  nosotros la página eni la dirección::
+
+   http://localhost:8080
+
+- Si toma valor, debe ser una cadena que indique el navegador con el que se
+  quiere ver la aplicación.
+
+- Si es ``true``, se usa el navegador predefinido por el sistema\ [#]_.
+
+.. note:: Aunque tenga un interés muy relativo, también es posible hacer
+   que los ficheros resultantes se escriban en disco.
+
+   .. code-block:: js
+
+      devServer: {
+         writeToDisk: true,
+         contentBase: false
+         open: "chromium"
+      }
+
+   En este caso, además de publicarse el contenido a través del servidor, se
+   escribirán los ficheros resultantes en el directorio de salida.
+
+Optimización
+=============
+
+.. todo:: A partir de `este artículo
+   <https://hackernoon.com/optimising-your-application-bundle-size-with-webpack-e85b00bab579>`_.
+
 Múltiples entornos
 ==================
+
+.. todo:: Reescribirlo usando un único fichero de configuración.
+
 Con la configuración hecha hasta aquí, tenemos dos configuraciones distintas:
 una para producción y otra para desarrollo que se logran cargando ficheros
 de configuración distintos. Sin embargo, :program:`webpack` permite pasar por
@@ -764,6 +928,14 @@ Para precisar la configuración se usan dos variables:
    por ejemplo, a una más antigua para mantener la compatibilidad con versiones
    más antiguas del intérprete. Traducir de `CoffeeScript`_ o `TypeScript`_ a
    *Javascript* también es *transpilar*.
+
+.. [#] En los sistemas *linux*, el navegador predefinido es el que se obtiene
+   así:
+
+   .. code-block:: console
+
+      $ xdg-settings get default-web-browser
+      firefox-esr.desktop
 
 .. [#] Las variables de entorno que se pasan de forma estándar (véase *NODE_ENV*
    cuando se trataba :ref:`babel <babel>`) se encuentran disponibles en el

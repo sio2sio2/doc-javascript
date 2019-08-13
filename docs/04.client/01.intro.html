@@ -281,49 +281,9 @@ definir (<em>debug</em>), pero añadiremos una configuración específica para
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Para entender esta configuración, es indispensable conocer cómo funciona, en
-realidad, <strong class="program">webpack-dev-server</strong>: en principio, sirve desde un directorio
-virtual creado en la memoria los ficheros resultantes del procesamiento. Además,
-fusiona este directorio virtual con el directorio de salida (<code class="file docutils literal notranslate"><span class="pre">dist/</span></code> en
-principio si no se configura otra cosa). Ahora bien, la opción <em>contentBase</em>,
-permite indicar un directorio distinto del sistema real de ficheros para la
-fusión. Si el valor es <code class="docutils literal notranslate"><span class="pre">false</span></code>, como es el caso, sólo se sirven los ficheros
-del directorio virtual (o sea, sólo los ficheros resultantes del procesamiento).
-Por supuesto, podemos establecer el valor que queramos, por ejemplo:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">contentBase</span><span class="o">:</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">).</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>En este caso, fusionaremos todo el contenido del directorio de trabajo con los
-ficheros resultantes. La otra opción, <em>open</em>, rige qué se hace al levantar el
-servidor:</p>
-<ul>
-<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">false</span></code>, que es su valor predeterminado al no haber incluido el
-argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id4" id="id1">[1]</a> en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no se abre una ventana
-con la aplicación en el navegador, así que tendremos que abrir manualmente
-nosotros la página eni la dirección:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Si toma valor, debe ser una cadena que indique el navegador con el que se
-quiere ver la aplicación.</p>
-</li>
-<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema<a class="footnote-reference" href="#id5" id="id2">[2]</a>.</p>
-</li>
-</ul>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p>Aunque tenga un interés muy relativo, también es posible hacer
-que los ficheros resultantes se escriban en disco.</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
-   <span class="nx">writeToDisk</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-   <span class="nx">contentBase</span><span class="o">:</span> <span class="kc">false</span>
-   <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p class="last">En este caso, además de publicarse el contenido a través del servidor, se
-escribirán los ficheros resultantes en el directorio de salida.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">Ver también</p>
+<p class="last">Más adelante trataremos la <a class="reference internal" href="02.part.html#webpack-debug"><span class="std std-ref">depuración mediante el servidor web</span></a>.</p>
 </div>
 <p id="webpack-simple-html">Por su parte, <code class="file docutils literal notranslate"><span class="pre">index.html</span></code> puede ser el siguiente:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
@@ -403,7 +363,7 @@ código fuente:</p>
 <p>los errores que genere la ejecución del código (en nuestro ejemplo hemos
 incluido una línea que hace referencia a una función inexistente) referirán los
 ficheros originales (<code class="file docutils literal notranslate"><span class="pre">src/js/index.js</span></code>) e incluso podremos fijar sobre
-ellos puntos de ruptura para llevar a cabo la depuración del código<a class="footnote-reference" href="#id6" id="id3">[3]</a>.</p>
+ellos puntos de ruptura para llevar a cabo la depuración del código<a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
 <p>Por defecto, los mapeos se escriben como comentarios dentro de los propios
 ficheros <code class="docutils literal notranslate"><span class="pre">.js</span></code>. Podemos hacer que se escriban en fichero aparte modificando
 la configuración referida al desarrollo:</p>
@@ -433,7 +393,7 @@ puede informar de algunos aspectos adicionales a los explicados en la primera
 entrada</li>
 </ul>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
+<table class="docutils footnote" frame="void" id="id2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><p class="first">Si se usa <code class="code docutils literal notranslate"><span class="pre">--open</span></code> sin argumento adicional:</p>
@@ -450,22 +410,10 @@ través de la configuración.</p>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id5" rules="none">
+<table class="docutils footnote" frame="void" id="id3" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
-así:</p>
-<div class="last highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> xdg-settings get default-web-browser
-<span class="go">firefox-esr.desktop</span>
-</pre></div>
-</div>
-</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id6" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Los ficheros fuente podremos encontrarlos en el navegador dentro del ítem
+<tr><td class="label">[2]</td><td>Los ficheros fuente podremos encontrarlos en el navegador dentro del ítem
 <code class="code docutils literal notranslate"><span class="pre">webpack://</span></code>.</td></tr>
 </tbody>
 </table>

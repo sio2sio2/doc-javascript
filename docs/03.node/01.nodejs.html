@@ -194,8 +194,8 @@ segundo. Para ello, podemos usar (o adaptar) este <a class="reference download i
       <span class="nx">mkdir</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NPM_MAIN</span><span class="p">);</span>
       <span class="k">return</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NPM_MAIN</span><span class="p">;</span>
    <span class="p">}</span>
-   <span class="k">else</span> <span class="k">return</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">&quot;Fichero principal&quot;</span><span class="p">,</span> <span class="nx">mainFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">mkdir</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+   <span class="k">else</span> <span class="k">return</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">&quot;Fichero principal&quot;</span><span class="p">,</span> <span class="nx">mainFile</span><span class="p">,</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="c1">//mkdir(res);</span>
       <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
    <span class="p">});</span>
 <span class="p">}</span>
@@ -247,6 +247,7 @@ segundo. Para ello, podemos usar (o adaptar) este <a class="reference download i
 
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({</span>
    <span class="nx">name</span><span class="o">:</span> <span class="nx">basename</span><span class="p">,</span>
+   <span class="nx">description</span><span class="o">:</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">&quot;Describa brevemente el fichero: &quot;</span><span class="p">,</span> <span class="sb">`Paquete </span><span class="si">${</span><span class="nx">basename</span><span class="si">}</span><span class="sb">`</span><span class="p">),</span>
    <span class="nx">author</span><span class="o">:</span> <span class="nx">getAuthor</span><span class="p">(),</span>
    <span class="nx">version</span><span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.version&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="s2">&quot;0.1.0&quot;</span><span class="p">,</span>
    <span class="nx">main</span><span class="o">:</span> <span class="nx">getMainFile</span><span class="p">(),</span>

@@ -235,49 +235,8 @@ definir (*debug*), pero añadiremos una configuración específica para
       }
    )
 
-Para entender esta configuración, es indispensable conocer cómo funciona, en
-realidad, :program:`webpack-dev-server`: en principio, sirve desde un directorio
-virtual creado en la memoria los ficheros resultantes del procesamiento. Además,
-fusiona este directorio virtual con el directorio de salida (:file:`dist/` en
-principio si no se configura otra cosa). Ahora bien, la opción *contentBase*,
-permite indicar un directorio distinto del sistema real de ficheros para la
-fusión. Si el valor es ``false``, como es el caso, sólo se sirven los ficheros
-del directorio virtual (o sea, sólo los ficheros resultantes del procesamiento).
-Por supuesto, podemos establecer el valor que queramos, por ejemplo:
-
-.. code-block:: js
-
-   contentBase: require("path").resolve(__dirname, ".")
-
-En este caso, fusionaremos todo el contenido del directorio de trabajo con los
-ficheros resultantes. La otra opción, *open*, rige qué se hace al levantar el
-servidor:
-
-- Si es ``false``, que es su valor predeterminado al no haber incluido el
-  argumento :code:`--open`\ [#]_ en :file:`package.json`, no se abre una ventana
-  con la aplicación en el navegador, así que tendremos que abrir manualmente
-  nosotros la página eni la dirección::
-
-   http://localhost:8080
-
-- Si toma valor, debe ser una cadena que indique el navegador con el que se
-  quiere ver la aplicación.
-
-- Si es ``true``, se usa el navegador predefinido por el sistema\ [#]_.
-
-.. note:: Aunque tenga un interés muy relativo, también es posible hacer
-   que los ficheros resultantes se escriban en disco.
-
-   .. code-block:: js
-
-      devServer: {
-         writeToDisk: true,
-         contentBase: false
-         open: "chromium"
-      }
-
-   En este caso, además de publicarse el contenido a través del servidor, se
-   escribirán los ficheros resultantes en el directorio de salida.
+.. seealso:: Más adelante trataremos la :ref:`depuración mediante el servidor web
+   <webpack-debug>`.
 
 .. _webpack-simple-html:
 
@@ -425,14 +384,6 @@ la configuración referida al desarrollo:
 
    Se prefiere, no obstante, no incluir el argumento y darle valor a *open* a
    través de la configuración.
-
-.. [#] En los sistemas *linux*, el navegador predefinido es el que se obtiene
-   así:
-
-   .. code-block:: console
-
-      $ xdg-settings get default-web-browser
-      firefox-esr.desktop
 
 .. [#] Los ficheros fuente podremos encontrarlos en el navegador dentro del ítem
    :code:`webpack://`.

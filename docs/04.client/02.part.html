@@ -92,7 +92,7 @@ hacer:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>lo cual tendrá el efecto de embutir ambos <em>scripts</em><a class="footnote-reference" href="#id7" id="id1">[1]</a> en un único fichero
+<p>lo cual tendrá el efecto de embutir ambos <em>scripts</em><a class="footnote-reference" href="#id9" id="id1">[1]</a> en un único fichero
 resultante. Esto es necesario porque al ser dos <em>scripts</em> independientes
 utilizar el primero u el segundo como punto de entrada no incluiría al otro en
 la salida. Otra variante es:</p>
@@ -116,7 +116,7 @@ permite que se usa tanto el sistema <a class="reference external" href="https://
 que <a class="reference external" href="https://nodejs.org/">NodeJS</a> tiene soporte.</li>
 <li>Usar <em>ES2015</em> dentro del código de la propia aplicación, ya que es el estándar
 aprobado y bajo determinadas circunstancias (como no importar aplicaciones de
-terceros<a class="footnote-reference" href="#id8" id="id2">[2]</a> dentro del propio código), genera un código directamente usable
+terceros<a class="footnote-reference" href="#id10" id="id2">[2]</a> dentro del propio código), genera un código directamente usable
 en navegadores modernos.</li>
 </ul>
 </div>
@@ -146,14 +146,14 @@ a través de la configuración, haciendo uso del plugin <a class="reference exte
 </div>
 <p>Esta alternativa es provechosa para dos situaciones:</p>
 <ul>
-<li><p class="first">Cuando se usan librerías de terceros, ya que <strong class="program">webpack</strong> será capaz de
-construir los ficheros resultantes (contengan o no estas librerías de terceros),
-pero su importación no se encuentra en el código, por lo que si hemos usando
-el estilo <em>ES2015</em> y el navegador es moderno y lo soporta, podremos usar
-directamente el código fuente a través de la etiqueta <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">script</a>, añadiendo las
-librerías de terceros a través de otras etiquetas <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">script</a>.</p>
-<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.5.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/jquery@3.3.1/dist/jquery.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<li><p class="first">Cuando se usan librerías de terceros, pero se ha contruido el <em>Javascript</em>
+resultante sin ellas (usando <a class="reference internal" href="03.ejemplos.html#webpack-externals"><span class="std std-ref">externals</span></a>). En este
+caso y si se ha usado el estilo <em>ES2015</em>, al incluirse importación sólo a
+otros ficheros fuente, el fichero principal es directamente usable en ordenadores
+modernos con que se cargue mediante una etqueta <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">script</a> con atributo <code class="code docutils literal notranslate"><span class="pre">type=module</span></code>
+y en etiquetas <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">script</a> aparte las dependencias de terceros.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/jquery&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;module&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;src/js/index.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </pre></div>
 </div>
@@ -162,6 +162,37 @@ librerías de terceros a través de otras etiquetas <a class="reference external
 de nuestra aplicación.</p>
 </li>
 </ul>
+<p>Es muy útil notar que, cuando de un libería externa no se usa todo su contenido,
+lo más juicioso es incluir en nuestro desarrollo sólo el código estrictamente
+necesario. Si en cambio, se usa esto:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+   <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
+      <span class="nx">turf</span><span class="o">:</span> <span class="s2">&quot;@turf/turf&quot;</span>
+   <span class="p">});</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>se estará importando esa mastodóntica librería. Si nuestra intención, es
+mantener el objeto un objeto llamado <em>turf</em>, pero en el que sólo están
+disponibles <code class="code docutils literal notranslate"><span class="pre">turf.difference</span></code> y <code class="code docutils literal notranslate"><span class="pre">booleanPointInPolygon</span></code>, porque sólo
+estas herramientas son las que utilizamos, podemos hacer lo siguiente:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">difference</span> <span class="nx">from</span> <span class="s2">&quot;@turf/difference/index.js&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">booleanPointInPolygon</span> <span class="nx">from</span> <span class="s2">&quot;@turf/boolean-point-in-polygon/index.js&quot;</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="p">{</span><span class="nx">difference</span><span class="p">,</span> <span class="nx">booleanPointInPolygon</span><span class="p">};</span>
+</pre></div>
+</div>
+<p>y con <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> usar este fichero intermedio:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+   <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
+      <span class="nx">turf</span><span class="o">:</span> <span class="s2">&quot;./turf.js&quot;</span>
+   <span class="p">});</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>lo cual permitirá usar dentro del código <code class="code docutils literal notranslate"><span class="pre">turf.difference</span></code> y
+<code class="code docutils literal notranslate"><span class="pre">turf.booleanPointInPolygon</span></code> y qué la incoporación del código externo haya
+el mínimo indispensable para que funcionen.</p>
 </div>
 </div>
 <div class="section" id="salida">
@@ -198,11 +229,11 @@ indispensable que el código sea accesible, si se ejecuta en un navegador.
 Podemos distinguir tres casos:</p>
 <ul>
 <li><p class="first">Si nuestro código no necesita exportar nada, no importa ninguna librería, o
-si la necesita está incluida en el código <em>Javascript</em> resultante<a class="footnote-reference" href="#id9" id="id3">[3]</a>, no
+si la necesita está incluida en el código <em>Javascript</em> resultante<a class="footnote-reference" href="#id11" id="id3">[3]</a>, no
 necesitamos hacer ninguna definición especial sobre el formato.</p>
 </li>
 <li><p class="first">Si nuestro código no necesita exportar nada, pero importa alguna librería
-externa a la que se acceda a través de una variable global<a class="footnote-reference" href="#id10" id="id4">[4]</a>, entonces
+externa a la que se acceda a través de una variable global<a class="footnote-reference" href="#id12" id="id4">[4]</a>, entonces
 es necesario que tenga <a class="reference internal" href="../03.node/03.modulos.html#mod-umd"><span class="std std-ref">formato UMD</span></a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span> <span class="o">:</span> <span class="p">{</span>
    <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
@@ -410,8 +441,7 @@ que funciona como minimizador:</p>
 pero no mantiene la estructura de directorios. En todos los ejemplos que
 hemos expuesto, las imágenes estén donde estén, acaban en un subdirectorio
 llamado <code class="file docutils literal notranslate"><span class="pre">images</span></code>. Para copiar una estructura completa es necesario
-recurrir al plugin <a class="reference external" href="https://github.com/webpack-contrib/copy-webpack-plugin">CopyPlugin</a> que se utilizará más adelante al contruir un
-<a class="reference internal" href="03.ejemplos.html#webpack-plugin-ej"><span class="std std-ref">plugin con ejemplo de uso</span></a>.</p>
+recurrir al plugin <a class="reference external" href="https://github.com/webpack-contrib/copy-webpack-plugin">CopyPlugin</a>.</p>
 </div>
 </div>
 <div class="section" id="css">
@@ -551,7 +581,7 @@ para ficheros <abbr title="Cascading Style Sheets">CSS</abbr>.</p>
 <span id="babel"></span><h2>4.2.5. Compatibilidad<a class="headerlink" href="#compatibilidad" title="Enlazar permanentemente con este título">¶</a></h2>
 <p><strong class="program">Babel</strong> es un componente fundamental de nuestro propósito puesto que
 permite sustituir sintaxis demasiado nueva por otra compatible con versiones más
-antiguas de <em>Javascript</em>. Para usarlo y que transpile<a class="footnote-reference" href="#id11" id="id5">[5]</a> de forma que quede una
+antiguas de <em>Javascript</em>. Para usarlo y que transpile<a class="footnote-reference" href="#id13" id="id5">[5]</a> de forma que quede una
 sintaxis ampliamente soportada, podemos añadir algunas líneas a
 <code class="file docutils literal notranslate"><span class="pre">webpack/webpack.production.js</span></code>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
@@ -733,13 +763,170 @@ la función. Como sólo se añade el código indispensable para implementar las
 funciones necesarias, es buena idea configurar siempre <em>polyfill</em>.</p>
 </div>
 </div>
+<div class="section" id="depuracion">
+<span id="webpack-debug"></span><h2>4.2.6. Depuración<a class="headerlink" href="#depuracion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Para un desarrollo ágil de la aplicación es fundamental que configuremos
+adecuadamente <strong class="program">webpack-dev-server</strong>, a fin de que podamos comprobar
+sobre la marcha los cambios que aplicamos al código. Esta configuración se hace
+a través del atributo <em>devServer</em>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+   <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>En principio, sirve a través del servidor web (en la dirección
+<code class="file docutils literal notranslate"><span class="pre">http:/localhost:8080</span></code>) los ficheros resultantes del procesamiento, los
+cuales <strong>no</strong> llegan a escribirse en disco.  Además, fusiona con ellos el
+directorio raíz del proyecto. En consecuencia, si nuestro proyecto tiene unos
+ficheros originales <code class="file docutils literal notranslate"><span class="pre">src/index.html</span></code> y <code class="file docutils literal notranslate"><span class="pre">src/index.js</span></code> que se
+transforman en <code class="file docutils literal notranslate"><span class="pre">dist/index.html</span></code> y <code class="file docutils literal notranslate"><span class="pre">dist/index.bundle.js</span></code> resultará
+que:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Fichero</th>
+<th class="head">Accesible mediante</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="file docutils literal notranslate"><span class="pre">src/index.html</span></code></td>
+<td><code class="file docutils literal notranslate"><span class="pre">http://localhost:8080/src/index.html</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="file docutils literal notranslate"><span class="pre">src/index.js</span></code></td>
+<td><code class="file docutils literal notranslate"><span class="pre">http://localhost:8080/src/index.js</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="file docutils literal notranslate"><span class="pre">dist/index.html</span></code></td>
+<td><code class="file docutils literal notranslate"><span class="pre">http://localhost:8080/index.html</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="file docutils literal notranslate"><span class="pre">dist/index.bundle.js</span></code></td>
+<td><code class="file docutils literal notranslate"><span class="pre">http://localhost:8080/index.bundle.js</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Advertencia</p>
+<p class="last">Obsérvese que la ruta relativa entre los ficheros generados
+y los fichero no generados cambia en el servidor web. Esto no quiere
+decir que el directorio <code class="file docutils literal notranslate"><span class="pre">dist/</span></code> desaparezca. Si existía previamente
+y contenía ficheros de anteriores procesamientos estos continuarán siendo
+accesibles dentro de <code class="file docutils literal notranslate"><span class="pre">http://localhost:8080/dist</span></code>. Son los ficheros
+generados, que no se llegan a escribir físicamente en disco, los que aparecen
+en la raíz del servidor.</p>
+</div>
+<p>Este comportamiento, sin embargo. puede alterarse con algunas opciones:</p>
+<ul>
+<li><p class="first"><em>contentBase</em> indica un directorio del sistema de ficheros que se
+quiere fusionar con la directorio raíz del servidor wen. Su valor
+predeterminado es el directorio raíz del proyecto, de ahí que resulte lo que
+acabamos de explicar.  Podemos, no obstante, definir otro cualquiera (usando
+una ruta relativa, eso sí). Por ejemplo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span>  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+     <span class="nx">contentBase</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;examples&quot;</span><span class="p">),</span>
+     <span class="c1">//watchContentBase: true,</span>
+     <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
+  <span class="p">}</span>
+
+<span class="nx">en</span> <span class="nx">cuyo</span> <span class="nx">caso</span><span class="p">,</span> <span class="nx">se</span> <span class="nx">fusionará</span> <span class="nx">el</span> <span class="nx">subdirectorio</span> <span class="o">:</span><span class="nx">file</span><span class="o">:</span><span class="sb">`examples`</span><span class="p">.</span> <span class="nx">Si</span><span class="p">,</span> <span class="nx">además</span><span class="p">,</span>
+<span class="nx">añadimos</span> <span class="o">*</span><span class="nx">watchContentBase</span><span class="o">*</span> <span class="nx">el</span> <span class="nx">servidor</span> <span class="nx">no</span> <span class="nx">sólo</span> <span class="nx">vigilará</span> <span class="nx">cambios</span> <span class="nx">en</span> <span class="nx">los</span>
+<span class="nx">ficheros</span> <span class="nx">generados</span><span class="p">,</span> <span class="nx">sino</span> <span class="nx">también</span> <span class="nx">cambios</span> <span class="nx">en</span> <span class="nx">los</span> <span class="nx">ficheros</span> <span class="nx">estáticos</span> <span class="nx">contenidos</span>
+<span class="nx">en</span> <span class="o">:</span><span class="nx">file</span><span class="o">:</span><span class="sb">`examples`</span><span class="p">.</span>
+
+<span class="nx">Si</span> <span class="nx">el</span> <span class="nx">valor</span> <span class="nx">de</span> <span class="o">*</span><span class="nx">contentBase</span><span class="o">*</span> <span class="nx">es</span> <span class="sb">``</span><span class="kc">false</span><span class="sb">``</span><span class="p">,</span> <span class="nx">sólo</span> <span class="nx">estarán</span> <span class="nx">disponibles</span> <span class="nx">los</span>
+<span class="nx">ficheros</span> <span class="nx">generados</span><span class="p">.</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><em>publicPath</em> permite cambiar la ruta en el servidor donde aparecerán los
+ficheros generados. En consecuencia, esta configuración:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+   <span class="nx">publicPath</span><span class="o">:</span> <span class="s2">&quot;/dist/&quot;</span><span class="p">,</span>
+   <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>provocará este efecto:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Fichero</th>
+<th class="head">Accesible mediante</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="file docutils literal notranslate"><span class="pre">src/index.html</span></code></td>
+<td><code class="file docutils literal notranslate"><span class="pre">http://localhost:8080/src/index.html</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="file docutils literal notranslate"><span class="pre">src/index.js</span></code></td>
+<td><code class="file docutils literal notranslate"><span class="pre">http://localhost:8080/src/index.js</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="file docutils literal notranslate"><span class="pre">dist/index.html</span></code></td>
+<td><code class="file docutils literal notranslate"><span class="pre">http://localhost:8080/dist/index.html</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="file docutils literal notranslate"><span class="pre">dist/index.bundle.js</span></code></td>
+<td><code class="file docutils literal notranslate"><span class="pre">http://localhost:8080/dist/index.bundle.js</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Como puede verse, los ficheros estáticos del sistema de ficheros siguen
+compartiéndose en la raíz del servidor web.</p>
+</li>
+</ul>
+<p>Por su parte, la otra opción, <em>open</em>, rige qué se hace al levantar el
+servidor:</p>
+<ul>
+<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">false</span></code>, que es su valor predeterminado al no haber incluido el
+argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id14" id="id6">[6]</a> en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no se abre una ventana
+con la aplicación en el navegador, así que tendremos que abrir manualmente
+nosotros la página eni la dirección:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Si toma valor, debe ser una cadena que indique el navegador con el que se
+quiere ver la aplicación.</p>
+</li>
+<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema<a class="footnote-reference" href="#id15" id="id7">[7]</a>.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Aunque tenga un interés muy relativo, también es posible hacer
+que los ficheros resultantes se escriban en disco.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+   <span class="nx">writeToDisk</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+   <span class="nx">contentBase</span><span class="o">:</span> <span class="kc">false</span>
+   <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">En este caso, además de publicarse el contenido a través del servidor, se
+escribirán los ficheros resultantes en el directorio de salida.</p>
+</div>
+</div>
+<div class="section" id="optimizacion">
+<h2>4.2.7. Optimización<a class="headerlink" href="#optimizacion" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Por hacer</p>
+<p class="last">A partir de <a class="reference external" href="https://hackernoon.com/optimising-your-application-bundle-size-with-webpack-e85b00bab579">este artículo</a>.</p>
+</div>
+</div>
 <div class="section" id="multiples-entornos">
-<h2>4.2.6. Múltiples entornos<a class="headerlink" href="#multiples-entornos" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2>4.2.8. Múltiples entornos<a class="headerlink" href="#multiples-entornos" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Por hacer</p>
+<p class="last">Reescribirlo usando un único fichero de configuración.</p>
+</div>
 <p>Con la configuración hecha hasta aquí, tenemos dos configuraciones distintas:
 una para producción y otra para desarrollo que se logran cargando ficheros
 de configuración distintos. Sin embargo, <strong class="program">webpack</strong> permite pasar por
 línea de comandos variables que pueden utilizarse dentro del <em>script</em> que
-constituye la configuración<a class="footnote-reference" href="#id12" id="id6">[6]</a>. Jugar con los valores de estas variables posibilita
+constituye la configuración<a class="footnote-reference" href="#id16" id="id8">[8]</a>. Jugar con los valores de estas variables posibilita
 crear una amplia variedad de configuraciones de manera sencilla.</p>
 <p>Para ilustrarlo crearemos una configuración con los siguientes ficheros:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+-- webpack.config.js
@@ -882,7 +1069,7 @@ puede asimilarse a <code class="code docutils literal notranslate"><span class="
 de <a class="reference internal" href="#babel"><span class="std std-ref">babel</span></a>.</li>
 </ul>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id7" rules="none">
+<table class="docutils footnote" frame="void" id="id9" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Entiéndase que los dos scripts no tienen por qué corresponderse con dos
@@ -890,7 +1077,7 @@ ficheros. Cada uno de ellos puede estar programado de forma modular y
 componerse de múltiples ficheros.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id8" rules="none">
+<table class="docutils footnote" frame="void" id="id10" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>A menos claro está que hayamos hecho una copia incluida en nuestro
@@ -901,7 +1088,7 @@ localización no es alcanzable por un cliente web. Otra solución es usar el
 plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a>, que se explica a continuación.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id9" rules="none">
+<table class="docutils footnote" frame="void" id="id11" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Hasta el momento, sólo sabemos crear código <em>Javascript</em> que incluye
@@ -909,7 +1096,7 @@ en el propio código todas las dependencias, pero ya veremos que hay forma
 de no hacerlo.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id10" rules="none">
+<table class="docutils footnote" frame="void" id="id12" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>Sería el caso, por ejemplo, de que crearamos un desarrollo que usa
@@ -918,14 +1105,14 @@ no se incluyera dentro del código resultante, lo cual <a class="reference inter
 adeltante que es posible</span></a>.`</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id11" rules="none">
+<table class="docutils footnote" frame="void" id="id13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>También podemos usar <strong class="program">postcss-loader</strong>, entre <strong class="program">css-loader</strong>
 y <strong class="program">sass-loader</strong>, pero importa poco a efectos de esta discusión.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id12" rules="none">
+<table class="docutils footnote" frame="void" id="id14" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id6">[6]</a></td><td><em>Transpilar</em> (y transpilación y transpilador) es un término
@@ -937,10 +1124,22 @@ más antiguas del intérprete. Traducir de <a class="reference external" href="h
 <em>Javascript</em> también es <em>transpilar</em>.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id13" rules="none">
+<table class="docutils footnote" frame="void" id="id15" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[7]</td><td><p class="first">Las variables de entorno que se pasan de forma estándar (véase <em>NODE_ENV</em>
+<tr><td class="label"><a class="fn-backref" href="#id7">[7]</a></td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
+así:</p>
+<div class="last highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> xdg-settings get default-web-browser
+<span class="go">firefox-esr.desktop</span>
+</pre></div>
+</div>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id16" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[8]</a></td><td><p class="first">Las variables de entorno que se pasan de forma estándar (véase <em>NODE_ENV</em>
 cuando se trataba <a class="reference internal" href="#babel"><span class="std std-ref">babel</span></a>) se encuentran disponibles en el
 script a través de <code class="code docutils literal notranslate"><span class="pre">process.env</span></code>:</p>
 <div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">)</span>
@@ -978,7 +1177,9 @@ script a través de <code class="code docutils literal notranslate"><span class=
 </ul>
 </li>
 <li><a class="reference internal" href="#compatibilidad">4.2.5. Compatibilidad</a></li>
-<li><a class="reference internal" href="#multiples-entornos">4.2.6. Múltiples entornos</a></li>
+<li><a class="reference internal" href="#depuracion">4.2.6. Depuración</a></li>
+<li><a class="reference internal" href="#optimizacion">4.2.7. Optimización</a></li>
+<li><a class="reference internal" href="#multiples-entornos">4.2.8. Múltiples entornos</a></li>
 </ul>
 </li>
 </ul>

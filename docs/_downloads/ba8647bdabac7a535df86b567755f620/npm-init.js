@@ -48,8 +48,8 @@ function getMainFile() {
       mkdir(process.env.NPM_MAIN);
       return process.env.NPM_MAIN;
    }
-   else return prompt("Fichero principal", mainFile, function(res) {
-      mkdir(res);
+   else return prompt("Fichero principal", mainFile, (res) => {
+      //mkdir(res);
       return res;
    });
 }
@@ -101,6 +101,7 @@ function gitInfo() {
 
 module.exports = Object.assign({
    name: basename,
+   description: prompt("Describa brevemente el fichero: ", `Paquete ${basename}`),
    author: getAuthor(),
    version: config.get("init.version") || "0.1.0",
    main: getMainFile(),
