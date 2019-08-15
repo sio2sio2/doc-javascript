@@ -22,7 +22,7 @@
     
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Búsqueda" href="../search.html" />
-    <link rel="next" title="4. Programación en el cliente (Webpack)" href="../04.client/index.html" />
+    <link rel="next" title="4. Programación en el cliente" href="../04.client/index.html" />
     <link rel="prev" title="3.2. Paquetes" href="02.npm.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -32,7 +32,7 @@
           <a href="../genindex.html" title="Índice General"
              accesskey="I">índice</a></li>
         <li class="right" >
-          <a href="../04.client/index.html" title="4. Programación en el cliente (Webpack)"
+          <a href="../04.client/index.html" title="4. Programación en el cliente"
              accesskey="N">siguiente</a> |</li>
         <li class="right" >
           <a href="02.npm.html" title="3.2. Paquetes"
@@ -134,7 +134,9 @@ importar ficheros las rutas relativas se hacen siempre explícitas
 (<code class="file docutils literal notranslate"><span class="pre">./modulo.js</span></code> y no.  simplemente, <code class="file docutils literal notranslate"><span class="pre">modulo.js</span></code>). Esto es debido
 a que cuando no se hace explícita la ruta, el sistema sobreentiende que debe
 buscar el módulo el la ruta donde se instalan los módulos local o
-globalmente.</p>
+globalmente. Además, cuando se indica un directorio y no un fichero, se
+consulta en el directorio el fichero <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> y se intenta cargar
+el fichero principal que en él se declare.</p>
 </div>
 <p>En el módulo, para hacer accesible a aquello que se desea exportar, basta con
 usar <code class="code docutils literal notranslate"><span class="pre">exports</span></code>:</p>
@@ -319,6 +321,12 @@ explicitamente que la ejecución debe hacerse en diferido:</p>
 </pre></div>
 </div>
 </div>
+<p>En cualquier caso, lo habitual cuando se escribe código para el navegador no es
+hacer uso de un código modular, que obliga a realizar varias peticiones al
+servidor, tantas como módulos compongan la aplicación, sino convertir el código
+fuente modular en otro compacto que, además, será válido para navegadores sin
+soporte para módulos. Se tratará de ello, al <a class="reference internal" href="../04.client/index.html#webpack"><span class="std std-ref">exponer la programación para
+clientes</span></a>.</p>
 </div>
 </div>
 <div class="section" id="otros-sistemas">
@@ -435,7 +443,7 @@ no tan recientes<a class="footnote-reference" href="#id2" id="id1">[1]</a>. Por 
                         title="capítulo anterior">3.2. Paquetes</a></p>
   <h4>Próximo tema</h4>
   <p class="topless"><a href="../04.client/index.html"
-                        title="próximo capítulo">4. Programación en el cliente (Webpack)</a></p>
+                        title="próximo capítulo">4. Programación en el cliente</a></p>
   <div role="note" aria-label="source link">
     <h3>Esta página</h3>
     <ul class="this-page-menu">
@@ -466,7 +474,7 @@ no tan recientes<a class="footnote-reference" href="#id2" id="id1">[1]</a>. Por 
           <a href="../genindex.html" title="Índice General"
              >índice</a></li>
         <li class="right" >
-          <a href="../04.client/index.html" title="4. Programación en el cliente (Webpack)"
+          <a href="../04.client/index.html" title="4. Programación en el cliente"
              >siguiente</a> |</li>
         <li class="right" >
           <a href="02.npm.html" title="3.2. Paquetes"

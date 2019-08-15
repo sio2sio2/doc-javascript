@@ -89,12 +89,16 @@ definición esta disponible siempre en el resto del código.
 
 CommonJS
 ========
+.. _webpack-import-path:
+
 .. warning:: Tanto para este sistema como para el siguiente, obsérvese que al
    importar ficheros las rutas relativas se hacen siempre explícitas
    (:file:`./modulo.js` y no.  simplemente, :file:`modulo.js`). Esto es debido
    a que cuando no se hace explícita la ruta, el sistema sobreentiende que debe
    buscar el módulo el la ruta donde se instalan los módulos local o
-   globalmente.
+   globalmente. Además, cuando se indica un directorio y no un fichero, se
+   consulta en el directorio el fichero :file:`package.json` y se intenta cargar
+   el fichero principal que en él se declare.
 
 En el módulo, para hacer accesible a aquello que se desea exportar, basta con
 usar :code:`exports`:
@@ -304,6 +308,13 @@ principio debería haber hecho el primero.
    .. code-block:: html
 
       <script nomodule defer script="fallback.js"></script>
+
+En cualquier caso, lo habitual cuando se escribe código para el navegador no es
+hacer uso de un código modular, que obliga a realizar varias peticiones al
+servidor, tantas como módulos compongan la aplicación, sino convertir el código
+fuente modular en otro compacto que, además, será válido para navegadores sin
+soporte para módulos. Se tratará de ello, al :ref:`exponer la programación para
+clientes <webpack>`.
 
 Otros sistemas
 ==============

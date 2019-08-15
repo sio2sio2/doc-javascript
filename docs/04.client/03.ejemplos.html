@@ -38,7 +38,7 @@
           <a href="02.part.html" title="4.2. Particularidades"
              accesskey="P">anterior</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">4. Programación en el cliente (Webpack)</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">4. Programación en el cliente</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -171,7 +171,7 @@ hasta que desarrollemos el próximo caso.</p>
 </dd>
 </dl>
 </li>
-<li><p class="first">Instalamos los paquetes necesarios<a class="footnote-reference" href="#id4" id="id1">[1]</a>:</p>
+<li><p class="first">Instalamos los paquetes necesarios<a class="footnote-reference" href="#id6" id="id1">[1]</a>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
 <span class="gp">$</span> npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
 <span class="gp">$</span> npm install core-js leaflet
@@ -334,10 +334,10 @@ sólo es necesario tratar el <abbr title="Cascading Style Sheets">CSS</abbr> y l
 </li>
 <li><p class="first">Para el resto de versiones que no incluyen <a class="reference external" href="https://leafletjs.com">Leaflet</a>:</p>
 <ol class="loweralpha simple">
-<li>Añadiendo <a class="reference external" href="https://webpack.js.org/configuration/externals/">externals</a>
-se logra eliminar <a class="reference external" href="https://leafletjs.com">Leaflet</a> del fichero resultante, pero hay que indicar
-cómo estará disponible la librería dependiendo de cómo se cargue.
-Obviamente, esto es posible porque:</li>
+<li>Añadiendo <a href="#id2"><span class="problematic" id="id3">:ref:`externals &lt;webpack-externals&gt;`_</span></a> se logra eliminar
+<a class="reference external" href="https://leafletjs.com">Leaflet</a> del fichero resultante, pero hay que indicar cómo estará
+disponible la librería dependiendo de cómo se cargue.  Obviamente, esto
+es posible porque:</li>
 <li>A <em>output</em> se añaden unos atributos que permiten construir un módulo <abbr title="Universal Module Definition">UMD</abbr>
 que es válido tanto para usarlo directamente en el navegador (con
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">script</a>) como para usarlo en <a class="reference external" href="https://nodejs.org/">NodeJS</a> (ya que puede cargarse con
@@ -650,7 +650,7 @@ el propia plugin que previamente hemos desarrollado.</p>
 </pre></div>
 </div>
 <p><a class="reference download internal" download="" href="../_downloads/f1946b7a9623ea433f15f3ddf1a1405b/webpack.common.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack/webpack.common.js</span></code></a>, que
-hace que los ficheros resultantes se generen dentro de <code class="file docutils literal notranslate"><span class="pre">docs/</span></code><a class="footnote-reference" href="#id5" id="id2">[2]</a>:</p>
+hace que los ficheros resultantes se generen dentro de <code class="file docutils literal notranslate"><span class="pre">docs/</span></code><a class="footnote-reference" href="#id7" id="id4">[2]</a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.common.js</span>
 <span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">),</span>
       <span class="nx">HtmlWebPackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;html-webpack-plugin&quot;</span><span class="p">),</span>
@@ -807,7 +807,7 @@ cual se consigue escribiendo a mano los ficheros que componen el ejemplo e
 impidiendo que <strong class="program">webpack</strong> pueda obrar transformación alguna.</p>
 <p>Siguiendo este principio, tomemos el directorio de trabajo del <a class="reference internal" href="#webpack-ej-plugin"><span class="std std-ref">ejemplo de
 desarrollo del plugin</span></a> y añadamos un directorio
-<code class="file docutils literal notranslate"><span class="pre">examples/</span></code><a class="footnote-reference" href="#id6" id="id3">[3]</a> con todo el código que desarrolla el ejemplo:</p>
+<code class="file docutils literal notranslate"><span class="pre">examples/</span></code><a class="footnote-reference" href="#id8" id="id5">[3]</a> con todo el código que desarrolla el ejemplo:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+-- examples
       +-- index.html
       +-- js/
@@ -1056,7 +1056,7 @@ puede informar de algunos aspectos adicionales a los explicados en la primera
 entrada</li>
 </ul>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
+<table class="docutils footnote" frame="void" id="id6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>La necesidad de incluir los cuatro últimos paquetes se debe a que
@@ -1065,20 +1065,20 @@ el script <em>bundle</em>, y tal fichero <em>refiere</em>, además, algunas imá
 Una alternativa a esta solución <strong class="program">MiniCssExtractPlugin</strong>+<strong class="program">css.loader</strong> es utilizar <strong class="program">file-loader</strong>+<strong class="program">extract-loader</strong>+<strong class="program">css-loader</strong>.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id5" rules="none">
+<table class="docutils footnote" frame="void" id="id7" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Esta aparente excentricidad tiene una explicación totalmente ajena a la
+<tr><td class="label"><a class="fn-backref" href="#id4">[2]</a></td><td>Esta aparente excentricidad tiene una explicación totalmente ajena a la
 aplicación en sí: entre otras alternativas, <a class="reference external" href="https://github.com">Github</a> permite publicar el
 contenida del directorio <code class="file docutils literal notranslate"><span class="pre">/docs</span></code>, así que hay se almacena el resultado
 para que éste se publique en la dirección
 <a class="reference external" href="https://sio2sio2.github.io/test.iconizoom">https://sio2sio2.github.io/test.iconizoom</a></td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id6" rules="none">
+<table class="docutils footnote" frame="void" id="id8" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>La elección no es arbitraria: es el directorio donde la <a class="reference external" href="https://leafletjs.com/2013/06/28/leaflet-plugin-authoring-guide.html#code">Guía de Leaflet</a>
+<tr><td class="label"><a class="fn-backref" href="#id5">[3]</a></td><td>La elección no es arbitraria: es el directorio donde la <a class="reference external" href="https://leafletjs.com/2013/06/28/leaflet-plugin-authoring-guide.html#code">Guía de Leaflet</a>
 prescribe que se dispongan los ejemplos.</td></tr>
 </tbody>
 </table>
@@ -1143,7 +1143,7 @@ prescribe que se dispongan los ejemplos.</td></tr>
           <a href="02.part.html" title="4.2. Particularidades"
              >anterior</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >4. Programación en el cliente (Webpack)</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="index.html" >4. Programación en el cliente</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

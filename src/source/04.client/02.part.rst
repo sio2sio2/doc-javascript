@@ -71,16 +71,41 @@ la salida. Otra variante es:
 
 que mantendrá ambos *scripts* separados creando dos ficheros de salida.
 
+.. warning:: Cuando el desarrollo no es una aplicación final, sino una librería,
+   es sumamente importante tener en cuenta que las librerías son útiles porque
+   ofrecen (o sea, exportan) algo al código que las invoca. Al tratar :ref:`la
+   salida <webpack-output>` volveremos a este concepto. Es indispensable tener
+   presente que, si un  punto de entrada encadena varios archivos, se exportará
+   aquello que exporte el último fichero de la lista. Por eso, debe escribirse
+   esto:
+
+   .. code-block:: js
+
+      entry: {
+         main: ["./src/index.css", "./src/index.js"]
+      }
+      
+   y no:
+
+   .. code:: js
+
+      entry: {
+         main: ["./src/index.js", "./src/index.css"]
+      }
+
+   ya que en este segundo caso, se exportará lo que exporte un fichero |CSS|, o
+   sea, nada.
+
 Carga de módulos
 ================
 Sistema de módulos
 ------------------
 Como se verá en los :ref:`ejemplos posteriores <webpack-ejemplos>`, lo habitual
-es que el código se deba cargar otros módulos propios o ajenos. :program:`webpack`
-permite que se usa tanto el sistema CommonJS_ como el *ES2015*. Aconsejamos:
+es que el código requiera cargar módulos propios o ajenos. :program:`webpack`
+permite que se usa tanto el sistema CommonJS_ como el *ES2015*. Un buen criterio
+es:
 
-+ Usar CommonJS_ en los ficheros de configuración, ya que es el sistema para el
-  que NodeJS_ tiene soporte.
++ Usar CommonJS_ en el fichero de configuración de :program:`webpack`.
 + Usar *ES2015* dentro del código de la propia aplicación, ya que es el estándar
   aprobado y bajo determinadas circunstancias (como no importar aplicaciones de
   terceros\ [#]_ dentro del propio código), genera un código directamente usable
@@ -88,21 +113,39 @@ permite que se usa tanto el sistema CommonJS_ como el *ES2015*. Aconsejamos:
 
 .. _webpack-conf-import:
 
-Importación en la configuración
--------------------------------
+Importación de módulos
+----------------------
 Ya se ha visto que para cargar módulos (al estilo *ES2015*, por ejemplo) es
 necesario::
 
    import L from "leaflet";
    import $ from "jquery";
 
-Ahora bien, con :program:`webpack` es también posible hacer esta importación 
-a través de la configuración, haciendo uso del plugin Provide_:
+Esto funciona sin problemas, pero tiene un inconveniente si pretendemos
+desarrollar una librería y no un aplicación final. A diferencia de una
+aplicación final, en la que se pretende generar un resultado que incluya todas
+las dependencias, cuando se desarrolla una librería, es muy común generar tres
+sabores distintos para su uso con el navegador:
+
+- La versión de producción sin dependencias, pongamos que :file:`library.js`\
+  [#]_.
+- La versión de producción que incluye todas sus dependencias, pongamos que
+  :file:`library.bundle.js`.
+- La versión para depuración sin dependencias, pongamos que
+  :file:`library-src.js`.
+
+Como dependiendo de la versión, el resultado incluye o no las librerías de
+terceros, la importación incondicional dentro del código como la expuesta
+arriba, no es útil y debe recurrirse a otra que importe sólo dependiendo de cuál
+sea el resultado. Para ello, :program:`webpack` posibilita la importación con el
+plugin Provide_ en su propia configuración\ [#]_:
 
 .. code-block:: js
 
    // webpack.config.js
    const webpack = require("webpack");
+
+   // ...
 
    module.exports = {
       // ...
@@ -114,63 +157,110 @@ a través de la configuración, haciendo uso del plugin Provide_:
       ]
    }
 
-Esta alternativa es provechosa para dos situaciones:
-
-* Cuando se usan librerías de terceros, pero se ha contruido el *Javascript*
-  resultante sin ellas (usando :ref:`externals <webpack-externals>`). En este
-  caso y si se ha usado el estilo *ES2015*, al incluirse importación sólo a
-  otros ficheros fuente, el fichero principal es directamente usable en ordenadores
-  modernos con que se cargue mediante una etqueta script_ con atributo :code:`type=module`
-  y en etiquetas script_ aparte las dependencias de terceros.
-
-  .. code-block:: html
-
-     <script src="https://unpkg.com/leaflet"></script>
-     <script src="https://unpkg.com/jquery"></script>
-     <script type="module" src="src/js/index.js"></script>
-  
-
-* Cuando requirimos importar repetidamente las librerías en distintos ficheros
-  de nuestra aplicación.
-
-Es muy útil notar que, cuando de un libería externa no se usa todo su contenido, 
-lo más juicioso es incluir en nuestro desarrollo sólo el código estrictamente
-necesario. Si en cambio, se usa esto:
+Para configurar el *plugin* hay que entender que las claves son identificadores
+y los valores cuál módulo se carga, de manera que cuando :program:`webpack`
+encuentre el identificador :code:`L` en el código procede a cargar el módulo
+*leaflet*\ [#]_. El identificador puede ser la propiedad de un objeto. Por
+ejemplo, esto es perfectamente válido:
 
 .. code-block:: js
 
    plugins: [
       new webpack.ProvidePlugin({
-         turf: "@turf/turf"
-      });
+         L: "leaflet",
+         "L.Control.Search": "leaflet-search",
+         $: "jquery"
+      })
    ]
 
-se estará importando esa mastodóntica librería. Si nuestra intención, es
-mantener el objeto un objeto llamado *turf*, pero en el que sólo están
-disponibles :code:`turf.difference` y :code:`booleanPointInPolygon`, porque sólo
-estas herramientas son las que utilizamos, podemos hacer lo siguiente:
+Entiéndase que lo exportado por el módulo cargado es el valor que
+adquirirá el identificar en el código. Ahora bien, si el módulo exporta de esta
+manera:
 
 .. code-block:: js
 
-   import difference from "@turf/difference/index.js";
-   import booleanPointInPolygon from "@turf/boolean-point-in-polygon/index.js";
+   export {a, b, c}
 
-   export default {difference, booleanPointInPolygon};
-
-
-y con Provide_ usar este fichero intermedio:
+y nuestra intención es definir el identificador *a*, podemos entonces hacer:
 
 .. code-block:: js
 
-   plugins: [
-      new webpack.ProvidePlugin({
-         turf: "./turf.js"
-      });
-   ]
+   a: [ "./mimodulo.js", "a" ]
 
-lo cual permitirá usar dentro del código :code:`turf.difference` y
-:code:`turf.booleanPointInPolygon` y qué la incoporación del código externo haya
-el mínimo indispensable para que funcionen.
+.. _webpack-externals:
+
+Con lo visto, sin embargo, los módulos cargados seguirán apareciendo en el
+resultado, con lo que no habremos logrado el objetivo de crear distintos
+sabores de la librería. Para declarar que tales módulos son externos y que no
+deben ser incluidos dentro del código, :program:`webpack` dispone del atributo
+`externals <https://webpack.js.org/configuration/externals/>`:
+
+.. code-block:: js
+
+   const config = {
+      // ...
+      externals: {
+         leaflet: "L",
+         jquery: "$",
+         "leaflet-search": [ "L", "Control", "Search" ]
+      }
+   }
+
+En este caso, las claves representan las librerías *externalizadas* (o sea, los
+valores del objeto que se pasó como argumento a Provide_) y los valores son la
+variable global asociada a aquello que exporte la librería. Por tanto, muy
+comúnmente al usar Provide_ y externals lo que se hace es intercambair claves
+por valores y valores con claves, con la diferencia que en *externals* un
+identificador que no sea global, sino el atributo de otro objeto debe notarse en
+forma de *array*. Es por ello que :code:`L.Control.Search` se ha convertido en
+:code:`["L", "Control", "Search"]`.
+
+No obstante, si la librería externa se construyó como :ref:`módulo UMD
+<mod-umd>`, entonces es necesario definir cómo está disponible la librería
+dependiendo del sistema que se use para cargarla:
+
+.. code-block:: js
+
+   externals: {
+      leaflet: {
+         root: "L",
+         commonjs: "leaflet",
+         commonjs2: "leaflet",
+         amd: "leaflet"
+      }
+   }
+
+Por supuesto, este atributo sólo debe cargarse en los sabores que quieran
+*externalizar* las librerías de terceros, esto es, en los sabores que no
+incluyen dependencias.
+
+.. warning:: Si al usar el *plugin* Provide_ se usó con algún identificador un
+   array:
+
+   .. code-block:: js
+
+      plugins: [
+         new webpack.ProvidePlugin({
+            L: "leaflet",
+            "L.MarkerClusterGroup": ["leaflet.markerclustergroup", "MarkerClusterGroup"]
+         })
+      ]
+      
+   entonces la propiedad exportada (*MarkerClusterGroup* en este ejemplo),
+   será añadida automáticamente a la variable global que se indique en
+   *externals*. Por ese motivo, *externals* debe definirse así:
+
+   .. code-block:: js
+
+      externals: {
+         leaflet: "L",
+         "leaflet.markerclustergroup": "L"
+      }
+
+   y no asociando :code:`["L", "MarkerCLusterGroup"]` a
+   *leaflet.markerclustergroup*.
+
+.. _webpack-output:
 
 Salida
 ======
@@ -831,9 +921,84 @@ servidor:
 
 Optimización
 =============
+Es sumamente importante mantener los ficheros resultantes dentro de un tamaño
+razonable. En muchas ocasiones, el resultado contiene código inútil porque se
+cargó, pero no se usa en absoluto. El apartado indica cómo localizar cuáles son
+los módulos que más contribuyen al tamaño de nuestro código y cómo eliminar
+código inútil.
+
+Auscultador
+-----------
 
 .. todo:: A partir de `este artículo
    <https://hackernoon.com/optimising-your-application-bundle-size-with-webpack-e85b00bab579>`_.
+
+Carga parcial
+-------------
+Para reducir el tamaño, lo más eficaz es eliminar el código que no se utilice.
+Por ejemplo, si en nuestro desarrollo nos es preciso hacer operaciones con
+polígonos, podríamos estar tentados a hacer:
+
+.. code-block:: js
+
+   plugins: [
+      new webpack.ProvidePlugin({
+         turf: "@turf/turf"
+      });
+   ]
+
+o el equivalente con :code:`import` dentro del código. Sin embargo, TurfJS_ es
+una librería mastodóntica y es probable que nosotros sólo pretendamos hacer uso
+de algunas de sus funciones. Por ejemplo, :code:`turf.difference` y
+:code:`turf.union`. En ese caso, tenemos dos opciones:
+
+#. Crear nuestro propio módulo, que cargue sólo estas dos funciones:
+
+   .. code-block:: js
+
+      // ./src/turf.js
+      import difference from "@turf/difference";
+      import union from "@turf/union";
+
+      export {difference, booleanPointInPolygon};
+
+   y asociarlo al identificador *turf*:
+   
+   .. code-block:: js
+
+      plugins: [
+         new webpack.ProvidePlugin({
+            turf: "./src/turf.js"
+         });
+      ]
+
+   Y si queremos *externalizar* el uso de la librería:
+
+   .. code-block:: js
+
+      externals: {
+         "./scr/turf.js": "turf"
+      }
+
+#. Definir los dos identificadores por separado:
+
+   .. code-block:: js
+
+      plugins: [
+         new webpack.ProvidePlugin({
+            "turf.difference": "@turf/difference",
+            "turf.union": "@turf/union",
+         });
+      ]
+
+   lo cual exigirá la siguiente *externalización*:
+
+   .. code-block:: js
+
+      externals: {
+          "@turf/difference": ["turf", "difference"],
+          "@turf/union": ["turf", "union"]
+      }
 
 Múltiples entornos
 ==================
@@ -909,6 +1074,22 @@ Para precisar la configuración se usan dos variables:
    localización no es alcanzable por un cliente web. Otra solución es usar el
    plugin Provide_, que se explica a continuación.
 
+.. [#] Es obvio que las dependencias son necesarias, así que el uso de esta
+   versión exige que las dependencias se carguen en el propio |HTML| a través de
+   etiquetas script_
+
+.. [#] El uso de Provide_ para cargar librerías de terceros puede tener también
+   otro efecto, si se ha usado la sintaxis *ES2015* y se importan sólo ficheros
+   *Javascript* (otros tipos pueden añadirse al desarrollo incluyéndolos en el
+   punto de entrada): usando un atributo :code:`type="module"` en un navegador
+   moderno, el código fuente será directamente utilizable.
+
+.. [#] Y aquí rige para las rutas :ref:`la misma regla que para las
+   importaciones dentro del código <webpack-import-path>`. Por tanto, *leaflet*
+   a secas implica que estamos cargando una librería instalada local o
+   globalmente y que, en realidad, se importa el fichero que se indique como
+   principal en :file:`package.json`.
+
 .. [#] Hasta el momento, sólo sabemos crear código *Javascript* que incluye
    en el propio código todas las dependencias, pero ya veremos que hay forma
    de no hacerlo.
@@ -959,6 +1140,7 @@ Para precisar la configuración se usan dos variables:
 .. _style: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style
 .. _Less: http://lesscss.org/
 .. _JQuery: https://jquery.com/
+.. _TurfJS: https://turfjs.org/
 
 .. |HTML| replace:: :abbr:`HTML (HyperText Markup Language)`
 .. |CSS| replace:: :abbr:`CSS (Cascading Style Sheets)`

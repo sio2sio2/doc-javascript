@@ -188,11 +188,11 @@ terceros (Leaflet_), el código resultante puede o no contenerla:
 
    * Para el resto de versiones que no incluyen Leaflet_:
 
-     a. Añadiendo `externals <https://webpack.js.org/configuration/externals/>`_
-        se logra eliminar Leaflet_ del fichero resultante, pero hay que indicar
-        cómo estará disponible la librería dependiendo de cómo se cargue.
-        Obviamente, esto es posible porque:
-   
+     a. Añadiendo :ref:`externals <webpack-externals>`_ se logra eliminar
+        Leaflet_ del fichero resultante, pero hay que indicar cómo estará
+        disponible la librería dependiendo de cómo se cargue.  Obviamente, esto
+        es posible porque:
+
      #. A *output* se añaden unos atributos que permiten construir un módulo |UMD|
         que es válido tanto para usarlo directamente en el navegador (con
         `script`_) como para usarlo en NodeJS_ (ya que puede cargarse con

@@ -1,8 +1,8 @@
 .. _webpack:
 
-************************************
-Programación en el cliente (Webpack)
-************************************
+**************************
+Programación en el cliente 
+**************************
 La programacion en el cliente tiene la particularidad de que necesitamos generar
 un aplicación resultante que los navegadores sean capaces de ejecutar. Eso
 implica:
