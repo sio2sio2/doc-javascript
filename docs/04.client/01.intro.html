@@ -90,7 +90,7 @@ fichero, sino que lo minimiza; y, si hemos descompuesto nuestro código en
 varios ficheros (<a class="reference internal" href="../03.node/03.modulos.html#js-modules"><span class="std std-ref">módulos</span></a>) que se llaman entre sí o
 importa librerías de terceros, reunirá todo dentro del mismo fichero.
 Para excluir módulos del fichero resultante único, consulte más adelante
-<a class="reference internal" href="02.part.html#webpack-externals"><span class="std std-ref">externals</span></a>.</p>
+<a class="reference internal" href="03.ejemplos.html#webpack-externals"><span class="std std-ref">externals</span></a>.</p>
 </div>
 <p>El por qué el indicado es el fichero resultante se debe a dos razones:</p>
 <ul>
@@ -311,7 +311,10 @@ estilos, ya que se pretende que <strong class="program">webpack</strong> se enca
 referencias pertinentes. Modifiquemos, por último, en <code class="file docutils literal notranslate"><span class="pre">webpack.config.js</span></code>
 la configuración común, ya que tanto en producción como en desarrollo hay que
 procesar <abbr title="HyperText Markup Language">HTML</abbr> y <abbr title="Cascading Style Sheets">CSS</abbr>:</p>
-<div class="highlight-js notranslate" id="webpack-simple"><div class="highlight"><pre><span></span><span class="c1">// Configuración común a ambos modos</span>
+<div class="highlight-js notranslate" id="webpack-simple"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mini-css-extract-plugin&quot;</span><span class="p">),</span>
+      <span class="nx">HtmlWebPackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;html-webpack-plugin&quot;</span><span class="p">);</span>
+
+<span class="c1">// Configuración común a ambos modos</span>
 <span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
    <span class="nx">entry</span><span class="o">:</span> <span class="s2">&quot;./src/js/index.js&quot;</span><span class="p">,</span>
    <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>

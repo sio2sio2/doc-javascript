@@ -305,9 +305,9 @@ salida es <code class="file docutils literal notranslate"><span class="pre">dist
 indispensable que el código sea accesible, si se ejecuta en un navegador.
 Podemos distinguir tres casos:</p>
 <ul>
-<li><p class="first">Si nuestro código no necesita exportar nada, no importa ninguna librería, o
-si la necesita está incluida en el código <em>Javascript</em> resultante<a class="footnote-reference" href="#id17" id="id6">[6]</a>, no
-necesitamos hacer ninguna definición especial sobre el formato.</p>
+<li><p class="first">Si nuestro código no exporta nada y no importa ninguna librería porque
+si usa de terceros, está incluida en el código <em>Javascript</em> resultante<a class="footnote-reference" href="#id17" id="id6">[6]</a>,
+no necesitamos hacer ninguna definición especial sobre el formato.</p>
 </li>
 <li><p class="first">Si nuestro código no necesita exportar nada, pero importa alguna librería
 externa a la que se acceda a través de una variable global<a class="footnote-reference" href="#id18" id="id7">[7]</a>, entonces
@@ -319,6 +319,26 @@ es necesario que tenga <a class="reference internal" href="../03.node/03.modulos
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>Ahora bien, si contribuye definiendo alguna función o similar, aunque no
+necesite importar porque la integre dentro de un objeto global ya preexistente
+(p.e. desarrollamos un <em>plugin</em> de <a class="reference external" href="https://leafletjs.com">Leaflet</a> que añade al objeto <code class="code docutils literal notranslate"><span class="pre">L</span></code> la
+clase <code class="code docutils literal notranslate"><span class="pre">L.MiPlugin</span></code>), es conveniente que el <em>plugin</em> exporte esa
+función:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// ...</span>
+<span class="kr">export</span> <span class="k">default</span> <span class="nx">L</span><span class="p">.</span><span class="nx">MiPlugin</span> <span class="o">=</span> <span class="nx">MiPlugin</span>
+</pre></div>
+</div>
+<p>y que declaremos así la salida:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span> <span class="o">:</span> <span class="p">{</span>
+   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
+   <span class="nx">libraryTarget</span><span class="o">:</span> <span class="s2">&quot;umd&quot;</span><span class="p">,</span>
+   <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+<span class="hll">   <span class="nx">libraryExport</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
+</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>que significa que el código exportará directamente lo exportado como
+<em>default</em>.</p>
 </li>
 <li><p class="first">Si nuestro código necesita exportar al ambiente global, entonces debemos hacer
 también un módulo <abbr title="Universal Module Definition">UMD</abbr>, pero asignando un nombre a lo exportado:</p>
@@ -652,6 +672,39 @@ para ficheros <abbr title="Cascading Style Sheets">CSS</abbr>.</p>
 </div>
 </dd>
 </dl>
+</div>
+<div class="section" id="procesamiento-automatico">
+<h3>4.2.4.3. Procesamiento automático<a class="headerlink" href="#procesamiento-automatico" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Por procesar ficheros automáticamente entendemos hacer que participen en el
+procesamiento y pasen a formar parte del resultado sin incluirlos explícitamente
+como punto de entrada. Se procesan automáticamente:</p>
+<ul class="simple">
+<li>Si se usa el plugin <a class="reference external" href="https://github.com/jantimon/html-webpack-plugin">HtmlWebPackPlugin</a>, las imágenes referidas en los
+atributos <em>src</em> de las etiquetas <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img">img</a>.</li>
+<li>Si se usa <strong class="program">css-loader</strong> para procesar el código <abbr title="Cascading Style Sheets">CSS</abbr>, las imágenes
+incluidas en sentencias <code class="code docutils literal notranslate"><span class="pre">url()</span></code> y las hojas importadas a través de
+<code class="code docutils literal notranslate"><span class="pre">import</span></code>.</li>
+</ul>
+<p>En cambio, si referimos directamente un fichero dentro del código <em>Javascript</em>
+como en el ejemplo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">img</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;img&quot;</span><span class="p">);</span>
+<span class="nx">img</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;alt&quot;</span><span class="p">,</span> <span class="s2">&quot;Logo introducido al vuelo&quot;</span><span class="p">);</span>
+<span class="nx">img</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span> <span class="s2">&quot;images/logo.svg&quot;</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">img</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="file docutils literal notranslate"><span class="pre">images/logo.svg</span></code> no se detectará como recurso y, en consecuencia, la
+imagen no se procesará automáticamente. Para forzar este procesamiento, lo que
+se debe hacer es importar el fichero a una variable y usar esta variable como
+recurso:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">logo</span> <span class="nx">from</span> <span class="s2">&quot;./logo.svg&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">img</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;img&quot;</span><span class="p">);</span>
+<span class="nx">img</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;alt&quot;</span><span class="p">,</span> <span class="s2">&quot;Logo introducido al vuelo&quot;</span><span class="p">);</span>
+<span class="nx">img</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span> <span class="nx">logo</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">img</span><span class="p">);</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="compatibilidad">
@@ -1346,6 +1399,7 @@ script a través de <code class="code docutils literal notranslate"><span class=
 <li><a class="reference internal" href="#procesamiento">4.2.4. Procesamiento</a><ul>
 <li><a class="reference internal" href="#ficheros-en-general">4.2.4.1. Ficheros en general</a></li>
 <li><a class="reference internal" href="#css">4.2.4.2. <abbr title="Cascading Style Sheets">CSS</abbr></a></li>
+<li><a class="reference internal" href="#procesamiento-automatico">4.2.4.3. Procesamiento automático</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#compatibilidad">4.2.5. Compatibilidad</a></li>

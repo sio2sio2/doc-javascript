@@ -277,6 +277,9 @@ procesar |HTML| y |CSS|:
 
 .. code-block:: js
 
+   const MiniCssExtractPlugin = require("mini-css-extract-plugin"),
+         HtmlWebPackPlugin = require("html-webpack-plugin");
+
    // Configuración común a ambos modos
    const config = {
       entry: "./src/js/index.js",

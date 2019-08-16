@@ -188,7 +188,7 @@ terceros (Leaflet_), el código resultante puede o no contenerla:
 
    * Para el resto de versiones que no incluyen Leaflet_:
 
-     a. Añadiendo :ref:`externals <webpack-externals>`_ se logra eliminar
+     a. Añadiendo :ref:`externals <webpack-externals>` se logra eliminar
         Leaflet_ del fichero resultante, pero hay que indicar cómo estará
         disponible la librería dependiendo de cómo se cargue.  Obviamente, esto
         es posible porque:

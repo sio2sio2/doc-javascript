@@ -107,7 +107,6 @@ module.exports = Object.assign({
    main: getMainFile(),
    scripts: {
       build: "webpack --env.output=min --progress",
-      dev: "webpack --env.output=debug --progress",
       debug: "webpack-dev-server --env.output=debug --progress"
    },
    license: config.get("init.license") || "MIT",

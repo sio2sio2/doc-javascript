@@ -303,9 +303,9 @@ Un segundo aspecto muy importante es el formato de salida del módulo, porque es
 indispensable que el código sea accesible, si se ejecuta en un navegador.
 Podemos distinguir tres casos:
 
-- Si nuestro código no necesita exportar nada, no importa ninguna librería, o
-  si la necesita está incluida en el código *Javascript* resultante\ [#]_, no
-  necesitamos hacer ninguna definición especial sobre el formato.
+- Si nuestro código no exporta nada y no importa ninguna librería porque
+  si usa de terceros, está incluida en el código *Javascript* resultante\ [#]_,
+  no necesitamos hacer ninguna definición especial sobre el formato.
 
 - Si nuestro código no necesita exportar nada, pero importa alguna librería
   externa a la que se acceda a través de una variable global\ [#]_, entonces
@@ -319,6 +319,32 @@ Podemos distinguir tres casos:
         umdNamedDefine: false
      }
  
+  Ahora bien, si contribuye definiendo alguna función o similar, aunque no
+  necesite importar porque la integre dentro de un objeto global ya preexistente
+  (p.e. desarrollamos un *plugin* de Leaflet_ que añade al objeto :code:`L` la
+  clase :code:`L.MiPlugin`), es conveniente que el *plugin* exporte esa
+  función:
+
+  .. code-block:: js
+
+     // ...
+     export default L.MiPlugin = MiPlugin
+
+  y que declaremos así la salida:
+
+  .. code-block:: js
+     :emphasize-lines: 5
+
+     output : {
+        filename: "js/[name].bundle.js",
+        libraryTarget: "umd",
+        umdNamedDefine: false,
+        libraryExport: "default"
+     }
+ 
+  que significa que el código exportará directamente lo exportado como
+  *default*.
+
 - Si nuestro código necesita exportar al ambiente global, entonces debemos hacer
   también un módulo |UMD|, pero asignando un nombre a lo exportado:
 
@@ -685,6 +711,42 @@ intervención de :program:`css-loader`:
 
       body
          background-color: $fondo
+
+Procesamiento automático
+------------------------
+Por procesar ficheros automáticamente entendemos hacer que participen en el
+procesamiento y pasen a formar parte del resultado sin incluirlos explícitamente
+como punto de entrada. Se procesan automáticamente:
+
+- Si se usa el plugin HtmlWebPackPlugin_, las imágenes referidas en los
+  atributos *src* de las etiquetas img_.
+- Si se usa :program:`css-loader` para procesar el código |CSS|, las imágenes
+  incluidas en sentencias :code:`url()` y las hojas importadas a través de
+  :code:`import`.
+
+En cambio, si referimos directamente un fichero dentro del código *Javascript*
+como en el ejemplo:
+
+.. code-block:: js
+
+   const img = document.createElement("img");
+   img.setAttribute("alt", "Logo introducido al vuelo");
+   img.setAttribute("src", "images/logo.svg");
+   document.body.appendChild(img);
+
+:file:`images/logo.svg` no se detectará como recurso y, en consecuencia, la
+imagen no se procesará automáticamente. Para forzar este procesamiento, lo que
+se debe hacer es importar el fichero a una variable y usar esta variable como
+recurso:
+
+.. code-block:: js
+
+   import logo from "./logo.svg";
+
+   const img = document.createElement("img");
+   img.setAttribute("alt", "Logo introducido al vuelo");
+   img.setAttribute("src", logo);
+   document.body.appendChild(img);
 
 .. _babel:
 
@@ -1127,6 +1189,7 @@ Para precisar la configuración se usan dos variables:
       console.log(process.env.HOME)
 
 .. _script: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script
+.. _img: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img
 .. _CoffeeScript: https://coffeescript.org/#introduction
 .. _TypeScript: https://www.typescriptlang.org/
 .. _Object.assign: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
@@ -1141,6 +1204,8 @@ Para precisar la configuración se usan dos variables:
 .. _Less: http://lesscss.org/
 .. _JQuery: https://jquery.com/
 .. _TurfJS: https://turfjs.org/
+.. _Leaflet: https://leafletjs.com
+.. _HtmlWebPackPlugin: https://github.com/jantimon/html-webpack-plugin
 
 .. |HTML| replace:: :abbr:`HTML (HyperText Markup Language)`
 .. |CSS| replace:: :abbr:`CSS (Cascading Style Sheets)`
