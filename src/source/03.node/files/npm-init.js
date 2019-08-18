@@ -84,7 +84,7 @@ function gitInfo() {
                }
 
          if(!token) return;
-         else return prompt(`¿Desea crear el repositorio remoto ${basename} en Github (y/n)?`, "y", function(res) {
+         else return prompt(`¿Desea crear el repositorio remoto ${basename} en Github (y/n)?`, "n", function(res) {
             res = res.charAt(0).toLowerCase();
             if(res !== "y") return;
 

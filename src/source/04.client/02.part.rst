@@ -124,15 +124,10 @@ necesario::
 Esto funciona sin problemas, pero tiene un inconveniente si pretendemos
 desarrollar una librería y no un aplicación final. A diferencia de una
 aplicación final, en la que se pretende generar un resultado que incluya todas
-las dependencias, cuando se desarrolla una librería, es muy común generar tres
-sabores distintos para su uso con el navegador:
+las dependencias, cuando se desarrolla una librería, es muy común generar
+resultandos en los que pueden o no incluirse las dependencias.
 
-- La versión de producción sin dependencias, pongamos que :file:`library.js`\
-  [#]_.
-- La versión de producción que incluye todas sus dependencias, pongamos que
-  :file:`library.bundle.js`.
-- La versión para depuración sin dependencias, pongamos que
-  :file:`library-src.js`.
+.. seealso:: Véase más adelante :ref:`multiples resultados <webpack-multi>`.
 
 Como dependiendo de la versión, el resultado incluye o no las librerías de
 terceros, la importación incondicional dentro del código como la expuesta
@@ -259,6 +254,9 @@ incluyen dependencias.
 
    y no asociando :code:`["L", "MarkerCLusterGroup"]` a
    *leaflet.markerclustergroup*.
+
+.. todo:: ¿Puede llevarse a cabo algo parecido con el plugin `Ignore
+   <https://webpack.js.org/plugins/ignore-plugin/>`_?
 
 .. _webpack-output:
 
@@ -991,15 +989,45 @@ código inútil.
 
 Auscultador
 -----------
+Un primer paso para conocer por qué nuestro desarrolla ocupa el espacio que
+ocupa, es determinar cuánto contribuye a él cada uno de sus componentes. Para
+tal tarea, una herramienta muy práctica es `webpack-bundle-analyzer
+<https://www.npmjs.com/package/webpack-bundle-analyzer>` que nos mostrará
+gráficamente esta contribución:
 
-.. todo:: A partir de `este artículo
-   <https://hackernoon.com/optimising-your-application-bundle-size-with-webpack-e85b00bab579>`_.
+.. image:: files/analyzer.png
+
+Para hacer uso de ella debemos instalar la utilidad:
+
+.. code-block:: console
+
+   npm install --save-dev webpack-bundle-analyzer
+
+y en la configuración para producción añadir temporalmente:
+
+.. code-block:: js
+
+   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+   // ...
+
+   module.exports = {
+      // ...
+      plugins: [
+         new BundleAnalyzerPlugin(),
+         // ...
+      ]
+   }
+
+Al llevar a cabo la generación de los ficheros, se levantará en
+:file:`http://localhost:8888` la aplicación de la que se puso antes captura y
+podremos comprobar cuál es el espacio al que contribuye cada componente.
 
 Carga parcial
 -------------
 Para reducir el tamaño, lo más eficaz es eliminar el código que no se utilice.
-Por ejemplo, si en nuestro desarrollo nos es preciso hacer operaciones con
-polígonos, podríamos estar tentados a hacer:
+Por ejemplo, si en nuestro desarrollo necesitamos análisis geoespacial,
+podríamos estar tentados a hacer:
 
 .. code-block:: js
 
@@ -1062,66 +1090,94 @@ de algunas de sus funciones. Por ejemplo, :code:`turf.difference` y
           "@turf/union": ["turf", "union"]
       }
 
-Múltiples entornos
-==================
+.. _webpack-multi:
 
-.. todo:: Reescribirlo usando un único fichero de configuración.
+Múltiples resultados
+====================
+Lo habitual es que para un desarrollo nos interese generar varias salidas
+distintas tales como:
 
-Con la configuración hecha hasta aquí, tenemos dos configuraciones distintas:
-una para producción y otra para desarrollo que se logran cargando ficheros
-de configuración distintos. Sin embargo, :program:`webpack` permite pasar por
-línea de comandos variables que pueden utilizarse dentro del *script* que
-constituye la configuración\ [#]_. Jugar con los valores de estas variables posibilita
-crear una amplia variedad de configuraciones de manera sencilla.
+#. :file:`script.js`: De **producción**, transpilada, minimizada y sin
+   dependencias. La generaremos con:
 
-Para ilustrarlo crearemos una configuración con los siguientes ficheros:
+   .. code-block:: console
 
-.. code-block:: none
+      npm run build
 
-   +-- webpack.config.js
-   +-- webpack/
-         +-- webpack.common.js
-         +-- webpack.production.js
-         +-- webpack.development.js
+#. :file:`script.bundle.js`: De **producción**, transpilada, minimizada y con
+   todas las dependencias. La generaremos con:
 
-que invocaremos del siguiente modo:
+   .. code-block:: console
+
+      npm run build:bundle
+
+#. :file:`script-src.js`: De **producción**, transpilada, no minimazada y
+   sin dependencias. La generaremos con:
+
+   .. code-block:: console
+
+      npm run build:src
+
+#. :file:`script-debug.js`: De **desarrollo**, no transpilada ni minimizada y
+   sin dependencias. Además, debería incluir mapeos del código. La generaremos
+   con:
+
+   .. code-block:: console
+
+      npm run build:debug
+
+#. :file:`script.js`: De **desarrollo** como la anterior para deparar
+   interactivamente con :program:`webpack-dev-server`. La generaremos con
+
+   .. code-block:: console
+
+      npm run debug
+
+Para esto, deberemos dejar unos *scripts* en :file:`package.json` así:
 
 .. code-block:: js
 
    "scripts": {
-      "build": "webpack --env.production",
-      "watch": "webpack --env --watch",
-      "debug": "webpack-dev-server --env --open chromium"
-   },
+       "build": "webpack --env.output=min",
+       "build:bundle": "webpack --env.output=bundle",
+       "build:src": "webpack --env.output=src",
+       "build:debug": "webpack --env.output=srcdebug",
+       "debug": "webpack-dev-server --env.output=debug"
+   }
 
-En el caso de :code:`build` se pasa la variable *production* con un valor
-verdadero, ya que no indicar su valor indica tal cosa
-(:code:`--env.foobar=valor` permitiría pasar para una variable un valor
-concreto). En los otros dos casos debe usarse :code:`--env` para que se creen el
-objeto *env*, pero al no pasarlo *production* queda indefinido y, por tanto,
-puede asimilarse a :code:`false`.
+donde la forma de distinguir una salida de otra es mediante un objeto *env* que
+nos encargaremos de desarrollar más adelante. No obstante, dependiendo de cuál
+sea el objetivo de nuestro desarrollo podremos prescindir de algunas salidas:
 
-Los ficheros de configuración quedan así:
+- Para una aplicación final, suele bastar con las salidas (2) y (5).
+- Si desarrollamos una librería intermedia pueden llegar a interesarnos hasta
+  las cinco salidas:
 
-.. literalinclude:: files/webpack.common.f.js
-   :language: js
+  #. Para usarse directamente con el navegador.
+  #. Paa el mismo uso anterior, pero evitando que se deban cargar las
+     dependencias.
+  #. Para incorporarla a otros proyectos desarrollados con NodeJS_.
+  #. Para brindar la posibilidad a un tercero de analizar el código sin instalar
+     el paquete y usar NodeJS_ y :program:`webpack`.
+  #. Para depurar cómodamente mientras desarrollamos la aplicación.
 
-.. literalinclude:: files/webpack.production.f.js
-   :language: js
-   :emphasize-lines: 17
+Los ejemplos que trataremos, desarrollarán dos casos de ejemplo: uno desarrolla
+una aplicación final, y el otro un sencillo *plugin* para Leaflet_, o sea, una
+libería intermedia.
 
-.. literalinclude:: files/webpack.development.f.js
-   :language: js
+Comprobación
+============
+Es bastante interesante comprobar si la configuración que hemos llevado a cabo
+genera el objeto de configuración que presuponemos. Para ello, y suponiendo que
+hayamos usando el objeto *env*, podemos usar la consola de NodeJS_:
 
-.. literalinclude:: files/webpack.config.f.js
-   :language: js
-   :emphasize-lines: 2
+.. code-block:: console
 
-Para precisar la configuración se usan dos variables:
+   > x = require("./webpack.config.js");
+   > x({output: "min"});  // Y el resto de salidas.
 
-* *production*, ya introducida anteriormente.
-* *debug*, que permite definir si se quieren mensajes de depuración
-  de :ref:`babel <babel>`. 
+Se imprimirá el objeto de configuración resultante y podremos comprobar si es el
+que esparábamos.
 
 .. rubric:: Notas al pie
 
