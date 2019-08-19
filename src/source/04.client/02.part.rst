@@ -188,7 +188,7 @@ Con lo visto, sin embargo, los módulos cargados seguirán apareciendo en el
 resultado, con lo que no habremos logrado el objetivo de crear distintos
 sabores de la librería. Para declarar que tales módulos son externos y que no
 deben ser incluidos dentro del código, :program:`webpack` dispone del atributo
-`externals <https://webpack.js.org/configuration/externals/>`:
+`externals <https://webpack.js.org/configuration/externals/>`_:
 
 .. code-block:: js
 
@@ -204,7 +204,7 @@ deben ser incluidos dentro del código, :program:`webpack` dispone del atributo
 En este caso, las claves representan las librerías *externalizadas* (o sea, los
 valores del objeto que se pasó como argumento a Provide_) y los valores son la
 variable global asociada a aquello que exporte la librería. Por tanto, muy
-comúnmente al usar Provide_ y externals lo que se hace es intercambair claves
+comúnmente al usar Provide_ y externals lo que se hace es intercambiar claves
 por valores y valores con claves, con la diferencia que en *externals* un
 identificador que no sea global, sino el atributo de otro objeto debe notarse en
 forma de *array*. Es por ello que :code:`L.Control.Search` se ha convertido en
@@ -224,6 +224,11 @@ dependiendo del sistema que se use para cargarla:
          amd: "leaflet"
       }
    }
+
+.. warning:: Si creamos una librería de terceros que queremos, no sólo que pueda
+   cargarse desde un navegador, sino que pueda usarse como componente en un
+   desarrollo posterior con NodeJS_, deberemos usar esta ultima forma para definir
+   sus dependencias.
 
 Por supuesto, este atributo sólo debe cargarse en los sabores que quieran
 *externalizar* las librerías de terceros, esto es, en los sabores que no
@@ -634,45 +639,66 @@ intervención de :program:`css-loader`:
 
 :program:`postcss-loader`
    Opera sobre el |CSS| realizando transformaciones que nos resulten
-   pertinentes. Una muy recurrida, es la que realiza el plugin
-   :program:`autoprefixer`, que añade prefijos del vendedor a
-   las opciones cuando es preciso. Obviamente, debe operar justamente antes de
-   :program:`tcss-loader`. Para su instalación:
+   pertinentes:
 
    .. code-block:: console
 
-      $ npm install --save-dev postcss-loader autoprefixer
+      $ npm install --save-dev postcss-loader autoprefixer cssnano
+  
+   Hay al menos dos que nos pueden resultar intersantes:
 
-   La configuración, suponiendo que queramos obtener un único |CSS|, quedará
-   del siguiente modo:
+   - La que realiza el plugin :program:`autoprefixer`, que añade prefijos del
+     vendedor a las opciones cuando es preciso. Obviamente, debe operar
+     justamente antes de :program:`css-loader`. La configuración, suponiendo que
+     queramos obtener un único |CSS|, quedará del siguiente modo:
 
-   .. code-block:: js
-      :emphasize-lines: 5-10
+     .. code-block:: js
+        :emphasize-lines: 5-10
 
-      {
-         test: /\.css$/i,
-         use: [MiniCssExtractPlugin.loader,
-               "css-loader",
-               { 
-                  loader: "postcss-loader",
-                  options: {
-                     plugins: () => [require("autoprefixer")]
-                  }
-               }]
-      }
+        {
+           test: /\.css$/i,
+           use: [MiniCssExtractPlugin.loader,
+                 "css-loader",
+                 { 
+                    loader: "postcss-loader",
+                    options: {
+                       plugins: () => [require("autoprefixer")]
+                    }
+                 }]
+        }
 
-   .. note:: Para saber para qué navegadores debe añadir prefijos, este *plugin*
-      usa la :ref:`librería browserlist <browserlist>`, que introduciremos al
-      tratar :ref:`babel <babel>`.
+     .. note:: Para saber para qué navegadores debe añadir prefijos, este *plugin*
+        usa la :ref:`librería browserlist <browserlist>`, que introduciremos al
+        tratar :ref:`babel <babel>`.
 
-   .. note:: Para comprobar que este cargador realmente actúa, podemos
-      añadir al |CSS| de algún ejemplo, las líneas:
+     .. note:: Para comprobar que este cargador realmente actúa, podemos
+        añadir al |CSS| de algún ejemplo, las líneas:
 
-      .. code-block:: js
+        .. code-block:: js
 
-         ::placeholder {
-            color: gray;
-         }
+           ::placeholder {
+              color: gray;
+           }
+
+   - La que realiza el plugin :program:`cssnano`, que minimiza el
+     |CSS|:
+
+     .. code-block:: js
+        :emphasize-lines: 5-12
+
+        {
+           test: /\.css$/i,
+           use: [MiniCssExtractPlugin.loader,
+                 "css-loader",
+                 { 
+                    loader: "postcss-loader",
+                    options: {
+                       plugins: [
+                          require("cssnano")({preset: "default"})
+                       ]
+                    }
+                 }]
+        }
 
 :program:`sass-loader` o :program:`less-loader` u otra cargador semejante.
    Cuando no escribimos el estilo en |CSS| sino en otro lenguaje como |SASS| o
@@ -992,7 +1018,7 @@ Auscultador
 Un primer paso para conocer por qué nuestro desarrolla ocupa el espacio que
 ocupa, es determinar cuánto contribuye a él cada uno de sus componentes. Para
 tal tarea, una herramienta muy práctica es `webpack-bundle-analyzer
-<https://www.npmjs.com/package/webpack-bundle-analyzer>` que nos mostrará
+<https://www.npmjs.com/package/webpack-bundle-analyzer>`_ que nos mostrará
 gráficamente esta contribución:
 
 .. image:: files/analyzer.png

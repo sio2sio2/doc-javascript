@@ -1,3 +1,5 @@
+L.Compatibility; // Para importar el plugin de compatibilidad
+
 L.Icon.prototype.zoom = function(factor) {
    factor = factor || this.options.factor;
    if(!factor) return;
@@ -17,3 +19,5 @@ L.Marker.addInitHook(function() {
       this.setIcon(icon);
    });
 });
+
+export default L.Icon

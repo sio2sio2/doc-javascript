@@ -52,448 +52,96 @@
 <p>Los ejemplos de aplicación los construiremos en torno a  <a class="reference external" href="https://leafletjs.com">Leaflet</a>, la excelente
 librería <abbr title="Geographic information system">GIS</abbr> y trataremos tres casos:</p>
 <ol class="arabic simple">
-<li>La creación de un plugin para esta librería, lo cual supone no crear una
-aplicación web en sí, sino tan sólo código <em>Javascript</em> intermedio que puede
-usarse posteriormente en la creación de una aplicación web.</li>
-<li>La creación del plugin comentado, pero con la adición de algún ejemplo de uso
-que permita, no sólamente ilustrar cómo se utiliza, si no también, comprobar
-el código del plugin mientras se desarrolla. Es en realidad este caso, el que
-se debe llevar a la práctica, porque es evidente que cualquier desarrollo
-exige un proceso continuo de comprobación del código.</li>
-<li>La creación de una aplicación web que use el plugin anterior, lo cual
-significa que el resultado final será una página <abbr title="HyperText Markup Language">HTML</abbr> (con todos sus
-avíos).</li>
+<li>La creación de una aplicación web final que use un plugin previo.</li>
+<li>La creación de este plugin previo, que incluye un código de ejemplo que sirve
+para depurar durante el desarrollo.</li>
 </ol>
-<div class="section" id="plugin">
-<span id="webpack-ej-plugin"></span><h2>4.3.1. Plugin<a class="headerlink" href="#plugin" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Trataremos de hacer un plugin que implemente el efecto de agrandar un icono al
-pasar el punto del ratón sobre él. Tal plugin es bastante sencillo y no requiere
-más que escribir unas pocas líneas en un único fichero <code class="docutils literal notranslate"><span class="pre">.js</span></code>. A pesar de esta
-simpleza, hay particularidad: como nuestro código utiliza una librería de
-terceros (<a class="reference external" href="https://leafletjs.com">Leaflet</a>), el código resultante puede o no contenerla:</p>
-<ul class="simple">
-<li>Si la contiene, puede servirnos para utilizarlo directamente en una aplicación
-web sin necesidad de cargar también <a class="reference external" href="https://leafletjs.com">Leaflet</a>.</li>
-<li>Si no la contiene, puede servirnos tanto como librería para hacer desarrollos
-posteriores con <a class="reference external" href="https://nodejs.org/">NodeJS</a> (por supuesto, instalando también <a class="reference external" href="https://leafletjs.com">Leaflet</a>), como para
-utlizarla directamente en una aplicación web cargando <a class="reference external" href="https://leafletjs.com">Leaflet</a> con otra
-etiqueta <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">script</a>.</li>
-</ul>
-<ol class="arabic">
-<li><p class="first">Preparemos el directorio de trabajo:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir leaflet.iconzoom
-<span class="gp">$</span> <span class="nb">cd</span> leaflet.iconzoom
-<span class="gp">$</span> npm init -y
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">Se supone que estamos usando la configuración
-<a class="reference download internal" download="" href="../_downloads/ba8647bdabac7a535df86b567755f620/npm-init.js"><code class="xref download docutils literal notranslate"><span class="pre">~/.npm-init.js</span></code></a> propuesta al
-explicar <a class="reference internal" href="../03.node/01.nodejs.html#prep-workdir"><span class="std std-ref">cómo crear un  directorio de trabajo para NodeJS</span></a>.</p>
-</div>
-<p>A la pregunta de cuál será el fichero principal contestaremos que
-<code class="file docutils literal notranslate"><span class="pre">dist/leaflet.iconzoom.js</span></code>. Esta pregunta no es baladí, ya que este
-será el fichero que se importará cuando un aplicación ulterior use este
-plugin, importándolo con la línea:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;leaflet.iconzoom&quot;</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>La razón de que este sea el fichero apropiado es que es perfectamente
-funcional, portable y está optimizado.</p>
-</li>
-<li><p class="first">Editamos <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> para dejar los <em>scripts</em> del siguiente modo:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
-   <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=min&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;bundle&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;src&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=src&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --open&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<dl class="docutils">
-<dt><em>build</em></dt>
-<dd><p class="first">Código para producción <strong>sin</strong> <a class="reference external" href="https://leafletjs.com">Leaflet</a>:</p>
-<div class="last highlight-html notranslate"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Leaflet --&gt;</span>
-<span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.5.1/dist/leaflet.css&quot;</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.5.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-
-<span class="c">&lt;!-- Plugin --&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../dist/leaflet.iconzoom.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</pre></div>
-</div>
-</dd>
-<dt><em>bundle</em></dt>
-<dd><p class="first">Código para producción que incluye <a class="reference external" href="https://leafletjs.com">Leaflet</a>.</p>
-<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Leaflet+Plugin --&gt;</span>
-<span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../dist/leaflet.iconzoom.bundle.css&quot;</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../dist/leaflet.iconzoom.bundle.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</pre></div>
-</div>
-<div class="last admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">En este caso, el <em>plugin</em> es muy sencillo y no requiere <abbr title="Cascading Style Sheets">CSS</abbr>
-adicional, por lo que el <abbr title="Cascading Style Sheets">CSS</abbr> generado será una copia, sin más, del de
-<a class="reference external" href="https://leafletjs.com">Leaflet</a>.</p>
-</div>
-</dd>
-<dt><em>src</em></dt>
-<dd><p class="first">Código para depuración <strong>sin</strong> <a class="reference external" href="https://leafletjs.com">Leaflet</a> para su carga desde un navegador:
-.. code-block:: html</p>
 <blockquote>
-<div><p>&lt;!– Leaflet –&gt;
-&lt;link rel=»stylesheet» href=»<a class="reference external" href="https://unpkg.com/leaflet&#64;1.5.1/dist/leaflet.css">https://unpkg.com/leaflet&#64;1.5.1/dist/leaflet.css</a>»&gt;
-&lt;script src=»<a class="reference external" href="https://unpkg.com/leaflet&#64;1.5.1/dist/leaflet.js">https://unpkg.com/leaflet&#64;1.5.1/dist/leaflet.js</a>»&gt;&lt;/script&gt;</p>
-<p>&lt;!– Plugin para depuración –&gt;
-&lt;script src=»../dist/leaflet.iconzoom-src.js»&gt;&lt;/script&gt;</p>
-</div></blockquote>
-<p>En principio, es útil para que terceros puedan inspeccionar el código y
-cazar <em>bugs</em> sin necesidad de usar de instalar <a class="reference external" href="https://nodejs.org/">NodeJS</a> y preparar un
-directorio de trabajo con el código fuente.</p>
-<div class="last admonition note">
-<p class="first admonition-title">Nota</p>
-<p>Si el navegador fuera moderno, podríamos utilizar directamente
-el código fuente, en vez de este fichero:</p>
-<div class="last highlight-html notranslate"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Leaflet --&gt;</span>
-<span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.5.1/dist/leaflet.css&quot;</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.5.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-
-<span class="c">&lt;!-- Plugin para depuración --&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;module&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../src/index.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</pre></div>
-</div>
-</div>
-</dd>
-<dt><em>debug</em></dt>
-<dd><p class="first last">Script para depuración interactiva. Como esto requiere crear un ejemplo de
-uso y una configuración más compleja de <strong class="program">webpack</strong>, no será operativo
-hasta que desarrollemos el próximo caso.</p>
-</dd>
-</dl>
-</li>
-<li><p class="first">Instalamos los paquetes necesarios<a class="footnote-reference" href="#id4" id="id1">[1]</a>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
-<span class="gp">$</span> npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
-<span class="gp">$</span> npm install core-js leaflet
-<span class="gp">$</span> npm install --save-dev css-loader mini-css-extract-plugin
-<span class="gp">$</span> npm install --save-dev url-loader file-loader
-</pre></div>
-</div>
-</li>
-<li><p class="first">Escribimos el plugin en <a class="reference download internal" download="" href="../_downloads/d6c10a921f4d02ce004907a13fde1de5/leaflet.iconzoom.js"><code class="xref download docutils literal notranslate"><span class="pre">src/leaflet.iconzoom.js</span></code></a>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">L</span><span class="p">.</span><span class="nx">Icon</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">zoom</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">factor</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nx">factor</span> <span class="o">=</span> <span class="nx">factor</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">factor</span><span class="p">;</span>
-   <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">factor</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-   <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconSize</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconSize</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span> <span class="p">=&gt;</span> <span class="nx">e</span><span class="o">*</span><span class="nx">factor</span><span class="p">);</span>
-   <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconAnchor</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconAnchor</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span> <span class="p">=&gt;</span> <span class="nx">e</span><span class="o">*</span><span class="nx">factor</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nx">L</span><span class="p">.</span><span class="nx">Marker</span><span class="p">.</span><span class="nx">addInitHook</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;mouseover mouseout&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> 
-      <span class="kr">const</span> <span class="nx">icon</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">icon</span><span class="p">;</span>
-      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">icon</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">factor</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="s2">&quot;mouseover&quot;</span><span class="p">)</span> <span class="nx">icon</span><span class="p">.</span><span class="nx">zoom</span><span class="p">();</span>
-      <span class="k">else</span> <span class="p">{</span>
-         <span class="k">delete</span> <span class="nx">icon</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconSize</span><span class="p">;</span>
-         <span class="k">delete</span> <span class="nx">icon</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconAnchor</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">setIcon</span><span class="p">(</span><span class="nx">icon</span><span class="p">);</span>
-   <span class="p">});</span>
-<span class="p">});</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p>Del código pueden resultar chocantes varios aspectos:</p>
-<ul class="last simple">
-<li>El módulo se limita a alterar el objeto global <code class="code docutils literal notranslate"><span class="pre">L</span></code> por lo
-que no es preciso exportar nada. De haber exportado algo, se habría
-usado el sistema de módulos de <em>ES2015</em>.</li>
-<li>No se importa dentro del código nada procedente de <a class="reference external" href="https://leafletjs.com">Leaflet</a>, porque:<ul>
-<li>El código <em>Javascript</em> se importará a través del <a class="reference internal" href="02.part.html#webpack-conf-import"><span class="std std-ref">plugin Provide</span></a> por ser la librería de terceros.</li>
-<li>El código <abbr title="Cascading Style Sheets">CSS</abbr> se incluirá en el punto de entrada, para
-lograr que se lleve a cabo el procesamiento sólo si obtiene la
-variante <em>bundle</em> del p*lugin*.</li>
-</ul>
-</li>
-</ul>
-</div>
-</li>
-<li><p class="first">Y el verdadero meollo, configuramos <strong class="program">webpack</strong> de forma modular. Por
-un lado, <a class="reference download internal" download="" href="../_downloads/c680c5a71fff2d42abbea0eec899bf5a/webpack.config.f.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack.config.js</span></code></a>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="kd">let</span> <span class="nx">mode</span><span class="p">;</span>
-
-   <span class="k">switch</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">case</span> <span class="s2">&quot;debug&quot;</span><span class="o">:</span>
-      <span class="k">case</span> <span class="s2">&quot;src&quot;</span><span class="o">:</span>
-         <span class="nx">mode</span> <span class="o">=</span> <span class="s2">&quot;development&quot;</span><span class="p">;</span>
-         <span class="k">break</span><span class="p">;</span>
-      <span class="k">default</span><span class="o">:</span>
-         <span class="nx">mode</span> <span class="o">=</span> <span class="s2">&quot;production&quot;</span><span class="p">;</span>
-   <span class="p">}</span>
-
-   <span class="k">return</span> <span class="nx">require</span><span class="p">(</span><span class="sb">`./webpack/webpack.</span><span class="si">${</span><span class="nx">mode</span><span class="si">}</span><span class="sb">.js`</span><span class="p">)(</span><span class="nx">env</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>En la parte común de la configuración, <a class="reference download internal" download="" href="../_downloads/9fb7f61eeba5b393165bcfde725297e1/webpack.common.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack/webpack.common.js</span></code></a>, que es esta:</p>
-<div class="highlight-js notranslate" id="webpack-plugin-webpack-common-js"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.common.js</span>
-<span class="kr">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack&quot;</span><span class="p">),</span>
-      <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack-merge&quot;</span><span class="p">),</span>
-      <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mini-css-extract-plugin&quot;</span><span class="p">);</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="kd">let</span> <span class="nx">filename</span><span class="p">;</span>
-
-<span class="hll">   <span class="k">switch</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="hll">      <span class="k">case</span> <span class="s2">&quot;min&quot;</span><span class="o">:</span>
-</span><span class="hll">      <span class="k">case</span> <span class="s2">&quot;debug&quot;</span><span class="o">:</span>
-</span><span class="hll">         <span class="nx">filename</span> <span class="o">=</span> <span class="s2">&quot;[name].js&quot;</span><span class="p">;</span>
-</span><span class="hll">         <span class="k">break</span><span class="p">;</span>
-</span><span class="hll">      <span class="k">case</span> <span class="s2">&quot;src&quot;</span><span class="o">:</span>
-</span><span class="hll">         <span class="nx">filename</span> <span class="o">=</span> <span class="s2">&quot;[name]-src.js&quot;</span><span class="p">;</span>
-</span><span class="hll">         <span class="k">break</span>
-</span><span class="hll">      <span class="k">default</span><span class="o">:</span>
-</span><span class="hll">         <span class="nx">filename</span> <span class="o">=</span> <span class="sb">`[name].</span><span class="si">${</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span><span class="si">}</span><span class="sb">.js`</span><span class="p">;</span>
-</span><span class="hll">   <span class="p">}</span>
-</span>
-   <span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">entry</span><span class="o">:</span> <span class="p">{</span>
-         <span class="s2">&quot;leaflet.iconzoom&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;./src/index.js&quot;</span><span class="p">]</span>
-      <span class="p">},</span>
-      <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
-         <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span>
-      <span class="p">},</span>
-      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-<span class="hll">         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
-</span><span class="hll">            <span class="nx">L</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span>
-</span><span class="hll">         <span class="p">})</span>
-</span>      <span class="p">]</span>
-   <span class="p">}</span>
-
-   <span class="k">if</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span> <span class="o">===</span> <span class="s2">&quot;bundle&quot;</span><span class="p">)</span> <span class="p">{</span>
-<span class="hll">      <span class="nx">config</span><span class="p">.</span><span class="nx">entry</span><span class="p">[</span><span class="s2">&quot;leaflet.iconzoom&quot;</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span><span class="p">);</span>
-</span>      <span class="k">return</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="p">{</span>
-         <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
-            <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
-               <span class="p">{</span>
-                  <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/</span><span class="p">,</span>
-                  <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
-                        <span class="s2">&quot;css-loader&quot;</span><span class="p">]</span>
-               <span class="p">},</span>
-               <span class="p">{</span>
-                  <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(png|jpe?g|gif|svg)$/i</span><span class="p">,</span>
-                  <span class="nx">use</span><span class="o">:</span> <span class="p">[</span>
-                     <span class="s1">&#39;url-loader?limit=4096&amp;name=images/[name].[ext]&#39;</span>
-                  <span class="p">]</span>
-               <span class="p">}</span>
-            <span class="p">]</span>
-         <span class="p">},</span>
-         <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-            <span class="k">new</span> <span class="nx">MiniCssExtractPlugin</span><span class="p">({</span>
-               <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;[name].bundle.css&quot;</span><span class="p">,</span>
-               <span class="nx">chunkFilename</span><span class="o">:</span> <span class="s2">&quot;[id].css&quot;</span>
-            <span class="p">})</span>
-         <span class="p">]</span>
-      <span class="p">});</span>
-   <span class="p">}</span>
-   <span class="k">else</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="p">{</span>
-<span class="hll">         <span class="nx">externals</span><span class="o">:</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">leaflet</span><span class="o">:</span> <span class="p">{</span>
-</span><span class="hll">               <span class="nx">root</span><span class="o">:</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span>
-</span><span class="hll">               <span class="nx">amd</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
-</span><span class="hll">               <span class="nx">commonjs</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
-</span><span class="hll">               <span class="nx">commonjs2</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span>
-</span><span class="hll">            <span class="p">}</span>
-</span><span class="hll">         <span class="p">},</span>
-</span><span class="hll">         <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">,</span>
-</span><span class="hll">            <span class="nx">libraryTarget</span><span class="o">:</span> <span class="s2">&quot;umd&quot;</span><span class="p">,</span>
-</span><span class="hll">            <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class="hll">            <span class="nx">library</span><span class="o">:</span> <span class="s2">&quot;Lcz&quot;</span>
-</span><span class="hll">         <span class="p">}</span>
-</span>      <span class="p">});</span>
-   <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Hay algunas aclaraciones pertinentes:</p>
-<ul>
-<li><p class="first">El nombre del fichero de salida, cambia dependiendo de qué versión queramos
-obtener. Esto permite generarlas todas y poder elegir cuál se usará desde
-otra aplicación.</p>
-</li>
-<li><p class="first">Se importa el javascript de <a class="reference external" href="https://leafletjs.com">Leaflet</a> mediante el plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a>, tal como
-se enticipó al mostrar el código del <em>plugin</em>.</p>
-</li>
-<li><p class="first">Para la versión <em>bundle</em> se añade al punto de entrada el <abbr title="Cascading Style Sheets">CSS</abbr> de <a class="reference external" href="https://leafletjs.com">Leaflet</a>,
-a fin de que sólamente genere el <abbr title="Cascading Style Sheets">CSS</abbr> en esta versión. En consonancia,
-sólo es necesario tratar el <abbr title="Cascading Style Sheets">CSS</abbr> y los ficheros externos en esta versión.</p>
-</li>
-<li><p class="first">Para el resto de versiones que no incluyen <a class="reference external" href="https://leafletjs.com">Leaflet</a>:</p>
-<ol class="loweralpha simple">
-<li>Añadiendo <a class="reference internal" href="#webpack-externals"><span class="std std-ref">externals</span></a> se logra eliminar
-<a class="reference external" href="https://leafletjs.com">Leaflet</a> del fichero resultante, pero hay que indicar cómo estará
-disponible la librería dependiendo de cómo se cargue.  Obviamente, esto
-es posible porque:</li>
-<li>A <em>output</em> se añaden unos atributos que permiten construir un módulo <abbr title="Universal Module Definition">UMD</abbr>
-que es válido tanto para usarlo directamente en el navegador (con
-<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">script</a>) como para usarlo en <a class="reference external" href="https://nodejs.org/">NodeJS</a> (ya que puede cargarse con
-<a class="reference internal" href="../03.node/03.modulos.html#module-commonjs"><span class="std std-ref">CommonJS</span></a>). El valor de <em>library</em> es el nombre de
-la variable global que contendrá el objeto que exporta el módulo. Por
-tanto, en este ejemplo, si la librería se carga directamente en el
-navegador, <code class="code docutils literal notranslate"><span class="pre">window.Lcz</span></code> contendrá lo exportado. Como el módulo no
-exporta nada, carece por completo de interés.</li>
-</ol>
-<div class="admonition seealso">
-<p class="first admonition-title">Ver también</p>
-<p class="last">Échele un ojo a la documentación oficial sobre la <a class="reference external" href="https://webpack.js.org/guides/author-libraries/">creación de
-módulos con webpack</a>.</p>
-</div>
-</li>
-</ul>
-<p><a class="reference download internal" download="" href="../_downloads/33a7d247e9b42db90d4c2e68bd5872f4/webpack.development.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack/webpack.development.js</span></code></a> no presenta novedades destacables;
-simplemente, se ha optado por colocar los mapeos por separado:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.development.js</span>
-<span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">),</span>
-      <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack&quot;</span><span class="p">);</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">)(</span><span class="nx">env</span><span class="p">);</span>
-   <span class="kd">let</span> <span class="nx">filenamemap</span> <span class="o">=</span> <span class="sb">`</span><span class="si">${</span><span class="nx">common</span><span class="p">.</span><span class="nx">output</span><span class="p">.</span><span class="nx">filename</span><span class="si">}</span><span class="sb">.map`</span><span class="p">;</span>
-
-   <span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;development&quot;</span><span class="p">,</span>
-      <span class="nx">devtool</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">SourceMapDevToolPlugin</span><span class="p">({</span>
-            <span class="nx">filename</span><span class="o">:</span> <span class="nx">filenamemap</span>
-         <span class="p">})</span>
-      <span class="p">]</span>
-   <span class="p">}</span>
-
-   <span class="k">return</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
-
-<span class="p">}</span>
-</pre></div>
-</div>
-<p id="webpack-externals">Del mismo modo, tampoco, <a class="reference download internal" download="" href="../_downloads/0cb024d63f1c9e99064cb35a33405dc2/webpack.production.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack/webpack.production.js</span></code></a> presenta novedades:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.production.js</span>
-<span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">)(</span><span class="nx">env</span><span class="p">),</span>
-         <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;production&quot;</span><span class="p">,</span>
-            <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
-               <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
-                  <span class="p">{</span>
-                     <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
-                     <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
-                     <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
-                        <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;babel-loader&quot;</span><span class="p">,</span>
-                        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-                           <span class="nx">presets</span><span class="o">:</span> <span class="p">[[</span><span class="s2">&quot;@babel/env&quot;</span><span class="p">,</span> <span class="p">{</span>
-                              <span class="nx">debug</span><span class="o">:</span> <span class="nx">env</span><span class="p">.</span><span class="nx">debug</span><span class="p">,</span>
-                              <span class="nx">corejs</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
-                              <span class="nx">useBuiltIns</span><span class="o">:</span> <span class="s2">&quot;usage&quot;</span>
-                           <span class="p">}]]</span>
-                        <span class="p">}</span>
-                     <span class="p">}</span>
-                  <span class="p">},</span>
-               <span class="p">]</span>
-            <span class="p">}</span>
-         <span class="p">};</span>
-
-   <span class="k">return</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Generamos los ficheros resultantes:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm run build
-<span class="gp">$</span> npm run src
-<span class="gp">$</span> npm run bundle
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">Es importante recordar que en <code class="file docutils literal notranslate"><span class="pre">packages.json</span></code> hemos notado
-como el fichero principal a <code class="file docutils literal notranslate"><span class="pre">dist/leaflet.iconzoom.js</span></code>, así que
-conviene que al menos éste se genere.</p>
-</div>
-</li>
-<li><p class="first">Hecho todo lo anterior, podemos rematar el repositorio <em>git</em>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> vim README.rst
-<span class="gp">$</span> vim LICENSE
-<span class="gp">$</span> git add .
-<span class="gp">$</span> git commit <span class="s2">&quot;Primera implementación&quot;</span>
-</pre></div>
-</div>
-<p>crear en <a class="reference external" href="https://github.com">Github</a> un repositorio homónimo (<em>leaflet.iconzoom</em>) sin inicializar
-con nuestro usuario, y subir el código a él:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git remote add origin https://github.com/miusuario/leaflet.iconzoom.git
-<span class="gp">$</span> git push -u origin master
-</pre></div>
-</div>
-</li>
-</ol>
-<p>El resultado es <a class="reference external" href="https://github.com/sio2sio2/leaflet.iconzoom/tree/v0.1.0">este repositorio de Github</a>.</p>
-</div>
+<div>Aunque cronológicamente deberíamos obrar al revés, la creación de una
+aplicación web es menos compleja, de modo que empezaremos por ella.</div></blockquote>
 <div class="section" id="aplicacion-web">
-<h2>4.3.2. Aplicación web<a class="headerlink" href="#aplicacion-web" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>La aplicación web desarrolla una página muy simple que usa el <em>plugin</em> anterior.
-Como es una aplicación final, a diferencia del caso del <em>plugin</em>, sólo
-necesita dos sabores:</p>
-<ul class="simple">
-<li>El optimizado y portable para producción, que incluirá todas las dependencias
-(<a class="reference external" href="https://leafletjs.com">Leaflet</a> en este caso).</li>
-<li>El apropiado para la depuración, durante el desarrollo.</li>
-</ul>
+<span id="webpack-ej-app"></span><h2>4.3.1. Aplicación web<a class="headerlink" href="#aplicacion-web" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El primer ejemplo ilustra cómo crear una aplicación web muy sencilla que utiliza
+<a class="reference external" href="https://leafletjs.com">Leaflet</a> y el <em>plugin</em> para éste que expondremos en el segundo ejemplo y se
+llama <a class="reference external" href="https://github.com/sio2sio2/leaflet.iconzoom">Leaflet.iconzoom</a>.</p>
+<p>Al tratarse de una aplicación final, sólo no es necesario configurar dos
+<em>sabores</em> para la salida de los cinco qu expusimos al tratar las <a class="reference internal" href="02.part.html#webpack-multi"><span class="std std-ref">múltiples
+salidas</span></a>:</p>
+<ol class="arabic simple" start="2">
+<li>El optimizado y portable para producción, que incluirá todas las
+dependencias.</li>
+</ol>
+<ol class="arabic simple" start="5">
+<li>El apropiado para la depuración durante el desarrollo.</li>
+</ol>
+<div class="section" id="preparativos">
+<h3>4.3.1.1. Preparativos<a class="headerlink" href="#preparativos" title="Enlazar permanentemente con este título">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">Preparamos el directorio de trabajo:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir test.leaflet.iconzoom
-<span class="gp">$</span> <span class="nb">cd</span> test.leaflet.iconzoom
+<li><p class="first">Generamos el directorio de trabajo:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir test.iconzoom
+<span class="gp">$</span> <span class="nb">cd</span> test.iconzoom
 <span class="gp">$</span> npm init -y
 </pre></div>
 </div>
+<p>y nos cercioramos de dejar los scripts de <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> de este modo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle --progress&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --progress&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>que es, precisamente, como los deja el fichero <code class="file docutils literal notranslate"><span class="pre">~/npm-init.js</span></code> que
+propusimos lecciones atrás.</p>
 </li>
 <li><p class="first">Instalamos el <em>software</em> preciso:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
+
 <span class="gp">$</span> npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
+<span class="gp">$</span> npm install core-js
+
 <span class="gp">$</span> npm install --save-dev html-loader html-webpack-plugin
+
 <span class="gp">$</span> npm install --save-dev css-loader mini-css-extract-plugin
-<span class="gp">$</span> npm install --save-dev url-loader file-loader
+<span class="gp">$</span> npm install --save-dev postcss-loader autoprefixer cssnano
 <span class="gp">$</span> npm install --save-dev sass-loader node-sass
-<span class="gp">$</span> npm install --save-dev postcss-loader autoprefixer
-<span class="gp">$</span> npm install core-js leaflet
+
+<span class="gp">$</span> npm install --save-dev url-loader file-loader
+<span class="gp">$</span> npm install leaflet-defaulticon-compatibility
+
+<span class="gp">$</span> npm install leaflet
 <span class="gp">$</span> npm install git+https://github.com/sio2sio2/leaflet.iconzoom.git
 </pre></div>
 </div>
+<p>en donde:</p>
+<ul class="simple">
+<li>El primer bloque instala los paquetes relacionados con webpack.</li>
+<li>El segundo instala los paquetes necesarios para la transpilación.</li>
+<li>El tercero, los necesarios para procesar el <abbr title="HyperText Markup Language">HTML</abbr> de la aplicación.</li>
+<li>El cuerto, los necesarios para procesar <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>/<abbr title="Cascading Style Sheets">CSS</abbr>, minimizar y generar
+un único fichero.</li>
+<li>El quinto, los necesarios para procesar otro tipo de ficheros.
+<a class="reference external" href="https://github.com/ghybs/leaflet-defaulticon-compatibility">leaflet-defaulticon-compatibility</a>. El últumo es imprescindible si que
+quiere que no fallen los dataURI que genera <strong class="program">url-loader</strong>.</li>
+<li>El sexto y último bloque son las librerías externas de las que depende
+nuestro programa.</li>
+</ul>
 </li>
-<li><p class="first">Configuramos los <em>scripts</em>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
-  <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=min&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --open&quot;</span>
-<span class="p">},</span>
-</pre></div>
+</ol>
 </div>
-<p>El primero de los cuales, genera la aplicación para producción y el segundo
-es útil para depurar la aplicación.</p>
-</li>
-<li><p class="first">Creamos los ficheros que conforman el proyecto:</p>
+<div class="section" id="escritura">
+<h3>4.3.1.2. Escritura<a class="headerlink" href="#escritura" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Creamos la sencilla aplicación:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+ src
    +-- index.html
-   +-- js
-   |    +-- index.js
-   +-- sass
-        +-- index.sass
+   +-- index.js
+   +-- index.sass
+   +-- logo.svg
 </pre></div>
 </div>
+<p>que consta de:</p>
 <ol class="loweralpha">
-<li><p class="first">Creamos la página <a class="reference download internal" download="" href="../_downloads/039c2a9d4ccd5b77d04b8a707dc8af42/index.html"><code class="xref download docutils literal notranslate"><span class="pre">src/index.html</span></code></a>:</p>
+<li><p class="first">La página <a class="reference download internal" download="" href="../_downloads/039c2a9d4ccd5b77d04b8a707dc8af42/index.html"><code class="xref download docutils literal notranslate"><span class="pre">src/index.html</span></code></a>:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
@@ -514,10 +162,10 @@ es útil para depurar la aplicación.</p>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
 </div>
-<p>Como puede verse, es la página cruda sin enlaces a <a class="reference external" href="https://leafletjs.com">Leaflet</a>, el plugin
-anterior o el <em>script</em> que crea el mapa.</p>
+<p>que es la página cruda sin enlaces a <a class="reference external" href="https://leafletjs.com">Leaflet</a>, el plugin anterior o el
+<em>script</em> que crea el mapa.</p>
 </li>
-<li><p class="first">Definimos el estilo (con <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>) en <a class="reference download internal" download="" href="../_downloads/1d8b0748ee785d18ea600c2910f2b073/index.sass"><code class="xref download docutils literal notranslate"><span class="pre">src/sass/index.sass</span></code></a>:</p>
+<li><p class="first">Un estilo (con <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>) en <a class="reference download internal" download="" href="../_downloads/1d8b0748ee785d18ea600c2910f2b073/index.sass"><code class="xref download docutils literal notranslate"><span class="pre">src/index.sass</span></code></a>:</p>
 <div class="highlight-sass notranslate"><div class="highlight"><pre><span></span><span class="nt">html</span><span class="o">,</span> <span class="nt">body</span>
    <span class="na">height</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span>
    <span class="na">width</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span>
@@ -538,30 +186,20 @@ anterior o el <em>script</em> que crea el mapa.</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Y el propio <em>script</em> <a class="reference download internal" download="" href="../_downloads/47b656a8aec0cb14559be72c48bcf7d9/index.js"><code class="xref download docutils literal notranslate"><span class="pre">src/js/index.js</span></code></a>:</p>
+<li><p class="first">Y el propio <em>script</em> <a class="reference download internal" download="" href="../_downloads/47b656a8aec0cb14559be72c48bcf7d9/index.js"><code class="xref download docutils literal notranslate"><span class="pre">src/index.js</span></code></a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">L</span> <span class="nx">from</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="p">;</span>
+
 <span class="kr">import</span> <span class="s2">&quot;leaflet.iconzoom&quot;</span><span class="p">;</span>
 
 <span class="kr">import</span> <span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;app/src/sass/index.sass&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;app/src/images/logo.svg&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css&quot;</span><span class="p">;</span>
 
-<span class="kd">function</span> <span class="nx">encodeSVG</span><span class="p">(</span><span class="nx">svg</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="s2">&quot;image/svg+xml&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;app/src/index.sass&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">logo</span> <span class="nx">from</span> <span class="s2">&quot;app/src/logo.svg&quot;</span><span class="p">;</span>
 
-   <span class="k">return</span> <span class="s2">&quot;data:&quot;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span>
-      <span class="nx">svg</span><span class="p">.</span><span class="nx">outerHTML</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(:?&lt;|&gt;|&quot;|&#39;|#|\s+)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
-         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;&lt;&#39;</span><span class="o">:</span> <span class="s1">&#39;%3C&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;&gt;&#39;</span><span class="o">:</span> <span class="s1">&#39;%3E&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;&quot;&#39;</span><span class="o">:</span> <span class="s2">&quot;%22&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&#39;&quot;</span><span class="o">:</span> <span class="s2">&quot;%27&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;#&#39;</span><span class="o">:</span> <span class="s1">&#39;%23&#39;</span>
-         <span class="p">}[</span><span class="nx">c</span><span class="p">]</span> <span class="o">||</span> <span class="s2">&quot; &quot;</span><span class="p">;</span>
-     <span class="p">});</span>
-<span class="p">}</span>
 
-<span class="kr">const</span> <span class="nx">Icon</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Icon</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<span class="kr">const</span> <span class="nx">Icon</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">DivIcon</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
       <span class="nx">factor</span><span class="o">:</span>       <span class="mf">1.25</span><span class="p">,</span> <span class="c1">// Provoca que se haga zoom al pasar sobre el icono</span>
       <span class="nx">iconSize</span><span class="o">:</span>     <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
@@ -577,14 +215,15 @@ anterior o el <em>script</em> que crea el mapa.</p>
      <span class="nx">maxZoom</span><span class="o">:</span> <span class="mi">18</span>
    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-   <span class="kr">const</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;template&quot;</span><span class="p">).</span><span class="nx">content</span><span class="p">.</span><span class="nx">firstElementChild</span><span class="p">;</span>
+   <span class="c1">// Plantilla para construir el icono.</span>
+   <span class="kr">const</span> <span class="nx">template</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;template&quot;</span><span class="p">).</span><span class="nx">content</span><span class="p">.</span><span class="nx">firstElementChild</span><span class="p">;</span>
 
-   <span class="c1">// Objeto geojson</span>
+   <span class="c1">// Objeto geojson para la marca</span>
    <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
       <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
       <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
-         <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Una marca&quot;</span><span class="p">,</span>
-         <span class="nx">popupContent</span><span class="o">:</span> <span class="s2">&quot;Soy una marca&quot;</span>
+         <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Doña marca&quot;</span><span class="p">,</span>
+         <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;Soy la increíble marca cambiante&quot;</span>
       <span class="p">},</span>
       <span class="nx">geometry</span><span class="o">:</span> <span class="p">{</span>
          <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span>
@@ -592,51 +231,92 @@ anterior o el <em>script</em> que crea el mapa.</p>
       <span class="p">}</span>
    <span class="p">}</span>
 
-   <span class="kd">function</span> <span class="nx">onEachFeature</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">l</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">l</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">l</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>  <span class="c1">// La marca.</span>
-         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">feature</span><span class="p">);</span> <span class="c1">// El objeto geojson.</span>
-         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">layer</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">feature</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">layer</span><span class="p">);</span>  <span class="c1">// La capa que contiene los objetos.</span>
-         <span class="nx">alert</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">feature</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
-      <span class="p">});</span>
-   <span class="p">}</span>
-
-   <span class="kd">function</span> <span class="nx">pointToLayer</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">marker</span><span class="p">)</span> <span class="p">{</span>
-         <span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">marker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Marker</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="p">{</span><span class="nx">icon</span><span class="o">:</span> <span class="k">new</span> <span class="nx">Icon</span><span class="p">({</span><span class="nx">iconUrl</span><span class="o">:</span> <span class="nx">encodeSVG</span><span class="p">(</span><span class="nx">svg</span><span class="p">)})});</span>
+   <span class="kr">const</span> <span class="nx">layer</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">pointToLayer</span><span class="o">:</span> <span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">p</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Marker</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="p">{</span> <span class="nx">icon</span><span class="o">:</span> <span class="k">new</span> <span class="nx">Icon</span><span class="p">({</span> <span class="nx">html</span><span class="o">:</span> <span class="nx">template</span><span class="p">.</span><span class="nx">cloneNode</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">})</span> <span class="p">}),</span>
+      <span class="nx">onEachFeature</span><span class="o">:</span> <span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">l</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+         <span class="nx">l</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="nx">e</span> <span class="p">=&gt;</span> <span class="nx">alert</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">message</span><span class="p">));</span>
       <span class="p">}</span>
-      <span class="k">return</span> <span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">marker</span><span class="p">;</span>
-   <span class="p">}</span>
+   <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-   <span class="kr">const</span> <span class="nx">SVGLayer</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-      <span class="nx">addData</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">geojson</span><span class="p">)</span> <span class="p">{</span>
-         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">geojson</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">geojson</span><span class="p">.</span><span class="nx">features</span><span class="p">)</span> <span class="nx">geojson</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">layer</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-         <span class="k">return</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addData</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">geojson</span><span class="p">);</span>
-      <span class="p">}</span>
+   <span class="c1">// Marca de agua (nada que ver con lo que se prueba.</span>
+   <span class="kr">const</span> <span class="nx">Watermark</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Control</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+      <span class="nx">onAdd</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">map</span><span class="p">)</span> <span class="p">{</span>
+         <span class="kr">const</span> <span class="nx">img</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">DomUtil</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">&quot;img&quot;</span><span class="p">);</span>
+         <span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">logo</span><span class="p">;</span>
+         <span class="nx">img</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="s2">&quot;200px&quot;</span><span class="p">;</span>
+
+         <span class="k">return</span> <span class="nx">img</span>
+      <span class="p">},</span>
+      <span class="nx">onRemove</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">map</span><span class="p">)</span> <span class="p">{}</span>
    <span class="p">});</span>
 
-   <span class="kr">const</span> <span class="nx">layer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SVGLayer</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">onEachFeature</span><span class="o">:</span> <span class="nx">onEachFeature</span><span class="p">,</span>
-      <span class="nx">pointToLayer</span><span class="o">:</span> <span class="nx">pointToLayer</span>
-   <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+   <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">watermark</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">opts</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">Watermark</span><span class="p">(</span><span class="nx">opts</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">watermark</span><span class="p">({</span><span class="nx">position</span><span class="o">:</span> <span class="s2">&quot;bottomleft&quot;</span><span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">En este caso, como desarrollamos una aplicación final, no
-necesitamos tener ninguna prevención sobre cómo importamos <a class="reference external" href="https://leafletjs.com">Leaflet</a> o
-el propia plugin que previamente hemos desarrollado.</p>
-</div>
+<p>Al ser una aplicación final, no necesitamos generar salidas sin
+dependencias y, en consecuencia, importamos todas directamente en el
+propio código.</p>
 </li>
 </ol>
 </li>
-<li><p class="first">Y creamos la configuración para <strong class="program">webpack</strong> con</p>
-<p><a class="reference download internal" download="" href="../_downloads/f694f049e46eee3cb5d4a6f24bc58bc8/webpack.config.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack.config.js</span></code></a>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack.config.js</span>
+<li><p class="first">Por fin, creamos la configuración para <strong class="program">webpack</strong></p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack&quot;</span><span class="p">),</span>
+      <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">),</span>
+      <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack-merge&quot;</span><span class="p">),</span>
+      <span class="nx">HtmlWebPackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;html-webpack-plugin&quot;</span><span class="p">),</span>
+      <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mini-css-extract-plugin&quot;</span><span class="p">),</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./package.json&quot;</span><span class="p">).</span><span class="nx">name</span><span class="p">;</span>
+
+
+<span class="c1">// Configuración para Babel</span>
+<span class="kd">function</span> <span class="nx">confBabel</span><span class="p">(</span><span class="nx">env</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+         <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+               <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+               <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+               <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
+                  <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;babel-loader&quot;</span><span class="p">,</span>
+                  <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                     <span class="nx">presets</span><span class="o">:</span> <span class="p">[[</span><span class="s2">&quot;@babel/env&quot;</span><span class="p">,</span> <span class="p">{</span>
+                        <span class="nx">debug</span><span class="o">:</span> <span class="nx">env</span><span class="p">.</span><span class="nx">debug</span><span class="p">,</span>
+                        <span class="nx">corejs</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+                        <span class="nx">useBuiltIns</span><span class="o">:</span> <span class="s2">&quot;usage&quot;</span>
+                     <span class="p">}]]</span>
+                  <span class="p">}</span>
+               <span class="p">}</span>
+            <span class="p">},</span>
+         <span class="p">]</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="c1">// Configuración para desarrollo</span>
+<span class="kd">function</span> <span class="nx">confDev</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">devtool</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">SourceMapDevToolPlugin</span><span class="p">({</span>
+            <span class="nx">filename</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">filename</span><span class="si">}</span><span class="sb">.map`</span>
+         <span class="p">})</span>
+      <span class="p">],</span>
+      <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+         <span class="nx">contentBase</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+         <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span><span class="p">,</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
    <span class="kd">let</span> <span class="nx">mode</span><span class="p">;</span>
-
    <span class="k">switch</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">case</span> <span class="s2">&quot;debug&quot;</span><span class="o">:</span>
          <span class="nx">mode</span> <span class="o">=</span> <span class="s2">&quot;development&quot;</span><span class="p">;</span>
@@ -645,49 +325,41 @@ el propia plugin que previamente hemos desarrollado.</p>
          <span class="nx">mode</span> <span class="o">=</span> <span class="s2">&quot;production&quot;</span><span class="p">;</span>
    <span class="p">}</span>
 
-   <span class="k">return</span> <span class="nx">require</span><span class="p">(</span><span class="sb">`./webpack/webpack.</span><span class="si">${</span><span class="nx">mode</span><span class="si">}</span><span class="sb">.js`</span><span class="p">)(</span><span class="nx">env</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><a class="reference download internal" download="" href="../_downloads/f1946b7a9623ea433f15f3ddf1a1405b/webpack.common.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack/webpack.common.js</span></code></a>, que
-hace que los ficheros resultantes se generen dentro de <code class="file docutils literal notranslate"><span class="pre">docs/</span></code><a class="footnote-reference" href="#id5" id="id2">[2]</a>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.common.js</span>
-<span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">),</span>
-      <span class="nx">HtmlWebPackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;html-webpack-plugin&quot;</span><span class="p">),</span>
-      <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mini-css-extract-plugin&quot;</span><span class="p">);</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="p">{</span>
-      <span class="nx">entry</span><span class="o">:</span> <span class="s2">&quot;./src/js/index.js&quot;</span><span class="p">,</span>
+   <span class="kr">const</span> <span class="nx">filename</span> <span class="o">=</span> <span class="s2">&quot;js/[name].js&quot;</span><span class="p">;</span>
+   <span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">mode</span><span class="o">:</span> <span class="nx">mode</span><span class="p">,</span>
+      <span class="nx">entry</span><span class="o">:</span> <span class="p">{</span>
+         <span class="p">[</span><span class="nx">name</span><span class="p">]</span><span class="o">:</span> <span class="s2">&quot;./src/index.js&quot;</span>
+      <span class="p">},</span>
       <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
-<span class="hll">         <span class="nx">path</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;../docs&quot;</span><span class="p">),</span>
-</span>         <span class="nx">filename</span><span class="o">:</span> <span class="sb">`js/[name].bundle.js`</span>
+         <span class="nx">path</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;docs&quot;</span><span class="p">),</span>
+         <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span>
       <span class="p">},</span>
       <span class="nx">resolve</span><span class="o">:</span> <span class="p">{</span>
          <span class="nx">alias</span><span class="o">:</span> <span class="p">{</span>
-            <span class="nx">app</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">)</span>
+            <span class="nx">app</span><span class="o">:</span> <span class="nx">__dirname</span>
          <span class="p">}</span>
       <span class="p">},</span>
       <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
          <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
             <span class="p">{</span>
                <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.html$/</span><span class="p">,</span>
-               <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
-                  <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;html-loader&quot;</span><span class="p">,</span>
-                  <span class="nx">options</span><span class="o">:</span> <span class="p">{</span> <span class="nx">minimize</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span>
-               <span class="p">}</span>
+               <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;html-loader?minimize=true&quot;</span><span class="p">]</span>
             <span class="p">},</span>
             <span class="p">{</span>
                <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(css|sass)$/</span><span class="p">,</span>
                <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
-                     <span class="s2">&quot;css-loader&quot;</span><span class="p">,</span>
+                     <span class="sb">`css-loader?sourceMap=</span><span class="si">${</span><span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;development&quot;</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
                      <span class="p">{</span> 
-                        <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;postcss-loader&quot;</span><span class="p">,</span>
+                        <span class="nx">loader</span><span class="o">:</span> <span class="sb">`postcss-loader?sourceMap=</span><span class="si">${</span><span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;development&quot;</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
                         <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-                           <span class="nx">plugins</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">[</span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;autoprefixer&quot;</span><span class="p">)]</span>
+                           <span class="nx">plugins</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">[</span>
+                              <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;autoprefixer&quot;</span><span class="p">),</span>
+                              <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;cssnano&quot;</span><span class="p">)({</span><span class="nx">preset</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span><span class="p">})</span>
+                           <span class="p">]</span>
                         <span class="p">}</span>
                      <span class="p">},</span>
-                     <span class="s2">&quot;sass-loader&quot;</span><span class="p">]</span>
+                     <span class="sb">`sass-loader?sourceMap=</span><span class="si">${</span><span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;development&quot;</span><span class="si">}</span><span class="sb">`</span><span class="p">]</span>
             <span class="p">},</span>
             <span class="p">{</span>
                <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(png|jpe?g|gif|svg)$/i</span><span class="p">,</span>
@@ -700,7 +372,6 @@ hace que los ficheros resultantes se generen dentro de <code class="file docutil
       <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
          <span class="k">new</span> <span class="nx">HtmlWebPackPlugin</span><span class="p">({</span>
             <span class="nx">template</span><span class="o">:</span> <span class="s2">&quot;src/index.html&quot;</span><span class="p">,</span>
-            <span class="c1">//filename: &quot;index.html&quot;   // Es el valor predeterminado</span>
          <span class="p">}),</span>
          <span class="k">new</span> <span class="nx">MiniCssExtractPlugin</span><span class="p">({</span>
             <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;css/[name].css&quot;</span><span class="p">,</span>
@@ -708,66 +379,30 @@ hace que los ficheros resultantes se generen dentro de <code class="file docutil
          <span class="p">})</span>
       <span class="p">]</span>
    <span class="p">}</span>
+
+   <span class="k">return</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">smart</span><span class="p">(</span>
+      <span class="nx">common</span><span class="p">,</span>
+      <span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;production&quot;</span><span class="o">?</span><span class="nx">confBabel</span><span class="p">(</span><span class="nx">env</span><span class="p">)</span><span class="o">:</span><span class="nx">confDev</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span>
+   <span class="p">)</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><a class="reference download internal" download="" href="../_downloads/b7cc9979478fa0e987317bb3f5d0228e/webpack.production.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack.production.js</span></code></a>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.production.js</span>
-<span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">)(</span><span class="nx">env</span><span class="p">),</span>
-         <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;production&quot;</span><span class="p">,</span>
-            <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
-               <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
-                  <span class="p">{</span>
-                     <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
-                     <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
-                     <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
-                        <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;babel-loader&quot;</span><span class="p">,</span>
-                        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-                           <span class="nx">presets</span><span class="o">:</span> <span class="p">[[</span><span class="s2">&quot;@babel/env&quot;</span><span class="p">,</span> <span class="p">{</span>
-                              <span class="nx">debug</span><span class="o">:</span> <span class="nx">env</span><span class="p">.</span><span class="nx">debug</span><span class="p">,</span>
-                              <span class="nx">corejs</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
-                              <span class="nx">useBuiltIns</span><span class="o">:</span> <span class="s2">&quot;usage&quot;</span>
-                           <span class="p">}]]</span>
-                        <span class="p">}</span>
-                     <span class="p">}</span>
-                  <span class="p">},</span>
-               <span class="p">]</span>
-            <span class="p">}</span>
-         <span class="p">};</span>
-
-   <span class="k">return</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><a class="reference download internal" download="" href="../_downloads/b1114df7b9f40a06b3118f608458d6ca/webpack.development.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack.development.js</span></code></a>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.development.js</span>
-<span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">),</span>
-      <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack&quot;</span><span class="p">);</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">)(</span><span class="nx">env</span><span class="p">);</span>
-
-   <span class="k">return</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;development&quot;</span><span class="p">,</span>
-      <span class="nx">devtool</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-      <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
-         <span class="nx">contentBase</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-         <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
-      <span class="p">},</span>
-      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">SourceMapDevToolPlugin</span><span class="p">({</span>
-            <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;js/[name].js.map&#39;</span>
-         <span class="p">})</span>
-      <span class="p">]</span>
-   <span class="p">});</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>que presenta las siguientes claves:</p>
+<ul class="simple">
+<li>La traspilación no es necesaria para durante el desarrollo ya que se supone
+que disponemos de un navegador moderno. En cambio, si necesitamos
+configurar el servidor web. Por eso motivo hemos independizado ambas
+configuraciones en funciones aparte y usamos una u otra según nuestro
+propoósito.</li>
+<li>El resto de la configuración es común a las dos salidas.</li>
+<li>Generamos la aplicación en el subdirectorio <code class="file docutils literal notranslate"><span class="pre">/docs</span></code>.</li>
+</ul>
 </li>
+</ol>
+</div>
+<div class="section" id="generacion">
+<h3>4.3.1.3. Generación<a class="headerlink" href="#generacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
 <li><p class="first">Generamos el resultado:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm run build
 </pre></div>
@@ -786,54 +421,137 @@ hace que los ficheros resultantes se generen dentro de <code class="file docutil
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p class="last">Para que el ejemplo sea visitable, en <a class="reference external" href="https://github.com">Github</a> dentro de <em>Settings</em>,
-la publicación del directorio <code class="file docutils literal notranslate"><span class="pre">/docs</span></code> de la rama <em>master</em>.</p>
+habilite la publicación del directorio <code class="file docutils literal notranslate"><span class="pre">/docs</span></code> de la rama <em>master</em>.</p>
 </div>
 </li>
 </ol>
-<p>El resultado está publicado en <a class="reference external" href="https://github.com/sio2sio2/test.iconzoom">este segundo repositorio</a>.</p>
+<p>El resultado está publicado en <a class="reference external" href="https://github.com/sio2sio2/test.iconzoom">este su repositorio</a>.</p>
 </div>
-<div class="section" id="plugin-con-ejemplo">
-<span id="webpack-plugin-ej"></span><h2>4.3.3. Plugin con ejemplo<a class="headerlink" href="#plugin-con-ejemplo" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Cuando se desarrolla una librería y no una aplicación, es indispensable crear al
-menos una página de ejemplo de aplicación por dos razones:</p>
-<ol class="arabic simple">
-<li>Porque un ejemplo de aplicación que ilustre el uso es muy recomendable para
-mostrar a terceros cómo debe programar con la librería</li>
-<li>Porque la propia página sirve para probar y depurar el código.</li>
-</ol>
-<p>La primera razón implica que todo el código del ejemplo (<abbr title="HyperText Markup Language">HTML</abbr>, <abbr title="Cascading Style Sheets">CSS</abbr> y
-<em>Javascript</em>) sea absolutamente claro a la lectura de un programador humano, lo
-cual se consigue escribiendo a mano los ficheros que componen el ejemplo e
-impidiendo que <strong class="program">webpack</strong> pueda obrar transformación alguna.</p>
-<p>Siguiendo este principio, tomemos el directorio de trabajo del <a class="reference internal" href="#webpack-ej-plugin"><span class="std std-ref">ejemplo de
-desarrollo del plugin</span></a> y añadamos un directorio
-<code class="file docutils literal notranslate"><span class="pre">examples/</span></code><a class="footnote-reference" href="#id6" id="id3">[3]</a> con todo el código que desarrolla el ejemplo:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+-- examples
-      +-- index.html
-      +-- js/
-      |   +-- main.js
-      +-- css/
-          +-- main.css
+</div>
+<div class="section" id="plugin">
+<span id="webpack-ej-plugin"></span><h2>4.3.2. Plugin<a class="headerlink" href="#plugin" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Nuestra intención ahora es desarrollar una librería, no una aplicación final, y
+en concreto, el <em>plugin</em> que utilizamos bajo el epígrafe anterior para construir
+la aplicación, o sea, <a class="reference external" href="https://github.com/sio2sio2/leaflet.iconzoom">Leaflet.iconzoom</a>.</p>
+<p>En este caso, queremos obtener las <a class="reference internal" href="02.part.html#webpack-multi"><span class="std std-ref">cinco salidas expuestas al tratar el
+asunto</span></a> y, además, escribir un ejemplo que sirva tanto para
+ilustrar su uso como para depurar mientras lo desarrollamos.</p>
+<div class="section" id="id1">
+<h3>4.3.2.1. Preparativos<a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Generamos el directorio de trabajo:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir leaflet.iconzoom
+<span class="gp">$</span> <span class="nb">cd</span> leaflet.iconzoom
+<span class="gp">$</span> npm init -y
 </pre></div>
 </div>
-<p><a class="reference download internal" download="" href="../_downloads/8fcae6d35e0e28cc1e93eb5187aad99b/index.html"><code class="xref download docutils literal notranslate"><span class="pre">index.html</span></code></a>, que escribimos por completo a
-mano tendrá este contenido:</p>
+<p>en el que el fichero prinicpal será <code class="file docutils literal notranslate"><span class="pre">dist/leaflet.iconzoom-src.js</span></code>; y
+nos cercioramos de dejar los scripts de <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> de este modo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=min --progress&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;build:bundle&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle --progress&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;build:src&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=src --progress&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;build:debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=srcdebug --progress&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --progress&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Instalación del software preciso:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
+
+<span class="gp">$</span> npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
+<span class="gp">$</span> npm install core-js
+
+<span class="gp">$</span> npm install --save-dev css-loader mini-css-extract-plugin
+<span class="gp">$</span> npm install --save-dev postcss-loader cssnano
+
+<span class="gp">$</span> npm install --save-dev url-loader file-loader
+<span class="gp">$</span> npm install leaflet-defaulticon-compatibility
+
+<span class="gp">$</span> npm install leaflet
+</pre></div>
+</div>
+<p>En este caso, más que exponer de nuevo para qué sirve cada bloque,
+justifiquemos las diferencias con respecto al caso anterior:</p>
+<ul class="simple">
+<li>Hemos prescidido del bloque dedicado al procesamiento de <abbr title="HyperText Markup Language">HTML</abbr>, porque
+nuestra librería no lo necesita:</li>
+<li>Procesamos, obviamente, <em>Javascript</em> (el propio y el de <a class="reference external" href="https://leafletjs.com">Leaflet</a>), <abbr title="Cascading Style Sheets">CSS</abbr>
+(el de <a class="reference external" href="https://leafletjs.com">Leaflet</a> en el sabor <em>bundle</em>) e imágenes (alguna de <a class="reference external" href="https://leafletjs.com">Leaflet</a>
+referidas en su <abbr title="Cascading Style Sheets">CSS</abbr>).</li>
+<li>Prescindimos de <em>autoprefixer</em>, porque no añadimos <abbr title="Cascading Style Sheets">CSS</abbr> propio y estimamos
+que el <abbr title="Cascading Style Sheets">CSS</abbr> de Leaflet ya será suficientemente compatible. Podemos, sin
+embargo, instalarlo y usarlo en la configuración.</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h3>4.3.2.2. Escritura<a class="headerlink" href="#id2" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Escribimos el <em>plugin</em> en <code class="file docutils literal notranslate"><span class="pre">src/plugin.js</span></code>, que es enormemente sencillo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">L</span><span class="p">.</span><span class="nx">Compatibility</span><span class="p">;</span> <span class="c1">// Para importar el plugin de compatibilidad</span>
+
+<span class="nx">L</span><span class="p">.</span><span class="nx">Icon</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">zoom</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">factor</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">factor</span> <span class="o">=</span> <span class="nx">factor</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">factor</span><span class="p">;</span>
+   <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">factor</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+   <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconSize</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconSize</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span> <span class="p">=&gt;</span> <span class="nx">e</span><span class="o">*</span><span class="nx">factor</span><span class="p">);</span>
+   <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconAnchor</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconAnchor</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span> <span class="p">=&gt;</span> <span class="nx">e</span><span class="o">*</span><span class="nx">factor</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">L</span><span class="p">.</span><span class="nx">Marker</span><span class="p">.</span><span class="nx">addInitHook</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+   <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;mouseover mouseout&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> 
+      <span class="kr">const</span> <span class="nx">icon</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">icon</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">icon</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">factor</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="s2">&quot;mouseover&quot;</span><span class="p">)</span> <span class="nx">icon</span><span class="p">.</span><span class="nx">zoom</span><span class="p">();</span>
+      <span class="k">else</span> <span class="p">{</span>
+         <span class="k">delete</span> <span class="nx">icon</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconSize</span><span class="p">;</span>
+         <span class="k">delete</span> <span class="nx">icon</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iconAnchor</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">setIcon</span><span class="p">(</span><span class="nx">icon</span><span class="p">);</span>
+   <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Icon</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Desarrollamos el ejemplo. Tomaremos como base la aplicación anterior, pero
+teniendo en cuenta que el ejemplo no forma parte del procesamiento  por
+lo que escribiremos los ficheros finales y los alojaremos en el subdirectorio
+<code class="file docutils literal notranslate"><span class="pre">examples</span></code><a class="footnote-reference" href="#id5" id="id3">[1]</a>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+ examples
+   +-- index.html
+   +-- index.js
+   +-- index.css
+   +-- logo.svg
+</pre></div>
+</div>
+<p>Las diferencias de estos ficheros respecto a los que escribimos para la
+aplicación anterior son:</p>
+<ul>
+<li><p class="first">El <abbr title="Cascading Style Sheets">CSS</abbr> es <abbr title="Cascading Style Sheets">CSS</abbr> y no <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>, puesto que no debe haber procesamiento
+anterior. Salvado el formato, el contenido es el mismo.</p>
+</li>
+<li><p class="first"><code class="file docutils literal notranslate"><span class="pre">index.html</span></code> debe contener los enlaces a todo el <abbr title="Cascading Style Sheets">CSS</abbr> y <em>Javascript</em>
+necesario. En consecuencia:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;es&quot;</span><span class="p">&gt;</span>
    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;</span>
    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Prueba con Leaflet.iconzoom<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
 
-   <span class="c">&lt;!-- Leaflet --&gt;</span>
-   <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.5.1/dist/leaflet.css&quot;</span><span class="p">&gt;</span>
-   <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.5.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-
-   <span class="c">&lt;!-- Plugin --&gt;</span>
-   <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../dist/leaflet.iconzoom.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-
-   <span class="c">&lt;!-- Código para el ejemplo --&gt;</span>
-   <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;css/main.css&quot;</span><span class="p">&gt;</span>
-   <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;js/main.js&quot;</span> <span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-
+<span class="hll">   <span class="c">&lt;!-- Leaflet --&gt;</span>
+</span><span class="hll">   <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.5.1/dist/leaflet.css&quot;</span><span class="p">&gt;</span>
+</span><span class="hll">   <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.5.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span><span class="hll">
+</span><span class="hll">   <span class="c">&lt;!-- Plugin --&gt;</span>
+</span><span class="hll">   <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../dist/leaflet.iconzoom.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span><span class="hll">
+</span><span class="hll">   <span class="c">&lt;!-- Código para el ejemplo --&gt;</span>
+</span><span class="hll">   <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;index.css&quot;</span><span class="p">&gt;</span>
+</span><span class="hll">   <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;index.js&quot;</span> <span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span>
    <span class="c">&lt;!-- BODY --&gt;</span>
 
    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Prueba con Leaflet.iconzoom<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
@@ -850,225 +568,211 @@ mano tendrá este contenido:</p>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
 </div>
-<p><a class="reference download internal" download="" href="../_downloads/456d02e7cad96cefa1fefa1da61d65a9/main.js"><code class="xref download docutils literal notranslate"><span class="pre">js/main.js</span></code></a>, este otro:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">encodeSVG</span><span class="p">(</span><span class="nx">svg</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="s2">&quot;image/svg+xml&quot;</span><span class="p">;</span>
+<p>En este caso, estamos usando el resultado sin dependencias, por lo que es
+necesario incluir también las referencias a <a class="reference external" href="https://leafletjs.com">Leaflet</a>.</p>
+</li>
+<li><p class="first">El <em>script</em> <a class="reference download internal" download="" href="../_downloads/109084e0b69bcef6fa2611b73a585fcc/index.js"><code class="xref download docutils literal notranslate"><span class="pre">index.js</span></code></a> es el expuesto al
+desarrollar la aplicación, pero sin las sentencias de importación y
+exportación.</p>
+</li>
+</ul>
+</li>
+<li><p class="first">Por último, redactamos <code class="file docutils literal notranslate"><span class="pre">webpack.config.js</span></code>. Esta configuración es más
+compleja que la anterior, puesto que codifica la generación de las cinco
+salidas diferentes.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack&quot;</span><span class="p">),</span>
+      <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack-merge&quot;</span><span class="p">),</span>
+      <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">),</span>
+      <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mini-css-extract-plugin&quot;</span><span class="p">),</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./package.json&quot;</span><span class="p">).</span><span class="nx">name</span><span class="p">;</span>
 
-   <span class="k">return</span> <span class="s2">&quot;data:&quot;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span>
-      <span class="nx">svg</span><span class="p">.</span><span class="nx">outerHTML</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(:?&lt;|&gt;|&quot;|&#39;|#|\s+)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
-         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;&lt;&#39;</span><span class="o">:</span> <span class="s1">&#39;%3C&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;&gt;&#39;</span><span class="o">:</span> <span class="s1">&#39;%3E&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;&quot;&#39;</span><span class="o">:</span> <span class="s2">&quot;%22&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&#39;&quot;</span><span class="o">:</span> <span class="s2">&quot;%27&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;#&#39;</span><span class="o">:</span> <span class="s1">&#39;%23&#39;</span>
-         <span class="p">}[</span><span class="nx">c</span><span class="p">]</span> <span class="o">||</span> <span class="s2">&quot; &quot;</span><span class="p">;</span>
-     <span class="p">});</span>
-<span class="p">}</span>
 
-<span class="kr">const</span> <span class="nx">Icon</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Icon</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-   <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">factor</span><span class="o">:</span>       <span class="mf">1.25</span><span class="p">,</span> <span class="c1">// Provoca que se haga zoom al pasar sobre el icono</span>
-      <span class="nx">iconSize</span><span class="o">:</span>     <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
-      <span class="nx">iconAnchor</span><span class="o">:</span>   <span class="p">[</span><span class="mf">12.5</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
-   <span class="p">}</span>
-<span class="p">});</span>
-
-<span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="kr">const</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">).</span><span class="nx">setView</span><span class="p">([</span><span class="mf">37.07</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.27</span><span class="p">],</span> <span class="mi">9</span><span class="p">);</span>
-   <span class="nx">map</span><span class="p">.</span><span class="nx">zoomControl</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="s1">&#39;bottomright&#39;</span><span class="p">);</span>
-   <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
-     <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span><span class="p">,</span>
-     <span class="nx">maxZoom</span><span class="o">:</span> <span class="mi">18</span>
-   <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
-
-   <span class="kr">const</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;template&quot;</span><span class="p">).</span><span class="nx">content</span><span class="p">.</span><span class="nx">firstElementChild</span><span class="p">;</span>
-
-   <span class="c1">// Objeto geojson</span>
-   <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
-      <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
-         <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Una marca&quot;</span><span class="p">,</span>
-         <span class="nx">popupContent</span><span class="o">:</span> <span class="s2">&quot;Soy una marca&quot;</span>
-      <span class="p">},</span>
-      <span class="nx">geometry</span><span class="o">:</span> <span class="p">{</span>
-         <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span>
-         <span class="nx">coordinates</span><span class="o">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">6.27</span><span class="p">,</span> <span class="mf">37.07</span><span class="p">]</span>
+<span class="c1">// Configuración para Babel</span>
+<span class="kd">function</span> <span class="nx">confBabel</span><span class="p">(</span><span class="nx">env</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+         <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+               <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+               <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+               <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
+                  <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;babel-loader&quot;</span><span class="p">,</span>
+                  <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                     <span class="nx">presets</span><span class="o">:</span> <span class="p">[[</span><span class="s2">&quot;@babel/env&quot;</span><span class="p">,</span> <span class="p">{</span>
+                        <span class="nx">debug</span><span class="o">:</span> <span class="nx">env</span><span class="p">.</span><span class="nx">debug</span><span class="p">,</span>
+                        <span class="nx">corejs</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+                        <span class="nx">useBuiltIns</span><span class="o">:</span> <span class="s2">&quot;usage&quot;</span>
+                     <span class="p">}]]</span>
+                  <span class="p">}</span>
+               <span class="p">}</span>
+            <span class="p">},</span>
+         <span class="p">]</span>
       <span class="p">}</span>
    <span class="p">}</span>
-
-   <span class="kd">function</span> <span class="nx">onEachFeature</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">l</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">l</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">l</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>  <span class="c1">// La marca.</span>
-         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">feature</span><span class="p">);</span> <span class="c1">// El objeto geojson.</span>
-         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">layer</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">feature</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">layer</span><span class="p">);</span>  <span class="c1">// La capa que contiene los objetos.</span>
-         <span class="nx">alert</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">feature</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
-      <span class="p">});</span>
-   <span class="p">}</span>
-
-   <span class="kd">function</span> <span class="nx">pointToLayer</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">marker</span><span class="p">)</span> <span class="p">{</span>
-         <span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">marker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Marker</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="p">{</span><span class="nx">icon</span><span class="o">:</span> <span class="k">new</span> <span class="nx">Icon</span><span class="p">({</span><span class="nx">iconUrl</span><span class="o">:</span> <span class="nx">encodeSVG</span><span class="p">(</span><span class="nx">svg</span><span class="p">)})});</span>
-      <span class="p">}</span>
-      <span class="k">return</span> <span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">marker</span><span class="p">;</span>
-   <span class="p">}</span>
-
-   <span class="kr">const</span> <span class="nx">SVGLayer</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-      <span class="nx">addData</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">geojson</span><span class="p">)</span> <span class="p">{</span>
-         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">geojson</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">geojson</span><span class="p">.</span><span class="nx">features</span><span class="p">)</span> <span class="nx">geojson</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">layer</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-         <span class="k">return</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addData</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">geojson</span><span class="p">);</span>
-      <span class="p">}</span>
-   <span class="p">});</span>
-
-   <span class="kr">const</span> <span class="nx">layer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SVGLayer</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">onEachFeature</span><span class="o">:</span> <span class="nx">onEachFeature</span><span class="p">,</span>
-      <span class="nx">pointToLayer</span><span class="o">:</span> <span class="nx">pointToLayer</span>
-   <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
-
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>y <a class="reference download internal" download="" href="../_downloads/744e39db7bd328293eb266eac158f58b/main.css"><code class="xref download docutils literal notranslate"><span class="pre">css/main.css</span></code></a>, finalmente, este:</p>
-<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">html</span><span class="o">,</span> <span class="nt">body</span> <span class="p">{</span>
-   <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
-   <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
-   <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nt">h1</span> <span class="p">{</span>
-   <span class="k">height</span><span class="p">:</span> <span class="mi">40</span><span class="kt">px</span><span class="p">;</span>
-   <span class="k">background-color</span><span class="p">:</span> <span class="mh">#ee6</span><span class="p">;</span>
-   <span class="n">margin-block-start</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="n">margin-block-end</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="k">text-align</span><span class="p">:</span> <span class="kc">center</span><span class="p">;</span>
-   <span class="k">box-sizing</span><span class="p">:</span> <span class="kc">border-box</span><span class="p">;</span>
+<span class="c1">// Configuración adicional para el sabor bundle,</span>
+<span class="c1">// o sea, el que contiene todas las dependencias.</span>
+<span class="hll"><span class="kd">function</span> <span class="nx">confBundle</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="hll">   <span class="k">return</span> <span class="p">{</span>
+</span><span class="hll">      <span class="nx">entry</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">         <span class="p">[</span><span class="nx">name</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span><span class="p">,</span>
+</span><span class="hll">                  <span class="s2">&quot;leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css&quot;</span><span class="p">]</span>
+</span><span class="hll">      <span class="p">}</span>
+</span><span class="hll">   <span class="p">}</span>
+</span><span class="hll"><span class="p">}</span>
+</span>
+
+<span class="c1">// Configuración sin dependencias</span>
+<span class="hll"><span class="kd">function</span> <span class="nx">confNoDeps</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="hll">   <span class="k">return</span> <span class="p">{</span>
+</span><span class="hll">      <span class="nx">externals</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">         <span class="nx">leaflet</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">            <span class="nx">root</span><span class="o">:</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">commonjs</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">commonjs2</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">amd</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span>
+</span><span class="hll">         <span class="p">},</span>
+</span><span class="hll">         <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="o">:</span> <span class="s2">&quot;L.Compatibility&quot;</span><span class="p">,</span>
+</span><span class="hll">      <span class="p">}</span>
+</span><span class="hll">   <span class="p">}</span>
+</span><span class="hll"><span class="p">}</span> 
+</span>
+<span class="c1">// Configuración para desarrollo</span>
+<span class="c1">// (los mapeos de código fuente en fichero aparte)</span>
+<span class="kd">function</span> <span class="nx">confDev</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">devtool</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">SourceMapDevToolPlugin</span><span class="p">({</span>
+            <span class="nx">filename</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">filename</span><span class="si">}</span><span class="sb">.map`</span>
+         <span class="p">})</span>
+      <span class="p">],</span>
+<span class="hll">      <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">         <span class="nx">contentBase</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;examples&quot;</span><span class="p">),</span>
+</span><span class="hll">         <span class="nx">publicPath</span><span class="o">:</span> <span class="s2">&quot;/dist/&quot;</span><span class="p">,</span>
+</span><span class="hll">         <span class="nx">watchContentBase</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class="hll">         <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
+</span><span class="hll">      <span class="p">}</span>
+</span>   <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
-   <span class="k">height</span><span class="p">:</span> <span class="nb">calc</span><span class="p">(</span><span class="mi">100</span><span class="kt">%</span> <span class="o">-</span> <span class="mi">40</span><span class="kt">px</span><span class="p">);</span>
-   <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
-   <span class="k">box-sizing</span><span class="p">:</span> <span class="kc">border-box</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Si se han generado los ficheros en <code class="file docutils literal notranslate"><span class="pre">dist/</span></code>, el ejemplo es perfectamente
-funcional y, si se ejecuta en el directorio de trabajo
-<strong class="program">webpack-dev-server</strong> mediante esta orden:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npx webpack-dev-server --env.output debug --contentBase <span class="k">$(</span>realpath .<span class="k">)</span>
-</pre></div>
-</div>
-<p>podremos ver la página en la dirección:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>http://localhost:8080/examples
-</pre></div>
-</div>
-<p>Podríamos trasladar esta forma de arrancar el servidor a la configuración, pero
-hay un problema y es la segunda razón por la que es interesante el ejemplo: la
-depuración durante el desarrollo. Al estar constituido el ejemplo por ficheros
-estáticos accesibles al servidor a través de la opción <em>contentBase</em>, sólo se
-mandará orden de recarga cuando se cambie el código del plugin (que sí se genera
-con <strong class="program">webpack</strong>, pero no cuando cambie el código del ejemplo; y lo
-interesante es que la recarga se produzca ante cualquier cambio.</p>
-<p>La solución viene de la mano del plugin de <strong class="program">webpack</strong> <a class="reference external" href="https://github.com/webpack-contrib/copy-webpack-plugin">CopyPlugin</a> que le
-facilita copiar en crudo ficheros y directorios. La estrategia es copiar
-<code class="file docutils literal notranslate"><span class="pre">examples</span></code>, porque de este modo sí se procesará el contenido y, en
-consecuencia, cualquier cambio en él también provocará la recarga de la página.
-Lo primero es instalar el plugin:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev copy-webpack-plugin
-</pre></div>
-</div>
-<p>Y, lo siguiente, alterar <a class="reference download internal" download="" href="../_downloads/c03f232ca561853b19376ae67224c0ad/webpack.development.js"><code class="xref download docutils literal notranslate"><span class="pre">webpack/webpack.development.js</span></code></a>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.development.js</span>
-<span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">),</span>
-<span class="hll">      <span class="nx">CopyPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;copy-webpack-plugin&#39;</span><span class="p">),</span>
-</span>      <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack&quot;</span><span class="p">);</span>
 
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">)(</span><span class="nx">env</span><span class="p">);</span>
-   <span class="kd">let</span> <span class="nx">filenamemap</span> <span class="o">=</span> <span class="sb">`</span><span class="si">${</span><span class="nx">common</span><span class="p">.</span><span class="nx">output</span><span class="p">.</span><span class="nx">filename</span><span class="si">}</span><span class="sb">.map`</span><span class="p">;</span>
-<span class="hll">   <span class="k">if</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span> <span class="o">===</span> <span class="s2">&quot;debug&quot;</span><span class="p">)</span> <span class="nx">filenamemap</span> <span class="o">=</span> <span class="sb">`dist/</span><span class="si">${</span><span class="nx">filenamemap</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
-</span>
-   <span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;development&quot;</span><span class="p">,</span>
-      <span class="nx">devtool</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-<span class="hll">      <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
-</span><span class="hll">         <span class="nx">contentBase</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class="hll">         <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span><span class="p">,</span>
-</span><span class="hll">         <span class="c1">//openPage: &quot;index.html&quot;</span>
+   <span class="c1">// Modo</span>
+   <span class="k">switch</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="s2">&quot;debug&quot;</span><span class="o">:</span>
+      <span class="k">case</span> <span class="s2">&quot;srcdebug&quot;</span><span class="o">:</span>
+         <span class="nx">env</span><span class="p">.</span><span class="nx">mode</span> <span class="o">=</span> <span class="s2">&quot;development&quot;</span><span class="p">;</span>
+         <span class="k">break</span><span class="p">;</span>
+      <span class="k">default</span><span class="o">:</span>
+         <span class="nx">env</span><span class="p">.</span><span class="nx">mode</span> <span class="o">=</span> <span class="s2">&quot;production&quot;</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="c1">// Nombre del resultado.</span>
+   <span class="kd">let</span> <span class="nx">filename</span><span class="p">;</span>
+   <span class="k">switch</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="s2">&quot;min&quot;</span><span class="o">:</span>
+      <span class="k">case</span> <span class="s2">&quot;debug&quot;</span><span class="o">:</span>
+         <span class="nx">filename</span> <span class="o">=</span> <span class="s2">&quot;[name].js&quot;</span><span class="p">;</span>
+         <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="s2">&quot;src&quot;</span><span class="o">:</span>
+         <span class="nx">filename</span> <span class="o">=</span> <span class="s2">&quot;[name]-src.js&quot;</span><span class="p">;</span>
+         <span class="k">break</span>
+      <span class="k">case</span> <span class="s2">&quot;srcdebug&quot;</span><span class="o">:</span>
+         <span class="nx">filename</span> <span class="o">=</span> <span class="s2">&quot;[name]-debug.js&quot;</span><span class="p">;</span>
+         <span class="k">break</span><span class="p">;</span>
+      <span class="k">default</span><span class="o">:</span>
+         <span class="nx">filename</span> <span class="o">=</span> <span class="sb">`[name].</span><span class="si">${</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span><span class="si">}</span><span class="sb">.js`</span><span class="p">;</span>
+   <span class="p">}</span>
+
+
+   <span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">mode</span><span class="o">:</span> <span class="nx">env</span><span class="p">.</span><span class="nx">mode</span><span class="p">,</span>
+      <span class="nx">entry</span><span class="o">:</span> <span class="p">{</span>
+         <span class="p">[</span><span class="nx">name</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;./src/plugin.js&quot;</span><span class="p">]</span>
+      <span class="p">},</span>
+<span class="hll">      <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">         <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">,</span>
+</span><span class="hll">         <span class="nx">libraryTarget</span><span class="o">:</span> <span class="s2">&quot;umd&quot;</span><span class="p">,</span>
+</span><span class="hll">         <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="hll">         <span class="nx">libraryExport</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
 </span><span class="hll">      <span class="p">},</span>
-</span>      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">SourceMapDevToolPlugin</span><span class="p">({</span>
-            <span class="nx">filename</span><span class="o">:</span> <span class="nx">filenamemap</span>
+</span>      <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+         <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+               <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
+               <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
+                     <span class="s2">&quot;css-loader&quot;</span><span class="p">,</span>
+                     <span class="p">{</span>
+                        <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;postcss-loader&quot;</span><span class="p">,</span>
+                        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                           <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+                              <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;cssnano&quot;</span><span class="p">)({</span><span class="nx">preset</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span><span class="p">})</span>
+                           <span class="p">]</span>
+                        <span class="p">}</span>
+                     <span class="p">}]</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+               <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(png|jpe?g|gif|svg)$/i</span><span class="p">,</span>
+               <span class="nx">use</span><span class="o">:</span> <span class="p">[</span>
+                  <span class="s1">&#39;url-loader?limit=4096&amp;name=images/[name].[ext]&#39;</span>
+               <span class="p">]</span>
+            <span class="p">}</span>
+         <span class="p">]</span>
+      <span class="p">},</span>
+      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
+            <span class="nx">L</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="o">:</span> <span class="s2">&quot;L.Compatibility&quot;</span><span class="p">,</span>
+         <span class="p">}),</span>
+         <span class="k">new</span> <span class="nx">MiniCssExtractPlugin</span><span class="p">({</span>
+            <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;[name].bundle.css&quot;</span><span class="p">,</span>
+            <span class="nx">chunkFilename</span><span class="o">:</span> <span class="s2">&quot;[id].css&quot;</span>
          <span class="p">})</span>
       <span class="p">]</span>
-   <span class="p">};</span>
-<span class="hll">
-</span><span class="hll">   <span class="kr">const</span> <span class="nx">config_extra</span> <span class="o">=</span> <span class="nx">env</span><span class="p">.</span><span class="nx">output</span> <span class="o">!==</span> <span class="s2">&quot;debug&quot;</span><span class="o">?</span><span class="p">{}</span><span class="o">:</span>
-</span><span class="hll">      <span class="p">{</span>
-</span><span class="hll">         <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">filename</span><span class="o">:</span> <span class="sb">`dist/</span><span class="si">${</span><span class="nx">common</span><span class="p">.</span><span class="nx">output</span><span class="p">.</span><span class="nx">filename</span><span class="si">}</span><span class="sb">`</span>
-</span><span class="hll">         <span class="p">},</span>
-</span><span class="hll">         <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-</span><span class="hll">            <span class="k">new</span> <span class="nx">CopyPlugin</span><span class="p">([</span>
-</span><span class="hll">               <span class="p">{</span><span class="nx">from</span><span class="o">:</span> <span class="s2">&quot;examples&quot;</span><span class="p">,</span> <span class="nx">to</span><span class="o">:</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="nx">ignore</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;*.swp&quot;</span><span class="p">]</span> <span class="p">}</span>
-</span><span class="hll">            <span class="p">])</span>
-</span><span class="hll">         <span class="p">]</span>
-</span>      <span class="p">}</span>
+   <span class="p">}</span>
 
-   <span class="k">return</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="nx">config</span><span class="p">,</span> <span class="nx">config_extra</span><span class="p">);</span>
-
+   <span class="k">return</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">smart</span><span class="p">(</span>
+      <span class="nx">common</span><span class="p">,</span>
+      <span class="nx">env</span><span class="p">.</span><span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;production&quot;</span><span class="o">?</span><span class="nx">confBabel</span><span class="p">(</span><span class="nx">env</span><span class="p">)</span><span class="o">:</span><span class="nx">confDev</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span>
+      <span class="nx">env</span><span class="p">.</span><span class="nx">output</span> <span class="o">===</span> <span class="s2">&quot;src&quot;</span><span class="o">?</span><span class="p">{</span><span class="nx">optimization</span><span class="o">:</span> <span class="p">{</span><span class="nx">minimize</span><span class="o">:</span> <span class="kc">false</span><span class="p">}}</span><span class="o">:</span><span class="kc">null</span><span class="p">,</span>
+      <span class="nx">env</span><span class="p">.</span><span class="nx">output</span> <span class="o">===</span> <span class="s2">&quot;bundle&quot;</span><span class="o">?</span><span class="nx">confBundle</span><span class="p">()</span><span class="o">:</span><span class="nx">confNoDeps</span><span class="p">(),</span>
+   <span class="p">)</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>El fichero se ha modificado exclusivamente para modelar cómo se comporta
-<em>webpack</em> en el sabor <em>debug</em> y las claves de los cambios son:</p>
-<ul>
-<li><p class="first"><a class="reference external" href="https://github.com/webpack-contrib/copy-webpack-plugin">CopyPlugin</a> copia el contenido de <code class="file docutils literal notranslate"><span class="pre">examples/</span></code> en el propio directorio
-virtual, pero obviando los ficheros de backup de <strong class="program">vi</strong> para evitar
-que, si se usa este editor, el proceso de edición provoque la continua
-recarga de la página. Si se usa otra herramienta para el desarrollo, es
-probable que deba cambiar la lista de ignorados.</p>
-</li>
-<li><p class="first">También en el directorio virtual se generían los ficheros resultantes de la
-transformación del plugin, pero en el ejemplo se encuentra escrito:</p>
-<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Plugin --&gt;</span>
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../dist/leaflet.iconzoom.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</pre></div>
-</div>
-<p>Para que siga funcionando en este sabor el enlace, es necesario modificar la
-salida y añadir <code class="file docutils literal notranslate"><span class="pre">dist/</span></code> antes del nombre.</p>
-</li>
-<li><p class="first">En <a class="reference internal" href="#webpack-plugin-webpack-common-js"><span class="std std-ref">webpack/webpack.common.js</span></a> hay un
-detalle que es conveniente aclarar ahora: el nombre del fichero resultante
-para el sabor <em>min</em> y <em>debug</em> es el mismo, lo que provoca que, cuando se
-visite el ejemplo durante la depuración podamos seguir la ejecución del código
-en los ficheros originales, mientras que cuando se visita el ejemplo a través
-de las páginas de <a class="reference external" href="https://github.com">Github</a>, se utiliza el código optimizado.</p>
-</li>
-</ul>
-<p>El resultado se encuentra en <a class="reference external" href="https://github.com/sio2sio2/leaflet.iconzoom">su repositorio de Github</a> y en las páginas de <a class="reference external" href="https://github.com">Github</a> se
-encuentra colgado <a class="reference external" href="https://sio2sio2.github.io/leaflet.iconzoom/examples">el ejemplo de uso</a>.</p>
-<p class="rubric">Enlaces de interés</p>
+<p>Aunque más compleja, la configuración no presenta demasiadas diferencias:</p>
 <ul class="simple">
-<li>En el interesante <a class="reference external" href="https://www.valentinog.com/blog/">blog de Valentino Gagliardi</a> hay una entrada de <a class="reference external" href="https://www.valentinog.com/blog/webpack/">introducción a
-Webpack4</a> y otra para describir
-<a class="reference external" href="https://www.valentinog.com/blog/from-gulp-to-webpack-4-tutorial/">cómo hacer con Webpack4 tareas que se hacen con Gulp</a> y que
-puede informar de algunos aspectos adicionales a los explicados en la primera
-entrada</li>
+<li>Las antes inexistentes funciones <code class="docutils literal notranslate"><span class="pre">confBundle()</span></code> y <code class="docutils literal notranslate"><span class="pre">confNoDeps()</span></code>
+responden a la necesidsad de crear sabores con o sin dependencias. La
+primera función añade el <abbr title="Cascading Style Sheets">CSS</abbr> externo (que antes se importaron
+directamente en el código <em>Javascript</em>), mientras que la segunda usa
+<a class="reference internal" href="02.part.html#webpack-externals"><span class="std std-ref">externals</span></a> para referir las librerías de terceros
+no incluidas.</li>
+<li>Configuramos de distinto modo el servidor web de depuración para que se
+sirvan en <code class="file docutils literal notranslate"><span class="pre">/</span></code> los ficheros contenidos en <code class="file docutils literal notranslate"><span class="pre">examples</span></code>, los
+ficheros generados se compartan en <code class="file docutils literal notranslate"><span class="pre">dist</span></code>. Esta argucia permite que
+los enlaces al <abbr title="Cascading Style Sheets">CSS</abbr> y al <em>Javascript</em> funcionen tanto al depurar como al
+visitar el <abbr title="HyperText Markup Language">HTML</abbr> en cualquier otro momento. Además, se pide que se vigilen
+los cambios en <code class="file docutils literal notranslate"><span class="pre">examples</span></code> a fin de que durante la depuración se
+puedan ahcer cambios en los propios ficheros que componen el ejemplo y
+veamos el efecto reflejado inmediatamente.</li>
+<li>Nos preocupamos de cómo sea la salida (<em>output</em>), aunque el <em>plugin</em> altera
+un objeto global (<strong>L</strong> de <a class="reference external" href="https://leafletjs.com">Leaflet</a>) queremos que pueda usarse como
+componenente al desarrollar una aplicación (como la del primer ejemplo).
+Por ello, hemos generado un módulo <abbr title="Universal Module Definition">UMD</abbr>.</li>
 </ul>
+</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3>4.3.2.3. Generación<a class="headerlink" href="#id4" title="Enlazar permanentemente con este título">¶</a></h3>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>La necesidad de incluir los cuatro últimos paquetes se debe a que
-nuestra intención es ser capaces de procesar el <abbr title="Cascading Style Sheets">CSS</abbr> de <a class="reference external" href="https://leafletjs.com">Leaflet</a> para
-el script <em>bundle</em>, y tal fichero <em>refiere</em>, además, algunas imágenes.
-Una alternativa a esta solución <strong class="program">MiniCssExtractPlugin</strong>+<strong class="program">css.loader</strong> es utilizar <strong class="program">file-loader</strong>+<strong class="program">extract-loader</strong>+<strong class="program">css-loader</strong>.</td></tr>
-</tbody>
-</table>
 <table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Esta aparente excentricidad tiene una explicación totalmente ajena a la
+<tr><td class="label"><a class="fn-backref" href="#id3">[1]</a></td><td>Esta aparente excentricidad tiene una explicación totalmente ajena a la
 aplicación en sí: entre otras alternativas, <a class="reference external" href="https://github.com">Github</a> permite publicar el
 contenida del directorio <code class="file docutils literal notranslate"><span class="pre">/docs</span></code>, así que hay se almacena el resultado
 para que éste se publique en la dirección
@@ -1078,10 +782,11 @@ para que éste se publique en la dirección
 <table class="docutils footnote" frame="void" id="id6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>La elección no es arbitraria: es el directorio donde la <a class="reference external" href="https://leafletjs.com/2013/06/28/leaflet-plugin-authoring-guide.html#code">Guía de Leaflet</a>
+<tr><td class="label">[2]</td><td>La elección no es arbitraria: es el directorio donde la <a class="reference external" href="https://leafletjs.com/2013/06/28/leaflet-plugin-authoring-guide.html#code">Guía de Leaflet</a>
 prescribe que se dispongan los ejemplos.</td></tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 
@@ -1094,9 +799,18 @@ prescribe que se dispongan los ejemplos.</td></tr>
   <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">4.3. Ejemplos</a><ul>
-<li><a class="reference internal" href="#plugin">4.3.1. Plugin</a></li>
-<li><a class="reference internal" href="#aplicacion-web">4.3.2. Aplicación web</a></li>
-<li><a class="reference internal" href="#plugin-con-ejemplo">4.3.3. Plugin con ejemplo</a></li>
+<li><a class="reference internal" href="#aplicacion-web">4.3.1. Aplicación web</a><ul>
+<li><a class="reference internal" href="#preparativos">4.3.1.1. Preparativos</a></li>
+<li><a class="reference internal" href="#escritura">4.3.1.2. Escritura</a></li>
+<li><a class="reference internal" href="#generacion">4.3.1.3. Generación</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#plugin">4.3.2. Plugin</a><ul>
+<li><a class="reference internal" href="#id1">4.3.2.1. Preparativos</a></li>
+<li><a class="reference internal" href="#id2">4.3.2.2. Escritura</a></li>
+<li><a class="reference internal" href="#id4">4.3.2.3. Generación</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

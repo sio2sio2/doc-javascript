@@ -84,7 +84,7 @@ function gitInfo() {
                }
 
          if(!token) return;
-         else return prompt(`¿Desea crear el repositorio remoto ${basename} en Github (y/n)?`, "y", function(res) {
+         else return prompt(`¿Desea crear el repositorio remoto ${basename} en Github (y/n)?`, "n", function(res) {
             res = res.charAt(0).toLowerCase();
             if(res !== "y") return;
 
@@ -106,7 +106,7 @@ module.exports = Object.assign({
    version: config.get("init.version") || "0.1.0",
    main: getMainFile(),
    scripts: {
-      build: "webpack --env.output=min --progress",
+      build: "webpack --env.output=bundle --progress",
       debug: "webpack-dev-server --env.output=debug --progress"
    },
    license: config.get("init.license") || "MIT",

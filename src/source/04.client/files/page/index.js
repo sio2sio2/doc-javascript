@@ -1,26 +1,16 @@
 import L from "leaflet";
+import "leaflet-defaulticon-compatibility";
+
 import "leaflet.iconzoom";
 
 import "leaflet/dist/leaflet.css";
-import "app/src/sass/index.sass";
-import "app/src/images/logo.svg";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 
-function encodeSVG(svg) {
-  var type = "image/svg+xml";
+import "app/src/index.sass";
+import logo from "app/src/logo.svg";
 
-   return "data:" + type + "," +
-      svg.outerHTML.replace(/(:?<|>|"|'|#|\s+)/g, function(c) {
-         return {
-            '<': '%3C',
-            '>': '%3E',
-            '"': "%22",
-            "'": "%27",
-            '#': '%23'
-         }[c] || " ";
-     });
-}
 
-const Icon = L.Icon.extend({
+const Icon = L.DivIcon.extend({
    options: {
       factor:       1.25, // Provoca que se haga zoom al pasar sobre el icono
       iconSize:     [25, 25],
@@ -36,14 +26,15 @@ window.onload = function() {
      maxZoom: 18
    }).addTo(map);
 
-   const svg = document.querySelector("template").content.firstElementChild;
+   // Plantilla para construir el icono.
+   const template = document.querySelector("template").content.firstElementChild;
 
-   // Objeto geojson
+   // Objeto geojson para la marca
    const data = {
       type: "Feature",
       properties: {
-         name: "Una marca",
-         popupContent: "Soy una marca"
+         name: "Doña marca",
+         message: "Soy la increíble marca cambiante"
       },
       geometry: {
          type: "Point",
@@ -51,31 +42,28 @@ window.onload = function() {
       }
    }
 
-   function onEachFeature(f, l) {
-      l.on("click", function(e) {
-         console.log(l === e.target);  // La marca.
-         console.log(f === e.target.feature); // El objeto geojson.
-         console.log(layer === e.target.feature.properties.layer);  // La capa que contiene los objetos.
-         alert(e.target.feature.properties.name);
-      });
-   }
-
-   function pointToLayer(f, p) {
-      if(!f.properties.marker) {
-         f.properties.marker = new L.Marker(p, {icon: new Icon({iconUrl: encodeSVG(svg)})});
+   const layer = L.geoJSON(data, {
+      pointToLayer: (f, p) => new L.Marker(p, { icon: new Icon({ html: template.cloneNode(true) }) }),
+      onEachFeature: (f, l) => {
+         l.on("click", e => alert(f.properties.message));
       }
-      return f.properties.marker;
-   }
+   }).addTo(map);
 
-   const SVGLayer = L.GeoJSON.extend({
-      addData: function(geojson) {
-         if(!Array.isArray(geojson) && !geojson.features) geojson.properties.layer = this;
-         return L.GeoJSON.prototype.addData.call(this, geojson);
-      }
+   // Marca de agua (nada que ver con lo que se prueba.
+   const Watermark = L.Control.extend({
+      onAdd: function(map) {
+         const img = L.DomUtil.create("img");
+         img.src = logo;
+         img.style.width = "200px";
+
+         return img
+      },
+      onRemove: function(map) {}
    });
 
-   const layer = new SVGLayer(data, {
-      onEachFeature: onEachFeature,
-      pointToLayer: pointToLayer
-   }).addTo(map);
+   L.control.watermark = function(opts) {
+      return new Watermark(opts);
+   }
+
+   L.control.watermark({position: "bottomleft"}).addTo(map);
 }

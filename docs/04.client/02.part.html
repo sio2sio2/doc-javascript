@@ -92,7 +92,7 @@ hacer:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>lo cual tendrá el efecto de embutir ambos <em>scripts</em><a class="footnote-reference" href="#id12" id="id1">[1]</a> en un único fichero
+<p>lo cual tendrá el efecto de embutir ambos <em>scripts</em><a class="footnote-reference" href="#id10" id="id1">[1]</a> en un único fichero
 resultante. Esto es necesario porque al ser dos <em>scripts</em> independientes
 utilizar el primero u el segundo como punto de entrada no incluiría al otro en
 la salida. Otra variante es:</p>
@@ -139,7 +139,7 @@ es:</p>
 <li>Usar <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> en el fichero de configuración de <strong class="program">webpack</strong>.</li>
 <li>Usar <em>ES2015</em> dentro del código de la propia aplicación, ya que es el estándar
 aprobado y bajo determinadas circunstancias (como no importar aplicaciones de
-terceros<a class="footnote-reference" href="#id13" id="id2">[2]</a> dentro del propio código), genera un código directamente usable
+terceros<a class="footnote-reference" href="#id11" id="id2">[2]</a> dentro del propio código), genera un código directamente usable
 en navegadores modernos.</li>
 </ul>
 </div>
@@ -154,20 +154,17 @@ import $ from &quot;jquery&quot;;
 <p>Esto funciona sin problemas, pero tiene un inconveniente si pretendemos
 desarrollar una librería y no un aplicación final. A diferencia de una
 aplicación final, en la que se pretende generar un resultado que incluya todas
-las dependencias, cuando se desarrolla una librería, es muy común generar tres
-sabores distintos para su uso con el navegador:</p>
-<ul class="simple">
-<li>La versión de producción sin dependencias, pongamos que <code class="file docutils literal notranslate"><span class="pre">library.js</span></code><a class="footnote-reference" href="#id14" id="id3">[3]</a>.</li>
-<li>La versión de producción que incluye todas sus dependencias, pongamos que
-<code class="file docutils literal notranslate"><span class="pre">library.bundle.js</span></code>.</li>
-<li>La versión para depuración sin dependencias, pongamos que
-<code class="file docutils literal notranslate"><span class="pre">library-src.js</span></code>.</li>
-</ul>
+las dependencias, cuando se desarrolla una librería, es muy común generar
+resultandos en los que pueden o no incluirse las dependencias.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">Ver también</p>
+<p class="last">Véase más adelante <a class="reference internal" href="#webpack-multi"><span class="std std-ref">multiples resultados</span></a>.</p>
+</div>
 <p>Como dependiendo de la versión, el resultado incluye o no las librerías de
 terceros, la importación incondicional dentro del código como la expuesta
 arriba, no es útil y debe recurrirse a otra que importe sólo dependiendo de cuál
 sea el resultado. Para ello, <strong class="program">webpack</strong> posibilita la importación con el
-plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> en su propia configuración<a class="footnote-reference" href="#id15" id="id4">[4]</a>:</p>
+plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> en su propia configuración<a class="footnote-reference" href="#id12" id="id3">[3]</a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack.config.js</span>
 <span class="kr">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack&quot;</span><span class="p">);</span>
 
@@ -187,7 +184,7 @@ plugin <a class="reference external" href="https://webpack.js.org/plugins/provid
 <p>Para configurar el <em>plugin</em> hay que entender que las claves son identificadores
 y los valores cuál módulo se carga, de manera que cuando <strong class="program">webpack</strong>
 encuentre el identificador <code class="code docutils literal notranslate"><span class="pre">L</span></code> en el código procede a cargar el módulo
-<em>leaflet</em><a class="footnote-reference" href="#id16" id="id5">[5]</a>. El identificador puede ser la propiedad de un objeto. Por
+<em>leaflet</em><a class="footnote-reference" href="#id13" id="id4">[4]</a>. El identificador puede ser la propiedad de un objeto. Por
 ejemplo, esto es perfectamente válido:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
    <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
@@ -212,7 +209,7 @@ manera:</p>
 resultado, con lo que no habremos logrado el objetivo de crear distintos
 sabores de la librería. Para declarar que tales módulos son externos y que no
 deben ser incluidos dentro del código, <strong class="program">webpack</strong> dispone del atributo
-<cite>externals &lt;https://webpack.js.org/configuration/externals/&gt;</cite>:</p>
+<a class="reference external" href="https://webpack.js.org/configuration/externals/">externals</a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
    <span class="c1">// ...</span>
    <span class="nx">externals</span><span class="o">:</span> <span class="p">{</span>
@@ -226,7 +223,7 @@ deben ser incluidos dentro del código, <strong class="program">webpack</strong>
 <p>En este caso, las claves representan las librerías <em>externalizadas</em> (o sea, los
 valores del objeto que se pasó como argumento a <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a>) y los valores son la
 variable global asociada a aquello que exporte la librería. Por tanto, muy
-comúnmente al usar <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> y externals lo que se hace es intercambair claves
+comúnmente al usar <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> y externals lo que se hace es intercambiar claves
 por valores y valores con claves, con la diferencia que en <em>externals</em> un
 identificador que no sea global, sino el atributo de otro objeto debe notarse en
 forma de <em>array</em>. Es por ello que <code class="code docutils literal notranslate"><span class="pre">L.Control.Search</span></code> se ha convertido en
@@ -242,6 +239,13 @@ dependiendo del sistema que se use para cargarla:</p>
    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Advertencia</p>
+<p class="last">Si creamos una librería de terceros que queremos, no sólo que pueda
+cargarse desde un navegador, sino que pueda usarse como componente en un
+desarrollo posterior con <a class="reference external" href="https://nodejs.org/">NodeJS</a>, deberemos usar esta ultima forma para definir
+sus dependencias.</p>
 </div>
 <p>Por supuesto, este atributo sólo debe cargarse en los sabores que quieran
 <em>externalizar</em> las librerías de terceros, esto es, en los sabores que no
@@ -269,6 +273,10 @@ será añadida automáticamente a la variable global que se indique en
 </div>
 <p class="last">y no asociando <code class="code docutils literal notranslate"><span class="pre">[&quot;L&quot;,</span> <span class="pre">&quot;MarkerCLusterGroup&quot;]</span></code> a
 <em>leaflet.markerclustergroup</em>.</p>
+</div>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Por hacer</p>
+<p class="last">¿Puede llevarse a cabo algo parecido con el plugin <a class="reference external" href="https://webpack.js.org/plugins/ignore-plugin/">Ignore</a>?</p>
 </div>
 </div>
 </div>
@@ -306,11 +314,11 @@ indispensable que el código sea accesible, si se ejecuta en un navegador.
 Podemos distinguir tres casos:</p>
 <ul>
 <li><p class="first">Si nuestro código no exporta nada y no importa ninguna librería porque
-si usa de terceros, está incluida en el código <em>Javascript</em> resultante<a class="footnote-reference" href="#id17" id="id6">[6]</a>,
+si usa de terceros, está incluida en el código <em>Javascript</em> resultante<a class="footnote-reference" href="#id14" id="id5">[5]</a>,
 no necesitamos hacer ninguna definición especial sobre el formato.</p>
 </li>
 <li><p class="first">Si nuestro código no necesita exportar nada, pero importa alguna librería
-externa a la que se acceda a través de una variable global<a class="footnote-reference" href="#id18" id="id7">[7]</a>, entonces
+externa a la que se acceda a través de una variable global<a class="footnote-reference" href="#id15" id="id6">[6]</a>, entonces
 es necesario que tenga <a class="reference internal" href="../03.node/03.modulos.html#mod-umd"><span class="std std-ref">formato UMD</span></a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span> <span class="o">:</span> <span class="p">{</span>
    <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
@@ -602,15 +610,16 @@ intervención de <strong class="program">css-loader</strong>:</p>
 <dl class="docutils">
 <dt><strong class="program">postcss-loader</strong></dt>
 <dd><p class="first">Opera sobre el <abbr title="Cascading Style Sheets">CSS</abbr> realizando transformaciones que nos resulten
-pertinentes. Una muy recurrida, es la que realiza el plugin
-<strong class="program">autoprefixer</strong>, que añade prefijos del vendedor a
-las opciones cuando es preciso. Obviamente, debe operar justamente antes de
-<strong class="program">tcss-loader</strong>. Para su instalación:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev postcss-loader autoprefixer
+pertinentes:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev postcss-loader autoprefixer cssnano
 </pre></div>
 </div>
-<p>La configuración, suponiendo que queramos obtener un único <abbr title="Cascading Style Sheets">CSS</abbr>, quedará
-del siguiente modo:</p>
+<p>Hay al menos dos que nos pueden resultar intersantes:</p>
+<ul class="last">
+<li><p class="first">La que realiza el plugin <strong class="program">autoprefixer</strong>, que añade prefijos del
+vendedor a las opciones cuando es preciso. Obviamente, debe operar
+justamente antes de <strong class="program">css-loader</strong>. La configuración, suponiendo que
+queramos obtener un único <abbr title="Cascading Style Sheets">CSS</abbr>, quedará del siguiente modo:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
    <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
    <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
@@ -630,7 +639,7 @@ del siguiente modo:</p>
 usa la <a class="reference internal" href="#browserlist"><span class="std std-ref">librería browserlist</span></a>, que introduciremos al
 tratar <a class="reference internal" href="#babel"><span class="std std-ref">babel</span></a>.</p>
 </div>
-<div class="last admonition note">
+<div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p>Para comprobar que este cargador realmente actúa, podemos
 añadir al <abbr title="Cascading Style Sheets">CSS</abbr> de algún ejemplo, las líneas:</p>
@@ -640,6 +649,26 @@ añadir al <abbr title="Cascading Style Sheets">CSS</abbr> de algún ejemplo, la
 </pre></div>
 </div>
 </div>
+</li>
+<li><p class="first">La que realiza el plugin <strong class="program">cssnano</strong>, que minimiza el
+<abbr title="Cascading Style Sheets">CSS</abbr>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.css$/i</span><span class="p">,</span>
+   <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
+         <span class="s2">&quot;css-loader&quot;</span><span class="p">,</span>
+<span class="hll">         <span class="p">{</span>
+</span><span class="hll">            <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;postcss-loader&quot;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">               <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+</span><span class="hll">                  <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;cssnano&quot;</span><span class="p">)({</span><span class="nx">preset</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span><span class="p">})</span>
+</span><span class="hll">               <span class="p">]</span>
+</span><span class="hll">            <span class="p">}</span>
+</span><span class="hll">         <span class="p">}]</span>
+</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
 </dd>
 <dt><strong class="program">sass-loader</strong> o <strong class="program">less-loader</strong> u otra cargador semejante.</dt>
 <dd><p class="first">Cuando no escribimos el estilo en <abbr title="Cascading Style Sheets">CSS</abbr> sino en otro lenguaje como <abbr title="Syntactically Awesome Style Sheets">SASS</abbr> o
@@ -711,7 +740,7 @@ recurso:</p>
 <span id="babel"></span><h2>4.2.5. Compatibilidad<a class="headerlink" href="#compatibilidad" title="Enlazar permanentemente con este título">¶</a></h2>
 <p><strong class="program">Babel</strong> es un componente fundamental de nuestro propósito puesto que
 permite sustituir sintaxis demasiado nueva por otra compatible con versiones más
-antiguas de <em>Javascript</em>. Para usarlo y que transpile<a class="footnote-reference" href="#id19" id="id8">[8]</a> de forma que quede una
+antiguas de <em>Javascript</em>. Para usarlo y que transpile<a class="footnote-reference" href="#id16" id="id7">[7]</a> de forma que quede una
 sintaxis ampliamente soportada, podemos añadir algunas líneas a
 <code class="file docutils literal notranslate"><span class="pre">webpack/webpack.production.js</span></code>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
@@ -1011,7 +1040,7 @@ compartiéndose en la raíz del servidor web.</p>
 servidor:</p>
 <ul>
 <li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">false</span></code>, que es su valor predeterminado al no haber incluido el
-argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id20" id="id9">[9]</a> en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no se abre una ventana
+argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id17" id="id8">[8]</a> en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no se abre una ventana
 con la aplicación en el navegador, así que tendremos que abrir manualmente
 nosotros la página eni la dirección:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span>
@@ -1021,7 +1050,7 @@ nosotros la página eni la dirección:</p>
 <li><p class="first">Si toma valor, debe ser una cadena que indique el navegador con el que se
 quiere ver la aplicación.</p>
 </li>
-<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema<a class="footnote-reference" href="#id21" id="id10">[10]</a>.</p>
+<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema<a class="footnote-reference" href="#id18" id="id9">[9]</a>.</p>
 </li>
 </ul>
 <div class="admonition note">
@@ -1048,16 +1077,38 @@ los módulos que más contribuyen al tamaño de nuestro código y cómo eliminar
 código inútil.</p>
 <div class="section" id="auscultador">
 <h3>4.2.7.1. Auscultador<a class="headerlink" href="#auscultador" title="Enlazar permanentemente con este título">¶</a></h3>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Por hacer</p>
-<p class="last">A partir de <a class="reference external" href="https://hackernoon.com/optimising-your-application-bundle-size-with-webpack-e85b00bab579">este artículo</a>.</p>
+<p>Un primer paso para conocer por qué nuestro desarrolla ocupa el espacio que
+ocupa, es determinar cuánto contribuye a él cada uno de sus componentes. Para
+tal tarea, una herramienta muy práctica es <a class="reference external" href="https://www.npmjs.com/package/webpack-bundle-analyzer">webpack-bundle-analyzer</a> que nos mostrará
+gráficamente esta contribución:</p>
+<img alt="../_images/analyzer.png" src="../_images/analyzer.png" />
+<p>Para hacer uso de ella debemos instalar la utilidad:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">npm install --save-dev webpack-bundle-analyzer</span>
+</pre></div>
 </div>
+<p>y en la configuración para producción añadir temporalmente:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">BundleAnalyzerPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-bundle-analyzer&#39;</span><span class="p">).</span><span class="nx">BundleAnalyzerPlugin</span><span class="p">;</span>
+
+<span class="c1">// ...</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="c1">// ...</span>
+   <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+      <span class="k">new</span> <span class="nx">BundleAnalyzerPlugin</span><span class="p">(),</span>
+      <span class="c1">// ...</span>
+   <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Al llevar a cabo la generación de los ficheros, se levantará en
+<code class="file docutils literal notranslate"><span class="pre">http://localhost:8888</span></code> la aplicación de la que se puso antes captura y
+podremos comprobar cuál es el espacio al que contribuye cada componente.</p>
 </div>
 <div class="section" id="carga-parcial">
 <h3>4.2.7.2. Carga parcial<a class="headerlink" href="#carga-parcial" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Para reducir el tamaño, lo más eficaz es eliminar el código que no se utilice.
-Por ejemplo, si en nuestro desarrollo nos es preciso hacer operaciones con
-polígonos, podríamos estar tentados a hacer:</p>
+Por ejemplo, si en nuestro desarrollo necesitamos análisis geoespacial,
+podríamos estar tentados a hacer:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
    <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
       <span class="nx">turf</span><span class="o">:</span> <span class="s2">&quot;@turf/turf&quot;</span>
@@ -1113,160 +1164,87 @@ de algunas de sus funciones. Por ejemplo, <code class="code docutils literal not
 </ol>
 </div>
 </div>
-<div class="section" id="multiples-entornos">
-<h2>4.2.8. Múltiples entornos<a class="headerlink" href="#multiples-entornos" title="Enlazar permanentemente con este título">¶</a></h2>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Por hacer</p>
-<p class="last">Reescribirlo usando un único fichero de configuración.</p>
-</div>
-<p>Con la configuración hecha hasta aquí, tenemos dos configuraciones distintas:
-una para producción y otra para desarrollo que se logran cargando ficheros
-de configuración distintos. Sin embargo, <strong class="program">webpack</strong> permite pasar por
-línea de comandos variables que pueden utilizarse dentro del <em>script</em> que
-constituye la configuración<a class="footnote-reference" href="#id22" id="id11">[11]</a>. Jugar con los valores de estas variables posibilita
-crear una amplia variedad de configuraciones de manera sencilla.</p>
-<p>Para ilustrarlo crearemos una configuración con los siguientes ficheros:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+-- webpack.config.js
-+-- webpack/
-      +-- webpack.common.js
-      +-- webpack.production.js
-      +-- webpack.development.js
+<div class="section" id="multiples-resultados">
+<span id="webpack-multi"></span><h2>4.2.8. Múltiples resultados<a class="headerlink" href="#multiples-resultados" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Lo habitual es que para un desarrollo nos interese generar varias salidas
+distintas tales como:</p>
+<ol class="arabic">
+<li><p class="first"><code class="file docutils literal notranslate"><span class="pre">script.js</span></code>: De <strong>producción</strong>, transpilada, minimizada y sin
+dependencias. La generaremos con:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">npm run build</span>
 </pre></div>
 </div>
-<p>que invocaremos del siguiente modo:</p>
+</li>
+<li><p class="first"><code class="file docutils literal notranslate"><span class="pre">script.bundle.js</span></code>: De <strong>producción</strong>, transpilada, minimizada y con
+todas las dependencias. La generaremos con:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">npm run build:bundle</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="file docutils literal notranslate"><span class="pre">script-src.js</span></code>: De <strong>producción</strong>, transpilada, no minimazada y
+sin dependencias. La generaremos con:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">npm run build:src</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="file docutils literal notranslate"><span class="pre">script-debug.js</span></code>: De <strong>desarrollo</strong>, no transpilada ni minimizada y
+sin dependencias. Además, debería incluir mapeos del código. La generaremos
+con:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">npm run build:debug</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="file docutils literal notranslate"><span class="pre">script.js</span></code>: De <strong>desarrollo</strong> como la anterior para deparar
+interactivamente con <strong class="program">webpack-dev-server</strong>. La generaremos con</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">npm run debug</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Para esto, deberemos dejar unos <em>scripts</em> en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> así:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
-   <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.production&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;watch&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env --watch&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env --open chromium&quot;</span>
-<span class="p">},</span>
-</pre></div>
-</div>
-<p>En el caso de <code class="code docutils literal notranslate"><span class="pre">build</span></code> se pasa la variable <em>production</em> con un valor
-verdadero, ya que no indicar su valor indica tal cosa
-(<code class="code docutils literal notranslate"><span class="pre">--env.foobar=valor</span></code> permitiría pasar para una variable un valor
-concreto). En los otros dos casos debe usarse <code class="code docutils literal notranslate"><span class="pre">--env</span></code> para que se creen el
-objeto <em>env</em>, pero al no pasarlo <em>production</em> queda indefinido y, por tanto,
-puede asimilarse a <code class="code docutils literal notranslate"><span class="pre">false</span></code>.</p>
-<p>Los ficheros de configuración quedan así:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.common.js</span>
-<span class="kr">const</span> <span class="nx">HtmlWebPackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;html-webpack-plugin&quot;</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mini-css-extract-plugin&quot;</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
-   <span class="nx">entry</span><span class="o">:</span> <span class="s2">&quot;./src/js/index.js&quot;</span><span class="p">,</span>
-   <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span>
-   <span class="p">},</span>
-   <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
-         <span class="p">{</span>
-            <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.html$/</span><span class="p">,</span>
-            <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
-               <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;html-loader&quot;</span><span class="p">,</span>
-               <span class="nx">options</span><span class="o">:</span> <span class="p">{</span> <span class="nx">minimize</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span>
-            <span class="p">}</span>
-         <span class="p">},</span>
-         <span class="p">{</span>
-            <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(css|sass)$/</span><span class="p">,</span>
-            <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
-                  <span class="s2">&quot;css-loader&quot;</span><span class="p">,</span>
-                  <span class="p">{</span> 
-                     <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;postcss-loader&quot;</span><span class="p">,</span>
-                     <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-                        <span class="nx">plugins</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">[</span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;autoprefixer&quot;</span><span class="p">)]</span>
-                     <span class="p">}</span>
-                  <span class="p">},</span>
-                  <span class="s2">&quot;sass-loader&quot;</span><span class="p">]</span>
-         <span class="p">},</span>
-         <span class="p">{</span>
-            <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(png|jpe?g|gif|svg)$/i</span><span class="p">,</span>
-            <span class="nx">use</span><span class="o">:</span> <span class="p">[</span>
-               <span class="s1">&#39;url-loader?limit=4096&amp;name=images/[name].[ext]&#39;</span><span class="p">,</span>
-               <span class="s1">&#39;img-loader&#39;</span>
-            <span class="p">]</span>
-         <span class="p">}</span>
-      <span class="p">]</span>
-   <span class="p">},</span>
-   <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-      <span class="k">new</span> <span class="nx">HtmlWebPackPlugin</span><span class="p">({</span>
-         <span class="nx">template</span><span class="o">:</span> <span class="s2">&quot;src/index.html&quot;</span><span class="p">,</span>
-         <span class="c1">//filename: &quot;index.html&quot;   // Es el valor predeterminado</span>
-      <span class="p">}),</span>
-      <span class="k">new</span> <span class="nx">MiniCssExtractPlugin</span><span class="p">({</span>
-         <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;css/[name].css&quot;</span><span class="p">,</span>
-         <span class="nx">chunkFilename</span><span class="o">:</span> <span class="s2">&quot;[id].css&quot;</span>
-      <span class="p">})</span>
-   <span class="p">]</span>
-<span class="p">}</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
-</pre></div>
-</div>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.productiom.js</span>
-<span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">);</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;production&quot;</span><span class="p">,</span>
-      <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
-         <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
-            <span class="p">{</span>
-               <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
-               <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
-               <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
-                  <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;babel-loader&quot;</span><span class="p">,</span>
-                  <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-                     <span class="nx">presets</span><span class="o">:</span> <span class="p">[[</span><span class="s2">&quot;@babel/env&quot;</span><span class="p">,</span> <span class="p">{</span>
-<span class="hll">                        <span class="nx">debug</span><span class="o">:</span> <span class="nx">env</span><span class="p">.</span><span class="nx">debug</span><span class="p">,</span>
-</span>                        <span class="nx">corejs</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
-                        <span class="nx">useBuiltIns</span><span class="o">:</span> <span class="s2">&quot;usage&quot;</span>
-                     <span class="p">}]]</span>
-                  <span class="p">}</span>
-               <span class="p">}</span>
-            <span class="p">},</span>
-         <span class="p">]</span>
-      <span class="p">}</span>
-   <span class="p">});</span>
+    <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=min&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;build:bundle&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;build:src&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=src&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;build:debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=srcdebug&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack/webpack.development.js</span>
-<span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">);</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;development&quot;</span><span class="p">,</span>
-      <span class="nx">devtool</span><span class="o">:</span> <span class="s1">&#39;inline-source-map&#39;</span><span class="p">,</span>
-   <span class="p">});</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="p">=&gt;</span> <span class="p">{</span>
-<span class="hll">   <span class="kd">let</span> <span class="nx">mode</span><span class="p">;</span>
-</span>
-   <span class="k">switch</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">case</span> <span class="s2">&quot;debug&quot;</span><span class="o">:</span>
-      <span class="k">case</span> <span class="s2">&quot;src&quot;</span><span class="o">:</span>
-         <span class="nx">mode</span> <span class="o">=</span> <span class="s2">&quot;development&quot;</span><span class="p">;</span>
-         <span class="k">break</span><span class="p">;</span>
-      <span class="k">default</span><span class="o">:</span>
-         <span class="nx">mode</span> <span class="o">=</span> <span class="s2">&quot;production&quot;</span><span class="p">;</span>
-   <span class="p">}</span>
-
-   <span class="k">return</span> <span class="nx">require</span><span class="p">(</span><span class="sb">`./webpack/webpack.</span><span class="si">${</span><span class="nx">mode</span><span class="si">}</span><span class="sb">.js`</span><span class="p">)(</span><span class="nx">env</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Para precisar la configuración se usan dos variables:</p>
+<p>donde la forma de distinguir una salida de otra es mediante un objeto <em>env</em> que
+nos encargaremos de desarrollar más adelante. No obstante, dependiendo de cuál
+sea el objetivo de nuestro desarrollo podremos prescindir de algunas salidas:</p>
 <ul class="simple">
-<li><em>production</em>, ya introducida anteriormente.</li>
-<li><em>debug</em>, que permite definir si se quieren mensajes de depuración
-de <a class="reference internal" href="#babel"><span class="std std-ref">babel</span></a>.</li>
+<li>Para una aplicación final, suele bastar con las salidas (2) y (5).</li>
+<li>Si desarrollamos una librería intermedia pueden llegar a interesarnos hasta
+las cinco salidas:<ol class="arabic">
+<li>Para usarse directamente con el navegador.</li>
+<li>Paa el mismo uso anterior, pero evitando que se deban cargar las
+dependencias.</li>
+<li>Para incorporarla a otros proyectos desarrollados con <a class="reference external" href="https://nodejs.org/">NodeJS</a>.</li>
+<li>Para brindar la posibilidad a un tercero de analizar el código sin instalar
+el paquete y usar <a class="reference external" href="https://nodejs.org/">NodeJS</a> y <strong class="program">webpack</strong>.</li>
+<li>Para depurar cómodamente mientras desarrollamos la aplicación.</li>
+</ol>
+</li>
 </ul>
+<p>Los ejemplos que trataremos, desarrollarán dos casos de ejemplo: uno desarrolla
+una aplicación final, y el otro un sencillo <em>plugin</em> para <a class="reference external" href="https://leafletjs.com">Leaflet</a>, o sea, una
+libería intermedia.</p>
+</div>
+<div class="section" id="comprobacion">
+<h2>4.2.9. Comprobación<a class="headerlink" href="#comprobacion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Es bastante interesante comprobar si la configuración que hemos llevado a cabo
+genera el objeto de configuración que presuponemos. Para ello, y suponiendo que
+hayamos usando el objeto <em>env</em>, podemos usar la consola de <a class="reference external" href="https://nodejs.org/">NodeJS</a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;</span> <span class="nv">x</span> <span class="o">=</span> require<span class="o">(</span><span class="s2">&quot;./webpack.config.js&quot;</span><span class="o">)</span><span class="p">;</span>
+<span class="gp">&gt;</span> x<span class="o">({</span>output: <span class="s2">&quot;min&quot;</span><span class="o">})</span><span class="p">;</span>  // Y el resto de salidas.
+</pre></div>
+</div>
+<p>Se imprimirá el objeto de configuración resultante y podremos comprobar si es el
+que esparábamos.</p>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id12" rules="none">
+<table class="docutils footnote" frame="void" id="id10" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Entiéndase que los dos scripts no tienen por qué corresponderse con dos
@@ -1274,7 +1252,7 @@ ficheros. Cada uno de ellos puede estar programado de forma modular y
 componerse de múltiples ficheros.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id13" rules="none">
+<table class="docutils footnote" frame="void" id="id11" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>A menos claro está que hayamos hecho una copia incluida en nuestro
@@ -1285,7 +1263,7 @@ localización no es alcanzable por un cliente web. Otra solución es usar el
 plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a>, que se explica a continuación.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id14" rules="none">
+<table class="docutils footnote" frame="void" id="id12" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Es obvio que las dependencias son necesarias, así que el uso de esta
@@ -1293,7 +1271,7 @@ versión exige que las dependencias se carguen en el propio <abbr title="HyperTe
 etiquetas <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">script</a></td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id15" rules="none">
+<table class="docutils footnote" frame="void" id="id13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>El uso de <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> para cargar librerías de terceros puede tener también
@@ -1303,7 +1281,7 @@ punto de entrada): usando un atributo <code class="code docutils literal notrans
 moderno, el código fuente será directamente utilizable.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id16" rules="none">
+<table class="docutils footnote" frame="void" id="id14" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>Y aquí rige para las rutas <a class="reference internal" href="../03.node/03.modulos.html#webpack-import-path"><span class="std std-ref">la misma regla que para las
@@ -1313,7 +1291,7 @@ globalmente y que, en realidad, se importa el fichero que se indique como
 principal en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id17" rules="none">
+<table class="docutils footnote" frame="void" id="id15" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id6">[6]</a></td><td>Hasta el momento, sólo sabemos crear código <em>Javascript</em> que incluye
@@ -1321,7 +1299,7 @@ en el propio código todas las dependencias, pero ya veremos que hay forma
 de no hacerlo.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id18" rules="none">
+<table class="docutils footnote" frame="void" id="id16" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id7">[7]</a></td><td>Sería el caso, por ejemplo, de que crearamos un desarrollo que usa
@@ -1330,14 +1308,14 @@ no se incluyera dentro del código resultante, lo cual <a class="reference inter
 adeltante que es posible</span></a>.`</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id19" rules="none">
+<table class="docutils footnote" frame="void" id="id17" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id8">[8]</a></td><td>También podemos usar <strong class="program">postcss-loader</strong>, entre <strong class="program">css-loader</strong>
 y <strong class="program">sass-loader</strong>, pero importa poco a efectos de esta discusión.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id20" rules="none">
+<table class="docutils footnote" frame="void" id="id18" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id9">[9]</a></td><td><em>Transpilar</em> (y transpilación y transpilador) es un término
@@ -1349,10 +1327,10 @@ más antiguas del intérprete. Traducir de <a class="reference external" href="h
 <em>Javascript</em> también es <em>transpilar</em>.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id21" rules="none">
+<table class="docutils footnote" frame="void" id="id19" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id10">[10]</a></td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
+<tr><td class="label">[10]</td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
 así:</p>
 <div class="last highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> xdg-settings get default-web-browser
 <span class="go">firefox-esr.desktop</span>
@@ -1361,10 +1339,10 @@ así:</p>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id22" rules="none">
+<table class="docutils footnote" frame="void" id="id20" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id11">[11]</a></td><td><p class="first">Las variables de entorno que se pasan de forma estándar (véase <em>NODE_ENV</em>
+<tr><td class="label">[11]</td><td><p class="first">Las variables de entorno que se pasan de forma estándar (véase <em>NODE_ENV</em>
 cuando se trataba <a class="reference internal" href="#babel"><span class="std std-ref">babel</span></a>) se encuentran disponibles en el
 script a través de <code class="code docutils literal notranslate"><span class="pre">process.env</span></code>:</p>
 <div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">)</span>
@@ -1409,7 +1387,8 @@ script a través de <code class="code docutils literal notranslate"><span class=
 <li><a class="reference internal" href="#carga-parcial">4.2.7.2. Carga parcial</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#multiples-entornos">4.2.8. Múltiples entornos</a></li>
+<li><a class="reference internal" href="#multiples-resultados">4.2.8. Múltiples resultados</a></li>
+<li><a class="reference internal" href="#comprobacion">4.2.9. Comprobación</a></li>
 </ul>
 </li>
 </ul>

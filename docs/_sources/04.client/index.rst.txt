@@ -46,9 +46,12 @@ podría ser una de ellas), aunque aquí nos centraremos en analizar
   puede informar de algunos aspectos adicionales a los explicados en la primera
   entrada
 
-.. ¿Merecen estos scripts la pena?
+.. ¿Merecen estos enlaces la pena?
    https://www.robinwieruch.de/javascript-project-setup-tutorial/
    https://www.robinwieruch.de/webpack-advanced-setup-tutorial/
+
+* `Optimising your application bundle size with webpack
+  <https://hackernoon.com/optimising-your-application-bundle-size-with-webpack-e85b00bab579>`_.
 
 .. rubric:: Notas al pie
 
