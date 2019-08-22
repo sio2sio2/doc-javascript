@@ -92,7 +92,7 @@ hacer:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>lo cual tendrá el efecto de embutir ambos <em>scripts</em><a class="footnote-reference" href="#id10" id="id1">[1]</a> en un único fichero
+<p>lo cual tendrá el efecto de embutir ambos <em>scripts</em><a class="footnote-reference" href="#id9" id="id1">[1]</a> en un único fichero
 resultante. Esto es necesario porque al ser dos <em>scripts</em> independientes
 utilizar el primero u el segundo como punto de entrada no incluiría al otro en
 la salida. Otra variante es:</p>
@@ -139,32 +139,26 @@ es:</p>
 <li>Usar <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> en el fichero de configuración de <strong class="program">webpack</strong>.</li>
 <li>Usar <em>ES2015</em> dentro del código de la propia aplicación, ya que es el estándar
 aprobado y bajo determinadas circunstancias (como no importar aplicaciones de
-terceros<a class="footnote-reference" href="#id11" id="id2">[2]</a> dentro del propio código), genera un código directamente usable
+terceros<a class="footnote-reference" href="#id10" id="id2">[2]</a> dentro del propio código), genera un código directamente usable
 en navegadores modernos.</li>
 </ul>
 </div>
-<div class="section" id="importacion-de-modulos">
-<span id="webpack-conf-import"></span><h3>4.2.2.2. Importación de módulos<a class="headerlink" href="#importacion-de-modulos" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Ya se ha visto que para cargar módulos (al estilo <em>ES2015</em>, por ejemplo) es
-necesario:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>import L from &quot;leaflet&quot;;
-import $ from &quot;jquery&quot;;
+<div class="section" id="importacion-desde-la-configuracion">
+<span id="webpack-conf-import"></span><h3>4.2.2.2. Importación desde la configuración<a class="headerlink" href="#importacion-desde-la-configuracion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Ya se ha visto que desde el propio código puede llevarse a cabo la importación:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">L</span> <span class="nx">from</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span><span class="p">;</span>  <span class="c1">// El CSS de Leaflet</span>
+<span class="kr">import</span> <span class="nx">$</span> <span class="nx">from</span> <span class="s2">&quot;jquery&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>Esto funciona sin problemas, pero tiene un inconveniente si pretendemos
-desarrollar una librería y no un aplicación final. A diferencia de una
-aplicación final, en la que se pretende generar un resultado que incluya todas
-las dependencias, cuando se desarrolla una librería, es muy común generar
-resultandos en los que pueden o no incluirse las dependencias.</p>
-<div class="admonition seealso">
-<p class="first admonition-title">Ver también</p>
-<p class="last">Véase más adelante <a class="reference internal" href="#webpack-multi"><span class="std std-ref">multiples resultados</span></a>.</p>
-</div>
-<p>Como dependiendo de la versión, el resultado incluye o no las librerías de
-terceros, la importación incondicional dentro del código como la expuesta
-arriba, no es útil y debe recurrirse a otra que importe sólo dependiendo de cuál
-sea el resultado. Para ello, <strong class="program">webpack</strong> posibilita la importación con el
-plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> en su propia configuración<a class="footnote-reference" href="#id12" id="id3">[3]</a>:</p>
+<p>Usando el estilo <em>ES2015</em>; también valdría <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>. En principio, sea cual sea
+la naturaleza de lo importado (código <em>Javascript</em>, <abbr title="Cascading Style Sheets">CSS</abbr>, una imagen, etc)
+podemos usar este método.</p>
+<p>Alternativamente, las importaciones también puede hacerse desde el fichero de
+configuración, aunque en este caso distinguiremos entre el código <em>Javascript</em> y
+el resto.</p>
+<ul>
+<li><p class="first">Para <strong>código Javascript</strong> puede usarse el plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// webpack.config.js</span>
 <span class="kr">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack&quot;</span><span class="p">);</span>
 
@@ -184,7 +178,7 @@ plugin <a class="reference external" href="https://webpack.js.org/plugins/provid
 <p>Para configurar el <em>plugin</em> hay que entender que las claves son identificadores
 y los valores cuál módulo se carga, de manera que cuando <strong class="program">webpack</strong>
 encuentre el identificador <code class="code docutils literal notranslate"><span class="pre">L</span></code> en el código procede a cargar el módulo
-<em>leaflet</em><a class="footnote-reference" href="#id13" id="id4">[4]</a>. El identificador puede ser la propiedad de un objeto. Por
+<em>leaflet</em><a class="footnote-reference" href="#id11" id="id3">[3]</a>. El identificador puede ser la propiedad de un objeto. Por
 ejemplo, esto es perfectamente válido:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
    <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
@@ -205,11 +199,42 @@ manera:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">a</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;./mimodulo.js&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span> <span class="p">]</span>
 </pre></div>
 </div>
-<p id="webpack-externals">Con lo visto, sin embargo, los módulos cargados seguirán apareciendo en el
-resultado, con lo que no habremos logrado el objetivo de crear distintos
-sabores de la librería. Para declarar que tales módulos son externos y que no
-deben ser incluidos dentro del código, <strong class="program">webpack</strong> dispone del atributo
-<a class="reference external" href="https://webpack.js.org/configuration/externals/">externals</a>:</p>
+</li>
+<li><p class="first">El <strong>resto</strong> de importaciones podemos llevarlas a cabo añadiéndolas al punto
+de entrada:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">entry</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;leaflet.mipluginmolon&quot;</span><span class="o">:</span> <span class="p">[</span>
+       <span class="s2">&quot;./src/js/index.js&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span>
+   <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">El inconveniente de hacer las importaciones a través de la
+configuración radica en que si se usa nuestro desarrollo como componente
+para una tercera aplicación, las dependencias no se encuentran dentro
+del propio código y esto puede hacer un poco más complicado su uso.</p>
+</div>
+</div>
+<div class="section" id="exclusion-de-dependecias">
+<h3>4.2.2.3. Exclusión de dependecias<a class="headerlink" href="#exclusion-de-dependecias" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Si nuestra intención es desarrollar una librería es bastante probable que
+queramos desarrollar varias salidas y alguna de ellas no contenga las
+dependencias.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">Ver también</p>
+<p class="last">Véase el epígrafe dedicado a <a class="reference internal" href="#webpack-multi"><span class="std std-ref">múltiples salidas</span></a>.</p>
+</div>
+<p>Para excluir de la salida las dependencias, de nuevo, hay que hacer distinción
+entre el código <em>Javascript</em> y el resto:</p>
+<ul id="webpack-externals">
+<li><p class="first">El <strong>codigo Javascript</strong> debe cargarse y excluirse, no simplemente dejar de
+cargarse. Se haya cargado en el código o en la configuración, el método de
+exclusión es el mismo: el atributo <a class="reference external" href="https://webpack.js.org/configuration/externals/">externals</a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
    <span class="c1">// ...</span>
    <span class="nx">externals</span><span class="o">:</span> <span class="p">{</span>
@@ -247,9 +272,6 @@ cargarse desde un navegador, sino que pueda usarse como componente en un
 desarrollo posterior con <a class="reference external" href="https://nodejs.org/">NodeJS</a>, deberemos usar esta ultima forma para definir
 sus dependencias.</p>
 </div>
-<p>Por supuesto, este atributo sólo debe cargarse en los sabores que quieran
-<em>externalizar</em> las librerías de terceros, esto es, en los sabores que no
-incluyen dependencias.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Advertencia</p>
 <p>Si al usar el <em>plugin</em> <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> se usó con algún identificador un
@@ -274,9 +296,40 @@ será añadida automáticamente a la variable global que se indique en
 <p class="last">y no asociando <code class="code docutils literal notranslate"><span class="pre">[&quot;L&quot;,</span> <span class="pre">&quot;MarkerCLusterGroup&quot;]</span></code> a
 <em>leaflet.markerclustergroup</em>.</p>
 </div>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Por hacer</p>
-<p class="last">¿Puede llevarse a cabo algo parecido con el plugin <a class="reference external" href="https://webpack.js.org/plugins/ignore-plugin/">Ignore</a>?</p>
+</li>
+<li><p class="first">Para el <strong>resto</strong> de ficheros, la forma de exclusión depende de cómo se
+importara:</p>
+<ul>
+<li><p class="first">Si se hizo a través del punto de entrada en la configuración, la solución
+es que no aparezca en el punto de entrada, así que en caso de tener salidas
+que incluyen dependencias y salidas sin ellas, habría que hacer una
+configuración condicional en que el valor del punto de entrada dependiera de
+cuál es el sabor de la salida que se genera.</p>
+</li>
+<li><p class="first">Si la importación se incluyó en el código, la forma de evitar que los
+ficheros pasen a la salida es usar el cargador <a class="reference external" href="https://github.com/cherrry/ignore-loader">ignore-loader</a>, que como
+elocuentemente indica su nombre, no hace absolutamente nada con el fichero
+que trata.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Tenga presente que si no tenemos ficheros propios (<abbr title="Cascading Style Sheets">CSS</abbr>, por
+ejemplo) es bastante sencillo hacer una configuración condicional para
+que en el sabor <em>bundle</em> se traten los ficheros con el cargador adecuado
+y en los sabores sin dependencias con <strong class="program">ignore-loader</strong>. Sin
+embargo, si nuestra librería incorpora ficheros propios entonces en los
+sabores sin dependencias habrá que distintguir si el fichero procede de
+<code class="file docutils literal notranslate"><span class="pre">node_modules</span></code>, en cuyo caso habrá que ignorarlos, o de nuestro
+código, en cuyo caso habrá que tratarlo.</p>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">Ver también</p>
+<p class="last">En el <a class="reference internal" href="03.ejemplos.html#webpack-ej-plugin"><span class="std std-ref">ejemplo de desarrollo de un plugin</span></a>
+ponemos en prácticas todas estas técnicas, incluida la nota justamente
+anterior.</p>
 </div>
 </div>
 </div>
@@ -314,11 +367,11 @@ indispensable que el código sea accesible, si se ejecuta en un navegador.
 Podemos distinguir tres casos:</p>
 <ul>
 <li><p class="first">Si nuestro código no exporta nada y no importa ninguna librería porque
-si usa de terceros, está incluida en el código <em>Javascript</em> resultante<a class="footnote-reference" href="#id14" id="id5">[5]</a>,
+si usa de terceros, está incluida en el código <em>Javascript</em> resultante<a class="footnote-reference" href="#id12" id="id4">[4]</a>,
 no necesitamos hacer ninguna definición especial sobre el formato.</p>
 </li>
 <li><p class="first">Si nuestro código no necesita exportar nada, pero importa alguna librería
-externa a la que se acceda a través de una variable global<a class="footnote-reference" href="#id15" id="id6">[6]</a>, entonces
+externa a la que se acceda a través de una variable global<a class="footnote-reference" href="#id13" id="id5">[5]</a>, entonces
 es necesario que tenga <a class="reference internal" href="../03.node/03.modulos.html#mod-umd"><span class="std std-ref">formato UMD</span></a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span> <span class="o">:</span> <span class="p">{</span>
    <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
@@ -740,7 +793,7 @@ recurso:</p>
 <span id="babel"></span><h2>4.2.5. Compatibilidad<a class="headerlink" href="#compatibilidad" title="Enlazar permanentemente con este título">¶</a></h2>
 <p><strong class="program">Babel</strong> es un componente fundamental de nuestro propósito puesto que
 permite sustituir sintaxis demasiado nueva por otra compatible con versiones más
-antiguas de <em>Javascript</em>. Para usarlo y que transpile<a class="footnote-reference" href="#id16" id="id7">[7]</a> de forma que quede una
+antiguas de <em>Javascript</em>. Para usarlo y que transpile<a class="footnote-reference" href="#id14" id="id6">[6]</a> de forma que quede una
 sintaxis ampliamente soportada, podemos añadir algunas líneas a
 <code class="file docutils literal notranslate"><span class="pre">webpack/webpack.production.js</span></code>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
@@ -1040,7 +1093,7 @@ compartiéndose en la raíz del servidor web.</p>
 servidor:</p>
 <ul>
 <li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">false</span></code>, que es su valor predeterminado al no haber incluido el
-argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id17" id="id8">[8]</a> en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no se abre una ventana
+argumento <code class="code docutils literal notranslate"><span class="pre">--open</span></code><a class="footnote-reference" href="#id15" id="id7">[7]</a> en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>, no se abre una ventana
 con la aplicación en el navegador, así que tendremos que abrir manualmente
 nosotros la página eni la dirección:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span>
@@ -1050,7 +1103,7 @@ nosotros la página eni la dirección:</p>
 <li><p class="first">Si toma valor, debe ser una cadena que indique el navegador con el que se
 quiere ver la aplicación.</p>
 </li>
-<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema<a class="footnote-reference" href="#id18" id="id9">[9]</a>.</p>
+<li><p class="first">Si es <code class="docutils literal notranslate"><span class="pre">true</span></code>, se usa el navegador predefinido por el sistema<a class="footnote-reference" href="#id16" id="id8">[8]</a>.</p>
 </li>
 </ul>
 <div class="admonition note">
@@ -1244,7 +1297,7 @@ hayamos usando el objeto <em>env</em>, podemos usar la consola de <a class="refe
 <p>Se imprimirá el objeto de configuración resultante y podremos comprobar si es el
 que esparábamos.</p>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id10" rules="none">
+<table class="docutils footnote" frame="void" id="id9" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Entiéndase que los dos scripts no tienen por qué corresponderse con dos
@@ -1252,7 +1305,7 @@ ficheros. Cada uno de ellos puede estar programado de forma modular y
 componerse de múltiples ficheros.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id11" rules="none">
+<table class="docutils footnote" frame="void" id="id10" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>A menos claro está que hayamos hecho una copia incluida en nuestro
@@ -1263,62 +1316,54 @@ localización no es alcanzable por un cliente web. Otra solución es usar el
 plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a>, que se explica a continuación.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id12" rules="none">
+<table class="docutils footnote" frame="void" id="id11" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Es obvio que las dependencias son necesarias, así que el uso de esta
-versión exige que las dependencias se carguen en el propio <abbr title="HyperText Markup Language">HTML</abbr> a través de
-etiquetas <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">script</a></td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id13" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>El uso de <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> para cargar librerías de terceros puede tener también
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>El uso de <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> para cargar librerías de terceros puede tener también
 otro efecto, si se ha usado la sintaxis <em>ES2015</em> y se importan sólo ficheros
 <em>Javascript</em> (otros tipos pueden añadirse al desarrollo incluyéndolos en el
 punto de entrada): usando un atributo <code class="code docutils literal notranslate"><span class="pre">type=&quot;module&quot;</span></code> en un navegador
 moderno, el código fuente será directamente utilizable.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id14" rules="none">
+<table class="docutils footnote" frame="void" id="id12" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>Y aquí rige para las rutas <a class="reference internal" href="../03.node/03.modulos.html#webpack-import-path"><span class="std std-ref">la misma regla que para las
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>Y aquí rige para las rutas <a class="reference internal" href="../03.node/03.modulos.html#webpack-import-path"><span class="std std-ref">la misma regla que para las
 importaciones dentro del código</span></a>. Por tanto, <em>leaflet</em>
 a secas implica que estamos cargando una librería instalada local o
 globalmente y que, en realidad, se importa el fichero que se indique como
 principal en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id15" rules="none">
+<table class="docutils footnote" frame="void" id="id13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id6">[6]</a></td><td>Hasta el momento, sólo sabemos crear código <em>Javascript</em> que incluye
+<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>Hasta el momento, sólo sabemos crear código <em>Javascript</em> que incluye
 en el propio código todas las dependencias, pero ya veremos que hay forma
 de no hacerlo.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id16" rules="none">
+<table class="docutils footnote" frame="void" id="id14" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id7">[7]</a></td><td>Sería el caso, por ejemplo, de que crearamos un desarrollo que usa
+<tr><td class="label"><a class="fn-backref" href="#id6">[6]</a></td><td>Sería el caso, por ejemplo, de que crearamos un desarrollo que usa
 <a class="reference external" href="https://jquery.com/">JQuery</a> pero configurarámos <strong class="program">webpack</strong> para que esa librería externa
 no se incluyera dentro del código resultante, lo cual <a class="reference internal" href="03.ejemplos.html#webpack-ej-plugin"><span class="std std-ref">veremos más
 adeltante que es posible</span></a>.`</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id17" rules="none">
+<table class="docutils footnote" frame="void" id="id15" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id8">[8]</a></td><td>También podemos usar <strong class="program">postcss-loader</strong>, entre <strong class="program">css-loader</strong>
+<tr><td class="label"><a class="fn-backref" href="#id7">[7]</a></td><td>También podemos usar <strong class="program">postcss-loader</strong>, entre <strong class="program">css-loader</strong>
 y <strong class="program">sass-loader</strong>, pero importa poco a efectos de esta discusión.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id18" rules="none">
+<table class="docutils footnote" frame="void" id="id16" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id9">[9]</a></td><td><em>Transpilar</em> (y transpilación y transpilador) es un término
+<tr><td class="label"><a class="fn-backref" href="#id8">[8]</a></td><td><em>Transpilar</em> (y transpilación y transpilador) es un término
 construido por analogía con el verbo <em>compilar</em>. De un modo análogo al que
 <em class="dfn">compilar</em> sea convertir código de programación en código máquina,
 <em class="dfn">transpilar</em> es traducir còdigo de programación a una versión distinta,
@@ -1327,10 +1372,10 @@ más antiguas del intérprete. Traducir de <a class="reference external" href="h
 <em>Javascript</em> también es <em>transpilar</em>.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id19" rules="none">
+<table class="docutils footnote" frame="void" id="id17" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[10]</td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
+<tr><td class="label">[9]</td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
 así:</p>
 <div class="last highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> xdg-settings get default-web-browser
 <span class="go">firefox-esr.desktop</span>
@@ -1339,10 +1384,10 @@ así:</p>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id20" rules="none">
+<table class="docutils footnote" frame="void" id="id18" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[11]</td><td><p class="first">Las variables de entorno que se pasan de forma estándar (véase <em>NODE_ENV</em>
+<tr><td class="label">[10]</td><td><p class="first">Las variables de entorno que se pasan de forma estándar (véase <em>NODE_ENV</em>
 cuando se trataba <a class="reference internal" href="#babel"><span class="std std-ref">babel</span></a>) se encuentran disponibles en el
 script a través de <code class="code docutils literal notranslate"><span class="pre">process.env</span></code>:</p>
 <div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">)</span>
@@ -1366,7 +1411,8 @@ script a través de <code class="code docutils literal notranslate"><span class=
 <li><a class="reference internal" href="#punto-de-entrada">4.2.1. Punto de entrada</a></li>
 <li><a class="reference internal" href="#carga-de-modulos">4.2.2. Carga de módulos</a><ul>
 <li><a class="reference internal" href="#sistema-de-modulos">4.2.2.1. Sistema de módulos</a></li>
-<li><a class="reference internal" href="#importacion-de-modulos">4.2.2.2. Importación de módulos</a></li>
+<li><a class="reference internal" href="#importacion-desde-la-configuracion">4.2.2.2. Importación desde la configuración</a></li>
+<li><a class="reference internal" href="#exclusion-de-dependecias">4.2.2.3. Exclusión de dependecias</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#salida">4.2.3. Salida</a><ul>

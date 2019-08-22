@@ -99,6 +99,40 @@ function gitInfo() {
    }
 }
 
+
+function createLicense() {
+   const license = config.get("init.license") || "MIT",
+         name = config.get("init.author.name");
+
+   if(license === "MIT" && name) {
+      const fs = require("fs");
+            
+      fs.writeFile("LICENSE", `Copyright 2019, ${name}.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+`)
+
+   }
+
+   return license
+}
+
 module.exports = Object.assign({
    name: basename,
    description: prompt("Describa brevemente el fichero: ", `Paquete ${basename}`),
@@ -109,7 +143,7 @@ module.exports = Object.assign({
       build: "webpack --env.output=bundle --progress",
       debug: "webpack-dev-server --env.output=debug --progress"
    },
-   license: config.get("init.license") || "MIT",
+   license: createLicense(),
    keywords: prompt("Palabras clave (separadas por espacio)", "", res => res.replace(/\s+/g, " ").split(" ")),
    browserslist: browserslist,
 }, gitInfo());

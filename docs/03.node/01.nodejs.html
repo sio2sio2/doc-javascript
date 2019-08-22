@@ -245,6 +245,40 @@ segundo. Para ello, podemos usar (o adaptar) este <a class="reference download i
    <span class="p">}</span>
 <span class="p">}</span>
 
+
+<span class="kd">function</span> <span class="nx">createLicense</span><span class="p">()</span> <span class="p">{</span>
+   <span class="kr">const</span> <span class="nx">license</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.license&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+         <span class="nx">name</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.author.name&quot;</span><span class="p">);</span>
+
+   <span class="k">if</span><span class="p">(</span><span class="nx">license</span> <span class="o">===</span> <span class="s2">&quot;MIT&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">);</span>
+            
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="s2">&quot;LICENSE&quot;</span><span class="p">,</span> <span class="sb">`Copyright 2019, </span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb">.</span>
+
+<span class="sb">Permission is hereby granted, free of charge, to any person obtaining a copy of</span>
+<span class="sb">this software and associated documentation files (the &quot;Software&quot;), to deal in</span>
+<span class="sb">the Software without restriction, including without limitation the rights to</span>
+<span class="sb">use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies</span>
+<span class="sb">of the Software, and to permit persons to whom the Software is furnished to do</span>
+<span class="sb">so, subject to the following conditions:</span>
+
+<span class="sb">The above copyright notice and this permission notice shall be included in all</span>
+<span class="sb">copies or substantial portions of the Software.</span>
+
+<span class="sb">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sb">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sb">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sb">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sb">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sb">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="sb">SOFTWARE.</span>
+<span class="sb">`</span><span class="p">)</span>
+
+   <span class="p">}</span>
+
+   <span class="k">return</span> <span class="nx">license</span>
+<span class="p">}</span>
+
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({</span>
    <span class="nx">name</span><span class="o">:</span> <span class="nx">basename</span><span class="p">,</span>
    <span class="nx">description</span><span class="o">:</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">&quot;Describa brevemente el fichero: &quot;</span><span class="p">,</span> <span class="sb">`Paquete </span><span class="si">${</span><span class="nx">basename</span><span class="si">}</span><span class="sb">`</span><span class="p">),</span>
@@ -255,7 +289,7 @@ segundo. Para ello, podemos usar (o adaptar) este <a class="reference download i
       <span class="nx">build</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle --progress&quot;</span><span class="p">,</span>
       <span class="nx">debug</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --progress&quot;</span>
    <span class="p">},</span>
-   <span class="nx">license</span><span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.license&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+   <span class="nx">license</span><span class="o">:</span> <span class="nx">createLicense</span><span class="p">(),</span>
    <span class="nx">keywords</span><span class="o">:</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">&quot;Palabras clave (separadas por espacio)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nx">res</span> <span class="p">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s+/g</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)),</span>
    <span class="nx">browserslist</span><span class="o">:</span> <span class="nx">browserslist</span><span class="p">,</span>
 <span class="p">},</span> <span class="nx">gitInfo</span><span class="p">());</span>

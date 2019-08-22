@@ -238,6 +238,11 @@ nuestro programa.</li>
       <span class="p">}</span>
    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
+   <span class="c1">//Marca con el icono predeterminado para comprobar webpack-defaulticon-compatibility</span>
+   <span class="nx">L</span><span class="p">.</span><span class="nx">marker</span><span class="p">([</span><span class="mf">37.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">],</span> <span class="p">{</span>
+      <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;No me encojo: soy normal&quot;</span>
+   <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
    <span class="c1">// Marca de agua (nada que ver con lo que se prueba.</span>
    <span class="kr">const</span> <span class="nx">Watermark</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Control</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
       <span class="nx">onAdd</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">map</span><span class="p">)</span> <span class="p">{</span>
@@ -491,7 +496,7 @@ embargo, instalarlo y usarlo en la configuración.</li>
 <h3>4.3.2.2. Escritura<a class="headerlink" href="#id2" title="Enlazar permanentemente con este título">¶</a></h3>
 <ol class="arabic">
 <li><p class="first">Escribimos el <em>plugin</em> en <code class="file docutils literal notranslate"><span class="pre">src/plugin.js</span></code>, que es enormemente sencillo:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">L</span><span class="p">.</span><span class="nx">Compatibility</span><span class="p">;</span> <span class="c1">// Para importar el plugin de compatibilidad</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">compatibility</span><span class="p">;</span> <span class="c1">// Para importar el plugin de compatibilidad</span>
 
 <span class="nx">L</span><span class="p">.</span><span class="nx">Icon</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">zoom</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">factor</span><span class="p">)</span> <span class="p">{</span>
    <span class="nx">factor</span> <span class="o">=</span> <span class="nx">factor</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">factor</span><span class="p">;</span>
@@ -633,7 +638,12 @@ salidas diferentes.</p>
 </span><span class="hll">            <span class="nx">commonjs2</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
 </span><span class="hll">            <span class="nx">amd</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span>
 </span><span class="hll">         <span class="p">},</span>
-</span><span class="hll">         <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="o">:</span> <span class="s2">&quot;L.Compatibility&quot;</span><span class="p">,</span>
+</span><span class="hll">         <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">            <span class="nx">root</span><span class="o">:</span> <span class="s2">&quot;compatibility&quot;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">commonjs</span><span class="o">:</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">commonjs2</span><span class="o">:</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">amd</span><span class="o">:</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="p">,</span>
+</span><span class="hll">         <span class="p">}</span>
 </span><span class="hll">      <span class="p">}</span>
 </span><span class="hll">   <span class="p">}</span>
 </span><span class="hll"><span class="p">}</span> 
@@ -724,7 +734,7 @@ salidas diferentes.</p>
       <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
          <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
             <span class="nx">L</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="o">:</span> <span class="s2">&quot;L.Compatibility&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;compatibility&quot;</span><span class="o">:</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span>
          <span class="p">}),</span>
          <span class="k">new</span> <span class="nx">MiniCssExtractPlugin</span><span class="p">({</span>
             <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;[name].bundle.css&quot;</span><span class="p">,</span>

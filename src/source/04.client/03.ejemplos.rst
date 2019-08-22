@@ -153,7 +153,6 @@ Generación
    .. code-block:: console
 
       $ vim README.rst
-      $ vim LICENSE
       $ git add --all .
       $ git commit -m "Primera implementación"
 
@@ -278,7 +277,7 @@ Escritura
 
    .. literalinclude:: files/plugin/webpack.config.js
       :language: js
-      :emphasize-lines: 34-41, 45-57, 69-74, 113-118
+      :emphasize-lines: 34-41, 45-62, 74-79, 118-123
 
    Aunque más compleja, la configuración no presenta demasiadas diferencias:
 

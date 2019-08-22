@@ -113,155 +113,201 @@ es:
 
 .. _webpack-conf-import:
 
-Importación de módulos
-----------------------
-Ya se ha visto que para cargar módulos (al estilo *ES2015*, por ejemplo) es
-necesario::
+Importación desde la configuración
+----------------------------------
+Ya se ha visto que desde el propio código puede llevarse a cabo la importación:
+
+.. code-block:: js
 
    import L from "leaflet";
+   import "leaflet/dist/leaflet.css";  // El CSS de Leaflet
    import $ from "jquery";
 
-Esto funciona sin problemas, pero tiene un inconveniente si pretendemos
-desarrollar una librería y no un aplicación final. A diferencia de una
-aplicación final, en la que se pretende generar un resultado que incluya todas
-las dependencias, cuando se desarrolla una librería, es muy común generar
-resultandos en los que pueden o no incluirse las dependencias.
+Usando el estilo *ES2015*; también valdría CommonJS_. En principio, sea cual sea
+la naturaleza de lo importado (código *Javascript*, |CSS|, una imagen, etc)
+podemos usar este método. 
 
-.. seealso:: Véase más adelante :ref:`multiples resultados <webpack-multi>`.
+Alternativamente, las importaciones también puede hacerse desde el fichero de
+configuración, aunque en este caso distinguiremos entre el código *Javascript* y
+el resto.
 
-Como dependiendo de la versión, el resultado incluye o no las librerías de
-terceros, la importación incondicional dentro del código como la expuesta
-arriba, no es útil y debe recurrirse a otra que importe sólo dependiendo de cuál
-sea el resultado. Para ello, :program:`webpack` posibilita la importación con el
-plugin Provide_ en su propia configuración\ [#]_:
+* Para **código Javascript** puede usarse el plugin Provide_:
 
-.. code-block:: js
+  .. code-block:: js
 
-   // webpack.config.js
-   const webpack = require("webpack");
+     // webpack.config.js
+     const webpack = require("webpack");
 
-   // ...
+     // ...
 
-   module.exports = {
-      // ...
-      plugins: [
-         new webpack.ProvidePlugin({
-            L: "leaflet",
-            $: "jquery"
-         })
-      ]
-   }
+     module.exports = {
+        // ...
+        plugins: [
+           new webpack.ProvidePlugin({
+              L: "leaflet",
+              $: "jquery"
+           })
+        ]
+     }
 
-Para configurar el *plugin* hay que entender que las claves son identificadores
-y los valores cuál módulo se carga, de manera que cuando :program:`webpack`
-encuentre el identificador :code:`L` en el código procede a cargar el módulo
-*leaflet*\ [#]_. El identificador puede ser la propiedad de un objeto. Por
-ejemplo, esto es perfectamente válido:
+  Para configurar el *plugin* hay que entender que las claves son identificadores
+  y los valores cuál módulo se carga, de manera que cuando :program:`webpack`
+  encuentre el identificador :code:`L` en el código procede a cargar el módulo
+  *leaflet*\ [#]_. El identificador puede ser la propiedad de un objeto. Por
+  ejemplo, esto es perfectamente válido:
 
-.. code-block:: js
+  .. code-block:: js
 
-   plugins: [
-      new webpack.ProvidePlugin({
-         L: "leaflet",
-         "L.Control.Search": "leaflet-search",
-         $: "jquery"
-      })
-   ]
+     plugins: [
+        new webpack.ProvidePlugin({
+           L: "leaflet",
+           "L.Control.Search": "leaflet-search",
+           $: "jquery"
+        })
+     ]
 
-Entiéndase que lo exportado por el módulo cargado es el valor que
-adquirirá el identificar en el código. Ahora bien, si el módulo exporta de esta
-manera:
+  Entiéndase que lo exportado por el módulo cargado es el valor que
+  adquirirá el identificar en el código. Ahora bien, si el módulo exporta de esta
+  manera:
 
-.. code-block:: js
+  .. code-block:: js
 
-   export {a, b, c}
+     export {a, b, c}
 
-y nuestra intención es definir el identificador *a*, podemos entonces hacer:
+  y nuestra intención es definir el identificador *a*, podemos entonces hacer:
 
-.. code-block:: js
+  .. code-block:: js
 
-   a: [ "./mimodulo.js", "a" ]
+     a: [ "./mimodulo.js", "a" ]
+
+* El **resto** de importaciones podemos llevarlas a cabo añadiéndolas al punto
+  de entrada:
+
+  .. code-block:: js
+
+     entry: {
+        "leaflet.mipluginmolon": [
+            "./src/js/index.js",
+            "leaflet/dist/leaflet.css"
+        ]
+     }
+
+.. note:: El inconveniente de hacer las importaciones a través de la
+   configuración radica en que si se usa nuestro desarrollo como componente
+   para una tercera aplicación, las dependencias no se encuentran dentro
+   del propio código y esto puede hacer un poco más complicado su uso.
+
+Exclusión de dependecias
+------------------------
+Si nuestra intención es desarrollar una librería es bastante probable que
+queramos desarrollar varias salidas y alguna de ellas no contenga las
+dependencias.
+
+.. seealso:: Véase el epígrafe dedicado a :ref:`múltiples salidas
+   <webpack-multi>`.
+
+Para excluir de la salida las dependencias, de nuevo, hay que hacer distinción
+entre el código *Javascript* y el resto:
 
 .. _webpack-externals:
 
-Con lo visto, sin embargo, los módulos cargados seguirán apareciendo en el
-resultado, con lo que no habremos logrado el objetivo de crear distintos
-sabores de la librería. Para declarar que tales módulos son externos y que no
-deben ser incluidos dentro del código, :program:`webpack` dispone del atributo
-`externals <https://webpack.js.org/configuration/externals/>`_:
+* El **codigo Javascript** debe cargarse y excluirse, no simplemente dejar de
+  cargarse. Se haya cargado en el código o en la configuración, el método de
+  exclusión es el mismo: el atributo `externals
+  <https://webpack.js.org/configuration/externals/>`_:
 
-.. code-block:: js
+  .. code-block:: js
 
-   const config = {
-      // ...
-      externals: {
-         leaflet: "L",
-         jquery: "$",
-         "leaflet-search": [ "L", "Control", "Search" ]
-      }
-   }
+     const config = {
+        // ...
+        externals: {
+           leaflet: "L",
+           jquery: "$",
+           "leaflet-search": [ "L", "Control", "Search" ]
+        }
+     }
 
-En este caso, las claves representan las librerías *externalizadas* (o sea, los
-valores del objeto que se pasó como argumento a Provide_) y los valores son la
-variable global asociada a aquello que exporte la librería. Por tanto, muy
-comúnmente al usar Provide_ y externals lo que se hace es intercambiar claves
-por valores y valores con claves, con la diferencia que en *externals* un
-identificador que no sea global, sino el atributo de otro objeto debe notarse en
-forma de *array*. Es por ello que :code:`L.Control.Search` se ha convertido en
-:code:`["L", "Control", "Search"]`.
+  En este caso, las claves representan las librerías *externalizadas* (o sea, los
+  valores del objeto que se pasó como argumento a Provide_) y los valores son la
+  variable global asociada a aquello que exporte la librería. Por tanto, muy
+  comúnmente al usar Provide_ y externals lo que se hace es intercambiar claves
+  por valores y valores con claves, con la diferencia que en *externals* un
+  identificador que no sea global, sino el atributo de otro objeto debe notarse en
+  forma de *array*. Es por ello que :code:`L.Control.Search` se ha convertido en
+  :code:`["L", "Control", "Search"]`.
 
-No obstante, si la librería externa se construyó como :ref:`módulo UMD
-<mod-umd>`, entonces es necesario definir cómo está disponible la librería
-dependiendo del sistema que se use para cargarla:
+  No obstante, si la librería externa se construyó como :ref:`módulo UMD
+  <mod-umd>`, entonces es necesario definir cómo está disponible la librería
+  dependiendo del sistema que se use para cargarla:
 
-.. code-block:: js
+  .. code-block:: js
 
-   externals: {
-      leaflet: {
-         root: "L",
-         commonjs: "leaflet",
-         commonjs2: "leaflet",
-         amd: "leaflet"
-      }
-   }
+     externals: {
+        leaflet: {
+           root: "L",
+           commonjs: "leaflet",
+           commonjs2: "leaflet",
+           amd: "leaflet"
+        }
+     }
 
-.. warning:: Si creamos una librería de terceros que queremos, no sólo que pueda
-   cargarse desde un navegador, sino que pueda usarse como componente en un
-   desarrollo posterior con NodeJS_, deberemos usar esta ultima forma para definir
-   sus dependencias.
+  .. warning:: Si creamos una librería de terceros que queremos, no sólo que pueda
+     cargarse desde un navegador, sino que pueda usarse como componente en un
+     desarrollo posterior con NodeJS_, deberemos usar esta ultima forma para definir
+     sus dependencias.
 
-Por supuesto, este atributo sólo debe cargarse en los sabores que quieran
-*externalizar* las librerías de terceros, esto es, en los sabores que no
-incluyen dependencias.
+  .. warning:: Si al usar el *plugin* Provide_ se usó con algún identificador un
+     array:
 
-.. warning:: Si al usar el *plugin* Provide_ se usó con algún identificador un
-   array:
+     .. code-block:: js
 
-   .. code-block:: js
+        plugins: [
+           new webpack.ProvidePlugin({
+              L: "leaflet",
+              "L.MarkerClusterGroup": ["leaflet.markerclustergroup", "MarkerClusterGroup"]
+           })
+        ]
+        
+     entonces la propiedad exportada (*MarkerClusterGroup* en este ejemplo),
+     será añadida automáticamente a la variable global que se indique en
+     *externals*. Por ese motivo, *externals* debe definirse así:
 
-      plugins: [
-         new webpack.ProvidePlugin({
-            L: "leaflet",
-            "L.MarkerClusterGroup": ["leaflet.markerclustergroup", "MarkerClusterGroup"]
-         })
-      ]
-      
-   entonces la propiedad exportada (*MarkerClusterGroup* en este ejemplo),
-   será añadida automáticamente a la variable global que se indique en
-   *externals*. Por ese motivo, *externals* debe definirse así:
+     .. code-block:: js
 
-   .. code-block:: js
+        externals: {
+           leaflet: "L",
+           "leaflet.markerclustergroup": "L"
+        }
 
-      externals: {
-         leaflet: "L",
-         "leaflet.markerclustergroup": "L"
-      }
+     y no asociando :code:`["L", "MarkerCLusterGroup"]` a
+     *leaflet.markerclustergroup*.
 
-   y no asociando :code:`["L", "MarkerCLusterGroup"]` a
-   *leaflet.markerclustergroup*.
+* Para el **resto** de ficheros, la forma de exclusión depende de cómo se
+  importara:
 
-.. todo:: ¿Puede llevarse a cabo algo parecido con el plugin `Ignore
-   <https://webpack.js.org/plugins/ignore-plugin/>`_?
+  - Si se hizo a través del punto de entrada en la configuración, la solución
+    es que no aparezca en el punto de entrada, así que en caso de tener salidas
+    que incluyen dependencias y salidas sin ellas, habría que hacer una
+    configuración condicional en que el valor del punto de entrada dependiera de
+    cuál es el sabor de la salida que se genera.
+
+  - Si la importación se incluyó en el código, la forma de evitar que los
+    ficheros pasen a la salida es usar el cargador `ignore-loader`_, que como
+    elocuentemente indica su nombre, no hace absolutamente nada con el fichero
+    que trata.
+
+    .. note:: Tenga presente que si no tenemos ficheros propios (|CSS|, por
+       ejemplo) es bastante sencillo hacer una configuración condicional para
+       que en el sabor *bundle* se traten los ficheros con el cargador adecuado
+       y en los sabores sin dependencias con :program:`ignore-loader`. Sin
+       embargo, si nuestra librería incorpora ficheros propios entonces en los
+       sabores sin dependencias habrá que distintguir si el fichero procede de
+       :file:`node_modules`, en cuyo caso habrá que ignorarlos, o de nuestro
+       código, en cuyo caso habrá que tratarlo.
+
+.. seealso:: En el :ref:`ejemplo de desarrollo de un plugin <webpack-ej-plugin>`
+   ponemos en prácticas todas estas técnicas, incluida la nota justamente
+   anterior.
 
 .. _webpack-output:
 
@@ -1218,10 +1264,6 @@ que esparábamos.
    localización no es alcanzable por un cliente web. Otra solución es usar el
    plugin Provide_, que se explica a continuación.
 
-.. [#] Es obvio que las dependencias son necesarias, así que el uso de esta
-   versión exige que las dependencias se carguen en el propio |HTML| a través de
-   etiquetas script_
-
 .. [#] El uso de Provide_ para cargar librerías de terceros puede tener también
    otro efecto, si se ha usado la sintaxis *ES2015* y se importan sólo ficheros
    *Javascript* (otros tipos pueden añadirse al desarrollo incluyéndolos en el
@@ -1288,6 +1330,7 @@ que esparábamos.
 .. _TurfJS: https://turfjs.org/
 .. _Leaflet: https://leafletjs.com
 .. _HtmlWebPackPlugin: https://github.com/jantimon/html-webpack-plugin
+.. _ignore-loader: https://github.com/cherrry/ignore-loader
 
 .. |HTML| replace:: :abbr:`HTML (HyperText Markup Language)`
 .. |CSS| replace:: :abbr:`CSS (Cascading Style Sheets)`

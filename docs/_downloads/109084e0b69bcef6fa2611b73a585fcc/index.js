@@ -37,11 +37,16 @@ window.onload = function() {
       }
    }).addTo(map);
 
+   //Marca con el icono predeterminado para comprobar webpack-defaulticon-compatibility
+   L.marker([37.5, -6], {
+      title: "No me encojo: soy normal"
+   }).addTo(map);
+
    // Marca de agua (nada que ver con lo que se prueba.
    const Watermark = L.Control.extend({
       onAdd: function(map) {
          const img = L.DomUtil.create("img");
-         img.src = "images/logo.svg"
+         img.src = "logo.svg"
          img.style.width = "200px";
 
          return img
