@@ -209,13 +209,15 @@ posibilita el procesamiento del |CSS|:
 
       entry: [ "./src/js/index.js", "./css/main.css" ]
 
-   Esta alternativa puede ser interesante, si el |CSS| procede de código ajeno y
-   pretendemos crear una configuración condicional que incluya o no en los
-   ficheros resultantes el código de terceros. Más adelante, puede echarle un
-   vistazo al :ref:`ejemplo de construcción de un plugin <webpack-ej-plugin>` en
-   que se usa esta técnica. La contraprestación es que la dependencia no está
-   contenida en el código fuente y, en consecuencia, sólo es patente si se
-   procesa el desarrollo con :program:`webpack`.
+   Esta alternativa puede resultar interesante si el |CSS| procede de código
+   ajeno y pretendemos crear una configuración condicional que incluya o no en
+   los ficheros resultantes el código de terceros. Más adelante, puede echarle
+   un vistazo al :ref:`ejemplo de construcción de un plugin <webpack-ej-plugin>`
+   en que se usa esta técnica. En cambio, tiene un serio inconveniente: la
+   referencia a tal |CSS| sólo se encuentra en la configuración y no en el
+   código fuente o el código resultante sin dependencias. En consecuencia, si se
+   utilizara este desarrollo como componente para otro, tendríamos que tenerlo
+   presente.
       
 Con la configuración ya vista, bastaría para correr el *script* que acabamos de
 definir (*debug*), pero añadiremos una configuración específica para
@@ -335,26 +337,11 @@ ellos puntos de ruptura para llevar a cabo la depuración del código\ [#]_.
 
 Por defecto, los mapeos se escriben como comentarios dentro de los propios
 ficheros ``.js``. Podemos hacer que se escriban en fichero aparte modificando
-la configuración referida al desarrollo:
+el valor de *devtool*:
 
 .. code-block:: js
-   :emphasize-lines: 4-9
 
-   return merge.smart(
-      config,
-      argv.mode === "production"?null:{
-         devtool: false,
-         plugins: [
-            new webpack.SourceMapDevToolPlugin({
-               filename: 'js/[name].js.map'
-            })
-         ]
-         devServer: {
-            contentBase: false,
-            open: "chromium"
-         }
-      }
-   )
+   devtool: "source-map"
 
 .. rubric:: Notas al pie
 

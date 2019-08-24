@@ -237,6 +237,23 @@ Escritura
 
    .. literalinclude:: files/plugin/plugin.js
       :language: js
+      :emphasize-lines: 1-4
+
+   Del código es reseñable la importación. Leaflet_ es necesario, y, aunque
+   podría hacerse la importación aquí:
+
+   .. code-block:: js
+
+      import L from "leaflet";
+
+   se ha preferido hacer en la configuración a través de Provide_ para ilustrar
+   su uso. Lo interesante, es la importación del otro módulo que es un poco
+   particular. El módulo en cuestión, `leaflet-defaulticon-compatibility`_ sólo
+   cumple la función de parchear Leaflet_ para permitir crear un resultado
+   *bundle* que lo incluya. Cuando Leaflet_ se carga externamente no es
+   necesario en absoluto. Por ese motivo, la importación se hace sólo en caso de
+   que compongamos la versión *bundle*. Para que funcione la condición, es
+   necesario usar el plugin Define_, que trataremos más adelante.
 
 #. Desarrollamos el ejemplo. Tomaremos como base la aplicación anterior, pero
    teniendo en cuenta que el ejemplo no forma parte del procesamiento  por
@@ -277,7 +294,7 @@ Escritura
 
    .. literalinclude:: files/plugin/webpack.config.js
       :language: js
-      :emphasize-lines: 34-41, 45-62, 74-79, 118-123
+      :emphasize-lines: 35-41, 45-56, 63-68, 107-113
 
    Aunque más compleja, la configuración no presenta demasiadas diferencias:
 
@@ -294,16 +311,49 @@ Escritura
      los enlaces al |CSS| y al *Javascript* funcionen tanto al depurar como al
      visitar el |HTML| en cualquier otro momento. Además, se pide que se vigilen
      los cambios en :file:`examples` a fin de que durante la depuración se
-     puedan ahcer cambios en los propios ficheros que componen el ejemplo y
+     puedan hacer cambios en los propios ficheros que componen el ejemplo y
      veamos el efecto reflejado inmediatamente.
 
-   - Nos preocupamos de cómo sea la salida (*output*), aunque el *plugin* altera
-     un objeto global (**L** de Leaflet_) queremos que pueda usarse como
-     componenente al desarrollar una aplicación (como la del primer ejemplo).
-     Por ello, hemos generado un módulo |UMD|.
+   - Como queremos usar el plugin tanto como componente para NodeJS_ como para
+     carga desde un navegador generamos un módulo |UMD|. Lo exportado, si se
+     carga en un navegador, estará disponible en :code:`L.icon`.
+
+     .. note:: Obsérvese que en el código manipulamos directamente el objeto
+        :code:`L`. Por esa razón, funcionaría de igual forma que no exportáramos
+        nada.
 
 Generación
 ----------
+#. Se obtienen cuatro resultados diferentes:
+
+   .. code-block:: console
+
+      $ npm run build
+      $ npm run build:src
+      $ npm run build:bundle
+      $ npm run build:debug
+
+   Además del resultado que nos sirve para ir depurando:
+
+   .. code-block:: console
+
+      $ npm run debug
+
+#. Por último, se remata y publica el repositorio:
+
+   .. code-block:: console
+
+      $ vim README.rst
+      $ git add --all .
+      $ git commit -m "Primera implementación"
+
+      $ git remote add origin https://github.com/sio2sio2/leaflet.iconzoom.git
+      $ git push -u origin master
+
+   Finalmente, habría que hacer que la rama master fuera visitable
+
+El resultado está publicado en `su repositorio correspondiente
+<https://github.com/sio2sio2/leaflet.iconzoom/examples>`_.
 
 .. rubric:: Notas al pie
 
@@ -321,6 +371,8 @@ Generación
 .. _Github: https://github.com
 .. _Leaflet.iconzoom: https://github.com/sio2sio2/leaflet.iconzoom
 .. _leaflet-defaulticon-compatibility: https://github.com/ghybs/leaflet-defaulticon-compatibility
+.. _Define: https://webpack.js.org/plugins/define-plugin/
+.. _Provide: https://webpack.js.org/plugins/provide-plugin/
 
 .. _NodeJS: https://nodejs.org/
 

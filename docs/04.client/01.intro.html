@@ -258,13 +258,15 @@ cualquier otro tipo de fichero): añadirlo al punto de entrada de
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">entry</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;./src/js/index.js&quot;</span><span class="p">,</span> <span class="s2">&quot;./css/main.css&quot;</span> <span class="p">]</span>
 </pre></div>
 </div>
-<p class="last">Esta alternativa puede ser interesante, si el <abbr title="Cascading Style Sheets">CSS</abbr> procede de código ajeno y
-pretendemos crear una configuración condicional que incluya o no en los
-ficheros resultantes el código de terceros. Más adelante, puede echarle un
-vistazo al <a class="reference internal" href="03.ejemplos.html#webpack-ej-plugin"><span class="std std-ref">ejemplo de construcción de un plugin</span></a> en
-que se usa esta técnica. La contraprestación es que la dependencia no está
-contenida en el código fuente y, en consecuencia, sólo es patente si se
-procesa el desarrollo con <strong class="program">webpack</strong>.</p>
+<p class="last">Esta alternativa puede resultar interesante si el <abbr title="Cascading Style Sheets">CSS</abbr> procede de código
+ajeno y pretendemos crear una configuración condicional que incluya o no en
+los ficheros resultantes el código de terceros. Más adelante, puede echarle
+un vistazo al <a class="reference internal" href="03.ejemplos.html#webpack-ej-plugin"><span class="std std-ref">ejemplo de construcción de un plugin</span></a>
+en que se usa esta técnica. En cambio, tiene un serio inconveniente: la
+referencia a tal <abbr title="Cascading Style Sheets">CSS</abbr> sólo se encuentra en la configuración y no en el
+código fuente o el código resultante sin dependencias. En consecuencia, si se
+utilizara este desarrollo como componente para otro, tendríamos que tenerlo
+presente.</p>
 </div>
 <p>Con la configuración ya vista, bastaría para correr el <em>script</em> que acabamos de
 definir (<em>debug</em>), pero añadiremos una configuración específica para
@@ -369,22 +371,8 @@ ficheros originales (<code class="file docutils literal notranslate"><span class
 ellos puntos de ruptura para llevar a cabo la depuración del código<a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
 <p>Por defecto, los mapeos se escriben como comentarios dentro de los propios
 ficheros <code class="docutils literal notranslate"><span class="pre">.js</span></code>. Podemos hacer que se escriban en fichero aparte modificando
-la configuración referida al desarrollo:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">smart</span><span class="p">(</span>
-   <span class="nx">config</span><span class="p">,</span>
-   <span class="nx">argv</span><span class="p">.</span><span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;production&quot;</span><span class="o">?</span><span class="kc">null</span><span class="o">:</span><span class="p">{</span>
-<span class="hll">      <span class="nx">devtool</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class="hll">      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-</span><span class="hll">         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">SourceMapDevToolPlugin</span><span class="p">({</span>
-</span><span class="hll">            <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;js/[name].js.map&#39;</span>
-</span><span class="hll">         <span class="p">})</span>
-</span><span class="hll">      <span class="p">]</span>
-</span>      <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
-         <span class="nx">contentBase</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-         <span class="nx">open</span><span class="o">:</span> <span class="s2">&quot;chromium&quot;</span>
-      <span class="p">}</span>
-   <span class="p">}</span>
-<span class="p">)</span>
+el valor de <em>devtool</em>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">devtool</span><span class="o">:</span> <span class="s2">&quot;source-map&quot;</span>
 </pre></div>
 </div>
 <p class="rubric">Notas al pie</p>

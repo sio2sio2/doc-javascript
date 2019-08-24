@@ -166,7 +166,10 @@ nuestro programa.</li>
 <em>script</em> que crea el mapa.</p>
 </li>
 <li><p class="first">Un estilo (con <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>) en <a class="reference download internal" download="" href="../_downloads/1d8b0748ee785d18ea600c2910f2b073/index.sass"><code class="xref download docutils literal notranslate"><span class="pre">src/index.sass</span></code></a>:</p>
-<div class="highlight-sass notranslate"><div class="highlight"><pre><span></span><span class="nt">html</span><span class="o">,</span> <span class="nt">body</span>
+<div class="highlight-sass notranslate"><div class="highlight"><pre><span></span><span class="k">@import</span> <span class="s">&quot;~leaflet/dist/leaflet.css&quot;</span>
+<span class="k">@import</span> <span class="s">&quot;~leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css&quot;</span>
+
+<span class="nt">html</span><span class="o">,</span> <span class="nt">body</span>
    <span class="na">height</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span>
    <span class="na">width</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span>
    <span class="na">margin</span><span class="o">:</span> <span class="mi">0</span>
@@ -191,9 +194,6 @@ nuestro programa.</li>
 <span class="kr">import</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="p">;</span>
 
 <span class="kr">import</span> <span class="s2">&quot;leaflet.iconzoom&quot;</span><span class="p">;</span>
-
-<span class="kr">import</span> <span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css&quot;</span><span class="p">;</span>
 
 <span class="kr">import</span> <span class="s2">&quot;app/src/index.sass&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="nx">logo</span> <span class="nx">from</span> <span class="s2">&quot;app/src/logo.svg&quot;</span><span class="p">;</span>
@@ -415,7 +415,6 @@ propoósito.</li>
 </li>
 <li><p class="first">Por último, se remata y publica el repositorio:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> vim README.rst
-<span class="gp">$</span> vim LICENSE
 <span class="gp">$</span> git add --all .
 <span class="gp">$</span> git commit -m <span class="s2">&quot;Primera implementación&quot;</span>
 
@@ -496,8 +495,11 @@ embargo, instalarlo y usarlo en la configuración.</li>
 <h3>4.3.2.2. Escritura<a class="headerlink" href="#id2" title="Enlazar permanentemente con este título">¶</a></h3>
 <ol class="arabic">
 <li><p class="first">Escribimos el <em>plugin</em> en <code class="file docutils literal notranslate"><span class="pre">src/plugin.js</span></code>, que es enormemente sencillo:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">compatibility</span><span class="p">;</span> <span class="c1">// Para importar el plugin de compatibilidad</span>
-
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="k">if</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span> <span class="o">===</span> <span class="s2">&quot;bundle&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">   <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="p">);</span>
+</span><span class="hll">   <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css&quot;</span><span class="p">);</span>
+</span><span class="hll"><span class="p">}</span>
+</span>
 <span class="nx">L</span><span class="p">.</span><span class="nx">Icon</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">zoom</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">factor</span><span class="p">)</span> <span class="p">{</span>
    <span class="nx">factor</span> <span class="o">=</span> <span class="nx">factor</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">factor</span><span class="p">;</span>
    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">factor</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
@@ -521,6 +523,19 @@ embargo, instalarlo y usarlo en la configuración.</li>
 <span class="kr">export</span> <span class="k">default</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Icon</span>
 </pre></div>
 </div>
+<p>Del código es reseñable la importación. <a class="reference external" href="https://leafletjs.com">Leaflet</a> es necesario, y, aunque
+podría hacerse la importación aquí:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">L</span> <span class="nx">from</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>se ha preferido hacer en la configuración a través de <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> para ilustrar
+su uso. Lo interesante, es la importación del otro módulo que es un poco
+particular. El módulo en cuestión, <a class="reference external" href="https://github.com/ghybs/leaflet-defaulticon-compatibility">leaflet-defaulticon-compatibility</a> sólo
+cumple la función de parchear <a class="reference external" href="https://leafletjs.com">Leaflet</a> para permitir crear un resultado
+<em>bundle</em> que lo incluya. Cuando <a class="reference external" href="https://leafletjs.com">Leaflet</a> se carga externamente no es
+necesario en absoluto. Por ese motivo, la importación se hace sólo en caso de
+que compongamos la versión <em>bundle</em>. Para que funcione la condición, es
+necesario usar el plugin <a class="reference external" href="https://webpack.js.org/plugins/define-plugin/">Define</a>, que trataremos más adelante.</p>
 </li>
 <li><p class="first">Desarrollamos el ejemplo. Tomaremos como base la aplicación anterior, pero
 teniendo en cuenta que el ejemplo no forma parte del procesamiento  por
@@ -589,7 +604,8 @@ salidas diferentes.</p>
       <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;webpack-merge&quot;</span><span class="p">),</span>
       <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">),</span>
       <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mini-css-extract-plugin&quot;</span><span class="p">),</span>
-      <span class="nx">name</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./package.json&quot;</span><span class="p">).</span><span class="nx">name</span><span class="p">;</span>
+      <span class="nx">pack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./package.json&quot;</span><span class="p">),</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="nx">pack</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
 
 
 <span class="c1">// Configuración para Babel</span>
@@ -621,8 +637,7 @@ salidas diferentes.</p>
 <span class="hll"><span class="kd">function</span> <span class="nx">confBundle</span><span class="p">()</span> <span class="p">{</span>
 </span><span class="hll">   <span class="k">return</span> <span class="p">{</span>
 </span><span class="hll">      <span class="nx">entry</span><span class="o">:</span> <span class="p">{</span>
-</span><span class="hll">         <span class="p">[</span><span class="nx">name</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span><span class="p">,</span>
-</span><span class="hll">                  <span class="s2">&quot;leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css&quot;</span><span class="p">]</span>
+</span><span class="hll">         <span class="p">[</span><span class="nx">name</span><span class="p">]</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span><span class="p">]</span>
 </span><span class="hll">      <span class="p">}</span>
 </span><span class="hll">   <span class="p">}</span>
 </span><span class="hll"><span class="p">}</span>
@@ -637,12 +652,6 @@ salidas diferentes.</p>
 </span><span class="hll">            <span class="nx">commonjs</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
 </span><span class="hll">            <span class="nx">commonjs2</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
 </span><span class="hll">            <span class="nx">amd</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span>
-</span><span class="hll">         <span class="p">},</span>
-</span><span class="hll">         <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">root</span><span class="o">:</span> <span class="s2">&quot;compatibility&quot;</span><span class="p">,</span>
-</span><span class="hll">            <span class="nx">commonjs</span><span class="o">:</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="p">,</span>
-</span><span class="hll">            <span class="nx">commonjs2</span><span class="o">:</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="p">,</span>
-</span><span class="hll">            <span class="nx">amd</span><span class="o">:</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span><span class="p">,</span>
 </span><span class="hll">         <span class="p">}</span>
 </span><span class="hll">      <span class="p">}</span>
 </span><span class="hll">   <span class="p">}</span>
@@ -652,12 +661,7 @@ salidas diferentes.</p>
 <span class="c1">// (los mapeos de código fuente en fichero aparte)</span>
 <span class="kd">function</span> <span class="nx">confDev</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="p">{</span>
-      <span class="nx">devtool</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-      <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
-         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">SourceMapDevToolPlugin</span><span class="p">({</span>
-            <span class="nx">filename</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">filename</span><span class="si">}</span><span class="sb">.map`</span>
-         <span class="p">})</span>
-      <span class="p">],</span>
+      <span class="nx">devtool</span><span class="o">:</span> <span class="s2">&quot;source-map&quot;</span><span class="p">,</span>
 <span class="hll">      <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
 </span><span class="hll">         <span class="nx">contentBase</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&quot;examples&quot;</span><span class="p">),</span>
 </span><span class="hll">         <span class="nx">publicPath</span><span class="o">:</span> <span class="s2">&quot;/dist/&quot;</span><span class="p">,</span>
@@ -705,7 +709,8 @@ salidas diferentes.</p>
 <span class="hll">      <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
 </span><span class="hll">         <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">,</span>
 </span><span class="hll">         <span class="nx">libraryTarget</span><span class="o">:</span> <span class="s2">&quot;umd&quot;</span><span class="p">,</span>
-</span><span class="hll">         <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="hll">         <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class="hll">         <span class="nx">library</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;Icon&quot;</span><span class="p">],</span>
 </span><span class="hll">         <span class="nx">libraryExport</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
 </span><span class="hll">      <span class="p">},</span>
 </span>      <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
@@ -733,8 +738,14 @@ salidas diferentes.</p>
       <span class="p">},</span>
       <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
          <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProvidePlugin</span><span class="p">({</span>
-            <span class="nx">L</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;compatibility&quot;</span><span class="o">:</span> <span class="s2">&quot;leaflet-defaulticon-compatibility&quot;</span>
+            <span class="nx">L</span><span class="o">:</span> <span class="s2">&quot;leaflet&quot;</span>
+         <span class="p">}),</span>
+         <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">DefinePlugin</span><span class="p">({</span>
+            <span class="s2">&quot;process.env&quot;</span><span class="o">:</span> <span class="p">{</span>
+               <span class="nx">output</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">output</span><span class="p">),</span>
+               <span class="nx">version</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">pack</span><span class="p">.</span><span class="nx">version</span><span class="p">),</span>
+               <span class="nx">mode</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">mode</span><span class="p">)</span>
+            <span class="p">}</span>
          <span class="p">}),</span>
          <span class="k">new</span> <span class="nx">MiniCssExtractPlugin</span><span class="p">({</span>
             <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;[name].bundle.css&quot;</span><span class="p">,</span>
@@ -744,40 +755,74 @@ salidas diferentes.</p>
    <span class="p">}</span>
 
    <span class="k">return</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">smart</span><span class="p">(</span>
+      <span class="nx">env</span><span class="p">.</span><span class="nx">output</span> <span class="o">===</span> <span class="s2">&quot;bundle&quot;</span><span class="o">?</span><span class="nx">confBundle</span><span class="p">()</span><span class="o">:</span><span class="nx">confNoDeps</span><span class="p">(),</span>
       <span class="nx">common</span><span class="p">,</span>
       <span class="nx">env</span><span class="p">.</span><span class="nx">mode</span> <span class="o">===</span> <span class="s2">&quot;production&quot;</span><span class="o">?</span><span class="nx">confBabel</span><span class="p">(</span><span class="nx">env</span><span class="p">)</span><span class="o">:</span><span class="nx">confDev</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span>
       <span class="nx">env</span><span class="p">.</span><span class="nx">output</span> <span class="o">===</span> <span class="s2">&quot;src&quot;</span><span class="o">?</span><span class="p">{</span><span class="nx">optimization</span><span class="o">:</span> <span class="p">{</span><span class="nx">minimize</span><span class="o">:</span> <span class="kc">false</span><span class="p">}}</span><span class="o">:</span><span class="kc">null</span><span class="p">,</span>
-      <span class="nx">env</span><span class="p">.</span><span class="nx">output</span> <span class="o">===</span> <span class="s2">&quot;bundle&quot;</span><span class="o">?</span><span class="nx">confBundle</span><span class="p">()</span><span class="o">:</span><span class="nx">confNoDeps</span><span class="p">(),</span>
    <span class="p">)</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Aunque más compleja, la configuración no presenta demasiadas diferencias:</p>
-<ul class="simple">
-<li>Las antes inexistentes funciones <code class="docutils literal notranslate"><span class="pre">confBundle()</span></code> y <code class="docutils literal notranslate"><span class="pre">confNoDeps()</span></code>
+<ul>
+<li><p class="first">Las antes inexistentes funciones <code class="docutils literal notranslate"><span class="pre">confBundle()</span></code> y <code class="docutils literal notranslate"><span class="pre">confNoDeps()</span></code>
 responden a la necesidsad de crear sabores con o sin dependencias. La
 primera función añade el <abbr title="Cascading Style Sheets">CSS</abbr> externo (que antes se importaron
 directamente en el código <em>Javascript</em>), mientras que la segunda usa
 <a class="reference internal" href="02.part.html#webpack-externals"><span class="std std-ref">externals</span></a> para referir las librerías de terceros
-no incluidas.</li>
-<li>Configuramos de distinto modo el servidor web de depuración para que se
+no incluidas.</p>
+</li>
+<li><p class="first">Configuramos de distinto modo el servidor web de depuración para que se
 sirvan en <code class="file docutils literal notranslate"><span class="pre">/</span></code> los ficheros contenidos en <code class="file docutils literal notranslate"><span class="pre">examples</span></code>, los
 ficheros generados se compartan en <code class="file docutils literal notranslate"><span class="pre">dist</span></code>. Esta argucia permite que
 los enlaces al <abbr title="Cascading Style Sheets">CSS</abbr> y al <em>Javascript</em> funcionen tanto al depurar como al
 visitar el <abbr title="HyperText Markup Language">HTML</abbr> en cualquier otro momento. Además, se pide que se vigilen
 los cambios en <code class="file docutils literal notranslate"><span class="pre">examples</span></code> a fin de que durante la depuración se
-puedan ahcer cambios en los propios ficheros que componen el ejemplo y
-veamos el efecto reflejado inmediatamente.</li>
-<li>Nos preocupamos de cómo sea la salida (<em>output</em>), aunque el <em>plugin</em> altera
-un objeto global (<strong>L</strong> de <a class="reference external" href="https://leafletjs.com">Leaflet</a>) queremos que pueda usarse como
-componenente al desarrollar una aplicación (como la del primer ejemplo).
-Por ello, hemos generado un módulo <abbr title="Universal Module Definition">UMD</abbr>.</li>
+puedan hacer cambios en los propios ficheros que componen el ejemplo y
+veamos el efecto reflejado inmediatamente.</p>
+</li>
+<li><p class="first">Como queremos usar el plugin tanto como componente para <a class="reference external" href="https://nodejs.org/">NodeJS</a> como para
+carga desde un navegador generamos un módulo <abbr title="Universal Module Definition">UMD</abbr>. Lo exportado, si se
+carga en un navegador, estará disponible en <code class="code docutils literal notranslate"><span class="pre">L.icon</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Obsérvese que en el código manipulamos directamente el objeto
+<code class="code docutils literal notranslate"><span class="pre">L</span></code>. Por esa razón, funcionaría de igual forma que no exportáramos
+nada.</p>
+</div>
+</li>
 </ul>
 </li>
 </ol>
 </div>
 <div class="section" id="id4">
 <h3>4.3.2.3. Generación<a class="headerlink" href="#id4" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Se obtienen cuatro resultados diferentes:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm run build
+<span class="gp">$</span> npm run build:src
+<span class="gp">$</span> npm run build:bundle
+<span class="gp">$</span> npm run build:debug
+</pre></div>
+</div>
+<p>Además del resultado que nos sirve para ir depurando:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm run debug
+</pre></div>
+</div>
+</li>
+<li><p class="first">Por último, se remata y publica el repositorio:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> vim README.rst
+<span class="gp">$</span> git add --all .
+<span class="gp">$</span> git commit -m <span class="s2">&quot;Primera implementación&quot;</span>
+
+<span class="gp">$</span> git remote add origin https://github.com/sio2sio2/leaflet.iconzoom.git
+<span class="gp">$</span> git push -u origin master
+</pre></div>
+</div>
+<p>Finalmente, habría que hacer que la rama master fuera visitable</p>
+</li>
+</ol>
+<p>El resultado está publicado en <a class="reference external" href="https://github.com/sio2sio2/leaflet.iconzoom/examples">su repositorio correspondiente</a>.</p>
 <p class="rubric">Notas al pie</p>
 <table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>

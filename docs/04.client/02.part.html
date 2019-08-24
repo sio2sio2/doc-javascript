@@ -133,14 +133,19 @@ sea, nada.</p>
 <h3>4.2.2.1. Sistema de módulos<a class="headerlink" href="#sistema-de-modulos" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Como se verá en los <a class="reference internal" href="03.ejemplos.html#webpack-ejemplos"><span class="std std-ref">ejemplos posteriores</span></a>, lo habitual
 es que el código requiera cargar módulos propios o ajenos. <strong class="program">webpack</strong>
-permite que se usa tanto el sistema <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> como el <em>ES2015</em>. Un buen criterio
-es:</p>
-<ul class="simple">
-<li>Usar <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> en el fichero de configuración de <strong class="program">webpack</strong>.</li>
-<li>Usar <em>ES2015</em> dentro del código de la propia aplicación, ya que es el estándar
-aprobado y bajo determinadas circunstancias (como no importar aplicaciones de
-terceros<a class="footnote-reference" href="#id10" id="id2">[2]</a> dentro del propio código), genera un código directamente usable
-en navegadores modernos.</li>
+permite que se usa tanto el sistema <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> como el <em>ES2015</em>. Al respecto:</p>
+<ul>
+<li><p class="first">Use <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> en el fichero de configuración de <strong class="program">webpack</strong>, ya que es
+el que soporta nativamente <a class="reference external" href="https://nodejs.org/">NodeJS</a>.</p>
+</li>
+<li><p class="first">En el código de la aplicación puede usarse tan <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> como <em>ES2015</em>. Usar
+el segundo, tiene la ventaja de que al ser el estándar aprobado, bajo
+determinadas circunstancias (como no importar aplicaciones de terceros<a class="footnote-reference" href="#id10" id="id2">[2]</a>
+dentro del propio código), se genera un código directamente usable en
+navegadores modernos.</p>
+<p>En cualquier caso, nuestra intención no es escribir ficheros directamente
+ejecutables por el navegador, así que esta ventaja es muy secundaria.</p>
+</li>
 </ul>
 </div>
 <div class="section" id="importacion-desde-la-configuracion">
@@ -149,6 +154,7 @@ en navegadores modernos.</li>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">L</span> <span class="nx">from</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span><span class="p">;</span>  <span class="c1">// El CSS de Leaflet</span>
 <span class="kr">import</span> <span class="nx">$</span> <span class="nx">from</span> <span class="s2">&quot;jquery&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">logo</span> <span class="nx">from</span> <span class="s2">&quot;images/logo.png&quot;</span><span class="p">;</span>  <span class="c1">// Importación de una imagen.</span>
 </pre></div>
 </div>
 <p>Usando el estilo <em>ES2015</em>; también valdría <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>. En principio, sea cual sea
@@ -199,25 +205,40 @@ manera:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">a</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;./mimodulo.js&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span> <span class="p">]</span>
 </pre></div>
 </div>
+<p>suponiendo que también lo hayamos importado con el nombre «<em>a</em>» en el código,
+porque podríamos haber usado otro.</p>
 </li>
 <li><p class="first">El <strong>resto</strong> de importaciones podemos llevarlas a cabo añadiéndolas al punto
 de entrada:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">entry</span><span class="o">:</span> <span class="p">{</span>
    <span class="s2">&quot;leaflet.mipluginmolon&quot;</span><span class="o">:</span> <span class="p">[</span>
-       <span class="s2">&quot;./src/js/index.js&quot;</span><span class="p">,</span>
-       <span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span>
+       <span class="s2">&quot;leaflet/dist/leaflet.css&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;./src/js/index.js&quot;</span>
    <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">El inconveniente de hacer las importaciones a través de la
-configuración radica en que si se usa nuestro desarrollo como componente
-para una tercera aplicación, las dependencias no se encuentran dentro
-del propio código y esto puede hacer un poco más complicado su uso.</p>
+<div class="admonition warning" id="webpack-css-no-externals">
+<p class="first admonition-title">Advertencia</p>
+<p>No hay ningún problema en usar el plugin <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a>, en resultados
+en que no incluimos dependencias (véase el próximo epígrafe), ya que los
+propios ficheros contendrán la referencia a las dependencias, y si los usamos
+como componentes en el desarollo posterior de una aplicación web, las
+dependencias se cargarán. En cambio, la estrategia propuesta de cambiar el punto
+de entrada para incorporar <abbr title="Cascading Style Sheets">CSS</abbr> en los resultados con dependencias, hace que
+en los resultados sin dependencias, no haya rastro de la referencia al <abbr title="Cascading Style Sheets">CSS</abbr>
+por lo que en el desarrollo posterior de una aplicación web habría que volver
+a hacer referencia a este <abbr title="Cascading Style Sheets">CSS</abbr>. Dicho con un ejemplos, si en el desarrollo
+de la aplicación web hacemos:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;leaflet.mipluginmolon/dist/leaflet.mipluginmolon.css&quot;</span>
+<span class="kr">import</span> <span class="s2">&quot;leaflet.mipluginmolon/dist/leaflet.mipluginmolon.js&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p class="last">suponiendo que ese <abbr title="Cascading Style Sheets">CSS</abbr> y ese <em>Javascript</em> no incluyen código de <a class="reference external" href="https://leafletjs.com">Leaflet</a>,
+lograremos la carga del código <em>Javascript</em>  de <a class="reference external" href="https://leafletjs.com">Leaflet</a>, pero no la carga
+de su <abbr title="Cascading Style Sheets">CSS</abbr>.</p>
 </div>
 </div>
 <div class="section" id="exclusion-de-dependecias">
@@ -312,7 +333,7 @@ elocuentemente indica su nombre, no hace absolutamente nada con el fichero
 que trata.</p>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p class="last">Tenga presente que si no tenemos ficheros propios (<abbr title="Cascading Style Sheets">CSS</abbr>, por
+<p>Tenga presente que si no tenemos ficheros propios (<abbr title="Cascading Style Sheets">CSS</abbr>, por
 ejemplo) es bastante sencillo hacer una configuración condicional para
 que en el sabor <em>bundle</em> se traten los ficheros con el cargador adecuado
 y en los sabores sin dependencias con <strong class="program">ignore-loader</strong>. Sin
@@ -320,6 +341,7 @@ embargo, si nuestra librería incorpora ficheros propios entonces en los
 sabores sin dependencias habrá que distintguir si el fichero procede de
 <code class="file docutils literal notranslate"><span class="pre">node_modules</span></code>, en cuyo caso habrá que ignorarlos, o de nuestro
 código, en cuyo caso habrá que tratarlo.</p>
+<p class="last">Tenga presente, no obstante, <a class="reference internal" href="#webpack-css-no-externals"><span class="std std-ref">la advertencia antes hecha</span></a>.</p>
 </div>
 </li>
 </ul>
@@ -362,88 +384,112 @@ salida es <code class="file docutils literal notranslate"><span class="pre">dist
 </div>
 <div class="section" id="formato">
 <span id="webpack-output-formato"></span><h3>4.2.3.2. Formato<a class="headerlink" href="#formato" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Un segundo aspecto muy importante es el formato de salida del módulo, porque es
-indispensable que el código sea accesible, si se ejecuta en un navegador.
-Podemos distinguir tres casos:</p>
+<p>Un segundo aspecto muy importante es la forma en la que el fichero resultante
+exporta. Hay
+<a class="reference external" href="porquee://webpack.js.org/guides/author-libraries/">diversos formatos</a>, pero
+podemos resumir en dos casos nuestras necesidades:</p>
 <ul>
-<li><p class="first">Si nuestro código no exporta nada y no importa ninguna librería porque
-si usa de terceros, está incluida en el código <em>Javascript</em> resultante<a class="footnote-reference" href="#id12" id="id4">[4]</a>,
-no necesitamos hacer ninguna definición especial sobre el formato.</p>
+<li><p class="first">Si generamos una aplicación final que contiene todos el código necesario,
+no tenemos por qué preocuparnos por la salida, ya que el código <em>Javascript</em>
+no tiene que relacionarse con ningún otro. Por tanto:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span>  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+     <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
+  <span class="p">}</span>
+
+<span class="nx">es</span> <span class="nx">más</span> <span class="nx">que</span> <span class="nx">suficiente</span><span class="p">.</span>
+</pre></div>
+</div>
 </li>
-<li><p class="first">Si nuestro código no necesita exportar nada, pero importa alguna librería
-externa a la que se acceda a través de una variable global<a class="footnote-reference" href="#id13" id="id5">[5]</a>, entonces
-es necesario que tenga <a class="reference internal" href="../03.node/03.modulos.html#mod-umd"><span class="std std-ref">formato UMD</span></a>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span> <span class="o">:</span> <span class="p">{</span>
-   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
+<li><p class="first">Si generamos una librería y no una aplicación final, la solución universal
+es generar como fichero resultante <a class="reference internal" href="../03.node/03.modulos.html#mod-umd"><span class="std std-ref">un módulo UMD</span></a>, ya que de
+esta manera la librería podrá tanto cargarse directamente en el navegador como
+usarse de componente en un desarrollo con <a class="reference external" href="https://nodejs.org/">NodeJS</a>.</p>
+<p>Para explicar las posibilidades de esta configuración, lo más apropiado es
+partir de un código fuente de ejemplo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">PI</span> <span class="o">=</span> <span class="s2">&quot;3.141592&quot;</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">area</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="p">{</span><span class="nx">area</span><span class="p">,</span> <span class="nx">PI</span><span class="p">};</span>
+</pre></div>
+</div>
+<p>Y empezar a variar la forma en que se exporta. Empecemos así<a class="footnote-reference" href="#id12" id="id4">[4]</a>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;[name].bundle.js&quot;</span><span class="p">,</span>
    <span class="nx">libraryTarget</span><span class="o">:</span> <span class="s2">&quot;umd&quot;</span><span class="p">,</span>
-   <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">false</span>
+   <span class="nx">globalObject</span><span class="o">:</span> <span class="s2">&quot;this&quot;</span><span class="p">,</span>
+   <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Ahora bien, si contribuye definiendo alguna función o similar, aunque no
-necesite importar porque la integre dentro de un objeto global ya preexistente
-(p.e. desarrollamos un <em>plugin</em> de <a class="reference external" href="https://leafletjs.com">Leaflet</a> que añade al objeto <code class="code docutils literal notranslate"><span class="pre">L</span></code> la
-clase <code class="code docutils literal notranslate"><span class="pre">L.MiPlugin</span></code>), es conveniente que el <em>plugin</em> exporte esa
-función:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// ...</span>
-<span class="kr">export</span> <span class="k">default</span> <span class="nx">L</span><span class="p">.</span><span class="nx">MiPlugin</span> <span class="o">=</span> <span class="nx">MiPlugin</span>
+<p>Al configurar así, podemos exportar como <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">X</span> <span class="o">=</span> <span class="nx">requiere</span><span class="p">(</span><span class="s2">&quot;./index.bundle.js&quot;</span><span class="p">);</span>
+<span class="nx">X</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>  <span class="c1">// 3.141592</span>
 </pre></div>
 </div>
-<p>y que declaremos así la salida:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span> <span class="o">:</span> <span class="p">{</span>
-   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
-   <span class="nx">libraryTarget</span><span class="o">:</span> <span class="s2">&quot;umd&quot;</span><span class="p">,</span>
-   <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-<span class="hll">   <span class="nx">libraryExport</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
-</span><span class="p">}</span>
+<p>o como <em>ES2015</em>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">X</span> <span class="nx">from</span> <span class="s2">&quot;./index.bundle.js&quot;</span><span class="p">;</span>
+<span class="nx">X</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>  <span class="c1">// 3.141592</span>
 </pre></div>
 </div>
-<p>que significa que el código exportará directamente lo exportado como
-<em>default</em>.</p>
-</li>
-<li><p class="first">Si nuestro código necesita exportar al ambiente global, entonces debemos hacer
-también un módulo <abbr title="Universal Module Definition">UMD</abbr>, pero asignando un nombre a lo exportado:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span> <span class="o">:</span> <span class="p">{</span>
-   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
+<p>pero el fichero no exportará nada al usarse directamente en el navegador.
+También es posible exponer no todo lo exportado, sino una parte:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;[name].bundle.js&quot;</span><span class="p">,</span>
    <span class="nx">libraryTarget</span><span class="o">:</span> <span class="s2">&quot;umd&quot;</span><span class="p">,</span>
+   <span class="nx">globalObject</span><span class="o">:</span> <span class="s2">&quot;this&quot;</span><span class="p">,</span>
+   <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+   <span class="nx">libraryExport</span><span class="o">:</span> <span class="s2">&quot;PI&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Al hacer esto el resputado de la exportación será exclusivamente <code class="code docutils literal notranslate"><span class="pre">PI</span></code>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">X</span> <span class="nx">from</span> <span class="s2">&quot;./index.bundle.js&quot;</span><span class="p">;</span>
+<span class="nx">X</span><span class="p">;</span>  <span class="c1">// 3.141592 (o sea, PI)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Si se pretende exportar la exportación predeterminada (<em>default</em>),
+basta con darle el valor <em>default</em>:</p>
+<div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">libraryExport</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Para que el módulo sea usable directamente en un navegador, es necesario
+incluir <em>library</em>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;[name].bundle.js&quot;</span><span class="p">,</span>
+   <span class="nx">libraryTarget</span><span class="o">:</span> <span class="s2">&quot;umd&quot;</span><span class="p">,</span>
+   <span class="nx">globalObject</span><span class="o">:</span> <span class="s2">&quot;this&quot;</span><span class="p">,</span>
    <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
    <span class="nx">library</span><span class="o">:</span> <span class="s2">&quot;X&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Al hacer esto, aquello que exporte nuestro código estará disponible a través
-de la variable global <em>X</em>. Por ejemplo, si nuestro desarrollo es este:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">saludo</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Hola, soy tu aplicación&quot;</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kr">const</span> <span class="nx">version</span> <span class="o">=</span> <span class="s2">&quot;0.1&quot;</span><span class="p">,</span>
-      <span class="nx">predeterminado</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-
-<span class="kr">export</span> <span class="p">{</span><span class="nx">saludo</span><span class="p">,</span> <span class="nx">version</span><span class="p">};</span>
-<span class="kr">export</span> <span class="k">default</span> <span class="nx">predeterminado</span><span class="p">;</span>
+<p>Al añadir el atributo, declaramos que en un navegador lo exportado por el
+código esté disponible a través de la variable <em>X</em>. En consecuencia si
+cargamos desde el <abbr title="HyperText Markup Language">HTML</abbr> así:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;index.bundle.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </pre></div>
 </div>
-<p>Al cargar el <em>script</em> resultante en un navegador:</p>
-<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;dist/codigo.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</pre></div>
-</div>
-<p>Dispondremos de <code class="code docutils literal notranslate"><span class="pre">X.version</span></code>, <code class="code docutils literal notranslate"><span class="pre">X.saludo()</span></code> y <code class="code docutils literal notranslate"><span class="pre">X.default</span></code>.
-Incluso aunque sólo se exporte una entidad y está se defina como
-predeterminada, tendremos que usar <code class="code docutils literal notranslate"><span class="pre">X.default</span></code>. Si se quiere que
-una de las entidades exportadas esté accesible directamente a través de
-<code class="code docutils literal notranslate"><span class="pre">X</span></code>, entonces puede añadirse <em>libraryExport</em>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span> <span class="o">:</span> <span class="p">{</span>
-   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
+<p>Tendremos disponible <code class="code docutils literal notranslate"><span class="pre">X.PI</span></code> y <code class="code docutils literal notranslate"><span class="pre">X.area</span></code>. Por su parte, usando
+<a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a> y <em>ES2015</em> la importación se hará como ya se ha visto. También es
+posible exportar, no a una variable global, sino al atributo de una variable
+global, en principio, preexistente:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;[name].bundle.js&quot;</span><span class="p">,</span>
    <span class="nx">libraryTarget</span><span class="o">:</span> <span class="s2">&quot;umd&quot;</span><span class="p">,</span>
+   <span class="nx">globalObject</span><span class="o">:</span> <span class="s2">&quot;this&quot;</span><span class="p">,</span>
    <span class="nx">umdNamedDefine</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-   <span class="nx">library</span><span class="o">:</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span>
-   <span class="nx">libraryExport</span><span class="o">:</span> <span class="s2">&quot;default&quot;</span>
+   <span class="nx">library</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>En este caso <code class="code docutils literal notranslate"><span class="pre">X</span></code> devolverá directamente <code class="code docutils literal notranslate"><span class="pre">true</span></code> y el resto
-de exportaciones no está disponible.</p>
+<p>De esta manera la exportación estará disponible en <code class="code docutils literal notranslate"><span class="pre">L.X</span></code>, donde se
+supone que <code class="code docutils literal notranslate"><span class="pre">L</span></code> es una variable global.</p>
 </li>
 </ul>
 </div>
@@ -613,9 +659,29 @@ esta:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><strong class="program">css-loader</strong> procesa el <abbr title="Cascading Style Sheets">CSS</abbr> que se enlaza con la clausula
-<code class="code docutils literal notranslate"><span class="pre">import</span></code> o se incluye como punto de entrada y genera un módulo de
-<em>Javascript</em>. Como esta salida es aún inútil, se presentan varias alternativas:</p>
+<p><strong class="program">css-loader</strong> procesa el <abbr title="Cascading Style Sheets">CSS</abbr> que importa desde el código <em>Javascript</em>
+de <em>Javascript</em> o se incluye como punto de entrada. Si se usa este cargador,
+hay, sin embargo, otra posibilidad: también procesa los ficheros <abbr title="Cascading Style Sheets">CSS</abbr> que se
+refieren a través de la cláusula <code class="code docutils literal notranslate"><span class="pre">&#64;import</span></code>:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">@</span><span class="k">import</span> <span class="s2">&quot;barralateral.css&quot;</span><span class="p">;</span>
+
+<span class="nt">h1</span> <span class="p">{</span> <span class="k">text-align</span><span class="p">:</span> <span class="kc">center</span><span class="p">;</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p id="webpack-import">En este caso, las rutas siguen el criterio general y no de la importación en
+código <em>Javascript</em> por lo que esa cláusula cargara el fichero que se
+encuentre en el mismo directorio que el fichero que se procesa. Para
+incoporar <abbr title="Cascading Style Sheets">CSS</abbr> de terceros, <strong class="program">webpack</strong> incorpora la sintaxis con
+virgulilla (<code class="code docutils literal notranslate"><span class="pre">~</span></code>). por ejemplo:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">@</span><span class="k">import</span> <span class="s2">&quot;~leaflet/dist/leaflet.css&quot;</span><span class="p">;</span>
+
+<span class="nt">h1</span> <span class="p">{</span> <span class="k">text-align</span><span class="p">:</span> <span class="kc">center</span><span class="p">;</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>este código importaría el <abbr title="Cascading Style Sheets">CSS</abbr> de <a class="reference external" href="https://leafletjs.com">Leaflet</a>.</p>
+<p>Sea como sea, <strong class="program">css-loader</strong> genera un módulo de <em>Javascript</em>, cuya
+salida es inútil, a menos que se siga procesando. Para ello, se presentan
+varias alternativas:</p>
 <dl class="docutils">
 <dt><strong class="program">MiniCssExtractPlugin.loader</strong></dt>
 <dd>Toma todos los módulos y los compone en un único fichero <abbr title="Cascading Style Sheets">CSS</abbr> que se coloca
@@ -731,7 +797,7 @@ que realice la tranformación a <abbr title="Cascading Style Sheets">CSS</abbr>.
 <span class="gp">$</span> npm install --save-dev less-loader node-less
 </pre></div>
 </div>
-<p>Si optamos por <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>, la configuración podría ser esta:</p>
+<p>Si optamos por <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>, la configuración podría ser esta<a class="footnote-reference" href="#id13" id="id5">[5]</a>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
    <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.(css|sass)$/i</span><span class="p">,</span>
    <span class="nx">use</span><span class="o">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
@@ -764,8 +830,8 @@ como punto de entrada. Se procesan automáticamente:</p>
 <li>Si se usa el plugin <a class="reference external" href="https://github.com/jantimon/html-webpack-plugin">HtmlWebPackPlugin</a>, las imágenes referidas en los
 atributos <em>src</em> de las etiquetas <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img">img</a>.</li>
 <li>Si se usa <strong class="program">css-loader</strong> para procesar el código <abbr title="Cascading Style Sheets">CSS</abbr>, las imágenes
-incluidas en sentencias <code class="code docutils literal notranslate"><span class="pre">url()</span></code> y las hojas importadas a través de
-<code class="code docutils literal notranslate"><span class="pre">import</span></code>.</li>
+incluidas en sentencias <code class="code docutils literal notranslate"><span class="pre">url()</span></code> y las hojas importadas <a class="reference internal" href="#webpack-import"><span class="std std-ref">a través de
+&#64;import</span></a>.</li>
 </ul>
 <p>En cambio, si referimos directamente un fichero dentro del código <em>Javascript</em>
 como en el ejemplo:</p>
@@ -1319,51 +1385,39 @@ plugin <a class="reference external" href="https://webpack.js.org/plugins/provid
 <table class="docutils footnote" frame="void" id="id11" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>El uso de <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> para cargar librerías de terceros puede tener también
-otro efecto, si se ha usado la sintaxis <em>ES2015</em> y se importan sólo ficheros
-<em>Javascript</em> (otros tipos pueden añadirse al desarrollo incluyéndolos en el
-punto de entrada): usando un atributo <code class="code docutils literal notranslate"><span class="pre">type=&quot;module&quot;</span></code> en un navegador
-moderno, el código fuente será directamente utilizable.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id12" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>Y aquí rige para las rutas <a class="reference internal" href="../03.node/03.modulos.html#webpack-import-path"><span class="std std-ref">la misma regla que para las
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Y aquí rige para las rutas <a class="reference internal" href="../03.node/03.modulos.html#webpack-import-path"><span class="std std-ref">la misma regla que para las
 importaciones dentro del código</span></a>. Por tanto, <em>leaflet</em>
 a secas implica que estamos cargando una librería instalada local o
 globalmente y que, en realidad, se importa el fichero que se indique como
 principal en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>.</td></tr>
 </tbody>
 </table>
+<table class="docutils footnote" frame="void" id="id12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td><p class="first">La línea del código:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">globalObject</span><span class="o">:</span> <span class="s2">&quot;this&quot;</span>
+</pre></div>
+</div>
+<p class="last">define el objeto global que, por defecto, es <em>windows</em> y, por tanto, hace la
+aplicación exclusivamente ejecutable en navegadores. Esa es nuestra
+intención, así que podríamos ahorrarnos la línea; pero al fijarlo a <em>this</em>,
+el código se hace ejecutable tanto en un navegador como en <a class="reference external" href="https://nodejs.org/">NodeJS</a>, con lo
+que podemos hacer pruebas en la propia consola.</p>
+</td></tr>
+</tbody>
+</table>
 <table class="docutils footnote" frame="void" id="id13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>Hasta el momento, sólo sabemos crear código <em>Javascript</em> que incluye
-en el propio código todas las dependencias, pero ya veremos que hay forma
-de no hacerlo.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>También podemos usar <strong class="program">postcss-loader</strong>, entre <strong class="program">css-loader</strong>
+y <strong class="program">sass-loader</strong>, pero importa poco a efectos de esta discusión.</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id14" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id6">[6]</a></td><td>Sería el caso, por ejemplo, de que crearamos un desarrollo que usa
-<a class="reference external" href="https://jquery.com/">JQuery</a> pero configurarámos <strong class="program">webpack</strong> para que esa librería externa
-no se incluyera dentro del código resultante, lo cual <a class="reference internal" href="03.ejemplos.html#webpack-ej-plugin"><span class="std std-ref">veremos más
-adeltante que es posible</span></a>.`</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id15" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id7">[7]</a></td><td>También podemos usar <strong class="program">postcss-loader</strong>, entre <strong class="program">css-loader</strong>
-y <strong class="program">sass-loader</strong>, pero importa poco a efectos de esta discusión.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id16" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id8">[8]</a></td><td><em>Transpilar</em> (y transpilación y transpilador) es un término
+<tr><td class="label"><a class="fn-backref" href="#id6">[6]</a></td><td><em>Transpilar</em> (y transpilación y transpilador) es un término
 construido por analogía con el verbo <em>compilar</em>. De un modo análogo al que
 <em class="dfn">compilar</em> sea convertir código de programación en código máquina,
 <em class="dfn">transpilar</em> es traducir còdigo de programación a una versión distinta,
@@ -1372,10 +1426,10 @@ más antiguas del intérprete. Traducir de <a class="reference external" href="h
 <em>Javascript</em> también es <em>transpilar</em>.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id17" rules="none">
+<table class="docutils footnote" frame="void" id="id15" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[9]</td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
+<tr><td class="label"><a class="fn-backref" href="#id7">[7]</a></td><td><p class="first">En los sistemas <em>linux</em>, el navegador predefinido es el que se obtiene
 así:</p>
 <div class="last highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> xdg-settings get default-web-browser
 <span class="go">firefox-esr.desktop</span>
@@ -1384,10 +1438,10 @@ así:</p>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id18" rules="none">
+<table class="docutils footnote" frame="void" id="id16" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[10]</td><td><p class="first">Las variables de entorno que se pasan de forma estándar (véase <em>NODE_ENV</em>
+<tr><td class="label"><a class="fn-backref" href="#id8">[8]</a></td><td><p class="first">Las variables de entorno que se pasan de forma estándar (véase <em>NODE_ENV</em>
 cuando se trataba <a class="reference internal" href="#babel"><span class="std std-ref">babel</span></a>) se encuentran disponibles en el
 script a través de <code class="code docutils literal notranslate"><span class="pre">process.env</span></code>:</p>
 <div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">)</span>

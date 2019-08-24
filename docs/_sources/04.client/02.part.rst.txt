@@ -102,14 +102,18 @@ Sistema de módulos
 ------------------
 Como se verá en los :ref:`ejemplos posteriores <webpack-ejemplos>`, lo habitual
 es que el código requiera cargar módulos propios o ajenos. :program:`webpack`
-permite que se usa tanto el sistema CommonJS_ como el *ES2015*. Un buen criterio
-es:
+permite que se usa tanto el sistema CommonJS_ como el *ES2015*. Al respecto:
 
-+ Usar CommonJS_ en el fichero de configuración de :program:`webpack`.
-+ Usar *ES2015* dentro del código de la propia aplicación, ya que es el estándar
-  aprobado y bajo determinadas circunstancias (como no importar aplicaciones de
-  terceros\ [#]_ dentro del propio código), genera un código directamente usable
-  en navegadores modernos.
++ Use CommonJS_ en el fichero de configuración de :program:`webpack`, ya que es
+  el que soporta nativamente NodeJS_.
++ En el código de la aplicación puede usarse tan CommonJS_ como *ES2015*. Usar
+  el segundo, tiene la ventaja de que al ser el estándar aprobado, bajo
+  determinadas circunstancias (como no importar aplicaciones de terceros\ [#]_
+  dentro del propio código), se genera un código directamente usable en
+  navegadores modernos.
+
+  En cualquier caso, nuestra intención no es escribir ficheros directamente
+  ejecutables por el navegador, así que esta ventaja es muy secundaria.
 
 .. _webpack-conf-import:
 
@@ -122,6 +126,7 @@ Ya se ha visto que desde el propio código puede llevarse a cabo la importación
    import L from "leaflet";
    import "leaflet/dist/leaflet.css";  // El CSS de Leaflet
    import $ from "jquery";
+   import logo from "images/logo.png";  // Importación de una imagen.
 
 Usando el estilo *ES2015*; también valdría CommonJS_. En principio, sea cual sea
 la naturaleza de lo importado (código *Javascript*, |CSS|, una imagen, etc)
@@ -180,6 +185,9 @@ el resto.
 
      a: [ "./mimodulo.js", "a" ]
 
+  suponiendo que también lo hayamos importado con el nombre "*a*" en el código,
+  porque podríamos haber usado otro.
+
 * El **resto** de importaciones podemos llevarlas a cabo añadiéndolas al punto
   de entrada:
 
@@ -187,15 +195,32 @@ el resto.
 
      entry: {
         "leaflet.mipluginmolon": [
-            "./src/js/index.js",
-            "leaflet/dist/leaflet.css"
+            "leaflet/dist/leaflet.css",
+            "./src/js/index.js"
         ]
      }
 
-.. note:: El inconveniente de hacer las importaciones a través de la
-   configuración radica en que si se usa nuestro desarrollo como componente
-   para una tercera aplicación, las dependencias no se encuentran dentro
-   del propio código y esto puede hacer un poco más complicado su uso.
+.. _webpack-css-no-externals:
+
+.. warning:: No hay ningún problema en usar el plugin Provide_, en resultados
+   en que no incluimos dependencias (véase el próximo epígrafe), ya que los
+   propios ficheros contendrán la referencia a las dependencias, y si los usamos
+   como componentes en el desarollo posterior de una aplicación web, las
+   dependencias se cargarán. En cambio, la estrategia propuesta de cambiar el punto
+   de entrada para incorporar |CSS| en los resultados con dependencias, hace que
+   en los resultados sin dependencias, no haya rastro de la referencia al |CSS|
+   por lo que en el desarrollo posterior de una aplicación web habría que volver
+   a hacer referencia a este |CSS|. Dicho con un ejemplos, si en el desarrollo
+   de la aplicación web hacemos:
+
+   .. code-block:: js
+
+      import "leaflet.mipluginmolon/dist/leaflet.mipluginmolon.css"
+      import "leaflet.mipluginmolon/dist/leaflet.mipluginmolon.js";
+
+   suponiendo que ese |CSS| y ese *Javascript* no incluyen código de Leaflet_,
+   lograremos la carga del código *Javascript*  de Leaflet_, pero no la carga
+   de su |CSS|.
 
 Exclusión de dependecias
 ------------------------
@@ -305,6 +330,9 @@ entre el código *Javascript* y el resto:
        :file:`node_modules`, en cuyo caso habrá que ignorarlos, o de nuestro
        código, en cuyo caso habrá que tratarlo.
 
+       Tenga presente, no obstante, :ref:`la advertencia antes hecha
+       <webpack-css-no-externals>`.
+
 .. seealso:: En el :ref:`ejemplo de desarrollo de un plugin <webpack-ej-plugin>`
    ponemos en prácticas todas estas técnicas, incluida la nota justamente
    anterior.
@@ -348,103 +376,132 @@ Un primer cambio consiste en alterar el fichero predeterminado:
 
 Formato
 -------
-Un segundo aspecto muy importante es el formato de salida del módulo, porque es
-indispensable que el código sea accesible, si se ejecuta en un navegador.
-Podemos distinguir tres casos:
+Un segundo aspecto muy importante es la forma en la que el fichero resultante
+exporta. Hay
+`diversos formatos <porque e://webpack.js.org/guides/author-libraries/>`_, pero
+podemos resumir en dos casos nuestras necesidades:
 
-- Si nuestro código no exporta nada y no importa ninguna librería porque
-  si usa de terceros, está incluida en el código *Javascript* resultante\ [#]_,
-  no necesitamos hacer ninguna definición especial sobre el formato.
-
-- Si nuestro código no necesita exportar nada, pero importa alguna librería
-  externa a la que se acceda a través de una variable global\ [#]_, entonces
-  es necesario que tenga :ref:`formato UMD <mod-umd>`:
+- Si generamos una aplicación final que contiene todos el código necesario,
+  no tenemos por qué preocuparnos por la salida, ya que el código *Javascript*
+  no tiene que relacionarse con ningún otro. Por tanto:
 
   .. code-block:: js
 
-     output : {
+     output: {
         filename: "js/[name].bundle.js",
-        libraryTarget: "umd",
-        umdNamedDefine: false
      }
- 
-  Ahora bien, si contribuye definiendo alguna función o similar, aunque no
-  necesite importar porque la integre dentro de un objeto global ya preexistente
-  (p.e. desarrollamos un *plugin* de Leaflet_ que añade al objeto :code:`L` la
-  clase :code:`L.MiPlugin`), es conveniente que el *plugin* exporte esa
-  función:
+
+   es más que suficiente.
+
+- Si generamos una librería y no una aplicación final, la solución universal
+  es generar como fichero resultante :ref:`un módulo UMD <mod-umd>`, ya que de
+  esta manera la librería podrá tanto cargarse directamente en el navegador como
+  usarse de componente en un desarrollo con NodeJS_.
+
+  Para explicar las posibilidades de esta configuración, lo más apropiado es
+  partir de un código fuente de ejemplo:
 
   .. code-block:: js
 
-     // ...
-     export default L.MiPlugin = MiPlugin
+     const PI = "3.141592";
 
-  y que declaremos así la salida:
+     function area(r) {
+        return PI*r**2;
+     }
+
+     export {area, PI};
+
+  Y empezar a variar la forma en que se exporta. Empecemos así\ [#]_:
 
   .. code-block:: js
-     :emphasize-lines: 5
 
-     output : {
-        filename: "js/[name].bundle.js",
+     output: {
+        filename: "[name].bundle.js",
         libraryTarget: "umd",
-        umdNamedDefine: false,
+        globalObject: "this",
+        umdNamedDefine: true,
+     }
+  
+  Al configurar así, podemos exportar como CommonJS_:
+
+  .. code-block:: js
+
+     X = requiere("./index.bundle.js");
+     X.PI;  // 3.141592
+
+  o como *ES2015*:
+
+  .. code-block:: js
+
+     import X from "./index.bundle.js";
+     X.PI;  // 3.141592
+
+  pero el fichero no exportará nada al usarse directamente en el navegador.
+  También es posible exponer no todo lo exportado, sino una parte:
+
+  .. code-block:: js
+
+     
+     output: {
+        filename: "[name].bundle.js",
+        libraryTarget: "umd",
+        globalObject: "this",
+        umdNamedDefine: true,
+        libraryExport: "PI"
+     }
+
+  Al hacer esto el resputado de la exportación será exclusivamente :code:`PI`:
+
+  .. code-block:: js
+
+     import X from "./index.bundle.js";
+     X;  // 3.141592 (o sea, PI)
+
+  .. note:: Si se pretende exportar la exportación predeterminada (*default*),
+     basta con darle el valor *default*:
+
+     .. code-block:: js
+
         libraryExport: "default"
-     }
- 
-  que significa que el código exportará directamente lo exportado como
-  *default*.
 
-- Si nuestro código necesita exportar al ambiente global, entonces debemos hacer
-  también un módulo |UMD|, pero asignando un nombre a lo exportado:
+  Para que el módulo sea usable directamente en un navegador, es necesario
+  incluir *library*:
 
   .. code-block:: js
 
-     output : {
-        filename: "js/[name].bundle.js",
+     output: {
+        filename: "[name].bundle.js",
         libraryTarget: "umd",
+        globalObject: "this",
         umdNamedDefine: true,
         library: "X"
      }
-
-  Al hacer esto, aquello que exporte nuestro código estará disponible a través
-  de la variable global *X*. Por ejemplo, si nuestro desarrollo es este:
-
-  .. code-block:: js
-
-     function saludo() {
-         console.log("Hola, soy tu aplicación");
-     }
-
-     const version = "0.1",
-           predeterminado = true;
-
-     export {saludo, version};
-     export default predeterminado;
-
-  Al cargar el *script* resultante en un navegador:
+  
+  Al añadir el atributo, declaramos que en un navegador lo exportado por el
+  código esté disponible a través de la variable *X*. En consecuencia si
+  cargamos desde el |HTML| así:
 
   .. code-block:: html
 
-     <script src="dist/codigo.js"></script>
+     <script src="index.bundle.js"></script>
 
-  Dispondremos de :code:`X.version`, :code:`X.saludo()` y :code:`X.default`.
-  Incluso aunque sólo se exporte una entidad y está se defina como
-  predeterminada, tendremos que usar :code:`X.default`. Si se quiere que
-  una de las entidades exportadas esté accesible directamente a través de
-  :code:`X`, entonces puede añadirse *libraryExport*:
+  Tendremos disponible :code:`X.PI` y :code:`X.area`. Por su parte, usando
+  CommonJS_ y *ES2015* la importación se hará como ya se ha visto. También es
+  posible exportar, no a una variable global, sino al atributo de una variable
+  global, en principio, preexistente:
 
   .. code-block:: js
 
-     output : {
-        filename: "js/[name].bundle.js",
+     output: {
+        filename: "[name].bundle.js",
         libraryTarget: "umd",
+        globalObject: "this",
         umdNamedDefine: true,
-        library: "X",
-        libraryExport: "default"
+        library: ["L", "X"]
      }
-
-  En este caso :code:`X` devolverá directamente :code:`true` y el resto
-  de exportaciones no está disponible.
+  
+  De esta manera la exportación estará disponible en :code:`L.X`, donde se
+  supone que :code:`L` es una variable global.
 
 .. _webpack-process:
 
@@ -635,9 +692,36 @@ esta:
       use: [MiniCssExtractPlugin.loader, "css-loader"]
    }
 
-:program:`css-loader` procesa el |CSS| que se enlaza con la clausula
-:code:`import` o se incluye como punto de entrada y genera un módulo de
-*Javascript*. Como esta salida es aún inútil, se presentan varias alternativas:
+:program:`css-loader` procesa el |CSS| que importa desde el código *Javascript*
+de *Javascript* o se incluye como punto de entrada. Si se usa este cargador,
+hay, sin embargo, otra posibilidad: también procesa los ficheros |CSS| que se
+refieren a través de la cláusula :code:`@import`:
+
+.. code-block:: css
+
+   @import "barralateral.css";
+
+   h1 { text-align: center; }
+
+.. _webpack-@import:
+
+En este caso, las rutas siguen el criterio general y no de la importación en
+código *Javascript* por lo que esa cláusula cargara el fichero que se
+encuentre en el mismo directorio que el fichero que se procesa. Para
+incoporar |CSS| de terceros, :program:`webpack` incorpora la sintaxis con
+virgulilla (:code:`~`). por ejemplo:
+
+.. code-block:: css
+
+   @import "~leaflet/dist/leaflet.css";
+
+   h1 { text-align: center; }
+
+este código importaría el |CSS| de Leaflet_.
+
+Sea como sea, :program:`css-loader` genera un módulo de *Javascript*, cuya
+salida es inútil, a menos que se siga procesando. Para ello, se presentan
+varias alternativas:
 
 :program:`MiniCssExtractPlugin.loader`
    Toma todos los módulos y los compone en un único fichero |CSS| que se coloca
@@ -756,7 +840,7 @@ intervención de :program:`css-loader`:
       $ npm install --save-dev sass-loader node-sass
       $ npm install --save-dev less-loader node-less
 
-   Si optamos por |SASS|, la configuración podría ser esta:
+   Si optamos por |SASS|, la configuración podría ser esta\ [#]_:
 
    .. code-block:: js
 
@@ -791,8 +875,8 @@ como punto de entrada. Se procesan automáticamente:
 - Si se usa el plugin HtmlWebPackPlugin_, las imágenes referidas en los
   atributos *src* de las etiquetas img_.
 - Si se usa :program:`css-loader` para procesar el código |CSS|, las imágenes
-  incluidas en sentencias :code:`url()` y las hojas importadas a través de
-  :code:`import`.
+  incluidas en sentencias :code:`url()` y las hojas importadas :ref:`a través de
+  @import <webpack-@import>`.
 
 En cambio, si referimos directamente un fichero dentro del código *Javascript*
 como en el ejemplo:
@@ -1264,26 +1348,23 @@ que esparábamos.
    localización no es alcanzable por un cliente web. Otra solución es usar el
    plugin Provide_, que se explica a continuación.
 
-.. [#] El uso de Provide_ para cargar librerías de terceros puede tener también
-   otro efecto, si se ha usado la sintaxis *ES2015* y se importan sólo ficheros
-   *Javascript* (otros tipos pueden añadirse al desarrollo incluyéndolos en el
-   punto de entrada): usando un atributo :code:`type="module"` en un navegador
-   moderno, el código fuente será directamente utilizable.
-
 .. [#] Y aquí rige para las rutas :ref:`la misma regla que para las
    importaciones dentro del código <webpack-import-path>`. Por tanto, *leaflet*
    a secas implica que estamos cargando una librería instalada local o
    globalmente y que, en realidad, se importa el fichero que se indique como
    principal en :file:`package.json`.
 
-.. [#] Hasta el momento, sólo sabemos crear código *Javascript* que incluye
-   en el propio código todas las dependencias, pero ya veremos que hay forma
-   de no hacerlo.
+.. [#] La línea del código:
 
-.. [#] Sería el caso, por ejemplo, de que crearamos un desarrollo que usa
-   JQuery_ pero configurarámos :program:`webpack` para que esa librería externa
-   no se incluyera dentro del código resultante, lo cual :ref:`veremos más
-   adeltante que es posible <webpack-ej-plugin>`.`
+   .. code-block:: js
+
+      globalObject: "this"
+
+   define el objeto global que, por defecto, es *windows* y, por tanto, hace la
+   aplicación exclusivamente ejecutable en navegadores. Esa es nuestra
+   intención, así que podríamos ahorrarnos la línea; pero al fijarlo a *this*,
+   el código se hace ejecutable tanto en un navegador como en NodeJS_, con lo
+   que podemos hacer pruebas en la propia consola.
 
 .. [#] También podemos usar :program:`postcss-loader`, entre :program:`css-loader`
    y :program:`sass-loader`, pero importa poco a efectos de esta discusión.
