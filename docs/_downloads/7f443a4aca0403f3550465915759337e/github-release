@@ -1,0 +1,153 @@
+#!/bin/sh
+#
+# Script en Bourne SHell para definir versiones en Github.
+#
+
+URL="https://api.github.com/repos/%s/%s/releases"
+DATA='{
+   "tag_name": $version,
+   "target_commitish": "master",
+   "name": $version,
+   "body": $body,
+   "draft": $draft,
+   "prerelease": $prerelease
+}'
+
+#
+# Ayuda
+#
+help() {
+   echo "$(dirname "$0") [opciones] [body]:
+   Define una versión del software en Github.
+
+Opciones:
+
+  -d. --draft           Indica que la versión se define como borrador (no será
+                        aún) visible para los usuarios o no.
+  -h, --help            Muestra esta ayuda
+  -N, --no-body         Permite definir la version sin adjuntar notas de
+                        lanzamiento.
+  -n, --name NAME       Nombre del software. Si no se proporciona, se intenta
+                        tomar de package.json.
+  -p, --prerelease      Indica que la versión es aún beta.
+  -s, --simulate        Simula la ejecución del propgrama.
+  -t, --token           Token de autenticación.
+  -v, --version V       Define la versión del software. Si no se proporciona
+                        se intenta tomar de package.json.
+"
+}
+
+#
+# Errores
+#
+error() {
+   local EXITCODE=$1
+   shift
+   echo "ERROR: $*" >&2
+   exit "$EXITCODE"
+}
+
+#
+# Obtiene el usuario y el token de Github de la configuración de npmrc
+#
+getGitConf() {
+   local RCFILE=$HOME/.npmrc
+
+   [ -f "$RCFILE" ] || return 1
+
+   sed -r '/git\.user|git.token/!d; s:.*user\s*=\s*(.+):USER=\1:; s:.*token\s*=\s*(.+):TOKEN=\1:' "$RCFILE"
+}
+
+#
+# Obtiene la versión y el nombre del paquete.
+#
+gitNpmConf() {
+   [ -f "package.json" ] || return 1
+
+   sed -r '/^\s+"(name|version)"/!d; s|[^:]*version[^:]*:\s*"([^"]+)".*|VERSION=\1|; s|[^:]*name[^:]*:\s*"([^"]+)".*|NAME=\1|' package.json
+}
+
+
+which jq > /dev/null || error 1 "Instale jq en el sistema"
+
+eval $(getGitConf)
+eval $(gitNpmConf)
+
+DRAFT=false
+PRERELEASE=false
+SIMULATE=
+REQUIRE=1
+
+#
+# Argumentos
+#
+{
+   while [ $# -gt 0 ]; do
+      case "$1" in
+         -d|--draft)
+            DRAFT=true
+            ;;
+         -h|--help)
+            help
+            exit 0
+            ;;
+         -n|--name)
+            [ "${2#-}" != "$2" ] && error 2 "$1: La opción requiere argumento"
+            NAME="$2"
+            shift ;;
+         -N|--no-body)
+            REQUIRE=
+            ;;
+         -p|--prerelease)
+            PRERELEASE=true
+            ;;
+         -s|--simulate)
+            SIMULATE=1
+            ;;
+         -t|--token)
+            [ "${2#-}" != "$2" ] && error 2 "$1: La opción requiere argumento"
+            TOKEN="$2"
+            shift ;;
+         -v|--version)
+            [ "${2#-}" != "$2" ] && error 2 "$1: La opción requiere argumento"
+            VERSION="$2"
+            shift ;;
+         -*) error 2 "$1: Opción desconocida"
+            ;;
+          *)
+             [ -n "$BODY" ] && error 2 "Demasiados argumentos"
+             BODY=$1
+      esac
+      shift
+   done
+
+   [ -z "$VERSION" ] && error 1 "Se desconoce la versión del programa. Pruebe -v"
+   [ -z "$NAME" ] && error 1 "Se desconoce el nombre del programa. Pruebe -n"
+   [ -z "$TOKEN" ] && error 1 "Se desconoce el token de autenticación. Pruebe -t"
+
+   if [ -n "$REQUIRE" ]; then
+      [ -z "$BODY" ] && error 1 "No se han definido notas de lanzamiento"
+      if [ -f "$BODY" ]; then
+         BODY=$(cat "$BODY")
+      else
+         error 1 "$BODY: Fichero inexistente"
+      fi
+   else
+      BODY="Versión v$VERSION"
+   fi
+}
+
+DATA=$(jq -n --arg version "v$VERSION" --arg body "$BODY" --argjson draft "$DRAFT" --argjson prerelease "$PRERELEASE" "$DATA")
+URL=$(printf -- "$URL\n" "$USER" "$NAME")
+
+set -- -qSO - \
+       --header "Authorization: token $TOKEN" \
+       --header "Accept: application/vnd.github.v3+json" \
+       --header "Content-Type: application/json" \
+       --post-data "$DATA" "$URL"
+
+if [ -n "$SIMULATE" ]; then
+   echo wget "$@"
+else
+   wget "$@"
+fi

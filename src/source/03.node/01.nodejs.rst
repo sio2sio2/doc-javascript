@@ -141,14 +141,35 @@ Al utilizar este *script* conseguimos algunas ventajas:
 
       $ chmod 600 ~/-npmrc
 
+* Se se tiene definido en `~/.npmrc`, además del nombre del desarrolador:
+  
+  .. code-block:: ini
+
+     init.license=MIT
+  
+  se creará automáticamente un fichero :file:`LICENSE` con el texto de la
+  `licencia MIT <https://es.wikipedia.org/wiki/Licencia_MIT>_`.
+
 No obstante, aún será indispensable crear los ficheros :file:`README.rst` (o
-:file:`README.md`) y :file:`LICENSE`. Para este último podemos tomar una licencia
-libre como la `licencia MIT <https://es.wikipedia.org/wiki/Licencia_MIT>`_.
+:file:`README.md`) y :file:`LICENSE`, si no se creó automáticamente.
 
 .. seealso:: Échele un ojo al :ref:`primer ejemplo de creación de un proyecto
    para ver cómo subir el proyecto <webpack-ej-plugin>` una vez se haya escrito.
 
-.. todo:: Preparar para crear documentación con sphinx.
+.. note:: Si su intención es mantener un repositorio en Github_, es muy útil
+   automatizar la definición de versiones. Para ello puede utilizar
+   :download:`el script github-release <files/github-release>` y colocarlo en
+   alguín lugar del *PATH* del sistema. :code:`npm init -y` debería haber creado
+   un script *release*:
+
+   .. code-block:: console
+
+      $ npm run release
+
+   que ejecuta el script tomando los datos de versión, etc. de la configuración
+   del paquete. Requiere, eso sí, que creemos antes un fichero en el directorio de
+   trabajo llamado :file:`RELEASE`, que incluya las notas aclaratorias a la
+   versión. Tales notas deben escribirse en formato Markdown_.
 
 .. rubric:: Notas al pie
 
@@ -163,5 +184,6 @@ libre como la `licencia MIT <https://es.wikipedia.org/wiki/Licencia_MIT>`_.
 .. _V8 de Google: https://v8.dev/
 .. _Babel: https://babeljs.io/
 .. _Github: https://github.com
+.. _Markdown: https://daringfireball.net/projects/markdown/
 
 .. |CSS| replace:: :abbr:`CSS (Cascading Style Sheets)`

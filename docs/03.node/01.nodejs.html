@@ -151,8 +151,13 @@ segundo. Para ello, podemos usar (o adaptar) este <a class="reference download i
          <span class="s2">&quot;node_modules&quot;</span><span class="p">,</span>
          <span class="s2">&quot;**.bak&quot;</span><span class="p">,</span>
          <span class="s2">&quot;**.swp&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;package-lock.json&quot;</span>
+         <span class="s2">&quot;package-lock.json&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;RELEASE&quot;</span>
       <span class="p">],</span>
+      <span class="nx">scripts</span> <span class="o">=</span>  <span class="p">{</span>
+         <span class="nx">build</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle --progress&quot;</span><span class="p">,</span>
+         <span class="nx">debug</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --progress&quot;</span>
+      <span class="p">},</span>
       <span class="nx">browserslist</span> <span class="o">=</span> <span class="p">{</span>
          <span class="nx">production</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;cover 95% in ES&quot;</span><span class="p">],</span>
          <span class="nx">oneplus</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;&gt; 1% in ES&quot;</span><span class="p">],</span>
@@ -222,6 +227,9 @@ segundo. Para ello, podemos usar (o adaptar) este <a class="reference download i
       <span class="p">})(),</span>
       <span class="nx">homepage</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">git</span><span class="si">}</span><span class="sb">#readme`</span><span class="p">,</span>
       <span class="nx">bugs</span><span class="o">:</span> <span class="p">{</span><span class="nx">url</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">git</span><span class="si">}</span><span class="sb">/issues`</span><span class="p">},</span>
+      <span class="nx">scripts</span><span class="o">:</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">scripts</span><span class="p">,</span> <span class="p">{</span>
+         <span class="nx">release</span><span class="o">:</span> <span class="s2">&quot;github-release RELEASE&quot;</span>
+      <span class="p">}),</span>
       <span class="nx">create</span><span class="o">:</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// Crea el repositorio remoto de Github</span>
          <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.git.token&quot;</span><span class="p">),</span>
                <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
@@ -285,10 +293,7 @@ segundo. Para ello, podemos usar (o adaptar) este <a class="reference download i
    <span class="nx">author</span><span class="o">:</span> <span class="nx">getAuthor</span><span class="p">(),</span>
    <span class="nx">version</span><span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.version&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="s2">&quot;0.1.0&quot;</span><span class="p">,</span>
    <span class="nx">main</span><span class="o">:</span> <span class="nx">getMainFile</span><span class="p">(),</span>
-   <span class="nx">scripts</span><span class="o">:</span> <span class="p">{</span>
-      <span class="nx">build</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle --progress&quot;</span><span class="p">,</span>
-      <span class="nx">debug</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --progress&quot;</span>
-   <span class="p">},</span>
+   <span class="nx">scripts</span><span class="o">:</span> <span class="nx">scripts</span><span class="p">,</span>
    <span class="nx">license</span><span class="o">:</span> <span class="nx">createLicense</span><span class="p">(),</span>
    <span class="nx">keywords</span><span class="o">:</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">&quot;Palabras clave (separadas por espacio)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nx">res</span> <span class="p">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s+/g</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)),</span>
    <span class="nx">browserslist</span><span class="o">:</span> <span class="nx">browserslist</span><span class="p">,</span>
@@ -337,18 +342,35 @@ que ajustemos los permisos del <code class="file docutils literal notranslate"><
 </div>
 </div>
 </li>
+<li><p class="first">Se se tiene definido en <cite>~/.npmrc</cite>, además del nombre del desarrolador:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">init.license</span><span class="o">=</span><span class="s">MIT</span>
+</pre></div>
+</div>
+<p>se creará automáticamente un fichero <code class="file docutils literal notranslate"><span class="pre">LICENSE</span></code> con el texto de la
+<cite>licencia MIT &lt;https://es.wikipedia.org/wiki/Licencia_MIT&gt;_</cite>.</p>
+</li>
 </ul>
 <p>No obstante, aún será indispensable crear los ficheros <code class="file docutils literal notranslate"><span class="pre">README.rst</span></code> (o
-<code class="file docutils literal notranslate"><span class="pre">README.md</span></code>) y <code class="file docutils literal notranslate"><span class="pre">LICENSE</span></code>. Para este último podemos tomar una licencia
-libre como la <a class="reference external" href="https://es.wikipedia.org/wiki/Licencia_MIT">licencia MIT</a>.</p>
+<code class="file docutils literal notranslate"><span class="pre">README.md</span></code>) y <code class="file docutils literal notranslate"><span class="pre">LICENSE</span></code>, si no se creó automáticamente.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">Ver también</p>
 <p class="last">Échele un ojo al <a class="reference internal" href="../04.client/03.ejemplos.html#webpack-ej-plugin"><span class="std std-ref">primer ejemplo de creación de un proyecto
 para ver cómo subir el proyecto</span></a> una vez se haya escrito.</p>
 </div>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Por hacer</p>
-<p class="last">Preparar para crear documentación con sphinx.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Si su intención es mantener un repositorio en <a class="reference external" href="https://github.com">Github</a>, es muy útil
+automatizar la definición de versiones. Para ello puede utilizar
+<a class="reference download internal" download="" href="../_downloads/7f443a4aca0403f3550465915759337e/github-release"><code class="xref download docutils literal notranslate"><span class="pre">el</span> <span class="pre">script</span> <span class="pre">github-release</span></code></a> y colocarlo en
+alguín lugar del <em>PATH</em> del sistema. <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">init</span> <span class="pre">-y</span></code> debería haber creado
+un script <em>release</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm run release
+</pre></div>
+</div>
+<p class="last">que ejecuta el script tomando los datos de versión, etc. de la configuración
+del paquete. Requiere, eso sí, que creemos antes un fichero en el directorio de
+trabajo llamado <code class="file docutils literal notranslate"><span class="pre">RELEASE</span></code>, que incluya las notas aclaratorias a la
+versión. Tales notas deben escribirse en formato <a class="reference external" href="https://daringfireball.net/projects/markdown/">Markdown</a>.</p>
 </div>
 <p class="rubric">Notas al pie</p>
 <table class="docutils footnote" frame="void" id="id2" rules="none">

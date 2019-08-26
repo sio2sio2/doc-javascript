@@ -5,8 +5,13 @@ const cp = require("child_process"),
          "node_modules",
          "**.bak",
          "**.swp",
-         "package-lock.json"
+         "package-lock.json",
+         "RELEASE"
       ],
+      scripts =  {
+         build: "webpack --env.output=bundle --progress",
+         debug: "webpack-dev-server --env.output=debug --progress"
+      },
       browserslist = {
          production: ["cover 95% in ES"],
          oneplus: ["> 1% in ES"],
@@ -76,6 +81,9 @@ function gitInfo() {
       })(),
       homepage: `${git}#readme`,
       bugs: {url: `${git}/issues`},
+      scripts: Object.assign(scripts, {
+         release: "github-release RELEASE"
+      }),
       create: (function() { // Crea el repositorio remoto de Github
          const token = config.get("init.git.token"),
                data = {
@@ -139,10 +147,7 @@ module.exports = Object.assign({
    author: getAuthor(),
    version: config.get("init.version") || "0.1.0",
    main: getMainFile(),
-   scripts: {
-      build: "webpack --env.output=bundle --progress",
-      debug: "webpack-dev-server --env.output=debug --progress"
-   },
+   scripts: scripts,
    license: createLicense(),
    keywords: prompt("Palabras clave (separadas por espacio)", "", res => res.replace(/\s+/g, " ").split(" ")),
    browserslist: browserslist,
