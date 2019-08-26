@@ -1,0 +1,462 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2.1. Uso &#8212; documentación de Javascript - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="2.2. Paquetes" href="02.npm.html" />
+    <link rel="prev" title="2. NodeJS" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="02.npm.html" title="2.2. Paquetes"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="2. NodeJS"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">2. NodeJS</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="uso">
+<h1>2.1. Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h1>
+<p><a class="reference external" href="https://nodejs.org/es/">NodeJS</a> es un entorno para la programación de <em>Javascript</em> basado en el motor
+<a class="reference external" href="https://v8.dev/">V8 de Google</a>. Sobre el se correrán las utilidades para programar tanto para
+el cliente como el servidor.</p>
+<p>Por lo general, su filosofía se basa en preparar un directorio de trabajo (ya se
+verá cómo) y desarrollar dentro de él un proyecto, de manera que para cada
+proyecto que desarrollemos crearemos un directorio de trabajo distinto.</p>
+<div class="section" id="primeros-pasos">
+<h2>2.1.1. Primeros pasos<a class="headerlink" href="#primeros-pasos" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="instalacion">
+<h3>2.1.1.1. Instalación<a class="headerlink" href="#instalacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>La instalación no reviste demasiado problema si se dispone de una distribución
+de linux. En una basada en <em>Debian</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> apt install npm
+</pre></div>
+</div>
+<p>que instala el gestor de paquetes de <a class="reference external" href="https://nodejs.org/es/">NodeJS</a> que indirectamente instala el
+proprio entorno.</p>
+</div>
+<div class="section" id="consola-interactiva">
+<h3>2.1.1.2. Consola interactiva<a class="headerlink" href="#consola-interactiva" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Instalado el entorno, se puede acceder a una consola interactiva en la que
+pueden ejecutarse evaluaciones e instrucciones de <em>Javascript</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> node
+<span class="gp">&gt;</span> <span class="m">1</span>+1
+<span class="go">2</span>
+<span class="gp">&gt;</span> console.error<span class="o">(</span><span class="s2">&quot;Esto es un error gordísimo&quot;</span><span class="o">)</span>
+<span class="go">Esto es un error gordísimo</span>
+<span class="go">undefined</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ejecucion-de-scripts">
+<h3>2.1.1.3. Ejecución de scripts<a class="headerlink" href="#ejecucion-de-scripts" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Las aplicaciones de <a class="reference external" href="https://nodejs.org/es/">NodeJS</a> pueden perfectamente ejecutarse desde
+la consola de comandos si tiene sentido que se ejecuten desde ella. Por ejemplo,
+el fichero <code class="file docutils literal notranslate"><span class="pre">holamundo.py</span></code>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env node</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;¡Hola, mundo!&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Puede probarse. simplemente, con:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> node holamundo.py
+<span class="go">¡Hola, mundo!</span>
+</pre></div>
+</div>
+<p>o, gracias a la línea de <em>sheebang</em>, dar permisos de ejecución y ejecutar
+directamente:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod +x holamundo.py
+<span class="gp">$</span> ./holamundo.py
+</pre></div>
+</div>
+<p>Algunos <a class="reference internal" href="02.npm.html#npm"><span class="std std-ref">paquetes npm</span></a> contienen <em>scripts</em> pensados para
+ejecutarse directamente desde la línea de órdenes, pero al no encontrarse dentro
+del alguno de los directorio del <em>PATH</em> es engorrosa su ejecución. Para
+solventarlo, existe <strong class="command">npx</strong> que es capaz de buscar ejecutables también en
+los paquetes globales y locales:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npx webpack --mode production
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="directorio-de-trabajo">
+<span id="workdir"></span><h2>2.1.2. Directorio de trabajo<a class="headerlink" href="#directorio-de-trabajo" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Lo último de esta parte preparatoria sobre <a class="reference external" href="https://nodejs.org/es/">NodeJS</a> se dedica a la configuración
+de un directorio de trabajo para el desarrollo de una aplicación.</p>
+<div class="section" id="configuracion-general">
+<h3>2.1.2.1. Configuración general<a class="headerlink" href="#configuracion-general" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Al preparar un directorio para un nuevo proyecto, ya veremos que es necesario
+crear un fichero de descripción llamado <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>. Antes, no
+obstante, es recomensable fijar los valores predeterminados con que se cree este
+fichero para lo cual:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm <span class="nb">set</span> init.author.name <span class="s2">&quot;Mi nombre&quot;</span>
+<span class="gp">$</span> npm <span class="nb">set</span> init.author.email <span class="s2">&quot;micorreo@electroni.co&quot;</span>
+<span class="gp">$</span> npm <span class="nb">set</span> init.license MIT
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Estos valores se almacenan dentro del fichero <code class="file docutils literal notranslate"><span class="pre">~/.npmrc</span></code>.</p>
+</div>
+</div>
+<div class="section" id="preparacion">
+<span id="prep-workdir"></span><h3>2.1.2.2. Preparación<a class="headerlink" href="#preparacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>La preparación del directorio consite básicamente en crear el fichero
+<code class="file docutils literal notranslate"><span class="pre">package.json</span></code> que describe el proyecto. Muy comúnmente también conviene
+preparar el directorio para que sea un repositorio <em>git</em>. Para lo primero,
+<strong class="command">npm</strong> trae la posibilidad de ejecutar <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">init</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir App
+<span class="gp">$</span> <span class="nb">cd</span> App
+<span class="gp">$</span> npm init
+</pre></div>
+</div>
+<p>pero podemos alterar el comportamiento de éste comando para lograr también lo
+segundo. Para ello, podemos usar (o adaptar) este <a class="reference download internal" download="" href="../_downloads/78665ae21cbbad2c4dc9ac0383d740e1/npm-init.js"><code class="xref download docutils literal notranslate"><span class="pre">~/.npm-init.js</span></code></a>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">cp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;child_process&quot;</span><span class="p">),</span>
+      <span class="nx">gitapi</span> <span class="o">=</span> <span class="s2">&quot;https://api.github.com/user/repos&quot;</span><span class="p">,</span>
+      <span class="nx">mainFile</span> <span class="o">=</span> <span class="s2">&quot;index.js&quot;</span><span class="p">,</span>
+      <span class="nx">gitignore</span> <span class="o">=</span> <span class="p">[</span>
+         <span class="s2">&quot;node_modules&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;**.bak&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;**.swp&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;package-lock.json&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;RELEASE&quot;</span>
+      <span class="p">],</span>
+      <span class="nx">scripts</span> <span class="o">=</span>  <span class="p">{</span>
+         <span class="nx">build</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle --progress&quot;</span><span class="p">,</span>
+         <span class="nx">debug</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --progress&quot;</span>
+      <span class="p">},</span>
+      <span class="nx">browserslist</span> <span class="o">=</span> <span class="p">{</span>
+         <span class="nx">production</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;cover 95% in ES&quot;</span><span class="p">],</span>
+         <span class="nx">oneplus</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;&gt; 1% in ES&quot;</span><span class="p">],</span>
+         <span class="nx">ie10</span><span class="o">:</span> <span class="p">[</span>
+            <span class="s2">&quot;&gt; .25% in ES&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ie &gt;= 10&quot;</span>
+         <span class="p">],</span>
+         <span class="nx">relax</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;cover 80% in ES&quot;</span><span class="p">]</span>
+      <span class="p">};</span>
+
+
+<span class="c1">// Obtiene el autor del repositorio.</span>
+<span class="kd">function</span> <span class="nx">getAuthor</span><span class="p">()</span> <span class="p">{</span>
+   <span class="kr">const</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.author.name&quot;</span><span class="p">),</span>
+         <span class="nx">email</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.author.email&quot;</span><span class="p">);</span>
+
+   <span class="k">if</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="nx">email</span><span class="o">?</span><span class="sb">`</span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb"> &lt;</span><span class="si">${</span><span class="nx">email</span><span class="si">}</span><span class="sb">&gt;`</span><span class="o">:</span><span class="nx">name</span><span class="p">;</span>
+   <span class="k">else</span> <span class="k">return</span> <span class="nx">email</span><span class="o">?</span><span class="nx">email</span><span class="o">:</span><span class="kc">undefined</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="c1">// Define cuál es el fichero principal</span>
+<span class="kd">function</span> <span class="nx">getMainFile</span><span class="p">()</span> <span class="p">{</span>
+
+   <span class="kd">function</span> <span class="nx">mkdir</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">),</span>
+            <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">),</span>
+            <span class="c1">// Obtiene la ruta relativa del directorio</span>
+            <span class="c1">// donde se almacena el fichero principal</span>
+            <span class="nx">mainDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">relative</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">(),</span> <span class="nx">name</span><span class="p">),</span> <span class="s2">&quot;..&quot;</span><span class="p">);</span>
+
+      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">mainDir</span><span class="p">))</span> <span class="p">{</span>
+         <span class="nx">fs</span><span class="p">.</span><span class="nx">mkdirSync</span><span class="p">(</span><span class="nx">mainDir</span><span class="p">,</span> <span class="p">{</span><span class="nx">recursive</span><span class="o">:</span> <span class="kc">true</span><span class="p">});</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+
+
+   <span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NPM_MAIN</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">mkdir</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NPM_MAIN</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NPM_MAIN</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">else</span> <span class="k">return</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">&quot;Fichero principal&quot;</span><span class="p">,</span> <span class="nx">mainFile</span><span class="p">,</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="c1">//mkdir(res);</span>
+      <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
+   <span class="p">});</span>
+<span class="p">}</span>
+
+
+<span class="c1">// Obtiene toda la información relativa al repositorio de Git.</span>
+<span class="kd">function</span> <span class="nx">gitInfo</span><span class="p">()</span> <span class="p">{</span>
+   <span class="kr">const</span> <span class="nx">gituser</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.git.user&quot;</span><span class="p">),</span>
+         <span class="nx">git</span> <span class="o">=</span> <span class="nx">gituser</span> <span class="o">&amp;&amp;</span> <span class="sb">`https://github.com/</span><span class="si">${</span><span class="nx">gituser</span><span class="si">}</span><span class="sb">/</span><span class="si">${</span><span class="nx">basename</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+
+   <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">git</span><span class="p">)</span> <span class="k">return</span> <span class="p">{};</span>
+
+   <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">repository</span><span class="o">:</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+         <span class="kr">const</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">gitignore</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;\n&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;\n&quot;</span><span class="p">;</span>
+
+         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;... Inicializando el repositorio local ...&quot;</span><span class="p">);</span>
+         <span class="nx">cp</span><span class="p">.</span><span class="nx">execSync</span><span class="p">(</span><span class="sb">`git init; printf &#39;</span><span class="si">${</span><span class="nx">content</span><span class="si">}</span><span class="sb">&#39; &gt; .gitignore`</span><span class="p">,</span> <span class="p">{</span><span class="nx">stdio</span><span class="o">:</span> <span class="s1">&#39;inherit&#39;</span><span class="p">});</span>
+
+         <span class="k">return</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;git&quot;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">git</span><span class="si">}</span><span class="sb">.git`</span>
+         <span class="p">}</span>
+      <span class="p">})(),</span>
+      <span class="nx">homepage</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">git</span><span class="si">}</span><span class="sb">#readme`</span><span class="p">,</span>
+      <span class="nx">bugs</span><span class="o">:</span> <span class="p">{</span><span class="nx">url</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">git</span><span class="si">}</span><span class="sb">/issues`</span><span class="p">},</span>
+      <span class="nx">scripts</span><span class="o">:</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">scripts</span><span class="p">,</span> <span class="p">{</span>
+         <span class="nx">release</span><span class="o">:</span> <span class="s2">&quot;github-release RELEASE&quot;</span>
+      <span class="p">}),</span>
+      <span class="nx">create</span><span class="o">:</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// Crea el repositorio remoto de Github</span>
+         <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.git.token&quot;</span><span class="p">),</span>
+               <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+                  <span class="nx">name</span><span class="o">:</span> <span class="nx">basename</span><span class="p">,</span>
+                  <span class="nx">description</span><span class="o">:</span> <span class="sb">`Proyecto </span><span class="si">${</span><span class="nx">basename</span><span class="si">}</span><span class="sb">`</span>
+               <span class="p">}</span>
+
+         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">token</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+         <span class="k">else</span> <span class="k">return</span> <span class="nx">prompt</span><span class="p">(</span><span class="sb">`¿Desea crear el repositorio remoto </span><span class="si">${</span><span class="nx">basename</span><span class="si">}</span><span class="sb"> en Github (y/n)?`</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">res</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">();</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">res</span> <span class="o">!==</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+            <span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="sb">`Authorization: token </span><span class="si">${</span><span class="nx">token</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
+                  <span class="nx">createCmd</span> <span class="o">=</span> <span class="sb">`wget -qO - -S --header &#39;</span><span class="si">${</span><span class="nx">header</span><span class="si">}</span><span class="sb">&#39; --post-data &#39;</span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="si">}</span><span class="sb">&#39; </span><span class="si">${</span><span class="nx">gitapi</span><span class="si">}</span><span class="sb">`</span>
+                  <span class="c1">//createCmd = `curl -i H &quot;${header}&quot;  -d &#39;${JSON.stringify(data)}&#39; ${gitapo}`;</span>
+            
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;... Creando el repositorio remoto ...&quot;</span><span class="p">);</span>
+            <span class="nx">cp</span><span class="p">.</span><span class="nx">execSync</span><span class="p">(</span><span class="nx">createCmd</span><span class="p">,</span> <span class="p">{</span><span class="nx">stdio</span><span class="o">:</span> <span class="s1">&#39;inherit&#39;</span><span class="p">});</span>
+         <span class="p">});</span>
+      <span class="p">})()</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kd">function</span> <span class="nx">createLicense</span><span class="p">()</span> <span class="p">{</span>
+   <span class="kr">const</span> <span class="nx">license</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.license&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+         <span class="nx">name</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.author.name&quot;</span><span class="p">);</span>
+
+   <span class="k">if</span><span class="p">(</span><span class="nx">license</span> <span class="o">===</span> <span class="s2">&quot;MIT&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">);</span>
+            
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="s2">&quot;LICENSE&quot;</span><span class="p">,</span> <span class="sb">`Copyright 2019, </span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb">.</span>
+
+<span class="sb">Permission is hereby granted, free of charge, to any person obtaining a copy of</span>
+<span class="sb">this software and associated documentation files (the &quot;Software&quot;), to deal in</span>
+<span class="sb">the Software without restriction, including without limitation the rights to</span>
+<span class="sb">use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies</span>
+<span class="sb">of the Software, and to permit persons to whom the Software is furnished to do</span>
+<span class="sb">so, subject to the following conditions:</span>
+
+<span class="sb">The above copyright notice and this permission notice shall be included in all</span>
+<span class="sb">copies or substantial portions of the Software.</span>
+
+<span class="sb">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sb">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sb">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sb">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sb">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sb">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="sb">SOFTWARE.</span>
+<span class="sb">`</span><span class="p">)</span>
+
+   <span class="p">}</span>
+
+   <span class="k">return</span> <span class="nx">license</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({</span>
+   <span class="nx">name</span><span class="o">:</span> <span class="nx">basename</span><span class="p">,</span>
+   <span class="nx">description</span><span class="o">:</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">&quot;Describa brevemente el fichero: &quot;</span><span class="p">,</span> <span class="sb">`Paquete </span><span class="si">${</span><span class="nx">basename</span><span class="si">}</span><span class="sb">`</span><span class="p">),</span>
+   <span class="nx">author</span><span class="o">:</span> <span class="nx">getAuthor</span><span class="p">(),</span>
+   <span class="nx">version</span><span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;init.version&quot;</span><span class="p">)</span> <span class="o">||</span> <span class="s2">&quot;0.1.0&quot;</span><span class="p">,</span>
+   <span class="nx">main</span><span class="o">:</span> <span class="nx">getMainFile</span><span class="p">(),</span>
+   <span class="nx">scripts</span><span class="o">:</span> <span class="nx">scripts</span><span class="p">,</span>
+   <span class="nx">license</span><span class="o">:</span> <span class="nx">createLicense</span><span class="p">(),</span>
+   <span class="nx">keywords</span><span class="o">:</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">&quot;Palabras clave (separadas por espacio)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nx">res</span> <span class="p">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s+/g</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)),</span>
+   <span class="nx">browserslist</span><span class="o">:</span> <span class="nx">browserslist</span><span class="p">,</span>
+<span class="p">},</span> <span class="nx">gitInfo</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>y crear el directorio así:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir App
+<span class="gp">$</span> <span class="nb">cd</span> App
+<span class="gp">$</span> npm init -y
+</pre></div>
+</div>
+<p>Al utilizar este <em>script</em> conseguimos algunas ventajas:</p>
+<ul>
+<li><p class="first">Se nos preguntará cuál es el fichero principal a menos que esté definida
+la variable de entorno <em>NPM_MAIN</em>, en cuyo caso, se usará su valor. El
+<em>script</em>, además, se encargará de crear el directorio que contendrá este
+fichero principal. Por ejemplo, si establecemos que tal fichero es
+<code class="file docutils literal notranslate"><span class="pre">src/index.js</span></code>, se creará automáticamente el directorio <code class="file docutils literal notranslate"><span class="pre">src</span></code>.</p>
+</li>
+<li><p class="first">Si está definido en <code class="file docutils literal notranslate"><span class="pre">~/.npmrc</span></code> nuestro usuario de <a class="reference external" href="https://github.com">Github</a> a través de
+la variable <em>init.git.user</em>, se preparará el directorio como repositorio <em>Git</em>
+y además se definirán en <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> algunas variables relacionadas:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm <span class="nb">set</span> init.git.user sio2sio2
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Como nombre del repositorio, se usará el nombre del directorio,
+por lo que el proyecto será <code class="code docutils literal notranslate"><span class="pre">https://github.com/sio2sio2/App</span></code>.</p>
+</div>
+</li>
+<li><p class="first">Si se tiene definido en <a class="reference external" href="https://github.com">Github</a> un token apropiado<a class="footnote-reference" href="#id2" id="id1">[1]</a> y añadido a la
+configuración a través de <em>init.git.token</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm <span class="nb">set</span> init.git.token XXXXXXXX
+</pre></div>
+</div>
+<p>se nos preguntará si queremos crear el repositorio remoto en <a class="reference external" href="https://github.com">Github</a> y se
+creará en caso de que respondamos afirmativamente.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Advertencia</p>
+<p>El <em>token</em> debería ser secreto, así que es más que conveniente
+que ajustemos los permisos del <code class="file docutils literal notranslate"><span class="pre">~/.npmrc</span></code>:</p>
+<div class="last highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod <span class="m">600</span> ~/-npmrc
+</pre></div>
+</div>
+</div>
+</li>
+<li><p class="first">Se se tiene definido en <cite>~/.npmrc</cite>, además del nombre del desarrolador:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">init.license</span><span class="o">=</span><span class="s">MIT</span>
+</pre></div>
+</div>
+<p>se creará automáticamente un fichero <code class="file docutils literal notranslate"><span class="pre">LICENSE</span></code> con el texto de la
+<cite>licencia MIT &lt;https://es.wikipedia.org/wiki/Licencia_MIT&gt;_</cite>.</p>
+</li>
+</ul>
+<p>No obstante, aún será indispensable crear los ficheros <code class="file docutils literal notranslate"><span class="pre">README.rst</span></code> (o
+<code class="file docutils literal notranslate"><span class="pre">README.md</span></code>) y <code class="file docutils literal notranslate"><span class="pre">LICENSE</span></code>, si no se creó automáticamente.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">Ver también</p>
+<p class="last">Échele un ojo al <a class="reference internal" href="../03.client/02.webpack/03.ejemplos.html#webpack-ej-plugin"><span class="std std-ref">primer ejemplo de creación de un proyecto
+para ver cómo subir el proyecto</span></a> una vez se haya escrito.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Si su intención es mantener un repositorio en <a class="reference external" href="https://github.com">Github</a>, es muy útil
+automatizar la definición de versiones. Para ello puede utilizar
+<a class="reference download internal" download="" href="../_downloads/35e016c3fa5feaf4f0cc1fca0209d503/github-release"><code class="xref download docutils literal notranslate"><span class="pre">el</span> <span class="pre">script</span> <span class="pre">github-release</span></code></a> y colocarlo en
+alguín lugar del <em>PATH</em> del sistema. <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">init</span> <span class="pre">-y</span></code> debería haber creado
+un script <em>release</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm run release
+</pre></div>
+</div>
+<p class="last">que ejecuta el script tomando los datos de versión, etc. de la configuración
+del paquete. Requiere, eso sí, que creemos antes un fichero en el directorio de
+trabajo llamado <code class="file docutils literal notranslate"><span class="pre">RELEASE</span></code>, que incluya las notas aclaratorias a la
+versión. Tales notas deben escribirse en formato <a class="reference external" href="https://daringfireball.net/projects/markdown/">Markdown</a>.</p>
+</div>
+<p class="rubric">Notas al pie</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="https://github.com">Github</a> permite <a class="reference external" href="https://github.com/settings/tokens">definir tokens</a>
+que habilitan la realización de operaciones a través de una <a class="reference external" href="https://developer.github.com/v3/repos/">API REST</a>.  Para poder crear repositorios
+públicos, el <em>token</em> requiere al menos tener habilitado el <a class="reference external" href="https://developer.github.com/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/#available-scopes">scope public_repo</a>.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.1. Uso</a><ul>
+<li><a class="reference internal" href="#primeros-pasos">2.1.1. Primeros pasos</a><ul>
+<li><a class="reference internal" href="#instalacion">2.1.1.1. Instalación</a></li>
+<li><a class="reference internal" href="#consola-interactiva">2.1.1.2. Consola interactiva</a></li>
+<li><a class="reference internal" href="#ejecucion-de-scripts">2.1.1.3. Ejecución de scripts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#directorio-de-trabajo">2.1.2. Directorio de trabajo</a><ul>
+<li><a class="reference internal" href="#configuracion-general">2.1.2.1. Configuración general</a></li>
+<li><a class="reference internal" href="#preparacion">2.1.2.2. Preparación</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="index.html"
+                        title="capítulo anterior">2. NodeJS</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="02.npm.html"
+                        title="próximo capítulo">2.2. Paquetes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/02.node/01.nodejs.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Ir a" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="02.npm.html" title="2.2. Paquetes"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="2. NodeJS"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >2. NodeJS</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

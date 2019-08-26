@@ -1,0 +1,465 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.2.3. Ejemplos &#8212; documentación de Javascript - </title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" />
+    <link rel="next" title="4. Programación en el servidor" href="../../04.server/index.html" />
+    <link rel="prev" title="3.2.2. Particularidades" href="02.part.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../../04.server/index.html" title="4. Programación en el servidor"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="02.part.html" title="3.2.2. Particularidades"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">documentación de Javascript - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >3. Programación en el cliente</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">3.2. Webpack</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ejemplos">
+<span id="webpack-ejemplos"></span><h1>3.2.3. Ejemplos<a class="headerlink" href="#ejemplos" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Los ejemplos de aplicación los construiremos en torno a  <a class="reference external" href="https://leafletjs.com">Leaflet</a>, la excelente
+librería <abbr title="Geographic information system">GIS</abbr> y trataremos tres casos:</p>
+<ol class="arabic simple">
+<li>La creación de una aplicación web final que use un plugin previo.</li>
+<li>La creación de este plugin previo, que incluye un código de ejemplo que sirve
+para depurar durante el desarrollo.</li>
+</ol>
+<blockquote>
+<div>Aunque cronológicamente deberíamos obrar al revés, la creación de una
+aplicación web es menos compleja, de modo que empezaremos por ella.</div></blockquote>
+<div class="section" id="aplicacion-web">
+<span id="webpack-ej-app"></span><h2>3.2.3.1. Aplicación web<a class="headerlink" href="#aplicacion-web" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El primer ejemplo ilustra cómo crear una aplicación web muy sencilla que utiliza
+<a class="reference external" href="https://leafletjs.com">Leaflet</a> y el <em>plugin</em> para éste que expondremos en el segundo ejemplo y se
+llama <a class="reference external" href="https://github.com/sio2sio2/leaflet.iconzoom">Leaflet.iconzoom</a>.</p>
+<p>Al tratarse de una aplicación final, sólo no es necesario configurar dos
+<em>sabores</em> para la salida de los cinco qu expusimos al tratar las <a class="reference internal" href="02.part.html#webpack-multi"><span class="std std-ref">múltiples
+salidas</span></a>:</p>
+<ol class="arabic simple" start="2">
+<li>El optimizado y portable para producción, que incluirá todas las
+dependencias.</li>
+</ol>
+<ol class="arabic simple" start="5">
+<li>El apropiado para la depuración durante el desarrollo.</li>
+</ol>
+<div class="section" id="preparativos">
+<h3>3.2.3.1.1. Preparativos<a class="headerlink" href="#preparativos" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Generamos el directorio de trabajo:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir test.iconzoom
+<span class="gp">$</span> <span class="nb">cd</span> test.iconzoom
+<span class="gp">$</span> npm init -y
+</pre></div>
+</div>
+<p>y nos cercioramos de dejar los scripts de <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> de este modo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle --progress&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --progress&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>que es, precisamente, como los deja el fichero <code class="file docutils literal notranslate"><span class="pre">~/npm-init.js</span></code> que
+propusimos lecciones atrás.</p>
+</li>
+<li><p class="first">Instalamos el <em>software</em> preciso:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
+
+<span class="gp">$</span> npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
+<span class="gp">$</span> npm install core-js
+
+<span class="gp">$</span> npm install --save-dev html-loader html-webpack-plugin
+
+<span class="gp">$</span> npm install --save-dev css-loader mini-css-extract-plugin
+<span class="gp">$</span> npm install --save-dev postcss-loader autoprefixer cssnano
+<span class="gp">$</span> npm install --save-dev sass-loader node-sass
+
+<span class="gp">$</span> npm install --save-dev url-loader file-loader
+<span class="gp">$</span> npm install leaflet-defaulticon-compatibility
+
+<span class="gp">$</span> npm install leaflet
+<span class="gp">$</span> npm install git+https://github.com/sio2sio2/leaflet.iconzoom.git
+</pre></div>
+</div>
+<p>en donde:</p>
+<ul class="simple">
+<li>El primer bloque instala los paquetes relacionados con webpack.</li>
+<li>El segundo instala los paquetes necesarios para la transpilación.</li>
+<li>El tercero, los necesarios para procesar el <abbr title="HyperText Markup Language">HTML</abbr> de la aplicación.</li>
+<li>El cuerto, los necesarios para procesar <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>/<abbr title="Cascading Style Sheets">CSS</abbr>, minimizar y generar
+un único fichero.</li>
+<li>El quinto, los necesarios para procesar otro tipo de ficheros.
+<a class="reference external" href="https://github.com/ghybs/leaflet-defaulticon-compatibility">leaflet-defaulticon-compatibility</a>. El últumo es imprescindible si que
+quiere que no fallen los dataURI que genera <strong class="program">url-loader</strong>.</li>
+<li>El sexto y último bloque son las librerías externas de las que depende
+nuestro programa.</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="escritura">
+<h3>3.2.3.1.2. Escritura<a class="headerlink" href="#escritura" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Creamos la sencilla aplicación:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+ src
+   +-- index.html
+   +-- index.js
+   +-- index.sass
+   +-- logo.svg
+</pre></div>
+</div>
+<p>que consta de:</p>
+<ol class="loweralpha">
+<li><p class="first">La página <code class="xref download docutils literal notranslate"><span class="pre">src/index.html</span></code>:</p>
+<p>que es la página cruda sin enlaces a <a class="reference external" href="https://leafletjs.com">Leaflet</a>, el plugin anterior o el
+<em>script</em> que crea el mapa.</p>
+</li>
+<li><p class="first">Un estilo (con <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>) en <code class="xref download docutils literal notranslate"><span class="pre">src/index.sass</span></code>:</p>
+</li>
+<li><p class="first">Y el propio <em>script</em> <code class="xref download docutils literal notranslate"><span class="pre">src/index.js</span></code>:</p>
+<p>Al ser una aplicación final, no necesitamos generar salidas sin
+dependencias y, en consecuencia, importamos todas directamente en el
+propio código.</p>
+</li>
+</ol>
+</li>
+<li><p class="first">Por fin, creamos la configuración para <strong class="program">webpack</strong></p>
+<p>que presenta las siguientes claves:</p>
+<ul class="simple">
+<li>La traspilación no es necesaria para durante el desarrollo ya que se supone
+que disponemos de un navegador moderno. En cambio, si necesitamos
+configurar el servidor web. Por eso motivo hemos independizado ambas
+configuraciones en funciones aparte y usamos una u otra según nuestro
+propoósito.</li>
+<li>El resto de la configuración es común a las dos salidas.</li>
+<li>Generamos la aplicación en el subdirectorio <code class="file docutils literal notranslate"><span class="pre">/docs</span></code>.</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="generacion">
+<h3>3.2.3.1.3. Generación<a class="headerlink" href="#generacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Generamos el resultado:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm run build
+</pre></div>
+</div>
+</li>
+<li><p class="first">Por último, se remata y publica el repositorio:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> vim README.rst
+<span class="gp">$</span> git add --all .
+<span class="gp">$</span> git commit -m <span class="s2">&quot;Primera implementación&quot;</span>
+
+<span class="gp">$</span> git remote add origin https://github.com/sio2sio2/test.iconzoom.git
+<span class="gp">$</span> git push -u origin master
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Para que el ejemplo sea visitable, en <a class="reference external" href="https://github.com">Github</a> dentro de <em>Settings</em>,
+habilite la publicación del directorio <code class="file docutils literal notranslate"><span class="pre">/docs</span></code> de la rama <em>master</em>.</p>
+</div>
+</li>
+</ol>
+<p>El resultado está publicado en <a class="reference external" href="https://github.com/sio2sio2/test.iconzoom">este su repositorio</a>.</p>
+</div>
+</div>
+<div class="section" id="plugin">
+<span id="webpack-ej-plugin"></span><h2>3.2.3.2. Plugin<a class="headerlink" href="#plugin" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Nuestra intención ahora es desarrollar una librería, no una aplicación final, y
+en concreto, el <em>plugin</em> que utilizamos bajo el epígrafe anterior para construir
+la aplicación, o sea, <a class="reference external" href="https://github.com/sio2sio2/leaflet.iconzoom">Leaflet.iconzoom</a>.</p>
+<p>En este caso, queremos obtener las <a class="reference internal" href="02.part.html#webpack-multi"><span class="std std-ref">cinco salidas expuestas al tratar el
+asunto</span></a> y, además, escribir un ejemplo que sirva tanto para
+ilustrar su uso como para depurar mientras lo desarrollamos.</p>
+<div class="section" id="id1">
+<h3>3.2.3.2.1. Preparativos<a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Generamos el directorio de trabajo:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir leaflet.iconzoom
+<span class="gp">$</span> <span class="nb">cd</span> leaflet.iconzoom
+<span class="gp">$</span> npm init -y
+</pre></div>
+</div>
+<p>en el que el fichero prinicpal será <code class="file docutils literal notranslate"><span class="pre">dist/leaflet.iconzoom-src.js</span></code>; y
+nos cercioramos de dejar los scripts de <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> de este modo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=min --progress&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;build:bundle&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=bundle --progress&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;build:src&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=src --progress&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;build:debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack --env.output=srcdebug --progress&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;debug&quot;</span><span class="o">:</span> <span class="s2">&quot;webpack-dev-server --env.output=debug --progress&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Instalación del software preciso:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack webpack-dev-server webpack-cli webpack-merge
+
+<span class="gp">$</span> npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
+<span class="gp">$</span> npm install core-js
+
+<span class="gp">$</span> npm install --save-dev css-loader mini-css-extract-plugin
+<span class="gp">$</span> npm install --save-dev postcss-loader cssnano
+
+<span class="gp">$</span> npm install --save-dev url-loader file-loader
+<span class="gp">$</span> npm install leaflet-defaulticon-compatibility
+
+<span class="gp">$</span> npm install leaflet
+</pre></div>
+</div>
+<p>En este caso, más que exponer de nuevo para qué sirve cada bloque,
+justifiquemos las diferencias con respecto al caso anterior:</p>
+<ul class="simple">
+<li>Hemos prescidido del bloque dedicado al procesamiento de <abbr title="HyperText Markup Language">HTML</abbr>, porque
+nuestra librería no lo necesita:</li>
+<li>Procesamos, obviamente, <em>Javascript</em> (el propio y el de <a class="reference external" href="https://leafletjs.com">Leaflet</a>), <abbr title="Cascading Style Sheets">CSS</abbr>
+(el de <a class="reference external" href="https://leafletjs.com">Leaflet</a> en el sabor <em>bundle</em>) e imágenes (alguna de <a class="reference external" href="https://leafletjs.com">Leaflet</a>
+referidas en su <abbr title="Cascading Style Sheets">CSS</abbr>).</li>
+<li>Prescindimos de <em>autoprefixer</em>, porque no añadimos <abbr title="Cascading Style Sheets">CSS</abbr> propio y estimamos
+que el <abbr title="Cascading Style Sheets">CSS</abbr> de Leaflet ya será suficientemente compatible. Podemos, sin
+embargo, instalarlo y usarlo en la configuración.</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h3>3.2.3.2.2. Escritura<a class="headerlink" href="#id2" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Escribimos el <em>plugin</em> en <code class="file docutils literal notranslate"><span class="pre">src/plugin.js</span></code>, que es enormemente sencillo:</p>
+<p>Del código es reseñable la importación. <a class="reference external" href="https://leafletjs.com">Leaflet</a> es necesario, y, aunque
+podría hacerse la importación aquí:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">L</span> <span class="nx">from</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>se ha preferido hacer en la configuración a través de <a class="reference external" href="https://webpack.js.org/plugins/provide-plugin/">Provide</a> para ilustrar
+su uso. Lo interesante, es la importación del otro módulo que es un poco
+particular. El módulo en cuestión, <a class="reference external" href="https://github.com/ghybs/leaflet-defaulticon-compatibility">leaflet-defaulticon-compatibility</a> sólo
+cumple la función de parchear <a class="reference external" href="https://leafletjs.com">Leaflet</a> para permitir crear un resultado
+<em>bundle</em> que lo incluya. Cuando <a class="reference external" href="https://leafletjs.com">Leaflet</a> se carga externamente no es
+necesario en absoluto. Por ese motivo, la importación se hace sólo en caso de
+que compongamos la versión <em>bundle</em>. Para que funcione la condición, es
+necesario usar el plugin <a class="reference external" href="https://webpack.js.org/plugins/define-plugin/">Define</a>, que trataremos más adelante.</p>
+</li>
+<li><p class="first">Desarrollamos el ejemplo. Tomaremos como base la aplicación anterior, pero
+teniendo en cuenta que el ejemplo no forma parte del procesamiento  por
+lo que escribiremos los ficheros finales y los alojaremos en el subdirectorio
+<code class="file docutils literal notranslate"><span class="pre">examples</span></code><a class="footnote-reference" href="#id5" id="id3">[1]</a>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+ examples
+   +-- index.html
+   +-- index.js
+   +-- index.css
+   +-- logo.svg
+</pre></div>
+</div>
+<p>Las diferencias de estos ficheros respecto a los que escribimos para la
+aplicación anterior son:</p>
+<ul>
+<li><p class="first">El <abbr title="Cascading Style Sheets">CSS</abbr> es <abbr title="Cascading Style Sheets">CSS</abbr> y no <abbr title="Syntactically Awesome Style Sheets">SASS</abbr>, puesto que no debe haber procesamiento
+anterior. Salvado el formato, el contenido es el mismo.</p>
+</li>
+<li><p class="first"><code class="file docutils literal notranslate"><span class="pre">index.html</span></code> debe contener los enlaces a todo el <abbr title="Cascading Style Sheets">CSS</abbr> y <em>Javascript</em>
+necesario. En consecuencia:</p>
+<p>En este caso, estamos usando el resultado sin dependencias, por lo que es
+necesario incluir también las referencias a <a class="reference external" href="https://leafletjs.com">Leaflet</a>.</p>
+</li>
+<li><p class="first">El <em>script</em> <code class="xref download docutils literal notranslate"><span class="pre">index.js</span></code> es el expuesto al
+desarrollar la aplicación, pero sin las sentencias de importación y
+exportación.</p>
+</li>
+</ul>
+</li>
+<li><p class="first">Por último, redactamos <code class="file docutils literal notranslate"><span class="pre">webpack.config.js</span></code>. Esta configuración es más
+compleja que la anterior, puesto que codifica la generación de las cinco
+salidas diferentes.</p>
+<p>Aunque más compleja, la configuración no presenta demasiadas diferencias:</p>
+<ul>
+<li><p class="first">Las antes inexistentes funciones <code class="docutils literal notranslate"><span class="pre">confBundle()</span></code> y <code class="docutils literal notranslate"><span class="pre">confNoDeps()</span></code>
+responden a la necesidsad de crear sabores con o sin dependencias. La
+primera función añade el <abbr title="Cascading Style Sheets">CSS</abbr> externo (que antes se importaron
+directamente en el código <em>Javascript</em>), mientras que la segunda usa
+<a class="reference internal" href="02.part.html#webpack-externals"><span class="std std-ref">externals</span></a> para referir las librerías de terceros
+no incluidas.</p>
+</li>
+<li><p class="first">Configuramos de distinto modo el servidor web de depuración para que se
+sirvan en <code class="file docutils literal notranslate"><span class="pre">/</span></code> los ficheros contenidos en <code class="file docutils literal notranslate"><span class="pre">examples</span></code>, los
+ficheros generados se compartan en <code class="file docutils literal notranslate"><span class="pre">dist</span></code>. Esta argucia permite que
+los enlaces al <abbr title="Cascading Style Sheets">CSS</abbr> y al <em>Javascript</em> funcionen tanto al depurar como al
+visitar el <abbr title="HyperText Markup Language">HTML</abbr> en cualquier otro momento. Además, se pide que se vigilen
+los cambios en <code class="file docutils literal notranslate"><span class="pre">examples</span></code> a fin de que durante la depuración se
+puedan hacer cambios en los propios ficheros que componen el ejemplo y
+veamos el efecto reflejado inmediatamente.</p>
+</li>
+<li><p class="first">Como queremos usar el plugin tanto como componente para <a class="reference external" href="https://nodejs.org/">NodeJS</a> como para
+carga desde un navegador generamos un módulo <abbr title="Universal Module Definition">UMD</abbr>. Lo exportado, si se
+carga en un navegador, estará disponible en <code class="code docutils literal notranslate"><span class="pre">L.icon</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Obsérvese que en el código manipulamos directamente el objeto
+<code class="code docutils literal notranslate"><span class="pre">L</span></code>. Por esa razón, funcionaría de igual forma que no exportáramos
+nada.</p>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3>3.2.3.2.3. Generación<a class="headerlink" href="#id4" title="Enlazar permanentemente con este título">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Se obtienen cuatro resultados diferentes:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm run build
+<span class="gp">$</span> npm run build:src
+<span class="gp">$</span> npm run build:bundle
+<span class="gp">$</span> npm run build:debug
+</pre></div>
+</div>
+<p>Además del resultado que nos sirve para ir depurando:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm run debug
+</pre></div>
+</div>
+</li>
+<li><p class="first">Por último, se remata y publica el repositorio:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> vim README.rst
+<span class="gp">$</span> git add --all .
+<span class="gp">$</span> git commit -m <span class="s2">&quot;Primera implementación&quot;</span>
+
+<span class="gp">$</span> git remote add origin https://github.com/sio2sio2/leaflet.iconzoom.git
+<span class="gp">$</span> git push -u origin master
+</pre></div>
+</div>
+<p>Finalmente, habría que hacer que la rama master fuera visitable</p>
+</li>
+</ol>
+<p>El resultado está publicado en <a class="reference external" href="https://github.com/sio2sio2/leaflet.iconzoom/examples">su repositorio correspondiente</a>.</p>
+<p class="rubric">Notas al pie</p>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[1]</a></td><td>Esta aparente excentricidad tiene una explicación totalmente ajena a la
+aplicación en sí: entre otras alternativas, <a class="reference external" href="https://github.com">Github</a> permite publicar el
+contenida del directorio <code class="file docutils literal notranslate"><span class="pre">/docs</span></code>, así que hay se almacena el resultado
+para que éste se publique en la dirección
+<a class="reference external" href="https://sio2sio2.github.io/test.iconizoom">https://sio2sio2.github.io/test.iconizoom</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td>La elección no es arbitraria: es el directorio donde la <a class="reference external" href="https://leafletjs.com/2013/06/28/leaflet-plugin-authoring-guide.html#code">Guía de Leaflet</a>
+prescribe que se dispongan los ejemplos.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.2.3. Ejemplos</a><ul>
+<li><a class="reference internal" href="#aplicacion-web">3.2.3.1. Aplicación web</a><ul>
+<li><a class="reference internal" href="#preparativos">3.2.3.1.1. Preparativos</a></li>
+<li><a class="reference internal" href="#escritura">3.2.3.1.2. Escritura</a></li>
+<li><a class="reference internal" href="#generacion">3.2.3.1.3. Generación</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#plugin">3.2.3.2. Plugin</a><ul>
+<li><a class="reference internal" href="#id1">3.2.3.2.1. Preparativos</a></li>
+<li><a class="reference internal" href="#id2">3.2.3.2.2. Escritura</a></li>
+<li><a class="reference internal" href="#id4">3.2.3.2.3. Generación</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="02.part.html"
+                        title="capítulo anterior">3.2.2. Particularidades</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="../../04.server/index.html"
+                        title="próximo capítulo">4. Programación en el servidor</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/03.client/02.webpack/03.ejemplos.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Ir a" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../../04.server/index.html" title="4. Programación en el servidor"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="02.part.html" title="3.2.2. Particularidades"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">documentación de Javascript - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >3. Programación en el cliente</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >3.2. Webpack</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

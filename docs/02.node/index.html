@@ -1,0 +1,149 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2. NodeJS &#8212; documentación de Javascript - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="2.1. Uso" href="01.nodejs.html" />
+    <link rel="prev" title="1. Particularidades" href="../01.partic/index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="01.nodejs.html" title="2.1. Uso"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="../01.partic/index.html" title="1. Particularidades"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="nodejs">
+<span id="node-js"></span><h1>2. <a class="reference external" href="https://nodejs.org/es/">NodeJS</a><a class="headerlink" href="#nodejs" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Durante mucho tiempo la programación en <em>Javascript</em> se limitó básicamente a
+proporcionar algunos efectos en el navegador y mecanismos de validación más o
+menos complejos en los formularios, mientras que el grueso de la programación
+se resolvía en el lado del servidor. La falta de estandarización efectiva que
+provocaba la existencia de múltiples extensiones que hacían el código
+incompatible entre navegadores tampoco ayudaba demasiado.</p>
+<p>Sin embargo, la competencia entre navegadores y la consiguiente implantación de
+los estándares web (incluido <a class="reference external" href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">ECMAScript</a>),
+la aparición de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX">Ajax</a> y el hito que supuso la interfaz de <a class="reference external" href="http://gmail.google.com">Gmail</a>, y la aparición
+de la máquina virtual <a class="reference external" href="https://v8.dev/">V8 de Google</a> que propició la aparición de <a class="reference external" href="https://nodejs.org/es/">NodeJS</a>,
+ha cambiado aquella situación por completo. En la actualidad gran parte de la
+programación se ha transladado al cliente y los navegadores llegan a ejecutar
+código largo y complejo. Además, la máquina virtual ha posibilitado que el
+propio <em>Javascript</em> puede utilizarse como lenguaje de servidor.</p>
+<p>En consecuencia, las técnicas para programar <em>Javascript</em> han evolucionado y, en
+gran parte de los casos, escribir un único fichero <code class="docutils literal notranslate"><span class="pre">.js</span></code> con todo el código de
+la aplicación es inviable, como sería inviable construir dentro de un fichero
+toda una aplicación en <em>Python</em> o <em>Java</em>.</p>
+<p>Trataremos bajo este epígrafe cómo preparar un entorno para programar
+aplicaciones modernas con <a class="reference external" href="https://nodejs.org/es/">NodeJS</a>, ya sean para servidor o para cliente.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="01.nodejs.html">2.1. Uso</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="01.nodejs.html#primeros-pasos">2.1.1. Primeros pasos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01.nodejs.html#directorio-de-trabajo">2.1.2. Directorio de trabajo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="02.npm.html">2.2. Paquetes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="02.npm.html#gestion">2.2.1. Gestión</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.npm.html#publicacion">2.2.2. Publicación</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="03.modulos.html">2.3. Módulos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="03.modulos.html#el-patron-del-modulo">2.3.1. El <em>patrón del módulo</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.modulos.html#commonjs">2.3.2. CommonJS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.modulos.html#ecmascript2015">2.3.3. ECMAScript2015</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.modulos.html#otros-sistemas">2.3.4. Otros sistemas</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="../01.partic/index.html"
+                        title="capítulo anterior">1. Particularidades</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="01.nodejs.html"
+                        title="próximo capítulo">2.1. Uso</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/02.node/index.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Ir a" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="01.nodejs.html" title="2.1. Uso"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="../01.partic/index.html" title="1. Particularidades"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

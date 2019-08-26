@@ -22,7 +22,7 @@
     
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Búsqueda" href="search.html" />
-    <link rel="next" title="1. El lenguaje de programación Javascript" href="01.syntax/index.html" /> 
+    <link rel="next" title="1. Particularidades" href="01.partic/index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navegación</h3>
@@ -31,7 +31,7 @@
           <a href="genindex.html" title="Índice General"
              accesskey="I">índice</a></li>
         <li class="right" >
-          <a href="01.syntax/index.html" title="1. El lenguaje de programación Javascript"
+          <a href="01.partic/index.html" title="1. Particularidades"
              accesskey="N">siguiente</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">documentación de Javascript - </a> &#187;</li> 
       </ul>
@@ -44,25 +44,48 @@
             
   <div class="section" id="javascript">
 <h1>Javascript<a class="headerlink" href="#javascript" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>El presente documento versa sobre el lenguaje de programación <a class="reference external" href="https://es.wikipedia.org/wiki/JavaScript">Javascript</a> (en realidad,
+sobre <a class="reference external" href="https://www.ecma-international.org/publications/standards/Ecma-262.htm">ECMAScript</a>), pero sin intención de servir como guía para el aprendizaje
+de la programación o la sintaxis exhaustiva. Su intención es mostrar a un
+programador ya competente las particularidades de este lenguaje, ilustrándolo en
+las claves para desarrollar en él. No se encontrarán, pues, en este escrito:</p>
+<ul class="simple">
+<li>Pautas para el aprendizaje de la programación.</li>
+<li>La definición de los conceptos básicos de programación, esto es, se dará por
+hecho que el lector ya sabe qué es, en el ámbito de la programación, una
+<a class="reference external" href="https://es.wikipedia.org/wiki/Clausura_(inform%C3%A1tica)">clausura</a>, un
+<a class="reference external" href="https://es.wikipedia.org/wiki/Bucle_(programaci%C3%B3n)">bucle</a> o un <a class="reference external" href="https://es.wikipedia.org/wiki/Objeto_(programaci%C3%B3n)">objeto</a>.</li>
+<li>La descripción exhaustiva de cuál es la sintaxis del lenguaje.</li>
+</ul>
+<p>El documento se encuentra dividido en cuatro partes:</p>
+<ol class="arabic simple">
+<li>Una primera introduce particularidades del lenguaje referentes a la
+programación en general. Tratará, pues, conceptos como el <em>prototipo</em> o el
+<em>contexto de una función</em>.</li>
+<li>La segunda se dedica a describir cómo trabajar con <a class="reference external" href="https://nodejs.org">NodeJS</a> y <strong class="program">npm</strong>
+y cómo poner en práctica la programación modular.</li>
+<li>La tercera detalla cómo desarrollar aplicaciones ejecutados en el lado del
+cliente, esto es, en el navegador.</li>
+<li>La última hace lo propio con las aplicaciones ejecutadas en el lado del
+servidor.</li>
+</ol>
 <div class="section" id="contenidos">
 <h2>Contenidos<a class="headerlink" href="#contenidos" title="Enlazar permanentemente con este título">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="01.syntax/index.html">1. El lenguaje de programación <em>Javascript</em></a></li>
-<li class="toctree-l1"><a class="reference internal" href="02.html/index.html">2. Javascript y <abbr title="HyperText Markup Language">HTML</abbr></a></li>
-<li class="toctree-l1"><a class="reference internal" href="03.node/index.html">3. NodeJS</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="03.node/01.nodejs.html">3.1. Uso</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03.node/02.npm.html">3.2. Paquetes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03.node/03.modulos.html">3.3. Módulos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01.partic/index.html">1. Particularidades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02.node/index.html">2. NodeJS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="02.node/01.nodejs.html">2.1. Uso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.node/02.npm.html">2.2. Paquetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.node/03.modulos.html">2.3. Módulos</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="04.client/index.html">4. Programación en el cliente</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="04.client/01.intro.html">4.1. Configuración básica</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04.client/02.part.html">4.2. Particularidades</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04.client/03.ejemplos.html">4.3. Ejemplos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03.client/index.html">3. Programación en el cliente</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="03.client/01.html/index.html">3.1. Javascript y <abbr title="HyperText Markup Language">HTML</abbr></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.client/02.webpack/index.html">3.2. Webpack</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="05.server/index.html">5. Programación en el servidor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04.server/index.html">4. Programación en el servidor</a></li>
 </ul>
 </div>
 </div>
@@ -91,8 +114,8 @@
 </ul>
 
   <h4>Próximo tema</h4>
-  <p class="topless"><a href="01.syntax/index.html"
-                        title="próximo capítulo">1. El lenguaje de programación <em>Javascript</em></a></p>
+  <p class="topless"><a href="01.partic/index.html"
+                        title="próximo capítulo">1. Particularidades</a></p>
   <div role="note" aria-label="source link">
     <h3>Esta página</h3>
     <ul class="this-page-menu">
@@ -123,7 +146,7 @@
           <a href="genindex.html" title="Índice General"
              >índice</a></li>
         <li class="right" >
-          <a href="01.syntax/index.html" title="1. El lenguaje de programación Javascript"
+          <a href="01.partic/index.html" title="1. Particularidades"
              >siguiente</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">documentación de Javascript - </a> &#187;</li> 
       </ul>
