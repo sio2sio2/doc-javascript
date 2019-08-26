@@ -3,15 +3,17 @@
 # Script en Bourne SHell para definir versiones en Github.
 #
 
+
 URL="https://api.github.com/repos/%s/%s/releases"
 DATA='{
-   "tag_name": $version,
+   "tag_name": "v%s",
    "target_commitish": "master",
-   "name": $version,
-   "body": $body,
-   "draft": $draft,
-   "prerelease": $prerelease
+   "name": "v%s",
+   "body": "%s",
+   "draft": %s,
+   "prerelease": %s
 }'
+
 
 #
 # Ayuda
@@ -67,8 +69,6 @@ gitNpmConf() {
    sed -r '/^\s+"(name|version)"/!d; s|[^:]*version[^:]*:\s*"([^"]+)".*|VERSION=\1|; s|[^:]*name[^:]*:\s*"([^"]+)".*|NAME=\1|' package.json
 }
 
-
-which jq > /dev/null || error 1 "Instale jq en el sistema"
 
 eval $(getGitConf)
 eval $(gitNpmConf)
@@ -128,7 +128,8 @@ REQUIRE=1
    if [ -n "$REQUIRE" ]; then
       [ -z "$BODY" ] && error 1 "No se han definido notas de lanzamiento"
       if [ -f "$BODY" ]; then
-         BODY=$(cat "$BODY")
+         # Deben sustituirse los cambios de línea por \n y escapar las comillas dobles.
+         BODY=$(awk -v ORS="\\\n" '{gsub("\"","\\\""); print}' "$BODY")
       else
          error 1 "$BODY: Fichero inexistente"
       fi
@@ -137,8 +138,8 @@ REQUIRE=1
    fi
 }
 
-DATA=$(jq -n --arg version "v$VERSION" --arg body "$BODY" --argjson draft "$DRAFT" --argjson prerelease "$PRERELEASE" "$DATA")
 URL=$(printf -- "$URL\n" "$USER" "$NAME")
+DATA=$(printf -- "$DATA" "$VERSION" "$VERSION" "$BODY" "$DRAFT" "$PRERELEASE")
 
 set -- -qSO - \
        --header "Authorization: token $TOKEN" \
