@@ -146,6 +146,14 @@ dentro del propio código), se genera un código directamente usable en
 navegadores modernos.</p>
 <p>En cualquier caso, nuestra intención no es escribir ficheros directamente
 ejecutables por el navegador, así que esta ventaja es muy secundaria.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Advertencia</p>
+<p class="last">Tenga presente que hay una diferencia bastante patente entre usar
+uno y otro sistema. Cuando se usa el de <em>ES2015</em>, el código siempre se
+debe interpretar en modo estricto, porque así es como lo establece la
+especificación. En cambio, si se desea la interpretación en modo estricto
+usando <em>CommonJS</em> es necesario especificarlo en el código.</p>
+</div>
 </li>
 </ul>
 </div>
@@ -863,6 +871,35 @@ permite sustituir sintaxis demasiado nueva por otra compatible con versiones má
 antiguas de <em>Javascript</em>. Para usarlo y que transpile<a class="footnote-reference" href="#id14" id="id6">[6]</a> de forma que quede una
 sintaxis ampliamente soportada, podemos añadir algunas líneas a
 <code class="file docutils literal notranslate"><span class="pre">webpack/webpack.production.js</span></code>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
+   <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;production&quot;</span><span class="p">,</span>
+   <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
+         <span class="p">{</span>
+            <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+            <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+            <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
+               <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;babel-loader&quot;</span><span class="p">,</span>
+               <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                  <span class="c1">// presets: [ &quot;@babel/env&quot; ]  // Sin opciones.</span>
+                  <span class="nx">presets</span><span class="o">:</span> <span class="p">[</span>
+                     <span class="p">[</span><span class="s2">&quot;@babel/env&quot;</span><span class="p">,</span> <span class="p">{</span>
+                        <span class="nx">debug</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+                     <span class="p">}]</span>
+                  <span class="p">]</span>
+               <span class="p">}</span>
+            <span class="p">}</span>
+         <span class="p">},</span>
+      <span class="p">]</span>
+   <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
+</pre></div>
+</div>
 <p>e instalar los paquetes pertinentes:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev babel-loader @babel/core @babel/cli @babel/preset-env
 </pre></div>
@@ -924,6 +961,35 @@ dependencia de desarrollo.</p>
 </li>
 <li><p class="first">Modificar la configuración de <strong class="program">webpack</strong> para añadir una opción a
 <strong class="program">babel</strong>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
+   <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;production&quot;</span><span class="p">,</span>
+   <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
+         <span class="p">{</span>
+            <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+            <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+            <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
+               <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;babel-loader&quot;</span><span class="p">,</span>
+               <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                  <span class="nx">presets</span><span class="o">:</span> <span class="p">[</span>
+                     <span class="p">[</span><span class="s2">&quot;@babel/env&quot;</span><span class="p">,</span> <span class="p">{</span>
+                        <span class="nx">debug</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="hll">                        <span class="nx">useBuiltIns</span><span class="o">:</span> <span class="s2">&quot;usage&quot;</span><span class="p">,</span>
+</span>                     <span class="p">}]</span>
+                  <span class="p">]</span>
+               <span class="p">}</span>
+            <span class="p">}</span>
+         <span class="p">},</span>
+      <span class="p">]</span>
+   <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
+</pre></div>
+</div>
 <p>Con esa opción, sólo se añadirán al código <em>Javascript</em> resultante, el
 codigo necesario para implementar las funciones pertienen que hayamos
 incorporado al código.</p>
@@ -938,6 +1004,36 @@ incorporado al código.</p>
 </li>
 <li><p class="first">Modificamos la configuración de <strong class="program">webpack</strong> para añadir un par de
 opciones a <strong class="program">babel</strong>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">merge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack-merge&#39;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">common</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./webpack.common.js&#39;</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">common</span><span class="p">,</span> <span class="p">{</span>
+   <span class="nx">mode</span><span class="o">:</span> <span class="s2">&quot;production&quot;</span><span class="p">,</span>
+   <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">rules</span><span class="o">:</span> <span class="p">[</span>
+         <span class="p">{</span>
+            <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+            <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+            <span class="nx">use</span><span class="o">:</span> <span class="p">{</span>
+               <span class="nx">loader</span><span class="o">:</span> <span class="s2">&quot;babel-loader&quot;</span><span class="p">,</span>
+               <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                  <span class="nx">presets</span><span class="o">:</span> <span class="p">[</span>
+                     <span class="p">[</span><span class="s2">&quot;@babel/env&quot;</span><span class="p">,</span> <span class="p">{</span>
+                        <span class="nx">debug</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="hll">                        <span class="nx">useBuiltIns</span><span class="o">:</span> <span class="s2">&quot;usage&quot;</span><span class="p">,</span>
+</span><span class="hll">                        <span class="nx">corejs</span><span class="o">:</span> <span class="mi">3</span>
+</span>                     <span class="p">}]</span>
+                  <span class="p">]</span>
+               <span class="p">}</span>
+            <span class="p">}</span>
+         <span class="p">},</span>
+      <span class="p">]</span>
+   <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">config</span>
+</pre></div>
+</div>
 </li>
 </ol>
 <div class="admonition note">
@@ -1113,7 +1209,7 @@ código inútil.</p>
 ocupa, es determinar cuánto contribuye a él cada uno de sus componentes. Para
 tal tarea, una herramienta muy práctica es <a class="reference external" href="https://www.npmjs.com/package/webpack-bundle-analyzer">webpack-bundle-analyzer</a> que nos mostrará
 gráficamente esta contribución:</p>
-<img alt="03.client/02.webpack/files/analyzer.png" src="03.client/02.webpack/files/analyzer.png" />
+<img alt="../../_images/analyzer.png" src="../../_images/analyzer.png" />
 <p>Para hacer uso de ella debemos instalar la utilidad:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">npm install --save-dev webpack-bundle-analyzer</span>
 </pre></div>

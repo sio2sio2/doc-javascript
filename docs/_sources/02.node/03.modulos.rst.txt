@@ -11,9 +11,9 @@ esta tarea.
 Expondremos aquí dos de los mecanismos para la definición y uso de módulos:
 
 * CommonJS_, que es la base
-  en la que se basa el sistema de módulos de :program:`NodeJS`.
+  en la que se basa el sistema de módulos de `NodeJS`_.
 * El sistema propuesto en el estándar ECMAScript2015 que tiene soporte
-  experimental en :program:`NodeJS`, pero que es soportando sin problemas por
+  experimental en NodeJS_, pero que es soportando sin problemas por
   :ref:`webpack <webpack>`.
 
 Primero, sin embargo, describiremos qué se estructuraba el código antes de la
@@ -166,7 +166,7 @@ se quiere exportar un objeto debe usarse :code:`module.exports`:
 ECMAScript2015
 ==============
 .. warning:: El estándar propuesto en ES2015 es soportado experimentalmente por
-   *NodeJS* y requiere dos cosas:
+   NodeJS_ y requiere dos cosas:
 
    - Que la extensión de los ficheros sea :code:`.mjs`, no :code:`.js`.
    - Ejecutar con el argumento :code:`--experimental-modules`:
@@ -386,9 +386,11 @@ Como se aprecia, el patrón prueba si el intérprete soporta CommonJS_, si no es
 el caso, prueba si soporta |AMD|; y, si tampoco, exporta el resultado del módulo
 mediante la variable global *MiLibreria*.
 
-Lo interesante de este patrón es que permite usar módulos incluso en navegadores
-no tan recientes\ [#]_. Por esa razón, se usa para la :ref:`creación de librerías
-<webpack-ej-plugin>`.
+Lo interesante de este patrón es que permite usar el código tanto cargado
+directamente desde un navegador no muy reciente, como usarlo como componente en
+un desarrollo con NodeJS_. Por esa razón, es el formato que suele usarse para la
+:ref:`creación de librerías <webpack-ej-plugin>` en la programación en el
+cliente..
 
 .. rubric:: Enlaces de interés
 
@@ -405,8 +407,6 @@ no tan recientes\ [#]_. Por esa razón, se usa para la :ref:`creación de librer
 
 .. rubric:: Notas al pie
 
-.. [#] En navegadores modernos podría usarse ES2015 directamente.
-
 .. |RMP| replace:: :abbr:`RMP (Revealing Module Patron)`
 .. |AMD| replace:: :abbr:`AMD (Asynchronous Module Definition)`
 .. |UMD| replace:: :abbr:`UMD (Universal Module Definition)`
@@ -415,3 +415,4 @@ no tan recientes\ [#]_. Por esa razón, se usa para la :ref:`creación de librer
 .. _Leaflet: https://leafletjs.com
 .. _JQuery: https://jquery.com
 .. _CommonJS: https://nodejs.org/docs/latest/api/modules.html
+.. _NodeJS: https://nodejs.org

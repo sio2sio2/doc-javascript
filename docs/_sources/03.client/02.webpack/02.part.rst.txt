@@ -115,6 +115,12 @@ permite que se usa tanto el sistema CommonJS_ como el *ES2015*. Al respecto:
   En cualquier caso, nuestra intención no es escribir ficheros directamente
   ejecutables por el navegador, así que esta ventaja es muy secundaria.
 
+  .. warning:: Tenga presente que hay una diferencia bastante patente entre usar
+     uno y otro sistema. Cuando se usa el de *ES2015*, el código siempre se
+     debe interpretar en modo estricto, porque así es como lo establece la
+     especificación. En cambio, si se desea la interpretación en modo estricto
+     usando *CommonJS* es necesario especificarlo en el código.
+
 .. _webpack-conf-import:
 
 Importación desde la configuración

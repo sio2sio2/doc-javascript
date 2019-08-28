@@ -57,9 +57,9 @@ esta tarea.</p>
 <p>Expondremos aquí dos de los mecanismos para la definición y uso de módulos:</p>
 <ul class="simple">
 <li><a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>, que es la base
-en la que se basa el sistema de módulos de <strong class="program">NodeJS</strong>.</li>
+en la que se basa el sistema de módulos de <a class="reference external" href="https://nodejs.org">NodeJS</a>.</li>
 <li>El sistema propuesto en el estándar ECMAScript2015 que tiene soporte
-experimental en <strong class="program">NodeJS</strong>, pero que es soportando sin problemas por
+experimental en <a class="reference external" href="https://nodejs.org">NodeJS</a>, pero que es soportando sin problemas por
 <a class="reference internal" href="../03.client/02.webpack/index.html#webpack"><span class="std std-ref">webpack</span></a>.</li>
 </ul>
 <p>Primero, sin embargo, describiremos qué se estructuraba el código antes de la
@@ -127,7 +127,7 @@ definición esta disponible siempre en el resto del código.</p>
 </div>
 <div class="section" id="commonjs">
 <span id="module-commonjs"></span><h2>2.3.2. CommonJS<a class="headerlink" href="#commonjs" title="Enlazar permanentemente con este título">¶</a></h2>
-<div class="admonition warning" id="webpack-import-path">
+<div class="admonition warning">
 <p class="first admonition-title">Advertencia</p>
 <p class="last">Tanto para este sistema como para el siguiente, obsérvese que al
 importar ficheros las rutas relativas se hacen siempre explícitas
@@ -195,7 +195,7 @@ se quiere exportar un objeto debe usarse <code class="code docutils literal notr
 <div class="admonition warning">
 <p class="first admonition-title">Advertencia</p>
 <p>El estándar propuesto en ES2015 es soportado experimentalmente por
-<em>NodeJS</em> y requiere dos cosas:</p>
+<a class="reference external" href="https://nodejs.org">NodeJS</a> y requiere dos cosas:</p>
 <ul class="last">
 <li><p class="first">Que la extensión de los ficheros sea <code class="code docutils literal notranslate"><span class="pre">.mjs</span></code>, no <code class="code docutils literal notranslate"><span class="pre">.js</span></code>.</p>
 </li>
@@ -393,8 +393,11 @@ nombres «<em>jquery</em>» y «<em>leaflet</em>» respectivamente.</li>
 <p>Como se aprecia, el patrón prueba si el intérprete soporta <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>, si no es
 el caso, prueba si soporta <abbr title="Asynchronous Module Definition">AMD</abbr>; y, si tampoco, exporta el resultado del módulo
 mediante la variable global <em>MiLibreria</em>.</p>
-<p>Lo interesante de este patrón es que permite usar módulos incluso en navegadores
-no tan recientes<a class="footnote-reference" href="#id2" id="id1">[1]</a>. Por esa razón, se usa para la <a class="reference internal" href="../03.client/02.webpack/03.ejemplos.html#webpack-ej-plugin"><span class="std std-ref">creación de librerías</span></a>.</p>
+<p>Lo interesante de este patrón es que permite usar el código tanto cargado
+directamente desde un navegador no muy reciente, como usarlo como componente en
+un desarrollo con <a class="reference external" href="https://nodejs.org">NodeJS</a>. Por esa razón, es el formato que suele usarse para la
+<a class="reference internal" href="../03.client/02.webpack/03.ejemplos.html#webpack-ej-plugin"><span class="std std-ref">creación de librerías</span></a> en la programación en el
+cliente..</p>
 <p class="rubric">Enlaces de interés</p>
 <ul class="simple">
 <li><a class="reference external" href="https://programacionymas.com/blog/modulos-javascript-commonjs-amd-ecmascript">¿Qué son los módulos de Javascript</a></li>
@@ -403,12 +406,6 @@ no tan recientes<a class="footnote-reference" href="#id2" id="id1">[1]</a>. Por 
 <li><a class="reference external" href="https://v8.dev/features/modules">JavaScript modules</a></li>
 </ul>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>En navegadores modernos podría usarse ES2015 directamente.</td></tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
