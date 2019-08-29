@@ -107,6 +107,43 @@ prescribe que los módulos se interpreten siempre en modo estricto, aunque no
 se haya indicado explícitamente.</p>
 </div>
 </div>
+<div class="section" id="bucles-for">
+<h3>1.1.4. Bucles <code class="code docutils literal notranslate"><span class="pre">for</span></code><a class="headerlink" href="#bucles-for" title="Enlazar permanentemente con este título">¶</a></h3>
+<p><em>Javascript</em> dispone de dos tipos de bucles iterativos:</p>
+<ul>
+<li><p class="first">El <code class="docutils literal notranslate"><span class="pre">for</span></code> con sintaxis de <strong>C</strong> que permite recorrer secuencias a través de
+los ínjdices de sus componentes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">];</span>
+<span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;abc&quot;</span><span class="p">;</span>
+
+<span class="k">for</span><span class="p">(</span><span class="n">let</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="k">for</span><span class="p">(</span><span class="n">let</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">str</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Un bucle de tipo <em>forach</em> que tiene dos variantes:</p>
+<ul>
+<li><p class="first">Si se usa <code class="docutils literal notranslate"><span class="pre">in</span></code> se recorren a lps nombres de las propiedades enumerables de
+cualquier objeto (las mismas que devuelve <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys">Object.keys</a>)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Object</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">arr</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Devuelve</span> <span class="p">[</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">]</span>
+<span class="k">for</span><span class="p">(</span><span class="n">const</span> <span class="n">idx</span> <span class="n">of</span> <span class="n">arr</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="n">sucesivamente</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">A partir de <em>ES2015</em>, si se usa <code class="docutils literal notranslate"><span class="pre">of</span></code> se recorren los valores de las
+propiedades enumerables de cualquier objeto:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="n">const</span> <span class="n">e</span> <span class="n">of</span> <span class="n">arr</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="n">sucesivamente</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div class="section" id="variables">
 <h2>1.2. Variables<a class="headerlink" href="#variables" title="Enlazar permanentemente con este título">¶</a></h2>
@@ -135,8 +172,65 @@ pueden ocurrir dos cosas:</p>
 <li>En otro caso, se produce un error.</li>
 </ul>
 </div>
+<div class="section" id="tipos">
+<h3>1.2.2. Tipos<a class="headerlink" href="#tipos" title="Enlazar permanentemente con este título">¶</a></h3>
+<p><em>Javascript</em> define los siguientes tipos:</p>
+<ul>
+<li><p class="first">Tipos primitivos:</p>
+<ul>
+<li><p class="first">Lógico (<code class="docutils literal notranslate"><span class="pre">true</span></code> o <code class="docutils literal notranslate"><span class="pre">false</span></code>).</p>
+</li>
+<li><p class="first">Cadena.</p>
+</li>
+<li><p class="first">Numérico (número en coma flotante de doble precisión). No hay soporte nativo
+para enteroes.</p>
+</li>
+<li><p class="first">Nulo (<code class="docutils literal notranslate"><span class="pre">null</span></code>).</p>
+</li>
+<li><p class="first">Indefinido, sin valor (<code class="docutils literal notranslate"><span class="pre">undefinedp</span></code>).</p>
+</li>
+<li><p class="first">Símbolo: es un tipo que sirve para definir valores únicos. Puede usarse como
+como clave para las propiedades de los objetos:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">();</span>
+<span class="n">const</span> <span class="n">objeto</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="n">objeto</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;La clave es un símbolo&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">Objetos:</p>
+<ul>
+<li><p class="first"><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Fecha</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">ahora</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">();</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Funciones</a>.</p>
+</li>
+<li><p class="first">Objetos equivalentes a los datos primitivos (como en <em>Java</em>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">s</span> <span class="o">=</span> <span class="n">new</span> <span class="n">String</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">n</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Number</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">b</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Objetos en general:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{};</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="contexto-de-ejecucion">
-<h3>1.2.2. Contexto de ejecución<a class="headerlink" href="#contexto-de-ejecucion" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3>1.2.3. Contexto de ejecución<a class="headerlink" href="#contexto-de-ejecucion" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>El <em class="dfn">contexto de ejecución</em> es, simplemente, el contexto en que se ejecuta
 una determinada parte del código. En <em>Javascript</em> hay un contexto global y cada
 función crea su propio contexto de ejecución:</p>
@@ -175,7 +269,7 @@ contexto glonal, por lo que si nen el nivel superior definimos:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>estaremos haciendo exactamente lo mismo que<a class="footnote-reference" href="#id3" id="id1">[1]</a>:</p>
+<p>estaremos haciendo exactamente lo mismo que<a class="footnote-reference" href="#id4" id="id1">[1]</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -192,7 +286,7 @@ tiene su contexto particular.</p>
 </ul>
 </div>
 <div class="section" id="entornos">
-<h3>1.2.3. Entornos<a class="headerlink" href="#entornos" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3>1.2.4. Entornos<a class="headerlink" href="#entornos" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Al crearse un nuevo contexto de ejecución se crean un entorno léxico y un
 entorno de variable que, en principio, son idénticos. Cada entorno recoge la
 declaración de variables y funciones y una referencia al entorno externo. En
@@ -262,7 +356,7 @@ para implementar esto es la de apuntar <code class="docutils literal notranslate
 y el entorno de variables difiere.</p>
 </div>
 <div class="section" id="objeto-global">
-<span id="id2"></span><h3>1.2.4. Objeto global<a class="headerlink" href="#objeto-global" title="Enlazar permanentemente con este título">¶</a></h3>
+<span id="id2"></span><h3>1.2.5. Objeto global<a class="headerlink" href="#objeto-global" title="Enlazar permanentemente con este título">¶</a></h3>
 <p><em class="dfn">Objeto global</em> es aquel que las definidas que pertenecen al alcance global.
 En un navegador el objeto global es <em>window</em>.</p>
 <div class="admonition note">
@@ -273,7 +367,7 @@ del objeto global.</p>
 </div>
 </div>
 <div class="section" id="objeto-this">
-<h3>1.2.5. Objeto <code class="code docutils literal notranslate"><span class="pre">this</span></code><a class="headerlink" href="#objeto-this" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3>1.2.6. Objeto <code class="code docutils literal notranslate"><span class="pre">this</span></code><a class="headerlink" href="#objeto-this" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Cada contexto de ejecución tiene asociado un objeto <code class="code docutils literal notranslate"><span class="pre">this</span></code>. Es importante
 tener presente que el significado de <code class="code docutils literal notranslate"><span class="pre">this</span></code> en <em>Javascript</em> es mucho
 amplio que el que tiene comúnmente en lenguajes orientados a objetos como <em>Java</em>
@@ -325,8 +419,8 @@ globales de todos los ficheros de código son exactamente el mismo.</p>
 epígrafe.</p>
 </div>
 </div>
-<div class="section" id="funciones">
-<h2>1.3. Funciones<a class="headerlink" href="#funciones" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="id3">
+<h2>1.3. Funciones<a class="headerlink" href="#id3" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Las funciones en <em>Javascript</em> tiene algunas particularidades que conviene
 conocer.</p>
 <div class="section" id="sintaxis">
@@ -359,18 +453,16 @@ construcción eliminado las llaves y la sentencia <code class="code docutils lit
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<dl class="docutils">
-<dt>Si se quiere devolver un objeto, entonces es forzoso encerrarlo entre</dt>
-<dd><p class="first">paréntesis para evitar ambigüedad:</p>
+<p>Si se quiere devolver un objeto, entonces es forzoso encerrarlo entre
+paréntesis para evitar ambigüedad:</p>
 <div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="n">decription</span><span class="p">:</span> <span class="n">desc</span><span class="p">})</span>
 </pre></div>
 </div>
-</dd>
-</dl>
+</div>
 <p>Las funciones flecha no expresan el nombre, pero podemos asignarlas a un
 identificador (como por otro lado también puede hacerse con las funciones
 anónimas en sintaxis tradicional):</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Función</span> <span class="n">flecha</span> <span class="n">asociada</span> <span class="n">a</span> <span class="n">un</span> <span class="n">identificador</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Función</span> <span class="n">flecha</span> <span class="n">asociada</span> <span class="n">a</span> <span class="n">un</span> <span class="n">identificador</span><span class="o">.</span>
 <span class="n">var</span> <span class="n">suma</span> <span class="o">=</span> <span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span><span class="p">;</span>
 
 <span class="o">//</span> <span class="n">Una</span> <span class="n">forma</span> <span class="n">más</span> <span class="n">enrevesada</span> <span class="n">de</span> <span class="n">definir</span> <span class="n">la</span> <span class="n">primera</span> <span class="n">función</span><span class="p">:</span>
@@ -380,9 +472,8 @@ anónimas en sintaxis tradicional):</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
 <p>Las funciones flecha no son simple <a class="reference external" href="https://es.wikipedia.org/wiki/Az%C3%BAcar_sint%C3%A1ctico">azucar sintáctico</a>, sino que hay
-diferencia capital con respecto a las funciones tradicional: no crean un
+una diferencia capital entre ellas y las funciones tradicionales: no crean un
 contexto de ejecución propio, sino que heredan el contexto externo. Por
 ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">uno</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
@@ -477,22 +568,146 @@ fija de argumentos nominados, y otra variable:</p>
 </div>
 <div class="section" id="contexto">
 <h3>1.3.3. Contexto<a class="headerlink" href="#contexto" title="Enlazar permanentemente con este título">¶</a></h3>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Por hacer</p>
-<p class="last">Tratar el contexto, y cómo cambiarlo mediante .call y .apply.</p>
+<div class="section" id="this-predeterninado">
+<h4>1.3.3.1. <code class="docutils literal notranslate"><span class="pre">this</span></code> predeterninado<a class="headerlink" href="#this-predeterninado" title="Enlazar permanentemente con este título">¶</a></h4>
+<p>El objeto <code class="code docutils literal notranslate"><span class="pre">this</span></code> del contexto ejecución que crea cada función depende de
+múltiples factores:</p>
+<ul>
+<li><p class="first">En las <em>funciones flecha</em> se conserva el del entorno externo.</p>
+</li>
+<li><p class="first">En funciones independendientes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">foobar</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Objeto</span> <span class="k">global</span> <span class="n">o</span> <span class="n">undefined</span><span class="o">.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>depende del modo: en modo estricto queda indefnido (<code class="docutils literal notranslate"><span class="pre">undefined</span></code>), mientras
+que en otro caso, es el objetp global.</p>
+</li>
+<li><p class="first">En métodos de un objeto, representa al propio objeto:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">objeto</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">};</span>
+
+<span class="n">objeto</span><span class="o">.</span><span class="n">foobar</span> <span class="o">=</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">objecto</span><span class="o">.</span><span class="n">foobar</span><span class="p">();</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="mf">1.</span>
+
+<span class="o">//</span> <span class="n">Pero</span><span class="p">:</span>
+
+<span class="n">foobar2</span> <span class="o">=</span> <span class="n">objeto</span><span class="o">.</span><span class="n">foobar</span><span class="p">;</span>
+
+<span class="n">foobar2</span><span class="p">();</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="n">undefined</span> <span class="n">en</span> <span class="n">modo</span> <span class="n">estricto</span> <span class="p">(</span><span class="n">error</span> <span class="n">en</span> <span class="n">otro</span> <span class="n">caso</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Una función también podemos considerarla un objeto:</p>
+<div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">ABC</span><span class="p">()</span> <span class="p">{}</span>
+<span class="nx">ABC</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="nx">ABC</span><span class="p">.</span><span class="nx">foobar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">ABC</span><span class="p">.</span><span class="nx">foobar</span><span class="p">();</span>  <span class="c1">// Imprime 1.</span>
+</pre></div>
+</div>
+</div>
+</li>
+<li><p class="first">Y aunque se entenderá al tratar el modelo de objetos, dentro de las funciones
+constructoras y en los métodos del prototipo de dicho constructor,
+<code class="code docutils literal notranslate"><span class="pre">this</span></code> representa al propio objeto:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Constructor</span>
+<span class="n">function</span> <span class="n">Foobar</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">this</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Foobar</span><span class="o">.</span><span class="n">prototype</span><span class="o">.</span><span class="n">metodo</span> <span class="o">=</span> <span class="n">functioN</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">const</span> <span class="n">objeto</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Foobar</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Se</span> <span class="n">asigna</span> <span class="mi">1</span> <span class="n">a</span> <span class="n">objeto</span><span class="o">.</span><span class="n">a</span><span class="p">;</span>
+<span class="n">objeto</span><span class="o">.</span><span class="n">metodo</span><span class="p">();</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="mf">1.</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="manipulacion-de-this">
+<h4>1.3.3.2. Manipulación de <code class="docutils literal notranslate"><span class="pre">this</span></code><a class="headerlink" href="#manipulacion-de-this" title="Enlazar permanentemente con este título">¶</a></h4>
+<p>Aunque lo establecido bajo el epígrafe anterior son los valores que adquiere
+<code class="docutils literal notranslate"><span class="pre">this</span></code> dependendiendo de cómo se haya definido la función, es posible alterar
+dinámicamente el contexto a través de diversas herramientas. Para ilustrarlas
+tomemos de ejemplo la función:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">foobar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;this&quot;</span><span class="o">.</span> <span class="n">this</span><span class="p">);</span>
+   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">.bind()</a></dt>
+<dd><p class="first">Permite crear una nueva función en que se definen de antemano el objeto <code class="code docutils literal notranslate"><span class="pre">this</span></code>
+y todos los argumentos que se le proporcionen:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">barfoo</span> <span class="o">=</span> <span class="n">foobar</span><span class="o">.</span><span class="n">bind</span><span class="p">({},</span> <span class="mi">1</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Proporcionamos</span> <span class="n">this</span> <span class="n">y</span> <span class="n">el</span> <span class="n">primer</span> <span class="n">argumento</span><span class="o">.</span>
+<span class="n">barfoo</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>                          <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
+</pre></div>
+</div>
+<div class="last admonition note">
+<p class="first admonition-title">Nota</p>
+<p><code class="docutils literal notranslate"><span class="pre">.bind()</span></code> puede cumplir la función que hace <a class="reference external" href="https://docs.python.org/3.7/library/functools.html#partial-objects">partial</a> en
+<em>Python</em>, aunque tiene el efecto añadido de modificar el objeto
+<code class="code docutils literal notranslate"><span class="pre">this</span></code>. Para una solución que no lo modifique puede usarse el
+siguiente código:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">partial</span> <span class="o">=</span> <span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">...</span><span class="n">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="o">...</span><span class="n">rest</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">func</span><span class="p">(</span><span class="o">..</span><span class="n">args</span><span class="p">,</span> <span class="o">...</span><span class="n">rest</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call">.call()</a></dt>
+<dd><p class="first">Ejecuta la función permitiendo modificar el objeto <code class="code docutils literal notranslate"><span class="pre">this</span></code>, que pasa a
+ser el primer argumento:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foobar</span><span class="o">.</span><span class="n">call</span><span class="p">({},</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">):</span>  <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply">.apply()</a></dt>
+<dd><p class="first">Actúa como <code class="docutils literal notranslate"><span class="pre">.call()</span></code> modificando el objeto <code class="code docutils literal notranslate"><span class="pre">thus</span></code>, pero pasa el resto
+de argumentos en forma de <em>array</em>:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foobar</span><span class="o">.</span><span class="n">apply</span><span class="p">({},</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]);</span>  <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Las definiciones hechas con <code class="code docutils literal notranslate"><span class="pre">.bind()</span></code> provocan que quede anulado
+el efecto de <code class="docutils literal notranslate"><span class="pre">.call()</span></code> y <code class="docutils literal notranslate"><span class="pre">.apply()</span></code>.</p>
+</div>
 </div>
 </div>
 </div>
 <div class="section" id="modelo-de-objetos">
 <span id="object-model"></span><h2>1.4. Modelo de objetos<a class="headerlink" href="#modelo-de-objetos" title="Enlazar permanentemente con este título">¶</a></h2>
+</div>
+<div class="section" id="enlaces-de-interes">
+<h2>1.5. Enlaces de interés<a class="headerlink" href="#enlaces-de-interes" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://zendev.com/2018/10/01/javascript-arrow-functions-how-why-when.html">JavaScript Arrow Functions: How, Why, When (and WHEN NOT) to Use Them</a>.</li>
+<li><a class="reference external" href="http://ryanmorr.com/understanding-scope-and-context-in-javascript/">Understanding Scope and Context in JavaScript</a>.</li>
+<li><a class="reference external" href="https://www.freecodecamp.org/news/lets-learn-javascript-closures-66feb44f6a44/">Let’s Learn JavaScript Closures</a>.</li>
+<li><a class="reference external" href="https://medium.com/&#64;5066aman/lexical-environment-the-hidden-part-to-understand-closures-71d60efac0e0">Lexical Environment — The hidden part to understand Closures</a>.</li>
+<li><a class="reference external" href="https://dev.venntro.com/2013/09/es6-part-2/">https://dev.venntro.com/2013/09/es6-part-2/</a>.</li>
+</ul>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id3" rules="none">
+<table class="docutils footnote" frame="void" id="id4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>En modo estricto, se produce un error.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
+<table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label">[2]</td><td>Ya veremos que en un navegador el objeto global es <em>window</em>, de ahí la
@@ -515,23 +730,30 @@ equivalencia.</td></tr>
 <li><a class="reference internal" href="#caracteristicas">1.1.1. Características</a></li>
 <li><a class="reference internal" href="#versiones">1.1.2. Versiones</a></li>
 <li><a class="reference internal" href="#modo-estricto">1.1.3. Modo estricto</a></li>
+<li><a class="reference internal" href="#bucles-for">1.1.4. Bucles <code class="code docutils literal notranslate"><span class="pre">for</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#variables">1.2. Variables</a><ul>
 <li><a class="reference internal" href="#declaracion">1.2.1. Declaración</a></li>
-<li><a class="reference internal" href="#contexto-de-ejecucion">1.2.2. Contexto de ejecución</a></li>
-<li><a class="reference internal" href="#entornos">1.2.3. Entornos</a></li>
-<li><a class="reference internal" href="#objeto-global">1.2.4. Objeto global</a></li>
-<li><a class="reference internal" href="#objeto-this">1.2.5. Objeto <code class="code docutils literal notranslate"><span class="pre">this</span></code></a></li>
+<li><a class="reference internal" href="#tipos">1.2.2. Tipos</a></li>
+<li><a class="reference internal" href="#contexto-de-ejecucion">1.2.3. Contexto de ejecución</a></li>
+<li><a class="reference internal" href="#entornos">1.2.4. Entornos</a></li>
+<li><a class="reference internal" href="#objeto-global">1.2.5. Objeto global</a></li>
+<li><a class="reference internal" href="#objeto-this">1.2.6. Objeto <code class="code docutils literal notranslate"><span class="pre">this</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#funciones">1.3. Funciones</a><ul>
+<li><a class="reference internal" href="#id3">1.3. Funciones</a><ul>
 <li><a class="reference internal" href="#sintaxis">1.3.1. Sintaxis</a></li>
 <li><a class="reference internal" href="#argumentos">1.3.2. Argumentos</a></li>
-<li><a class="reference internal" href="#contexto">1.3.3. Contexto</a></li>
+<li><a class="reference internal" href="#contexto">1.3.3. Contexto</a><ul>
+<li><a class="reference internal" href="#this-predeterninado">1.3.3.1. <code class="docutils literal notranslate"><span class="pre">this</span></code> predeterninado</a></li>
+<li><a class="reference internal" href="#manipulacion-de-this">1.3.3.2. Manipulación de <code class="docutils literal notranslate"><span class="pre">this</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#modelo-de-objetos">1.4. Modelo de objetos</a></li>
+<li><a class="reference internal" href="#enlaces-de-interes">1.5. Enlaces de interés</a></li>
 </ul>
 </li>
 </ul>

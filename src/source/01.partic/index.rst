@@ -65,6 +65,36 @@ una variable si previamente no se ha declarado explícitamente.
    prescribe que los módulos se interpreten siempre en modo estricto, aunque no
    se haya indicado explícitamente.
 
+Bucles :code:`for`
+==================
+*Javascript* dispone de dos tipos de bucles iterativos:
+
+* El ``for`` con sintaxis de **C** que permite recorrer secuencias a través de
+  los ínjdices de sus componentes::
+
+   arr = ["a", "b", "c"];
+   str = "abc";
+
+   for(let i=0; i < arr.length; i++) console.log(arr[i]);
+   for(let i=0; i < str.length; i++) console.log(str[i]);
+
+* Un bucle de tipo *forach* que tiene dos variantes:
+
+  - Si se usa ``in`` se recorren a lps nombres de las propiedades enumerables de
+    cualquier objeto (las mismas que devuelve `Object.keys`_) ::
+
+      Object.keys(arr);  // Devuelve [ "0", "1", "2"]
+      for(const idx of arr) {
+         console.log(idx);  // Imprime sucesivamente "0", "1", "2"
+      }
+
+  - A partir de *ES2015*, si se usa ``of`` se recorren los valores de las
+    propiedades enumerables de cualquier objeto::
+
+      for(const e of arr) {
+         console.log(e);  // Imprime sucesivamente "a", "b", "c"
+      }
+
 Variables
 *********
 Declaración
@@ -96,6 +126,50 @@ pueden ocurrir dos cosas:
 - En modo estricto, la variable pasa a ser un atributo del :ref:`objeto global
   <objeto-global>`.
 - En otro caso, se produce un error.
+
+Tipos
+=====
+*Javascript* define los siguientes tipos:
+
+* Tipos primitivos:
+
+  * Lógico (``true`` o ``false``).
+  * Cadena.
+  * Numérico (número en coma flotante de doble precisión). No hay soporte nativo
+    para enteroes.
+  * Nulo (``null``).
+  * Indefinido, sin valor (``undefinedp``).
+  * Símbolo: es un tipo que sirve para definir valores únicos. Puede usarse como
+    como clave para las propiedades de los objetos::
+
+      const s = Symbol();
+      const objeto = {};
+      objeto[s] = "La clave es un símbolo";
+
+* Objetos:
+
+  * `Array
+    <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array>`_::
+
+      const arr = [1, 2, 3];
+
+  * `Fecha
+    <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date>`_::
+
+      const ahora = new Date();
+
+  * `Funciones
+    <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function>`_.
+
+  * Objetos equivalentes a los datos primitivos (como en *Java*)::
+
+      const s = new String("abc");
+      const n = new Number(12);
+      const b = new Boolean(true);
+
+  * Objetos en general::
+
+      const o = {};
 
 Contexto de ejecución
 =====================
@@ -319,22 +393,22 @@ Hay dos formas de definir funciones:
 
       (name), desc) => ({name: name, decription: desc})
 
- Las funciones flecha no expresan el nombre, pero podemos asignarlas a un
- identificador (como por otro lado también puede hacerse con las funciones
- anónimas en sintaxis tradicional)::
+Las funciones flecha no expresan el nombre, pero podemos asignarlas a un
+identificador (como por otro lado también puede hacerse con las funciones
+anónimas en sintaxis tradicional)::
 
-   // Función flecha asociada a un identificador.
-   var suma = (arg1, arg2) => arg1 + arg2;
+  // Función flecha asociada a un identificador.
+  var suma = (arg1, arg2) => arg1 + arg2;
 
-   // Una forma más enrevesada de definir la primera función:
+  // Una forma más enrevesada de definir la primera función:
 
-   var suma = function(arg1, arg2) {
-      return arg1 + arg2;
-   }
+  var suma = function(arg1, arg2) {
+     return arg1 + arg2;
+  }
 
 Las funciones flecha no son simple `azucar sintáctico
 <https://es.wikipedia.org/wiki/Az%C3%BAcar_sint%C3%A1ctico>`_, sino que hay
-diferencia capital con respecto a las funciones tradicional: no crean un
+una diferencia capital entre ellas y las funciones tradicionales: no crean un
 contexto de ejecución propio, sino que heredan el contexto externo. Por
 ejemplo::
 
@@ -421,13 +495,126 @@ características especiales:
 Contexto
 ========
 
-.. todo:: Tratar el contexto, y cómo cambiarlo mediante .call y .apply.
+``this`` predeterninado
+-----------------------
+
+El objeto :code:`this` del contexto ejecución que crea cada función depende de
+múltiples factores:
+
+- En las *funciones flecha* se conserva el del entorno externo.
+- En funciones independendientes::
+
+   function foobar() {
+      console.log(this);  // Objeto global o undefined.
+   }
+
+  depende del modo: en modo estricto queda indefnido (``undefined``), mientras
+  que en otro caso, es el objetp global.
+
+- En métodos de un objeto, representa al propio objeto::
+
+   const objeto = {a: 1, b: 2, c: 3};
+
+   objeto.foobar = function() {
+      console.log(this.a);
+   }
+
+   objecto.foobar();  // Imprime 1.
+
+   // Pero:
+
+   foobar2 = objeto.foobar;
+
+   foobar2();  // Imprime undefined en modo estricto (error en otro caso).
+
+  .. note:: Una función también podemos considerarla un objeto:
+
+     .. code-block:: js
+
+        function ABC() {}
+        ABC.a = 1;
+
+        ABC.foobar = function() {
+           console.log(this.a);
+        }
+
+        ABC.foobar();  // Imprime 1.
+   
+- Y aunque se entenderá al tratar el modelo de objetos, dentro de las funciones
+  constructoras y en los métodos del prototipo de dicho constructor,
+  :code:`this` representa al propio objeto::
+
+   // Constructor
+   function Foobar(a) {
+      this.a = a;
+   }
+
+   Foobar.prototype.metodo = functioN() {
+      console.log(this.a);
+   }
+
+   const objeto = new Foobar(1);  // Se asigna 1 a objeto.a;
+   objeto.metodo();  // Imprime 1.
+
+Manipulación de ``this``
+------------------------
+Aunque lo establecido bajo el epígrafe anterior son los valores que adquiere
+``this`` dependendiendo de cómo se haya definido la función, es posible alterar
+dinámicamente el contexto a través de diversas herramientas. Para ilustrarlas
+tomemos de ejemplo la función::
+
+   function foobar(x, y) {
+      console.log("this". this);
+      console.log(x, "--", y);
+   }
+
+`.bind()`_
+   Permite crear una nueva función en que se definen de antemano el objeto :code:`this`
+   y todos los argumentos que se le proporcionen::
+
+      const barfoo = foobar.bind({}, 1);  // Proporcionamos this y el primer argumento.
+      barfoo(2);                          // this= {}; x= 1; y= 2.
+
+   .. note::  ``.bind()`` puede cumplir la función que hace `partial
+      <https://docs.python.org/3.7/library/functools.html#partial-objects>`_ en
+      *Python*, aunque tiene el efecto añadido de modificar el objeto
+      :code:`this`. Para una solución que no lo modifique puede usarse el
+      siguiente código::
+
+         const partial = (func, ...args) => (...rest) => func(..args, ...rest);
+
+`.call()`_
+   Ejecuta la función permitiendo modificar el objeto :code:`this`, que pasa a
+   ser el primer argumento::
+
+      foobar.call({}, 1 2):  // this= {}; x= 1; y= 2.
+
+`.apply()`_
+   Actúa como ``.call()`` modificando el objeto :code:`thus`, pero pasa el resto
+   de argumentos en forma de *array*::
+
+      foobar.apply({}, [1, 2]);  // this= {}; x= 1; y= 2.
+
+.. note:: Las definiciones hechas con :code:`.bind()` provocan que quede anulado
+   el efecto de ``.call()`` y ``.apply()``.
 
 .. _object-model:
 
 Modelo de objetos
 *****************
 
+Enlaces de interés
+******************
+
+* `JavaScript Arrow Functions: How, Why, When (and WHEN NOT) to Use Them
+  <https://zendev.com/2018/10/01/javascript-arrow-functions-how-why-when.html>`_.
+* `Understanding Scope and Context in JavaScript
+  <http://ryanmorr.com/understanding-scope-and-context-in-javascript/>`_.
+* `Let's Learn JavaScript Closures
+  <https://www.freecodecamp.org/news/lets-learn-javascript-closures-66feb44f6a44/>`_.
+* `Lexical Environment — The hidden part to understand Closures
+  <https://medium.com/@5066aman/lexical-environment-the-hidden-part-to-understand-closures-71d60efac0e0>`_.
+* `https://dev.venntro.com/2013/09/es6-part-2/ <https://dev.venntro.com/2013/09/es6-part-2/>`_.
 
 .. rubric:: Notas al pie
 
@@ -439,3 +626,7 @@ Modelo de objetos
 .. _NodeJS: https://nodejs.org
 .. _with: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with
 .. _arguments: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments
+.. _.bind(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+.. _.call(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call
+.. _.apply(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply
+.. _Object.keys: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
