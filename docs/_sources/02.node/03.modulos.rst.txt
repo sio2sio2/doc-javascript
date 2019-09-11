@@ -19,6 +19,8 @@ Expondremos aquí dos de los mecanismos para la definición y uso de módulos:
 Primero, sin embargo, describiremos qué se estructuraba el código antes de la
 aparación de estos sistemas.
 
+.. _js-module-pattern:
+
 El *patrón del módulo*
 ======================
 El *patrón del módulo* (y sus variantes) logran la encapsulación mediante el uso

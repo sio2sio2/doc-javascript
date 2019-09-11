@@ -65,7 +65,7 @@ experimental en <a class="reference external" href="https://nodejs.org">NodeJS</
 <p>Primero, sin embargo, describiremos qué se estructuraba el código antes de la
 aparación de estos sistemas.</p>
 <div class="section" id="el-patron-del-modulo">
-<h2>2.3.1. El <em>patrón del módulo</em><a class="headerlink" href="#el-patron-del-modulo" title="Enlazar permanentemente con este título">¶</a></h2>
+<span id="js-module-pattern"></span><h2>2.3.1. El <em>patrón del módulo</em><a class="headerlink" href="#el-patron-del-modulo" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>El <em>patrón del módulo</em> (y sus variantes) logran la encapsulación mediante el uso
 de una función envolvente que actúa como clausura y que expone al exterior sólo
 aquello que se desea hacer visible. Un ejemplo de este patrón (en realidad, de
@@ -127,7 +127,7 @@ definición esta disponible siempre en el resto del código.</p>
 </div>
 <div class="section" id="commonjs">
 <span id="module-commonjs"></span><h2>2.3.2. CommonJS<a class="headerlink" href="#commonjs" title="Enlazar permanentemente con este título">¶</a></h2>
-<div class="admonition warning">
+<div class="admonition warning" id="webpack-import-path">
 <p class="first admonition-title">Advertencia</p>
 <p class="last">Tanto para este sistema como para el siguiente, obsérvese que al
 importar ficheros las rutas relativas se hacen siempre explícitas
