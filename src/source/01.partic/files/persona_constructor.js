@@ -1,5 +1,6 @@
 const Persona = function() {
-   // Atributo privado (inacesible desde fuera)
+
+   // ATRIBUTO PRIVADO (inacesible desde fuera)
    const sexos = ['Varón', 'Hembra'];
 
    function Persona(nombre, nacimiento, sexo) {
@@ -10,7 +11,8 @@ const Persona = function() {
       this.sexo = sexo;
    }
 
-   // Método rigurosamente privado (debe invocarse con call)
+
+   // MÉTODO PRIVADO (debe invocarse con call)
    function initialize() {
       // No enumerables, para que quede claro
       // al programador que no debería tocarlos jamás.
@@ -21,13 +23,18 @@ const Persona = function() {
       });
    }
 
-   // Método estático privado sin acceso al objeto
+   // MÉTODO ESTÁTICO PRIVADO sin acceso al objeto
    function check_fecha(value) {
       // Comprobamos si la fecha es correcta y devulvemos true/false.
    }
 
-   // Descriptores públicos de acceso
+
+   // ATRIBUTOS PÚBLICOS (algunos definidos mediante getter/setter)
    Object.defineProperties(Persona.prototype, {
+      MAYORIA: {
+         value: 18,
+         enumerable: true
+      },
       nacimiento: {
          get() {
             return this._nacimiento;
@@ -67,9 +74,10 @@ const Persona = function() {
       }
    });
 
-   // Método público.
-   Persona.prototype.matar = function(value) {
-      set(value) {
+
+   // MÉTODO PÚBLICOS
+   Object.assign(Persona.prototype, {
+      matar(value) {
          if(!check_fecha(value)) {
             throw new Error(`${value}: fecha inválida`);
          }
@@ -77,10 +85,12 @@ const Persona = function() {
             throw new Error(`Defunción anterior al nacimiento`);
          }
          this._defuncion = value;
+      },
+      esMayor() {
+         return this.edad >= this.mayoria;
       }
-   }
+   });
 
    return Persona;
-
 }();
 

@@ -15,13 +15,16 @@ class Persona {
       return true;
    }
 
-   // Getters y setters
+   // Atributos
+   get MAYORIA() {
+      return 18;
+   }
 
    get nacimiento() {
       return this._nacimiento;
    }
 
-   set nacimiento() {
+   set nacimiento(value) {
       if(!check_fecha(value)) {
          throw new Error(`${value}: fecha inválida`);
       }
@@ -48,7 +51,8 @@ class Persona {
       // la fecha de hoy y la fecha de nacimiento.
    }
 
-   // Método público
+
+   // Métodos públicos
    matar(value) {
       if(!check_fecha(value)) {
          throw new Error(`${value}: fecha inválida`);
@@ -57,6 +61,10 @@ class Persona {
          throw new Error(`Defunción anterior al nacimiento`);
       }
       this._defuncion = value;
+   }
+
+   esMayor() {
+      return this.edad >= this.MAYORIA;
    }
 
 }

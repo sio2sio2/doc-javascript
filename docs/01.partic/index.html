@@ -1099,7 +1099,8 @@ utilizaremos estos como base para la definición de personas menores.</p>
 <div class="section" id="mediante-constructor">
 <h4>1.4.2.1. Mediante constructor<a class="headerlink" href="#mediante-constructor" title="Enlazar permanentemente con este título">¶</a></h4>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">Persona</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="c1">// Atributo privado (inacesible desde fuera)</span>
+
+   <span class="c1">// ATRIBUTO PRIVADO (inacesible desde fuera)</span>
    <span class="kr">const</span> <span class="nx">sexos</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Varón&#39;</span><span class="p">,</span> <span class="s1">&#39;Hembra&#39;</span><span class="p">];</span>
 
    <span class="kd">function</span> <span class="nx">Persona</span><span class="p">(</span><span class="nx">nombre</span><span class="p">,</span> <span class="nx">nacimiento</span><span class="p">,</span> <span class="nx">sexo</span><span class="p">)</span> <span class="p">{</span>
@@ -1110,7 +1111,8 @@ utilizaremos estos como base para la definición de personas menores.</p>
       <span class="k">this</span><span class="p">.</span><span class="nx">sexo</span> <span class="o">=</span> <span class="nx">sexo</span><span class="p">;</span>
    <span class="p">}</span>
 
-   <span class="c1">// Método rigurosamente privado (debe invocarse con call)</span>
+
+   <span class="c1">// MÉTODO PRIVADO (debe invocarse con call)</span>
    <span class="kd">function</span> <span class="nx">initialize</span><span class="p">()</span> <span class="p">{</span>
       <span class="c1">// No enumerables, para que quede claro</span>
       <span class="c1">// al programador que no debería tocarlos jamás.</span>
@@ -1121,13 +1123,18 @@ utilizaremos estos como base para la definición de personas menores.</p>
       <span class="p">});</span>
    <span class="p">}</span>
 
-   <span class="c1">// Método estático privado sin acceso al objeto</span>
+   <span class="c1">// MÉTODO ESTÁTICO PRIVADO sin acceso al objeto</span>
    <span class="kd">function</span> <span class="nx">check_fecha</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
       <span class="c1">// Comprobamos si la fecha es correcta y devulvemos true/false.</span>
    <span class="p">}</span>
 
-   <span class="c1">// Descriptores públicos de acceso</span>
+
+   <span class="c1">// ATRIBUTOS PÚBLICOS (algunos definidos mediante getter/setter)</span>
    <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">MAYORIA</span><span class="o">:</span> <span class="p">{</span>
+         <span class="nx">value</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
+         <span class="nx">enumerable</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="p">},</span>
       <span class="nx">nacimiento</span><span class="o">:</span> <span class="p">{</span>
          <span class="nx">get</span><span class="p">()</span> <span class="p">{</span>
             <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_nacimiento</span><span class="p">;</span>
@@ -1167,9 +1174,10 @@ utilizaremos estos como base para la definición de personas menores.</p>
       <span class="p">}</span>
    <span class="p">});</span>
 
-   <span class="c1">// Método público.</span>
-   <span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">matar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">set</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+
+   <span class="c1">// MÉTODO PÚBLICOS</span>
+   <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">matar</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
          <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">check_fecha</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">value</span><span class="si">}</span><span class="sb">: fecha inválida`</span><span class="p">);</span>
          <span class="p">}</span>
@@ -1177,17 +1185,56 @@ utilizaremos estos como base para la definición de personas menores.</p>
             <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="sb">`Defunción anterior al nacimiento`</span><span class="p">);</span>
          <span class="p">}</span>
          <span class="k">this</span><span class="p">.</span><span class="nx">_defuncion</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+      <span class="p">},</span>
+      <span class="nx">esMayor</span><span class="p">()</span> <span class="p">{</span>
+         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">edad</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">mayoria</span><span class="p">;</span>
       <span class="p">}</span>
-   <span class="p">}</span>
+   <span class="p">});</span>
 
    <span class="k">return</span> <span class="nx">Persona</span><span class="p">;</span>
-
 <span class="p">}();</span>
 </pre></div>
 </div>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Por hacer</p>
-<p class="last">Implementar Menor con herencia.</p>
+<p>Y para construir objetos que modelen menores de edad y hereden de estos:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">Menor</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+   <span class="c1">// Constructor</span>
+   <span class="kd">function</span> <span class="nx">Menor</span><span class="p">(</span><span class="nx">nombre</span><span class="p">,</span> <span class="nx">nacimiento</span><span class="p">,</span> <span class="nx">sexo</span><span class="p">,</span> <span class="nx">tutor</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">Persona</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">nombre</span><span class="p">,</span> <span class="nx">nacimiento</span><span class="p">,</span> <span class="nx">sexo</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">tutor</span> <span class="o">=</span> <span class="nx">tutor</span><span class="p">;</span>         
+   <span class="p">}</span>
+
+   <span class="kr">const</span> <span class="nx">superProto</span> <span class="o">=</span> <span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+
+   <span class="c1">// Implementación de la herencia.</span>
+   <span class="nx">Menor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">superProto</span><span class="p">);</span>
+   <span class="nx">Menor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Menor</span><span class="p">;</span>
+
+   <span class="c1">// El menor no puede tener más de 17 años,</span>
+   <span class="c1">// así que redefinimos el setter de nacimiento.</span>
+   <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kr">const</span> <span class="nx">superNacimiento</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">getOwnPropertyDescriptor</span><span class="p">(</span><span class="nx">superProto</span><span class="p">,</span> <span class="s2">&quot;nacimiento&quot;</span><span class="p">);</span>
+
+      <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">Menor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="s2">&quot;nacimiento&quot;</span><span class="p">,</span> <span class="p">{</span>
+         <span class="nx">get</span><span class="o">:</span> <span class="nx">superNacimiento</span><span class="p">.</span><span class="nx">get</span><span class="p">,</span>
+         <span class="nx">set</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_nacimiento</span><span class="p">;</span>
+
+            <span class="nx">superNacimiento</span><span class="p">.</span><span class="nx">set</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">esMayor</span><span class="p">())</span> <span class="p">{</span>
+               <span class="k">this</span><span class="p">.</span><span class="nx">_nacimiento</span> <span class="o">=</span> <span class="nx">actual</span><span class="p">;</span>
+               <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;La persona no es menor de edad&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+         <span class="p">},</span>
+         <span class="nx">enumerable</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="p">});</span>
+   <span class="p">})();</span>
+
+   <span class="c1">// Podemos seguir ampliando la &quot;subclase&quot; con más métodos y atributos.</span>
+
+   <span class="k">return</span> <span class="nx">Menor</span><span class="p">;</span>
+<span class="p">})();</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="mediante-class">
@@ -1212,13 +1259,16 @@ lo más equivalentemente posible a la anterior es esta:</p>
       <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
    <span class="p">}</span>
 
-   <span class="c1">// Getters y setters</span>
+   <span class="c1">// Atributos</span>
+   <span class="nx">get</span> <span class="nx">MAYORIA</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="mi">18</span><span class="p">;</span>
+   <span class="p">}</span>
 
    <span class="nx">get</span> <span class="nx">nacimiento</span><span class="p">()</span> <span class="p">{</span>
       <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_nacimiento</span><span class="p">;</span>
    <span class="p">}</span>
 
-   <span class="nx">set</span> <span class="nx">nacimiento</span><span class="p">()</span> <span class="p">{</span>
+   <span class="nx">set</span> <span class="nx">nacimiento</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">check_fecha</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
          <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">value</span><span class="si">}</span><span class="sb">: fecha inválida`</span><span class="p">);</span>
       <span class="p">}</span>
@@ -1245,7 +1295,8 @@ lo más equivalentemente posible a la anterior es esta:</p>
       <span class="c1">// la fecha de hoy y la fecha de nacimiento.</span>
    <span class="p">}</span>
 
-   <span class="c1">// Método público</span>
+
+   <span class="c1">// Métodos públicos</span>
    <span class="nx">matar</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">check_fecha</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
          <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">value</span><span class="si">}</span><span class="sb">: fecha inválida`</span><span class="p">);</span>
@@ -1254,6 +1305,10 @@ lo más equivalentemente posible a la anterior es esta:</p>
          <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="sb">`Defunción anterior al nacimiento`</span><span class="p">);</span>
       <span class="p">}</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">_defuncion</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="nx">esMayor</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">edad</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">MAYORIA</span><span class="p">;</span>
    <span class="p">}</span>
 
 <span class="p">}</span>
@@ -1276,6 +1331,26 @@ no hay modo de hacerlo privado.</li>
 controlar la visibilidad o permitir dentro de la propia clase la definición
 de atributos estáticos. Consulte, <a class="reference external" href="https://github.com/tc39/proposal-class-fields">el repositorio de Github</a> o <a class="reference external" href="https://www.sitepoint.com/javascript-private-class-fields/">este artículo de
 sitepoint.com</a>.</p>
+</div>
+<p>Extender esta clase para construir una que modele a un menor de edad es
+sencillo:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">Menor</span> <span class="kr">extends</span> <span class="nx">Persona</span> <span class="p">{</span>
+   <span class="nx">constructor</span><span class="p">(</span><span class="nx">nombre</span><span class="p">,</span> <span class="nx">nacimiento</span><span class="p">,</span> <span class="nx">sexo</span><span class="p">,</span> <span class="nx">tutor</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kr">super</span><span class="p">(</span><span class="nx">nombre</span><span class="p">,</span> <span class="nx">nacimineto</span><span class="p">,</span> <span class="nx">sexo</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">tutor</span> <span class="o">=</span> <span class="nx">tutor</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="nx">set</span> <span class="nx">nacimiento</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kr">const</span> <span class="nx">actual</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_nacimineto</span><span class="p">;</span>
+
+      <span class="kr">super</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">esMayor</span><span class="p">())</span> <span class="p">{</span>
+         <span class="k">this</span><span class="p">.</span><span class="nx">_nacimiento</span> <span class="o">=</span> <span class="nx">actual</span><span class="p">;</span>
+         <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;La persona no es menor de edad&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 </div>

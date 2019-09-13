@@ -1008,7 +1008,10 @@ Mediante constructor
 .. literalinclude:: files/persona_constructor.js
    :language: js
 
-.. todo:: Implementar Menor con herencia.
+Y para construir objetos que modelen menores de edad y hereden de estos:
+
+.. literalinclude:: files/menor_constructor.js
+   :language: js
 
 Mediante :code:`class`
 ----------------------
@@ -1037,6 +1040,12 @@ Las principales diferencias, como consecuencia de las limitaciones, son:
    de atributos estáticos. Consulte, `el repositorio de Github
    <https://github.com/tc39/proposal-class-fields>`_ o `este artículo de
    sitepoint.com <https://www.sitepoint.com/javascript-private-class-fields/>`_.
+
+Extender esta clase para construir una que modele a un menor de edad es
+sencillo:
+
+.. literalinclude:: files/menor_class.js
+   :language: js
 
 Características
 ===============
