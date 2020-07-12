@@ -1,4 +1,4 @@
-.. _js-modules:
+ .. _js-modules:
 
 Módulos
 *******
@@ -16,7 +16,7 @@ Expondremos aquí dos de los mecanismos para la definición y uso de módulos:
   experimental en NodeJS_, pero que es soportando sin problemas por
   :ref:`webpack <webpack>`.
 
-Primero, sin embargo, describiremos qué se estructuraba el código antes de la
+Primero, sin embargo, describiremos cómo se estructuraba el código antes de la
 aparación de estos sistemas.
 
 .. _js-module-pattern:
@@ -199,7 +199,7 @@ En el módulo se exporta lo que se precisa mediante la palabra :code:`export`:
       return PI*r**2;
    }
 
-Y en el código invocante, dene usarse :code:`import` del siguiente modo:
+Y en el código invocante, debe usarse :code:`import` del siguiente modo:
 
 .. code-block:: js
 
@@ -253,7 +253,7 @@ Además es posible importar por defecto una función anónima:
    }
    export default x => x/2;
 
-En este caso, se puede dar un nombre cualquier en el código invocante a la
+En este caso, se puede dar cualquier nombre en el código invocante a la
 definición:
 
 .. code-block:: js

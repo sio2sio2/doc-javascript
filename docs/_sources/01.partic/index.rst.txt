@@ -1133,6 +1133,13 @@ herencia: un objeto hereda de su prototipo.
 Programación asínscrona
 ***********************
 
+.. Explica con un ejemplo el infierno de los callbacks.
+   https://dev.to/siwalikm/async-programming-basics-every-js-developer-should-know-in-2018-a9c
+   
+.. Otra buena explicación de Promise/async:
+   https://medium.com/jspoint/javascript-promises-and-async-await-as-fast-as-possible-d7c8c8ff0abc
+
+
 Enlaces de interés
 ******************
 * `JavaScript Arrow Functions: How, Why, When (and WHEN NOT) to Use Them

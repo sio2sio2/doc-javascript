@@ -177,9 +177,8 @@ el resto.
         })
      ]
 
-  Entiéndase que lo exportado por el módulo cargado es el valor que
-  adquirirá el identificar en el código. Ahora bien, si el módulo exporta de esta
-  manera:
+  Entiéndase que lo exportado por el módulo cargado es el valor que adquirirá el
+  identificador en el código. Ahora bien, si el módulo exporta de esta manera:
 
   .. code-block:: js
 
@@ -262,7 +261,7 @@ entre el código *Javascript* y el resto:
   valores del objeto que se pasó como argumento a Provide_) y los valores son la
   variable global asociada a aquello que exporte la librería. Por tanto, muy
   comúnmente al usar Provide_ y externals lo que se hace es intercambiar claves
-  por valores y valores con claves, con la diferencia que en *externals* un
+  por valores y valores con claves, con la diferencia de que en *externals* un
   identificador que no sea global, sino el atributo de otro objeto debe notarse en
   forma de *array*. Es por ello que :code:`L.Control.Search` se ha convertido en
   :code:`["L", "Control", "Search"]`.
@@ -515,7 +514,7 @@ Procesamiento
 =============
 En principio, :program:`webpack` procesa de forma nativa sólo código
 *Javascript* por lo que cualquier otro tipo de fichero requiere declarar
-mediante qié cargador debe procesarse. Esto precisamente es lo que se nos
+mediante qué cargador debe procesarse. Esto precisamente es lo que se nos
 presentó al :ref:`configurar la aplicación simple <webpack-simple>` que tenía
 ficheros |HTML| y |CSS|.
 
@@ -529,6 +528,13 @@ reglas:
 
    module: {
       rules: [
+         {
+            test: /\.html$/,
+            use: {
+               loader: "html-loader",
+               options: { minimize: true }
+            }
+         },
          {
             test: /\.css$/i,
             use: [MiniCssExtractPlugin.loader,
@@ -582,7 +588,7 @@ array de cargadores, lo que permite generar tal lista dinámicamente:
 
    {
       test: /\.css$/i,
-      use: function(rsc) {
+      use: function(src) {
          console.log("Procesando... ", src.resource);
          return ["style-loader", "css-loader"];
       }
@@ -854,7 +860,7 @@ intervención de :program:`css-loader`:
          test: /\.(css|sass)$/i,
          use: [MiniCssExtractPlugin.loader,
                "css-loader", 
-               // Aquí en medio podríamos postcss-loader
+               // Aquí en medio podríamos incluir postcss-loader
                "sass-loader"]
       }
 
@@ -1067,7 +1073,7 @@ Fichero                       Accesible mediante
 Este comportamiento, sin embargo. puede alterarse con algunas opciones:
 
 * *contentBase* indica un directorio del sistema de ficheros que se
-  quiere fusionar con la directorio raíz del servidor wen. Su valor
+  quiere fusionar con el directorio raíz del servidor web. Su valor
   predeterminado es el directorio raíz del proyecto, de ahí que resulte lo que
   acabamos de explicar.  Podemos, no obstante, definir otro cualquiera (usando
   una ruta relativa, eso sí). Por ejemplo:
@@ -1080,13 +1086,13 @@ Este comportamiento, sin embargo. puede alterarse con algunas opciones:
         open: "chromium"
      }
 
-   en cuyo caso, se fusionará el subdirectorio :file:`examples`. Si, además,
-   añadimos *watchContentBase* el servidor no sólo vigilará cambios en los
-   ficheros generados, sino también cambios en los ficheros estáticos contenidos
-   en :file:`examples`.
+  en cuyo caso, se fusionará el subdirectorio :file:`examples`. Si, además,
+  añadimos *watchContentBase* el servidor no sólo vigilará cambios en los
+  ficheros generados, sino también cambios en los ficheros estáticos contenidos
+  en :file:`examples`.
 
-   Si el valor de *contentBase* es ``false``, sólo estarán disponibles los
-   ficheros generados.
+  Si el valor de *contentBase* es ``false``, sólo estarán disponibles los
+  ficheros generados.
 
 * *publicPath* permite cambiar la ruta en el servidor donde aparecerán los
   ficheros generados. En consecuencia, esta configuración:
@@ -1116,7 +1122,7 @@ Por su parte, la otra opción, *open*, rige qué se hace al levantar el
 servidor:
 
 - Si es ``false``, que es su valor predeterminado al no haber incluido el
-  argumento :code:`--open`\ [#]_ en :file:`package.json`, no se abre una ventana
+  argumento :code:`--open` en :file:`package.json`, no se abre una ventana
   con la aplicación en el navegador, así que tendremos que abrir manualmente
   nosotros la página eni la dirección::
 
@@ -1307,9 +1313,10 @@ Para esto, deberemos dejar unos *scripts* en :file:`package.json` así:
        "debug": "webpack-dev-server --env.output=debug"
    }
 
-donde la forma de distinguir una salida de otra es mediante un objeto *env* que
-nos encargaremos de desarrollar más adelante. No obstante, dependiendo de cuál
-sea el objetivo de nuestro desarrollo podremos prescindir de algunas salidas:
+donde la forma de distinguir una salida de otra es mediante un objeto *env*\
+[#]_ que nos encargaremos de desarrollar más adelante. No obstante, dependiendo
+de cuál sea el objetivo de nuestro desarrollo podremos prescindir de algunas
+salidas:
 
 - Para una aplicación final, suele bastar con las salidas (2) y (5).
 - Si desarrollamos una librería intermedia pueden llegar a interesarnos hasta

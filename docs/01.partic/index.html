@@ -1,24 +1,22 @@
 
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<html lang="es">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>1. Particularidades &#8212; documentación de Javascript - </title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/translations.js"></script>
     
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Búsqueda" href="../search.html" />
@@ -47,22 +45,22 @@
           <div class="body" role="main">
             
   <div class="section" id="particularidades">
-<h1>1. Particularidades<a class="headerlink" href="#particularidades" title="Enlazar permanentemente con este título">¶</a></h1>
+<h1><span class="section-number">1. </span>Particularidades<a class="headerlink" href="#particularidades" title="Enlazar permanentemente con este título">¶</a></h1>
 <div class="section" id="generalidades">
-<h2>1.1. Generalidades<a class="headerlink" href="#generalidades" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2><span class="section-number">1.1. </span>Generalidades<a class="headerlink" href="#generalidades" title="Enlazar permanentemente con este título">¶</a></h2>
 <div class="section" id="caracteristicas">
-<h3>1.1.1. Características<a class="headerlink" href="#caracteristicas" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.1.1. </span>Características<a class="headerlink" href="#caracteristicas" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Resumiendo enormemente, <em>Javascript</em> es un lenguaje:</p>
 <ul class="simple">
-<li>Interpretado</li>
-<li>Imperativo orientado a objetos (aunque <a class="reference internal" href="#object-model"><span class="std std-ref">ya veremos</span></a> que no
+<li><p>Interpretado</p></li>
+<li><p>Imperativo orientado a objetos (aunque <a class="reference internal" href="#object-model"><span class="std std-ref">ya veremos</span></a> que no
 basado en clases), pero con muchas características propias de la programación
-funcional.</li>
-<li>De tipado dinámico y débil.</li>
+funcional.</p></li>
+<li><p>De tipado dinámico y débil.</p></li>
 </ul>
 </div>
 <div class="section" id="versiones">
-<h3>1.1.2. Versiones<a class="headerlink" href="#versiones" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.1.2. </span>Versiones<a class="headerlink" href="#versiones" title="Enlazar permanentemente con este título">¶</a></h3>
 <p><em>Javascript</em> nació en el <a class="reference external" href="https://es.wikipedia.org/wiki/Netscape_Navigator">navegador Netscape</a>,
 aunque pronto fue adoptado e implementado <em>a su manera</em> (recibiendo el nombre de
 <em>JSScript</em>) en su competidor <a class="reference external" href="https://es.wikipedia.org/wiki/Internet_Explorer">Internet Explorer</a>, con lo que surgieron toda
@@ -72,26 +70,26 @@ surgieron las distintas versiones del estándar <em>ECMAScript</em> (abreviado <
 <em>ES-262</em>, en donde el número hace referencia a que es la norma <em>ECMA</em> 262 la que
 recoge las especificaciones):</p>
 <ul class="simple">
-<li><strong>ES1</strong> (1997), <strong>ES2</strong> (1998), <strong>ES3</strong> (1999) y la nunca publicada versión 4, que
-podemos agrupar juntas y son las versiones arcaicas del lenguaje.</li>
-<li><strong>ES5</strong> surgida en 2009.</li>
-<li><strong>ES2015</strong> (también conocida como <em>Javascript</em> v6) de 2015. La decisión de
+<li><p><strong>ES1</strong> (1997), <strong>ES2</strong> (1998), <strong>ES3</strong> (1999) y la nunca publicada versión 4, que
+podemos agrupar juntas y son las versiones arcaicas del lenguaje.</p></li>
+<li><p><strong>ES5</strong> surgida en 2009.</p></li>
+<li><p><strong>ES2015</strong> (también conocida como <em>Javascript</em> v6) de 2015. La decisión de
 sustituir el número de versión por el año de lanzamiento se debió a que <em>ECMA</em>
 decidió editar nuevas versiones en los meses de junio de cada año. y así ha
 seguido siendo. Esta versión incorporó bastantes novedades respecto a la
-anterior.</li>
-<li><strong>ES2016</strong>, <strong>ES2017</strong>, etc. que son las versiones anuales posteriores. A fecha de
+anterior.</p></li>
+<li><p><strong>ES2016</strong>, <strong>ES2017</strong>, etc. que son las versiones anuales posteriores. A fecha de
 redacción de este documento la última versión publicada es la <em>ES2019</em> (o
-<em>Javascript</em> v10).</li>
+<em>Javascript</em> v10).</p></li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">A pesar del cambio de denominación es frecuente que algunos sigan
+<p class="admonition-title">Nota</p>
+<p>A pesar del cambio de denominación es frecuente que algunos sigan
 refiriendo las revisiones con su número de versión.</p>
 </div>
 </div>
 <div class="section" id="modo-estricto">
-<h3>1.1.3. Modo estricto<a class="headerlink" href="#modo-estricto" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.1.3. </span>Modo estricto<a class="headerlink" href="#modo-estricto" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>En <em>ES5</em> se introdujo un modo estricto para el lenguaje que, simplemente, le
 indica al intérprete que sea menos permisivo al interpretarlo. Se puede
 interpretar <em>en modo estricto</em> todo un fichero entero o sólo una función
@@ -105,17 +103,17 @@ con código que, por lo general, se debe a errores de digitalización o tienen
 efectos secundarios indeseados. Por ejemplo, en modo estricto no puede usarse
 una variable si previamente no se ha declarado explícitamente.</p>
 <div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">Es importante tener presente que la especificación de <em>ES2015</em>
+<p class="admonition-title">Nota</p>
+<p>Es importante tener presente que la especificación de <em>ES2015</em>
 prescribe que los módulos se interpreten siempre en modo estricto, aunque no
 se haya indicado explícitamente.</p>
 </div>
 </div>
 <div class="section" id="bucles-for">
-<h3>1.1.4. Bucles <code class="code docutils literal notranslate"><span class="pre">for</span></code><a class="headerlink" href="#bucles-for" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.1.4. </span>Bucles <code class="code docutils literal notranslate"><span class="pre">for</span></code><a class="headerlink" href="#bucles-for" title="Enlazar permanentemente con este título">¶</a></h3>
 <p><em>Javascript</em> dispone de dos tipos de bucles iterativos:</p>
 <ul>
-<li><p class="first">El <code class="docutils literal notranslate"><span class="pre">for</span></code> con sintaxis de <strong>C</strong> que permite recorrer secuencias a través de
+<li><p>El <code class="docutils literal notranslate"><span class="pre">for</span></code> con sintaxis de <strong>C</strong> que permite recorrer secuencias a través de
 los ínjdices de sus componentes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">];</span>
 <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;abc&quot;</span><span class="p">;</span>
@@ -125,9 +123,9 @@ los ínjdices de sus componentes:</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Un bucle de tipo <em>forach</em> que tiene dos variantes:</p>
+<li><p>Un bucle de tipo <em>forach</em> que tiene dos variantes:</p>
 <ul>
-<li><p class="first">Si se usa <code class="docutils literal notranslate"><span class="pre">in</span></code> se recorren a lps nombres de las propiedades
+<li><p>Si se usa <code class="docutils literal notranslate"><span class="pre">in</span></code> se recorren a lps nombres de las propiedades
 <a class="reference internal" href="#object-descriptors"><span class="std std-ref">enumerables</span></a> de cualquier objeto:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="n">const</span> <span class="n">idx</span> <span class="n">of</span> <span class="n">arr</span><span class="p">)</span> <span class="p">{</span>
    <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="n">sucesivamente</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span>
@@ -135,7 +133,7 @@ los ínjdices de sus componentes:</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">A partir de <em>ES2015</em>, si se usa <code class="docutils literal notranslate"><span class="pre">of</span></code> se recorren los valores de las
+<li><p>A partir de <em>ES2015</em>, si se usa <code class="docutils literal notranslate"><span class="pre">of</span></code> se recorren los valores de las
 propiedades enumerables de cualquier objeto:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="n">const</span> <span class="n">e</span> <span class="n">of</span> <span class="n">arr</span><span class="p">)</span> <span class="p">{</span>
    <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="n">sucesivamente</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span>
@@ -149,9 +147,9 @@ propiedades enumerables de cualquier objeto:</p>
 </div>
 </div>
 <div class="section" id="variables">
-<h2>1.2. Variables<a class="headerlink" href="#variables" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2><span class="section-number">1.2. </span>Variables<a class="headerlink" href="#variables" title="Enlazar permanentemente con este título">¶</a></h2>
 <div class="section" id="declaracion">
-<h3>1.2.1. Declaración<a class="headerlink" href="#declaracion" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.2.1. </span>Declaración<a class="headerlink" href="#declaracion" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Hay tres modos de declarar variables:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 <span class="n">let</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
@@ -171,28 +169,23 @@ y <code class="code docutils literal notranslate"><span class="pre">const</span>
 <p id="decl-no-var">Cuando se lleva a cabo una asignación, sin haber hecho una declaración previa
 pueden ocurrir dos cosas:</p>
 <ul class="simple">
-<li>En modo estricto, la variable pasa a ser un atributo del <a class="reference internal" href="#objeto-global"><span class="std std-ref">objeto global</span></a>.</li>
-<li>En otro caso, se produce un error.</li>
+<li><p>En modo estricto, la variable pasa a ser un atributo del <a class="reference internal" href="#objeto-global"><span class="std std-ref">objeto global</span></a>.</p></li>
+<li><p>En otro caso, se produce un error.</p></li>
 </ul>
 </div>
 <div class="section" id="tipos">
-<h3>1.2.2. Tipos<a class="headerlink" href="#tipos" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.2.2. </span>Tipos<a class="headerlink" href="#tipos" title="Enlazar permanentemente con este título">¶</a></h3>
 <p><em>Javascript</em> define los siguientes tipos:</p>
 <ul>
-<li><p class="first">Tipos primitivos:</p>
+<li><p>Tipos primitivos:</p>
 <ul>
-<li><p class="first">Lógico (<code class="docutils literal notranslate"><span class="pre">true</span></code> o <code class="docutils literal notranslate"><span class="pre">false</span></code>).</p>
-</li>
-<li><p class="first">Cadena.</p>
-</li>
-<li><p class="first">Numérico (número en coma flotante de doble precisión). No hay soporte nativo
-para enteroes.</p>
-</li>
-<li><p class="first">Nulo (<code class="docutils literal notranslate"><span class="pre">null</span></code>).</p>
-</li>
-<li><p class="first">Indefinido, sin valor (<code class="docutils literal notranslate"><span class="pre">undefined</span></code>).</p>
-</li>
-<li><p class="first">Símbolo: es un tipo que sirve para definir valores únicos. Puede usarse como
+<li><p>Lógico (<code class="docutils literal notranslate"><span class="pre">true</span></code> o <code class="docutils literal notranslate"><span class="pre">false</span></code>).</p></li>
+<li><p>Cadena.</p></li>
+<li><p>Numérico (número en coma flotante de doble precisión). No hay soporte nativo
+para enteroes.</p></li>
+<li><p>Nulo (<code class="docutils literal notranslate"><span class="pre">null</span></code>).</p></li>
+<li><p>Indefinido, sin valor (<code class="docutils literal notranslate"><span class="pre">undefined</span></code>).</p></li>
+<li><p>Símbolo: es un tipo que sirve para definir valores únicos. Puede usarse como
 como clave para las propiedades de los objetos:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">();</span>
 <span class="n">const</span> <span class="n">objeto</span> <span class="o">=</span> <span class="p">{};</span>
@@ -202,28 +195,27 @@ como clave para las propiedades de los objetos:</p>
 </li>
 </ul>
 </li>
-<li><p class="first">Objetos:</p>
+<li><p>Objetos:</p>
 <ul>
-<li><p class="first"><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>:</p>
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Fecha</a>:</p>
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Fecha</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">ahora</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">();</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Funciones</a>.</p>
-</li>
-<li><p class="first">Objetos equivalentes a los datos primitivos (como en <em>Java</em>):</p>
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Funciones</a>.</p></li>
+<li><p>Objetos equivalentes a los datos primitivos (como en <em>Java</em>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">s</span> <span class="o">=</span> <span class="n">new</span> <span class="n">String</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">);</span>
 <span class="n">const</span> <span class="n">n</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Number</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
 <span class="n">const</span> <span class="n">b</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">true</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Objetos en general:</p>
+<li><p>Objetos en general:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{};</span>
 </pre></div>
 </div>
@@ -233,7 +225,7 @@ como clave para las propiedades de los objetos:</p>
 </ul>
 </div>
 <div class="section" id="contexto-de-ejecucion">
-<h3>1.2.3. Contexto de ejecución<a class="headerlink" href="#contexto-de-ejecucion" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.2.3. </span>Contexto de ejecución<a class="headerlink" href="#contexto-de-ejecucion" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>El <em class="dfn">contexto de ejecución</em> es, simplemente, el contexto en que se ejecuta
 una determinada parte del código. En <em>Javascript</em> hay un contexto global y cada
 función crea su propio contexto de ejecución:</p>
@@ -267,29 +259,28 @@ de por dónde se desarrolle la ejecución.</p>
 <p>Es preciso puntualizar que cuando existen diferentes ficheros, el
 comportamientdo difiere dependiendo de cuál sea el interprete:</p>
 <ul>
-<li><p class="first">En los navegadores, todos los ficheros comparten el mismo contexto que es un
+<li><p>En los navegadores, todos los ficheros comparten el mismo contexto que es un
 contexto glonal, por lo que si nen el nivel superior definimos:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>estaremos haciendo exactamente lo mismo que<a class="footnote-reference" href="#id6" id="id1">[1]</a>:</p>
+<p>estaremos haciendo exactamente lo mismo que<a class="footnote-reference brackets" href="#id6" id="id1">1</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">En <a class="reference external" href="https://nodejs.org">NodeJS</a>, en cambio, al ser cada fichero un módulo distinto, cada fichero
-tiene su contexto particular.</p>
-</li>
+<li><p>En <a class="reference external" href="https://nodejs.org">NodeJS</a>, en cambio, al ser cada fichero un módulo distinto, cada fichero
+tiene su contexto particular.</p></li>
 </ul>
 <p>Cada vez que se crea un contexto, el intérprete establece tres cosas:</p>
 <ul class="simple">
-<li>Un entorno léxico (<em>lexical environment</em>).</li>
-<li>Un entorno de variable (<em>variable environment</em>).</li>
-<li>Un objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>.</li>
+<li><p>Un entorno léxico (<em>lexical environment</em>).</p></li>
+<li><p>Un entorno de variable (<em>variable environment</em>).</p></li>
+<li><p>Un objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>.</p></li>
 </ul>
 </div>
 <div class="section" id="entornos">
-<h3>1.2.4. Entornos<a class="headerlink" href="#entornos" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.2.4. </span>Entornos<a class="headerlink" href="#entornos" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Al crearse un nuevo contexto de ejecución se crean un entorno léxico y un
 entorno de variable que, en principio, son idénticos. Cada entorno recoge la
 declaración de variables y funciones y una referencia al entorno externo. En
@@ -306,15 +297,16 @@ la <em>cadena de alcances</em> depende de cómo esté escrito el código, no de 
 ejecute.</p>
 <p>Afinando más, un entorno está constituido por:</p>
 <ul class="simple">
-<li>Una referencia al entorno extorno (que es lo que posibilita la <em>cadena de
-alcances</em>).</li>
-<li>Un registro de ambiente que mapea identificadores con valores. Tal registro
-tiene dos clases de registros:<ul>
-<li>Los registros declarativos del entorno para las declaraciones de variables y
-funciones llevadas a cabo en el entorno.</li>
-<li>Los registros de objeto del entorno que se usan con la sentencia <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with">with</a> y
+<li><p>Una referencia al entorno extorno (que es lo que posibilita la <em>cadena de
+alcances</em>).</p></li>
+<li><p>Un registro de ambiente que mapea identificadores con valores. Tal registro
+tiene dos clases de registros:</p>
+<ul>
+<li><p>Los registros declarativos del entorno para las declaraciones de variables y
+funciones llevadas a cabo en el entorno.</p></li>
+<li><p>Los registros de objeto del entorno que se usan con la sentencia <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with">with</a> y
 para el entorno global. Por esta razón, las definiciones hechas sobre el
-<a class="reference internal" href="#objeto-global"><span class="std std-ref">objeto global</span></a> siempre están disponibles.</li>
+<a class="reference internal" href="#objeto-global"><span class="std std-ref">objeto global</span></a> siempre están disponibles.</p></li>
 </ul>
 </li>
 </ul>
@@ -359,18 +351,18 @@ para implementar esto es la de apuntar <code class="docutils literal notranslate
 y el entorno de variables difiere.</p>
 </div>
 <div class="section" id="objeto-global">
-<span id="id2"></span><h3>1.2.5. Objeto global<a class="headerlink" href="#objeto-global" title="Enlazar permanentemente con este título">¶</a></h3>
+<span id="id2"></span><h3><span class="section-number">1.2.5. </span>Objeto global<a class="headerlink" href="#objeto-global" title="Enlazar permanentemente con este título">¶</a></h3>
 <p><em class="dfn">Objeto global</em> es aquel que las definidas que pertenecen al alcance global.
 En un navegador el objeto global es <em>window</em>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">Recuérdese que en modo <strong>no estricto</strong>, las asignaciones sin
+<p class="admonition-title">Nota</p>
+<p>Recuérdese que en modo <strong>no estricto</strong>, las asignaciones sin
 declaración se definen como variables globales, esto es, pasan a formar parte
 del objeto global.</p>
 </div>
 </div>
 <div class="section" id="objeto-this">
-<h3>1.2.6. Objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a><a class="headerlink" href="#objeto-this" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.2.6. </span>Objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a><a class="headerlink" href="#objeto-this" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Cada contexto de ejecución tiene asociado un objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>. Es importante tener
 presente que el significado de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> en <em>Javascript</em> es mucho amplio del que
 tiene comúnmente en lenguajes orientados a objetos como <em>Java</em> o <em>Python</em>
@@ -392,10 +384,9 @@ podemos escribir:</p>
 cualquier contexto de ejecución tiene definido un objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>.</p>
 <p>En el contexto global, el valor de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> es:</p>
 <ul>
-<li><p class="first">El objeto global (o sea, <em>window</em>) en los navegadores. Además, los contextos
-globales de todos los ficheros de código son exactamente el mismo.</p>
-</li>
-<li><p class="first">En <a class="reference external" href="https://nodejs.org">NodeJS</a>. en cambio, cada fichero tiene un contexto diferente y el valor de
+<li><p>El objeto global (o sea, <em>window</em>) en los navegadores. Además, los contextos
+globales de todos los ficheros de código son exactamente el mismo.</p></li>
+<li><p>En <a class="reference external" href="https://nodejs.org">NodeJS</a>. en cambio, cada fichero tiene un contexto diferente y el valor de
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> coincide con el objeto de importación (en caso de que se use
 <em>CommonJS</em>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   exports.a = 1;
@@ -423,14 +414,14 @@ bajo el próximo epígrafe.</p>
 </div>
 </div>
 <div class="section" id="id3">
-<h2>1.3. Funciones<a class="headerlink" href="#id3" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2><span class="section-number">1.3. </span>Funciones<a class="headerlink" href="#id3" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Las funciones en <em>Javascript</em> tiene algunas particularidades que conviene
 conocer.</p>
 <div class="section" id="sintaxis">
-<h3>1.3.1. Sintaxis<a class="headerlink" href="#sintaxis" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.3.1. </span>Sintaxis<a class="headerlink" href="#sintaxis" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Hay dos formas de definir funciones:</p>
 <ul>
-<li><p class="first">La <strong>tradicional</strong>:</p>
+<li><p>La <strong>tradicional</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">suma</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span> <span class="p">{</span>
     <span class="o">//</span> <span class="n">Implementación</span><span class="o">...</span>
     <span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span><span class="p">;</span>
@@ -438,7 +429,7 @@ conocer.</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">A partir de <em>ES2015</em>, la <strong>función flecha</strong>:</p>
+<li><p>A partir de <em>ES2015</em>, la <strong>función flecha</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
    <span class="o">//</span> <span class="n">Implementación</span><span class="o">...</span>
    <span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span><span class="p">;</span>
@@ -455,10 +446,10 @@ construcción eliminado las llaves y la sentencia <code class="code docutils lit
 </div>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Nota</p>
+<p class="admonition-title">Nota</p>
 <p>Si se quiere devolver un objeto, entonces es forzoso encerrarlo entre
 paréntesis para evitar ambigüedad:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="n">desc</span><span class="p">})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="n">desc</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -498,11 +489,11 @@ contexto (<a class="reference external" href="https://developer.mozilla.org/en-U
 <em>dos2</em> no lo hace.</p>
 </div>
 <div class="section" id="argumentos">
-<h3>1.3.2. Argumentos<a class="headerlink" href="#argumentos" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.3.2. </span>Argumentos<a class="headerlink" href="#argumentos" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Los argumentos de las funciones son posicionales, pero con algunas
 características especiales:</p>
 <ul>
-<li><p class="first"><em>Javascript</em> no es estricto con el número de parámetros proporcionados. Si se
+<li><p><em>Javascript</em> no es estricto con el número de parámetros proporcionados. Si se
 pasan más de los que se definieron, no se producirá ningún fallo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="nb">sum</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
 <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>       <span class="o">//</span> <span class="n">Devuelve</span> <span class="mf">3.</span>
@@ -510,10 +501,9 @@ pasan más de los que se definieron, no se producirá ningún fallo:</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Si se pasan menos parámetros de los declarados, los parámetros restantes
-tomarán el valor <code class="docutils literal notranslate"><span class="pre">undefined</span></code>.</p>
-</li>
-<li><p class="first">Desde <em>ES2015</em> pueden definirse valores predeterminados:</p>
+<li><p>Si se pasan menos parámetros de los declarados, los parámetros restantes
+tomarán el valor <code class="docutils literal notranslate"><span class="pre">undefined</span></code>.</p></li>
+<li><p>Desde <em>ES2015</em> pueden definirse valores predeterminados:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="nb">sum</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">;</span>
 <span class="nb">sum</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>               <span class="o">//</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">=</span> <span class="mf">120.</span>
 <span class="n">suma</span><span class="p">(</span><span class="n">undefined</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>  <span class="o">//</span> <span class="mi">200</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">=</span> <span class="mf">210.</span>
@@ -534,7 +524,7 @@ tomarán el valor <code class="docutils literal notranslate"><span class="pre">u
 </div>
 </div></blockquote>
 <ul>
-<li><p class="first">Las funciones disponen de un pseudo-array denominado <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments">arguments</a> que contiene
+<li><p>Las funciones disponen de un pseudo-array denominado <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments">arguments</a> que contiene
 el valor de cada uno de los argumentos:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
    <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="n">valor</span> <span class="n">de</span> <span class="n">a</span><span class="o">.</span>
@@ -554,7 +544,7 @@ propia función:</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">A partir de <em>ES2015</em>, es posible también definir funciones con una cantidad
+<li><p>A partir de <em>ES2015</em>, es posible también definir funciones con una cantidad
 fija de argumentos nominados, y otra variable:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">foobar</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">...</span><span class="n">rest</span><span class="p">)</span> <span class="p">{</span>
    <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>      <span class="o">//</span> <span class="mi">1</span>
@@ -569,15 +559,14 @@ fija de argumentos nominados, y otra variable:</p>
 </ul>
 </div>
 <div class="section" id="contexto">
-<h3>1.3.3. Contexto<a class="headerlink" href="#contexto" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.3.3. </span>Contexto<a class="headerlink" href="#contexto" title="Enlazar permanentemente con este título">¶</a></h3>
 <div class="section" id="this-predeterninado">
-<h4>1.3.3.1. <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> predeterninado<a class="headerlink" href="#this-predeterninado" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.3.3.1. </span><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> predeterninado<a class="headerlink" href="#this-predeterninado" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>El objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> del contexto ejecución que crea cada función depende de
 múltiples factores:</p>
 <ul>
-<li><p class="first">En las <em>funciones flecha</em> se conserva el del entorno externo.</p>
-</li>
-<li><p class="first">En funciones independendientes:</p>
+<li><p>En las <em>funciones flecha</em> se conserva el del entorno externo.</p></li>
+<li><p>En funciones independendientes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">foobar</span><span class="p">()</span> <span class="p">{</span>
    <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Objeto</span> <span class="k">global</span> <span class="n">o</span> <span class="n">undefined</span><span class="o">.</span>
 <span class="p">}</span>
@@ -586,7 +575,7 @@ múltiples factores:</p>
 <p>depende del modo: en modo estricto queda indefnido (<code class="docutils literal notranslate"><span class="pre">undefined</span></code>), mientras
 que en otro caso, es el objetp global.</p>
 </li>
-<li><p class="first">En métodos de un objeto, representa al propio objeto:</p>
+<li><p>En métodos de un objeto, representa al propio objeto:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">objeto</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">};</span>
 
 <span class="n">objeto</span><span class="o">.</span><span class="n">foobar</span> <span class="o">=</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
@@ -603,9 +592,9 @@ que en otro caso, es el objetp global.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Nota</p>
+<p class="admonition-title">Nota</p>
 <p>Una función también podemos considerarla un objeto:</p>
-<div class="last highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">ABC</span><span class="p">()</span> <span class="p">{}</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">ABC</span><span class="p">()</span> <span class="p">{}</span>
 <span class="nx">ABC</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 
 <span class="nx">ABC</span><span class="p">.</span><span class="nx">foobar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -617,7 +606,7 @@ que en otro caso, es el objetp global.</p>
 </div>
 </div>
 </li>
-<li><p class="first">Y aunque se entenderá al tratar el <a class="reference internal" href="#object-model"><span class="std std-ref">modelo de objetos</span></a>,
+<li><p>Y aunque se entenderá al tratar el <a class="reference internal" href="#object-model"><span class="std std-ref">modelo de objetos</span></a>,
 dentro de las funciones constructoras y en los métodos del prototipo de dicho
 constructor, <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> representa al propio objeto:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Constructor</span>
@@ -637,7 +626,7 @@ constructor, <a class="reference external" href="https://developer.mozilla.org/e
 </ul>
 </div>
 <div class="section" id="manipulacion-de-this">
-<h4>1.3.3.2. Manipulación de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a><a class="headerlink" href="#manipulacion-de-this" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.3.3.2. </span>Manipulación de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a><a class="headerlink" href="#manipulacion-de-this" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Aunque lo establecido bajo el epígrafe anterior son los valores que adquiere
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> dependendiendo de cómo se haya definido la función, es posible alterar
 dinámicamente el contexto a través de diversas herramientas. Para ilustrarlas
@@ -648,51 +637,48 @@ tomemos de ejemplo la función:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">.bind()</a></dt>
-<dd><p class="first">Permite crear una nueva función en que se definen de antemano el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>
+<dl>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">.bind()</a></dt><dd><p>Permite crear una nueva función en que se definen de antemano el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>
 y todos los argumentos que se le proporcionen:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">barfoo</span> <span class="o">=</span> <span class="n">foobar</span><span class="o">.</span><span class="n">bind</span><span class="p">({},</span> <span class="mi">1</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Proporcionamos</span> <span class="n">this</span> <span class="n">y</span> <span class="n">el</span> <span class="n">primer</span> <span class="n">argumento</span><span class="o">.</span>
 <span class="n">barfoo</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>                          <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
 </pre></div>
 </div>
-<div class="last admonition note">
-<p class="first admonition-title">Nota</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
 <p><code class="docutils literal notranslate"><span class="pre">.bind()</span></code> puede cumplir la función que hace <a class="reference external" href="https://docs.python.org/3.7/library/functools.html#partial-objects">partial</a> en
 <em>Python</em>, aunque tiene el efecto añadido de modificar el objeto
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>. Para una solución que no lo modifique puede usarse el
 siguiente código:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">partial</span> <span class="o">=</span> <span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">...</span><span class="n">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="o">...</span><span class="n">rest</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">func</span><span class="p">(</span><span class="o">..</span><span class="n">args</span><span class="p">,</span> <span class="o">...</span><span class="n">rest</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">partial</span> <span class="o">=</span> <span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">...</span><span class="n">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="o">...</span><span class="n">rest</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">func</span><span class="p">(</span><span class="o">..</span><span class="n">args</span><span class="p">,</span> <span class="o">...</span><span class="n">rest</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 </dd>
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call">.call()</a></dt>
-<dd><p class="first">Ejecuta la función permitiendo modificar el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>, que pasa a
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call">.call()</a></dt><dd><p>Ejecuta la función permitiendo modificar el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>, que pasa a
 ser el primer argumento:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foobar</span><span class="o">.</span><span class="n">call</span><span class="p">({},</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">):</span>  <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foobar</span><span class="o">.</span><span class="n">call</span><span class="p">({},</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">):</span>  <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
 </pre></div>
 </div>
 </dd>
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply">.apply()</a></dt>
-<dd><p class="first">Actúa como <code class="docutils literal notranslate"><span class="pre">.call()</span></code> modificando el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>, pero pasa el resto
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply">.apply()</a></dt><dd><p>Actúa como <code class="docutils literal notranslate"><span class="pre">.call()</span></code> modificando el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>, pero pasa el resto
 de argumentos en forma de <em>array</em>:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foobar</span><span class="o">.</span><span class="n">apply</span><span class="p">({},</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]);</span>  <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foobar</span><span class="o">.</span><span class="n">apply</span><span class="p">({},</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]);</span>  <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
 </pre></div>
 </div>
 </dd>
 </dl>
 <div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">Las definiciones hechas con <code class="code docutils literal notranslate"><span class="pre">.bind()</span></code> provocan que quede anulado
+<p class="admonition-title">Nota</p>
+<p>Las definiciones hechas con <code class="code docutils literal notranslate"><span class="pre">.bind()</span></code> provocan que quede anulado
 el efecto de <code class="docutils literal notranslate"><span class="pre">.call()</span></code> y <code class="docutils literal notranslate"><span class="pre">.apply()</span></code>.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="section" id="modelo-de-objetos">
-<span id="object-model"></span><h2>1.4. Modelo de objetos<a class="headerlink" href="#modelo-de-objetos" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>En <em>Javascript</em> no existen clases<a class="footnote-reference" href="#id7" id="id4">[2]</a>, de modo que los objetos no se crean
+<span id="object-model"></span><h2><span class="section-number">1.4. </span>Modelo de objetos<a class="headerlink" href="#modelo-de-objetos" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>En <em>Javascript</em> no existen clases<a class="footnote-reference brackets" href="#id7" id="id4">2</a>, de modo que los objetos no se crean
 mediante la instanciación de clases. Los objetos, en cambio, se crean usando
 otro objeto ya existente como prototipo, de manera que el nuevo objeto posee las
 características de su prototipo y añade otras nuevas que podamos conferirle. El
@@ -704,17 +690,17 @@ prototipo del prototipo y así sucesivamente. A esto es a lo que se llama
 <em class="dfn">cadena de prototipos</em>.</p>
 <img alt="../_images/cadena_proto.png" src="../_images/cadena_proto.png" />
 <div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">La cadena de prototipos tiene un prototipo final que se
+<p class="admonition-title">Nota</p>
+<p>La cadena de prototipos tiene un prototipo final que se
 caracteriza porque su prototipo es <em>null</em>.</p>
 </div>
 <div class="section" id="conceptos-basicos">
-<h3>1.4.1. Conceptos básicos<a class="headerlink" href="#conceptos-basicos" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.4.1. </span>Conceptos básicos<a class="headerlink" href="#conceptos-basicos" title="Enlazar permanentemente con este título">¶</a></h3>
 <div class="section" id="creacion">
-<h4>1.4.1.1. Creación<a class="headerlink" href="#creacion" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.4.1.1. </span>Creación<a class="headerlink" href="#creacion" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Hay cuatro mecanismos distintos para la creación de objetos:</p>
 <div class="section" id="directa">
-<h5>1.4.1.1.1. Directa<a class="headerlink" href="#directa" title="Enlazar permanentemente con este título">¶</a></h5>
+<h5><span class="section-number">1.4.1.1.1. </span>Directa<a class="headerlink" href="#directa" title="Enlazar permanentemente con este título">¶</a></h5>
 <p>La forma más directa y sencilla de crear un objeto es declararlo
 explícitamente:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">obj</span> <span class="o">=</span> <span class="p">{};</span>
@@ -733,14 +719,14 @@ estándar a partir de <em>ES2015</em> <a class="reference external" href="https:
 </pre></div>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Advertencia</p>
-<p class="last">Aunque <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">__proto__</a> no es atributo de sólo lectura y existe el método
+<p class="admonition-title">Advertencia</p>
+<p>Aunque <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">__proto__</a> no es atributo de sólo lectura y existe el método
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf">Object.setPrototypeOf</a>, alterar la cadena de prototipos afecta dramáticamente
 al rendimiento de la aplicación.</p>
 </div>
 </div>
 <div class="section" id="por-prototipo">
-<h5>1.4.1.1.2. Por prototipo<a class="headerlink" href="#por-prototipo" title="Enlazar permanentemente con este título">¶</a></h5>
+<h5><span class="section-number">1.4.1.1.2. </span>Por prototipo<a class="headerlink" href="#por-prototipo" title="Enlazar permanentemente con este título">¶</a></h5>
 <p>Otra forma de crear un objeto es definirlo a partir de otro que actúe como su
 prototipo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Object</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
@@ -752,7 +738,7 @@ prototipo:</p>
 </div>
 </div>
 <div class="section" id="por-constructor">
-<span id="object-const"></span><h5>1.4.1.1.3. Por constructor<a class="headerlink" href="#por-constructor" title="Enlazar permanentemente con este título">¶</a></h5>
+<span id="object-const"></span><h5><span class="section-number">1.4.1.1.3. </span>Por constructor<a class="headerlink" href="#por-constructor" title="Enlazar permanentemente con este título">¶</a></h5>
 <p>Un último método para crear un objeto es definir una función constructora:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">MiObjeto</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
    <span class="n">this</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
@@ -796,7 +782,7 @@ que es la propia función constructora:</p>
 </div>
 </div>
 <div class="section" id="por-pseudo-clase">
-<h5>1.4.1.1.4. Por pseudo-clase<a class="headerlink" href="#por-pseudo-clase" title="Enlazar permanentemente con este título">¶</a></h5>
+<h5><span class="section-number">1.4.1.1.4. </span>Por pseudo-clase<a class="headerlink" href="#por-pseudo-clase" title="Enlazar permanentemente con este título">¶</a></h5>
 <p>A partir de <em>ES2015</em>, se introdujo un mecanismo para crear objetos a
 partir de clases que, en realidad. no son tales:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Persona</span> <span class="p">{</span>
@@ -825,7 +811,7 @@ prototipos. De hecho, si tras la definición probamos a consultar qué es
 </div>
 </div>
 <div class="section" id="atributos">
-<span id="object-model-attr"></span><h4>1.4.1.2. Atributos<a class="headerlink" href="#atributos" title="Enlazar permanentemente con este título">¶</a></h4>
+<span id="object-model-attr"></span><h4><span class="section-number">1.4.1.2. </span>Atributos<a class="headerlink" href="#atributos" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Para <strong>definir</strong> atributos basta con <em>enchufárselos</em> al objeto:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{};</span>       <span class="o">//</span> <span class="n">El</span> <span class="n">objeto</span> <span class="n">está</span> <span class="n">vacio</span><span class="o">.</span>
 <span class="n">o</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
@@ -834,10 +820,10 @@ prototipos. De hecho, si tras la definición probamos a consultar qué es
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Nota</p>
+<p class="admonition-title">Nota</p>
 <p>La <em>notación de array</em> es muy útil cuando el nombre del atributo
 se encuentra en una variable:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">attr</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">attr</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">;</span>
 <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="n">attr</span><span class="p">]);</span>  <span class="o">//</span> <span class="mf">10.</span>
 </pre></div>
 </div>
@@ -879,13 +865,12 @@ clases. llamaríamos instancias de una misma clase)</p>
 atributos de cualquiera de los prototipos de la cadena, es conveniente saber
 cómo distinguir si son propios o heredados:</p>
 <div class="admonition warning">
-<p class="first admonition-title">Advertencia</p>
-<p class="last">Al tratar los <a class="reference internal" href="#object-descriptors"><span class="std std-ref">descriptores</span></a> explicaremos
+<p class="admonition-title">Advertencia</p>
+<p>Al tratar los <a class="reference internal" href="#object-descriptors"><span class="std std-ref">descriptores</span></a> explicaremos
 el concepto de <em>propiedad enumerable</em>.</p>
 </div>
-<dl class="docutils">
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys">Object.keys()</a></dt>
-<dd><p class="first">Devuelve un array con los nombres de los <strong>atributos propios
+<dl>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys">Object.keys()</a></dt><dd><p>Devuelve un array con los nombres de los <strong>atributos propios
 enumerables</strong> del objeto:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">};</span>
 <span class="n">var</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Object</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">o</span><span class="p">);</span>
@@ -893,25 +878,23 @@ enumerables</strong> del objeto:</p>
 <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Object</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">p</span><span class="p">));</span>  <span class="o">//</span> <span class="p">[</span> <span class="s1">&#39;y&#39;</span> <span class="p">]</span>
 </pre></div>
 </div>
-<p class="last">Son semejantes, <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values">Object.values()</a>, que devuelve los valores en vez de los
+<p>Son semejantes, <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values">Object.values()</a>, que devuelve los valores en vez de los
 nombres y <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries">Object.entries()</a>, que devuelve tuplas nombre-valor.</p>
 </dd>
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames">Object.getOwnPropertyNames()</a></dt>
-<dd>Devuelve un array con los nombres de <strong>todos los atributos propios</strong> del
-objeto (sean o no enumerables).</dd>
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty">.hasOwnProperty(name)</a></dt>
-<dd><p class="first">Deuelve <code class="code docutils literal notranslate"><span class="pre">true</span></code> sólo en caso de que el atributo suministrado sea propio
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames">Object.getOwnPropertyNames()</a></dt><dd><p>Devuelve un array con los nombres de <strong>todos los atributos propios</strong> del
+objeto (sean o no enumerables).</p>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty">.hasOwnProperty(name)</a></dt><dd><p>Deuelve <code class="code docutils literal notranslate"><span class="pre">true</span></code> sólo en caso de que el atributo suministrado sea propio
 del objeto:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">);</span>           <span class="o">//</span> <span class="n">true</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">);</span>           <span class="o">//</span> <span class="n">true</span><span class="o">.</span>
 <span class="n">p</span><span class="o">.</span><span class="n">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">);</span>           <span class="o">//</span> <span class="n">false</span><span class="o">.</span>
 <span class="n">p</span><span class="o">.</span><span class="n">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;no_existo&quot;</span><span class="p">);</span>  <span class="o">//</span> <span class="n">false</span><span class="o">.</span>
 </pre></div>
 </div>
 </dd>
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in">for … in</a></dt>
-<dd><p class="first">Itera sobre <strong>todos los atributos enumerables</strong> del objeto, incluidos los
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in">for … in</a></dt><dd><p>Itera sobre <strong>todos los atributos enumerables</strong> del objeto, incluidos los
 heredados:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="n">const</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="n">const</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
    <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Dos</span> <span class="n">iteraciones</span><span class="p">,</span> <span class="n">una</span> <span class="s2">&quot;x&quot;</span> <span class="n">y</span> <span class="n">otra</span> <span class="s2">&quot;y&quot;</span><span class="o">.</span>
 <span class="p">}</span>
 </pre></div>
@@ -920,7 +903,7 @@ heredados:</p>
 </dl>
 </div>
 <div class="section" id="metodos">
-<h4>1.4.1.3. Métodos<a class="headerlink" href="#metodos" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.4.1.3. </span>Métodos<a class="headerlink" href="#metodos" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Al ser las funciones en <em>Javascript</em> ciudadanas de primera clase, podemos
 considerar los métodos como atributos cuya valor es una función. Es, por tanto,
 aplicable todo lo indicado bajo el epígrafe dedicado a los <a class="reference internal" href="#object-model-attr"><span class="std std-ref">atributos</span></a>, con lo cual sólo es necesario aclarar la naturaleza del
@@ -942,7 +925,7 @@ al objeto:</p>
 </div>
 </div>
 <div class="section" id="descriptores">
-<span id="object-descriptors"></span><h4>1.4.1.4. Descriptores<a class="headerlink" href="#descriptores" title="Enlazar permanentemente con este título">¶</a></h4>
+<span id="object-descriptors"></span><h4><span class="section-number">1.4.1.4. </span>Descriptores<a class="headerlink" href="#descriptores" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Hasta ahora, nos hemos limitado a añadir atributos a los objetos sin excesivo
 cuidado:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">};</span>
@@ -958,20 +941,18 @@ características de cualquiera de los dos atributos, obtendremos lo siguiente:</
 </div>
 <p>esto es, el valor del atributo y tres características:</p>
 <ul class="simple">
-<li><strong>writable</strong>, que determina si el atributo puede modificar su valor.</li>
-<li><strong>enumerable</strong>, que determina que el atributo debe listarse al iterar mediante
+<li><p><strong>writable</strong>, que determina si el atributo puede modificar su valor.</p></li>
+<li><p><strong>enumerable</strong>, que determina que el atributo debe listarse al iterar mediante
 el bucle <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in">for … in</a> o al usar <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys">Object.keys()</a>, <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values">Object.values()</a> o
-<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries">Object.entries()</a>.</li>
-<li><strong>configurable</strong>, que determina si se pueden modificar estas mismas
-características.</li>
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries">Object.entries()</a>.</p></li>
+<li><p><strong>configurable</strong>, que determina si se pueden modificar estas mismas
+características.</p></li>
 </ul>
-<dl class="docutils" id="object-data-descriptor">
-<dt><strong>Descriptor de datos</strong></dt>
-<dd><p class="first">Al objeto que describe el valor y las caracteríscas del atributo se le denomina
+<dl id="object-data-descriptor">
+<dt><strong>Descriptor de datos</strong></dt><dd><p>Al objeto que describe el valor y las caracteríscas del atributo se le denomina
 <em class="dfn">descriptor de datos</em> y puede definirse mediante varias vías:</p>
-<dl class="last docutils">
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty()</a></dt>
-<dd><p class="first">Permite definir o redefinir el descriptor de un atributo:</p>
+<dl>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty()</a></dt><dd><p>Permite definir o redefinir el descriptor de un atributo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Redefimos</span> <span class="n">la</span> <span class="n">característica</span> <span class="n">enumerable</span> <span class="k">del</span> <span class="n">atributo</span> <span class="s2">&quot;x&quot;</span>
 <span class="n">Object</span><span class="o">.</span><span class="n">defineProperty</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">enumerable</span><span class="p">:</span> <span class="n">false</span><span class="p">});</span>
 
@@ -987,22 +968,20 @@ características.</li>
 <p>No es necesario indicar todas las características: se redefinirán sólo
 las que proporcionemos y en el primer caso se conservarán los valores
 preexistentes y en el segundo se establecerán a su valor predeterminado:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Object</span><span class="o">.</span><span class="n">defineProperty</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="p">{});</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Object</span><span class="o">.</span><span class="n">defineProperty</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="p">{});</span>
 <span class="p">{</span><span class="n">value</span><span class="p">:</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">writable</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="n">enumerable</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="n">configurable</span><span class="p">:</span> <span class="n">false</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd>
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties">Object.defineProperties()</a></dt>
-<dd><p class="first">Como el anterior, pero permite [re]definir varios atributos a la vez:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Object</span><span class="o">.</span><span class="n">defineProperties</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="p">{</span>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties">Object.defineProperties()</a></dt><dd><p>Como el anterior, pero permite [re]definir varios atributos a la vez:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Object</span><span class="o">.</span><span class="n">defineProperties</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="p">{</span>
    <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="n">enumerable</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">configurable</span><span class="p">:</span> <span class="n">false</span><span class="p">},</span>  <span class="o">//</span> <span class="n">Redefinición</span><span class="o">.</span>
    <span class="n">xx</span><span class="p">:</span> <span class="p">{</span><span class="n">writable</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>              <span class="o">//</span> <span class="n">Atributo</span> <span class="n">nuevo</span><span class="o">.</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 </dd>
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create()</a></dt>
-<dd><p class="first">A la vez que crea un objeto a partir de un prototipo, Con su segundo argumento
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create()</a></dt><dd><p>A la vez que crea un objeto a partir de un prototipo, Con su segundo argumento
 permite definir atributos facilitando sus descriptores de acceso. Este
 segundo argumento, tiene la misma sintaxis que el segundo de
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties">Object.defineProperties()</a>:</p>
@@ -1012,13 +991,12 @@ segundo argumento, tiene la misma sintaxis que el segundo de
 <span class="p">});</span>
 </pre></div>
 </div>
-<p class="last">En este caso, <em>x</em> es un atributo heredado del prototipo e <em>y</em> y <em>z</em> atributos
+<p>En este caso, <em>x</em> es un atributo heredado del prototipo e <em>y</em> y <em>z</em> atributos
 propios del objeto con las características reseñadas.</p>
 </dd>
 </dl>
 </dd>
-<dt><strong>Descriptor de acceso</strong></dt>
-<dd><p class="first">Hay una variante de los descriptores denominada <em class="dfn">descriptor de acceso</em> en
+<dt><strong>Descriptor de acceso</strong></dt><dd><p>Hay una variante de los descriptores denominada <em class="dfn">descriptor de acceso</em> en
 que en vez de facilitar el valor (<em>value</em>) y la escribibilidad (<em>writable</em>)
 se facilitan un <em>getter</em> o un <em>setter</em> o ambos, que permiten controlar qué valor
 devuelve el atributo y cómo se le asigna valor:</p>
@@ -1072,9 +1050,9 @@ cuando creamos un objeto:</p>
 <span class="n">Object</span><span class="o">.</span><span class="n">defineProperty</span><span class="p">(</span><span class="n">this</span><span class="p">,</span> <span class="s2">&quot;_temperatura&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">writable</span><span class="p">:</span> <span class="n">true</span><span class="p">});</span>
 </pre></div>
 </div>
-<div class="last admonition warning">
-<p class="first admonition-title">Advertencia</p>
-<p class="last">En este último caso, los valores de <em>configurable</em> y
+<div class="admonition warning">
+<p class="admonition-title">Advertencia</p>
+<p>En este último caso, los valores de <em>configurable</em> y
 <em>enumerable</em> del atributo <em>temperatura</em> son <code class="code docutils literal notranslate"><span class="pre">true</span></code>, esto es, los
 mismos que para u8n atributo como <em>x</em> del que no se especifica el
 descriptor de datos.</p>
@@ -1084,20 +1062,20 @@ descriptor de datos.</p>
 </div>
 </div>
 <div class="section" id="plantillas-o-sea-clases">
-<span id="javascript-clases"></span><h3>1.4.2. Plantillas (o sea, clases)<a class="headerlink" href="#plantillas-o-sea-clases" title="Enlazar permanentemente con este título">¶</a></h3>
+<span id="javascript-clases"></span><h3><span class="section-number">1.4.2. </span>Plantillas (o sea, clases)<a class="headerlink" href="#plantillas-o-sea-clases" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Si queremos lograr un código limpio y ordenado y que cumpla con los principios
 de encapsulación o ocultación típicos de la programación orientada a objetos, no
 es una buena práctica construir de cualquier forma objetos que modelen un mismo
 tipo de entidad. Hay, fundamentamente, dos estrategias:</p>
 <ul class="simple">
-<li>Usar el <a class="reference internal" href="../02.node/03.modulos.html#js-module-pattern"><span class="std std-ref">patrón del módulo</span></a> y una función constructora,
-que es el enfoque más próximo al modelo de <em>Javascript</em>.</li>
-<li>Utilizar el azúcar sintáctico introducido en <em>ES2015</em> y pseudo-definir clases.</li>
+<li><p>Usar el <a class="reference internal" href="../02.node/03.modulos.html#js-module-pattern"><span class="std std-ref">patrón del módulo</span></a> y una función constructora,
+que es el enfoque más próximo al modelo de <em>Javascript</em>.</p></li>
+<li><p>Utilizar el azúcar sintáctico introducido en <em>ES2015</em> y pseudo-definir clases.</p></li>
 </ul>
 <p>Para ilustrar ambos métodos definiremos objetos que representen personas y
 utilizaremos estos como base para la definición de personas menores.</p>
 <div class="section" id="mediante-constructor">
-<h4>1.4.2.1. Mediante constructor<a class="headerlink" href="#mediante-constructor" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.4.2.1. </span>Mediante constructor<a class="headerlink" href="#mediante-constructor" title="Enlazar permanentemente con este título">¶</a></h4>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">Persona</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
    <span class="c1">// ATRIBUTO PRIVADO (inacesible desde fuera)</span>
@@ -1238,7 +1216,7 @@ utilizaremos estos como base para la definición de personas menores.</p>
 </div>
 </div>
 <div class="section" id="mediante-class">
-<h4>1.4.2.2. Mediante <code class="code docutils literal notranslate"><span class="pre">class</span></code><a class="headerlink" href="#mediante-class" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.4.2.2. </span>Mediante <code class="code docutils literal notranslate"><span class="pre">class</span></code><a class="headerlink" href="#mediante-class" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>La sintaxis para crear pseudo-clases es bastante simple y no permite yodas las
 posibilidades que brinda tratar directamente con el constructor. Una definición
 lo más equivalentemente posible a la anterior es esta:</p>
@@ -1316,18 +1294,18 @@ lo más equivalentemente posible a la anterior es esta:</p>
 </div>
 <p>Las principales diferencias, como consecuencia de las limitaciones, son:</p>
 <ul class="simple">
-<li><code class="code docutils literal notranslate"><span class="pre">_nacimiento</span></code>, etc. son atributos enumerables y, aunque se podrían haber
+<li><p><code class="code docutils literal notranslate"><span class="pre">_nacimiento</span></code>, etc. son atributos enumerables y, aunque se podrían haber
 evitado, esto habría implicado usar <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty()</a>, que es algo que
 queremos evitar para no enmarañar la claridad de la nueva sintaxis. Lo
-deseable es que hubiera un modo de hacer privados tales atributos.</li>
-<li>La variable privada <code class="code docutils literal notranslate"><span class="pre">sexo</span></code> se ha tenido que implementar como un <em>getter</em>
-estático que es público.</li>
-<li><code class="code docutils literal notranslate"><span class="pre">check_fecha</span></code> se ha implementado como un método estático público, porque
-no hay modo de hacerlo privado.</li>
+deseable es que hubiera un modo de hacer privados tales atributos.</p></li>
+<li><p>La variable privada <code class="code docutils literal notranslate"><span class="pre">sexo</span></code> se ha tenido que implementar como un <em>getter</em>
+estático que es público.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">check_fecha</span></code> se ha implementado como un método estático público, porque
+no hay modo de hacerlo privado.</p></li>
 </ul>
 <div class="admonition seealso">
-<p class="first admonition-title">Ver también</p>
-<p class="last">Hay ya propuestas para añadir al estándar la posibilidad de
+<p class="admonition-title">Ver también</p>
+<p>Hay ya propuestas para añadir al estándar la posibilidad de
 controlar la visibilidad o permitir dentro de la propia clase la definición
 de atributos estáticos. Consulte, <a class="reference external" href="https://github.com/tc39/proposal-class-fields">el repositorio de Github</a> o <a class="reference external" href="https://www.sitepoint.com/javascript-private-class-fields/">este artículo de
 sitepoint.com</a>.</p>
@@ -1355,25 +1333,25 @@ sencillo:</p>
 </div>
 </div>
 <div class="section" id="id5">
-<h3>1.4.3. Características<a class="headerlink" href="#id5" title="Enlazar permanentemente con este título">¶</a></h3>
+<h3><span class="section-number">1.4.3. </span>Características<a class="headerlink" href="#id5" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Si echamos un vistazo a algún manual que trate la programación orientada a
 objetos, se nos informará de que tal programación se caracteriza por:</p>
 <ul class="simple">
-<li>La <em>abstracción</em>, esto es, que únicamente se modelan las caracteristicas y los
-comportamientos relevantes para la resolución del problema.</li>
-<li>El <em>encapsulamiento</em>, esto es, que se modela dentro del objeto todo el
-comportamiento y las características de la entidad.</li>
-<li>La <em>ocultación</em>, o sea, los objetos se comportan como cajas negras de suerte
+<li><p>La <em>abstracción</em>, esto es, que únicamente se modelan las caracteristicas y los
+comportamientos relevantes para la resolución del problema.</p></li>
+<li><p>El <em>encapsulamiento</em>, esto es, que se modela dentro del objeto todo el
+comportamiento y las características de la entidad.</p></li>
+<li><p>La <em>ocultación</em>, o sea, los objetos se comportan como cajas negras de suerte
 que al exterior sólo se ofrece una <abbr title="Application Programming Interface">API</abbr> que permite interactuar con el
 objeto, mientras que su implementación resulta irrelevante para el resto del
-código.</li>
-<li>La <em>herencia</em>, que establece una jerarquía de objetos en la que unos objetos
-heredan comportamientos y características de otros.</li>
+código.</p></li>
+<li><p>La <em>herencia</em>, que establece una jerarquía de objetos en la que unos objetos
+heredan comportamientos y características de otros.</p></li>
 </ul>
 <p>Si aplicamos estas características al modelo de objetos de <em>Javascript</em> nos
 encontramos con:</p>
 <div class="section" id="abstraccion">
-<h4>1.4.3.1. Abstracción<a class="headerlink" href="#abstraccion" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.4.3.1. </span>Abstracción<a class="headerlink" href="#abstraccion" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Restringiendo la discusión sobre abstracción a interfaces y clases abstractas,
 <em>Javascript</em> no habilita ningún mecanismo para ellas, lo cual es lógico puesto
 que se basa en el uso de prototipos. Si se quiere, no obstante, obligar de
@@ -1411,64 +1389,57 @@ improvisar un módulo como <a class="reference download internal" download="" hr
 </div>
 </div>
 <div class="section" id="encapsulamiento">
-<h4>1.4.3.2. Encapsulamiento<a class="headerlink" href="#encapsulamiento" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.4.3.2. </span>Encapsulamiento<a class="headerlink" href="#encapsulamiento" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Para encapsular adecuadamente el comportamiento de un tipo de objetos lo más
 conveniente es crearlos bien a través de la sintaxis de pseudo-clases bien a
 través de la definición de una función constructora a cuyo atributo <em>prototype</em>
 se añaden los atributos y métodos comunes a todos los objetos del tipo.</p>
 </div>
 <div class="section" id="ocultacion">
-<h4>1.4.3.3. Ocultación<a class="headerlink" href="#ocultacion" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.4.3.3. </span>Ocultación<a class="headerlink" href="#ocultacion" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>Para controlar la visibilidad del código tenemos dos estategias:</p>
 <ul class="simple">
-<li>Tradicionalmente, se ha logrado aplicando el <a class="reference internal" href="../02.node/03.modulos.html#js-module-pattern"><span class="std std-ref">patrón del módulo</span></a>, de manera que sólo se exporte la función constructora,
-y jugando con la <em>enumerabilidad</em> de los atributos y métodos.</li>
-<li>En caso de que se programe con modulos, puede implementarse el comportamiento
+<li><p>Tradicionalmente, se ha logrado aplicando el <a class="reference internal" href="../02.node/03.modulos.html#js-module-pattern"><span class="std std-ref">patrón del módulo</span></a>, de manera que sólo se exporte la función constructora,
+y jugando con la <em>enumerabilidad</em> de los atributos y métodos.</p></li>
+<li><p>En caso de que se programe con modulos, puede implementarse el comportamiento
 de un mismop tipo de objetos dentro de un fichero con lo que se logrará el
-mismo efecto que usando el <em>patrón del módulo</em>.</li>
+mismo efecto que usando el <em>patrón del módulo</em>.</p></li>
 </ul>
 </div>
 <div class="section" id="herencia">
-<h4>1.4.3.4. Herencia<a class="headerlink" href="#herencia" title="Enlazar permanentemente con este título">¶</a></h4>
+<h4><span class="section-number">1.4.3.4. </span>Herencia<a class="headerlink" href="#herencia" title="Enlazar permanentemente con este título">¶</a></h4>
 <p>La <em>cadena de prototipos</em> es en sí misma una implementación del mecanismo de la
 herencia: un objeto hereda de su prototipo.</p>
 </div>
 </div>
 </div>
 <div class="section" id="programacion-asinscrona">
-<h2>1.5. Programación asínscrona<a class="headerlink" href="#programacion-asinscrona" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2><span class="section-number">1.5. </span>Programación asínscrona<a class="headerlink" href="#programacion-asinscrona" title="Enlazar permanentemente con este título">¶</a></h2>
 </div>
 <div class="section" id="enlaces-de-interes">
-<h2>1.6. Enlaces de interés<a class="headerlink" href="#enlaces-de-interes" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2><span class="section-number">1.6. </span>Enlaces de interés<a class="headerlink" href="#enlaces-de-interes" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="https://zendev.com/2018/10/01/javascript-arrow-functions-how-why-when.html">JavaScript Arrow Functions: How, Why, When (and WHEN NOT) to Use Them</a>.</li>
-<li><a class="reference external" href="http://ryanmorr.com/understanding-scope-and-context-in-javascript/">Understanding Scope and Context in JavaScript</a>.</li>
-<li><a class="reference external" href="https://www.freecodecamp.org/news/lets-learn-javascript-closures-66feb44f6a44/">Let’s Learn JavaScript Closures</a>.</li>
-<li><a class="reference external" href="https://medium.com/&#64;5066aman/lexical-environment-the-hidden-part-to-understand-closures-71d60efac0e0">Lexical Environment — The hidden part to understand Closures</a>.</li>
-<li><a class="reference external" href="https://dev.venntro.com/2013/09/es6-part-2/">https://dev.venntro.com/2013/09/es6-part-2/</a>.</li>
+<li><p><a class="reference external" href="https://zendev.com/2018/10/01/javascript-arrow-functions-how-why-when.html">JavaScript Arrow Functions: How, Why, When (and WHEN NOT) to Use Them</a>.</p></li>
+<li><p><a class="reference external" href="http://ryanmorr.com/understanding-scope-and-context-in-javascript/">Understanding Scope and Context in JavaScript</a>.</p></li>
+<li><p><a class="reference external" href="https://www.freecodecamp.org/news/lets-learn-javascript-closures-66feb44f6a44/">Let’s Learn JavaScript Closures</a>.</p></li>
+<li><p><a class="reference external" href="https://medium.com/&#64;5066aman/lexical-environment-the-hidden-part-to-understand-closures-71d60efac0e0">Lexical Environment — The hidden part to understand Closures</a>.</p></li>
+<li><p><a class="reference external" href="https://dev.venntro.com/2013/09/es6-part-2/">https://dev.venntro.com/2013/09/es6-part-2/</a>.</p></li>
 </ul>
 <p class="rubric">Notas al pie</p>
-<table class="docutils footnote" frame="void" id="id6" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>En modo estricto, se produce un error.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id7" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id4">[2]</a></td><td>Ya veremos que en un navegador el objeto global es <em>window</em>, de ahí la
-equivalencia.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id8" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[3]</td><td>No, no existen, ni siquiera a partir de <em>ES2015</em> donde aparece una
+<dl class="footnote brackets">
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>En modo estricto, se produce un error.</p>
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
+<dd><p>Ya veremos que en un navegador el objeto global es <em>window</em>, de ahí la
+equivalencia.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets">3</span></dt>
+<dd><p>No, no existen, ni siquiera a partir de <em>ES2015</em> donde aparece una
 sintaxis para <em>definir</em> clases. Abundaremos más adelante en esta aparente
-paradoja.</td></tr>
-</tbody>
-</table>
+paradoja.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -1478,7 +1449,7 @@ paradoja.</td></tr>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table of Contents</a></h3>
+  <h3><a href="../index.html">Tabla de contenido</a></h3>
   <ul>
 <li><a class="reference internal" href="#">1. Particularidades</a><ul>
 <li><a class="reference internal" href="#generalidades">1.1. Generalidades</a><ul>
@@ -1546,7 +1517,7 @@ paradoja.</td></tr>
                         title="capítulo anterior">Javascript</a></p>
   <h4>Próximo tema</h4>
   <p class="topless"><a href="../02.node/index.html"
-                        title="próximo capítulo">2. NodeJS</a></p>
+                        title="próximo capítulo"><span class="section-number">2. </span>NodeJS</a></p>
   <div role="note" aria-label="source link">
     <h3>Esta página</h3>
     <ul class="this-page-menu">
@@ -1555,17 +1526,15 @@ paradoja.</td></tr>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Búsqueda rápida</h3>
+  <h3 id="searchlabel">Búsqueda rápida</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Ir a" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -1587,7 +1556,7 @@ paradoja.</td></tr>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
-      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.3.
     </div>
   </body>
 </html>

@@ -140,7 +140,7 @@ En esta configuración hay dos novedades que merecen comentario:
      cuándo se quieren fusionar :ref:`arrays de cargadores <webpack-process>`
      y en ocasiones, en vez de concatenarlos sin más, es capaz de hacer
      sustituciones. Más adelante se verá algún ejemplo. En este punto en que
-     estamos, :code:`merge.start` y :code:`merge` generan el mismo resultado.
+     estamos, :code:`merge.smart` y :code:`merge` generan el mismo resultado.
 
 - :file:`webpack.config.js` puede exportar directamente la configuración (que es
   lo que se hizo en la primera configuración) como una función que devuelve la
@@ -158,7 +158,7 @@ incluya |HTML| y |CSS| y montarla con :program:`webpack`. En este caso, como se
 obtiene como resultado una página web, tiene sentido poder depurar la página de
 modo interactivo, esto es, que se levante un servidor web y que la página cambie
 automáticamente al realizarse algún cambio en alguno de los ficheros fuente.
-Para ello, añadimos un tercer *script*:
+Para ello, añadimos un tercer *script*\ [#]_:
 
 .. code-block:: js
 

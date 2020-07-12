@@ -139,11 +139,9 @@ module.exports = env => {
             L: "leaflet"
          }),
          new webpack.DefinePlugin({
-            "process.env": {
-               output: JSON.stringify(env.output),
-               version: JSON.stringify(pack.version),
-               mode: JSON.stringify(env.mode)
-            }
+            "process.env.output": JSON.stringify(env.output),
+            "process.env.version": JSON.stringify(env.version),
+            "process.env.mode": JSON.stringify(env.mode)
          }),
          new MiniCssExtractPlugin({
             filename: "[name].bundle.css",
