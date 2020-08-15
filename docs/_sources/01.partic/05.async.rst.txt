@@ -1,0 +1,17 @@
+Programación asínscrona
+***********************
+
+.. Para la introducción:
+
+   https://lemoncode.net/lemoncode-blog/2018/1/29/javascript-asincrono
+
+.. Explica con un ejemplo el infierno de los callbacks.
+   https://dev.to/siwalikm/async-programming-basics-every-js-developer-should-know-in-2018-a9c
+   
+.. Otra buena explicación de Promise/async:
+   https://medium.com/jspoint/javascript-promises-and-async-await-as-fast-as-possible-d7c8c8ff0abc
+
+.. Explicación de objetos thenables (aquellos a los que se les puede aplicar await):
+   https://dev.to/spaciecat/thenables-await-objects-and-cancel-or-defer-your-promises-1f12
+
+

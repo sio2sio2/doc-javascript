@@ -1,0 +1,390 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>1.2. Variables &#8212; documentación de Javascript - </title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/translations.js"></script>
+    
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="1.3. Funciones" href="03.funciones.html" />
+    <link rel="prev" title="1.1. Generalidades" href="01.gener.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="03.funciones.html" title="1.3. Funciones"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="01.gener.html" title="1.1. Generalidades"
+             accesskey="P">anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U"><span class="section-number">1. </span>Particularidades</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="variables">
+<h1><span class="section-number">1.2. </span>Variables<a class="headerlink" href="#variables" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="section" id="declaracion">
+<h2><span class="section-number">1.2.1. </span>Declaración<a class="headerlink" href="#declaracion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Hay tres modos de declarar variables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">let</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="n">const</span> <span class="n">Y</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>La primera forma es la única que ha existido tradicionalmente; mientras que la
+segunda y la tercera se introdujeron en <em>ES2015</em>. La última forma permite
+definir constantes y requiere obligatoriamente declarar cuál es el valor
+asignado. Las otras dos, en cambio, pueden declararse sin recibir valor. En tal
+caso, su valor es :code.`undefined`, hasta que no se le asigne un valor.</p>
+<p>Por otra parte, en <em>Javascript</em> las funciones son ciudadanas de primera clase.</p>
+<p>Hay otra diferencia capital entre estas tres declaraciones relacionada con su
+ámbito de existencia: las declaradas con <code class="code docutils literal notranslate"><span class="pre">var</span></code> tiene como ámbito la
+función dentro de la que se definen, mientras que las declaradas con <code class="code docutils literal notranslate"><span class="pre">let</span></code>
+y <code class="code docutils literal notranslate"><span class="pre">const</span></code> el bloque. Se profundizará más adelante en ello.</p>
+<p id="decl-no-var">Cuando se lleva a cabo una asignación, sin haber hecho una declaración previa
+pueden ocurrir dos cosas:</p>
+<ul class="simple">
+<li><p>En modo <em>estricto</em>, se produce un error.</p></li>
+<li><p>En otro caso, la variable pasa a ser un atributo del <a class="reference internal" href="#objeto-global"><span class="std std-ref">objeto global</span></a>.</p></li>
+</ul>
+</div>
+<div class="section" id="tipos">
+<h2><span class="section-number">1.2.2. </span>Tipos<a class="headerlink" href="#tipos" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><em>Javascript</em> define los siguientes tipos:</p>
+<ul>
+<li><p>Tipos primitivos:</p>
+<ul>
+<li><p>Lógico (<code class="docutils literal notranslate"><span class="pre">true</span></code> o <code class="docutils literal notranslate"><span class="pre">false</span></code>).</p></li>
+<li><p>Cadena.</p></li>
+<li><p>Numérico (número en coma flotante de doble precisión). No hay soporte nativo
+para enteroes.</p></li>
+<li><p>Nulo (<code class="docutils literal notranslate"><span class="pre">null</span></code>).</p></li>
+<li><p>Indefinido, sin valor (<code class="docutils literal notranslate"><span class="pre">undefined</span></code>).</p></li>
+<li><p>Símbolo: es un tipo que sirve para definir valores únicos. Puede usarse como
+como clave para las propiedades de los objetos:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">();</span>
+<span class="n">const</span> <span class="n">objeto</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="n">objeto</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;La clave es un símbolo&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Objetos:</p>
+<ul>
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Fecha</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">ahora</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">();</span>
+</pre></div>
+</div>
+</li>
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Funciones</a>.</p></li>
+<li><p>Objetos equivalentes a los datos primitivos (como en <em>Java</em>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">s</span> <span class="o">=</span> <span class="n">new</span> <span class="n">String</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">n</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Number</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">b</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Objetos en general:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{};</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="contexto-de-ejecucion">
+<h2><span class="section-number">1.2.3. </span>Contexto de ejecución<a class="headerlink" href="#contexto-de-ejecucion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El <em class="dfn">contexto de ejecución</em> es, simplemente, el contexto en que se ejecuta
+una determinada parte del código. En <em>Javascript</em> hay un contexto global y cada
+función crea su propio contexto de ejecución:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Contexto</span> <span class="k">global</span>
+<span class="n">var</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="n">function</span> <span class="n">f1</span><span class="p">()</span> <span class="p">{</span>
+   <span class="o">//</span> <span class="n">Contexto</span> <span class="n">de</span> <span class="n">f1</span>
+   <span class="n">var</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+   <span class="n">f2</span><span class="p">();</span>
+   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;Dentro del contexto de f1&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">function</span> <span class="n">f2</span><span class="p">()</span> <span class="p">{</span>
+   <span class="o">//</span> <span class="n">Contexto</span> <span class="n">de</span> <span class="n">f2</span>
+   <span class="n">var</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;Dentro del contexto de f2&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">f1</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>En el caso de los contextos de ejecución se habla de <em class="dfn">pila de contextos</em>,
+ya que al comenzar el programa se crea el contexto global, al invocarse la
+función <code class="code docutils literal notranslate"><span class="pre">f1()</span></code> se crea un contexto para esta función, dentro de la cual se
+invoca a la función <code class="code docutils literal notranslate"><span class="pre">f2()</span></code> lo que provoca la creación de otro contexto. Al
+salir de esta última función se destruye este contexto y volvemos al contexto de
+la función <code class="code docutils literal notranslate"><span class="pre">f1</span></code> y al acabar esta, regresamos al contexto global, el cual
+se destruye al acabar el programa. Obsérvese que la <em>pila de contextos</em> depende
+de por dónde se desarrolle la ejecución.</p>
+<p>Es preciso puntualizar que cuando existen diferentes ficheros, el
+comportamientdo difiere dependiendo de cuál sea el interprete:</p>
+<ul>
+<li><p>En los navegadores, todos los ficheros comparten el mismo contexto que es un
+contexto glonal, por lo que si nen el nivel superior definimos:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>estaremos haciendo exactamente lo mismo que<a class="footnote-reference brackets" href="#id3" id="id1">1</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</li>
+<li><p>En <a class="reference external" href="https://nodejs.org">NodeJS</a>, en cambio, al ser cada fichero un módulo distinto, cada fichero
+tiene su contexto particular.</p></li>
+</ul>
+<p>Cada vez que se crea un contexto, el intérprete establece tres cosas:</p>
+<ul class="simple">
+<li><p>Un entorno léxico (<em>lexical environment</em>).</p></li>
+<li><p>Un entorno de variable (<em>variable environment</em>).</p></li>
+<li><p>Un objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>.</p></li>
+</ul>
+</div>
+<div class="section" id="entornos">
+<h2><span class="section-number">1.2.4. </span>Entornos<a class="headerlink" href="#entornos" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Al crearse un nuevo contexto de ejecución se crean un entorno léxico y un
+entorno de variable que, en principio, son idénticos. Cada entorno recoge la
+declaración de variables y funciones y una referencia al entorno externo. En
+consecuencia, en el entorno de la función <code class="docutils literal notranslate"><span class="pre">f2()</span></code>, tenemos acceso a la variable
+<code class="docutils literal notranslate"><span class="pre">c</span></code>, pero también a la <code class="docutils literal notranslate"><span class="pre">b</span></code> y a la <code class="docutils literal notranslate"><span class="pre">a</span></code>, ya que cuando un identificador no
+se encuentra en el propio entorno se sigue buscando en el entorno externo y, si
+tampoco se encuentra en este se busca en el externo del externo y así
+sucesivamente hasta llegar al entorno global, cuyo entorno externo es
+<code class="code docutils literal notranslate"><span class="pre">null</span></code>. Esto define una <em class="dfn">cadena de alcances</em>. Por la misma razón, si
+en un entorno interno se define una variable con el mismo nombre que en un
+entorno externo, la variable externa queda eclipsada, ya que nunca se consultará
+su valor al haberse encontrado antes en la <em>cadena de alcances</em>. Obsérvese que
+la <em>cadena de alcances</em> depende de cómo esté escrito el código, no de cómo se
+ejecute.</p>
+<p>Afinando más, un entorno está constituido por:</p>
+<ul class="simple">
+<li><p>Una referencia al entorno externo (que es lo que posibilita la <em>cadena de
+alcances</em>).</p></li>
+<li><p>Un registro de ambiente que mapea identificadores con valores. Tal registro
+tiene dos clases de registros:</p>
+<ul>
+<li><p>Los registros declarativos del entorno para las declaraciones de variables y
+funciones llevadas a cabo en el entorno.</p></li>
+<li><p>Los registros de objeto del entorno que se usan con la sentencia <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with">with</a> y
+para el entorno global. Por esta razón, las definiciones hechas sobre el
+<a class="reference internal" href="#objeto-global"><span class="std std-ref">objeto global</span></a> siempre están disponibles.</p></li>
+</ul>
+</li>
+</ul>
+<p>Ya hemos indicado que en un principio, los entornos léxico y de variables son
+idénticos en un <em>contexto de ejecución</em>. Cuándo y por qué divergen es fácil de
+entender con un ejemplo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">foobar</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">var</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+   <span class="p">{</span>
+      <span class="n">var</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+      <span class="n">let</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+   <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ya se indicó que el ámbito de las variables declaradas con <code class="docutils literal notranslate"><span class="pre">var</span></code> es la
+función, mientras que la de las definidas con <code class="docutils literal notranslate"><span class="pre">let</span></code> (o  <code class="docutils literal notranslate"><span class="pre">const</span></code>) es el
+bloque. En consecuencia, <code class="docutils literal notranslate"><span class="pre">b</span></code>, aunque definida dentro del bloque, existe
+fuera de él. De hecho, <em>Javascript</em> opera de manera que traslada siempre las
+declaraciones de las variables (aunque no la asignación) al comienzo de su ámbito,
+por lo que <code class="docutils literal notranslate"><span class="pre">b</span></code> antes del bloque existe, aunque está indefinido:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">foobar</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">var</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+   <span class="o">//</span> <span class="n">Aquí</span> <span class="n">existe</span> <span class="n">b</span> <span class="n">pero</span> <span class="n">vale</span> <span class="n">undefined</span><span class="o">.</span>
+
+   <span class="p">{</span>
+      <span class="n">var</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+      <span class="n">let</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="o">//</span> <span class="n">Aquí</span> <span class="n">b</span> <span class="n">vale</span> <span class="mf">2.</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">c</span></code>, en cambio, sólo existe dentro del bloque. La forma que usa el intérprete
+para implementar esto es la de apuntar <code class="docutils literal notranslate"><span class="pre">b</span></code> en el entorno de variables, pero
+<code class="docutils literal notranslate"><span class="pre">c</span></code> en el entorno léxico. Por tanto, dentro del bloque el entorno de variables
+y el entorno de variables difiere.</p>
+</div>
+<div class="section" id="objeto-global">
+<span id="id2"></span><h2><span class="section-number">1.2.5. </span>Objeto global<a class="headerlink" href="#objeto-global" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><em class="dfn">Objeto global</em> es aquel que las definidas que pertenecen al alcance global.
+En un navegador el objeto global es <em>window</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Recuérdese que en modo <strong>no estricto</strong>, las asignaciones sin
+declaración se definen como variables globales, esto es, pasan a formar parte
+del objeto global.</p>
+</div>
+</div>
+<div class="section" id="objeto-this">
+<h2><span class="section-number">1.2.6. </span>Objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a><a class="headerlink" href="#objeto-this" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Cada contexto de ejecución tiene asociado un objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>. Es importante tener
+presente que el significado de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> en <em>Javascript</em> es mucho amplio del que
+tiene comúnmente en lenguajes orientados a objetos como <em>Java</em> o <em>Python</em>
+(aunque en este se pueda llamar de cualquier manera). En estos lenguajes, <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>
+representa al objeto mismo dentro de sus propios métodos. Por eso, en <em>Python</em>
+podemos escribir:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Rectangulo</span><span class="p">:</span>
+
+   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">x</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">y</span>
+
+   <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>En <em>Javascript</em>, tiene este significado (que se tratará al tratar el
+<a class="reference internal" href="04.objetos.html#object-model"><span class="std std-ref">modelo de objetos</span></a>), pero no exclusivamente, ya que
+cualquier contexto de ejecución tiene definido un objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>.</p>
+<p>En el contexto global, el valor de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> es:</p>
+<ul>
+<li><p>El objeto global (o sea, <em>window</em>) en los navegadores. Además, los contextos
+globales de todos los ficheros de código son exactamente el mismo.</p></li>
+<li><p>En <a class="reference external" href="https://nodejs.org">NodeJS</a>. en cambio, cada fichero tiene un contexto diferente y el valor de
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> coincide con el objeto de importación (en caso de que se use
+<em>CommonJS</em>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   exports.a = 1;
+   let b = 2;
+
+   console.log(this);  // {a: 1}
+
+   function c() {
+      console.log(&quot;Soy una función&quot;);
+   }
+
+   exports.c = c;
+
+   console.log(this);  // {a: 1, c: [Function: c]}
+
+
+.. seealso:: A su debido tiempo. requerirá echarle un ojo a los :ref:`módulos
+   en Javascript &lt;js-modules&gt;`.
+</pre></div>
+</div>
+</li>
+</ul>
+<p>La discusión sobre el valor de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> dentro de las funciones, la incluiremos
+bajo el próximo epígrafe.</p>
+<p class="rubric">Notas al pie</p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Ya veremos que en un navegador el objeto global es <em>window</em>, de ahí la
+equivalencia.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Tabla de contenido</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.2. Variables</a><ul>
+<li><a class="reference internal" href="#declaracion">1.2.1. Declaración</a></li>
+<li><a class="reference internal" href="#tipos">1.2.2. Tipos</a></li>
+<li><a class="reference internal" href="#contexto-de-ejecucion">1.2.3. Contexto de ejecución</a></li>
+<li><a class="reference internal" href="#entornos">1.2.4. Entornos</a></li>
+<li><a class="reference internal" href="#objeto-global">1.2.5. Objeto global</a></li>
+<li><a class="reference internal" href="#objeto-this">1.2.6. Objeto this</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Tema anterior</h4>
+  <p class="topless"><a href="01.gener.html"
+                        title="capítulo anterior"><span class="section-number">1.1. </span>Generalidades</a></p>
+  <h4>Próximo tema</h4>
+  <p class="topless"><a href="03.funciones.html"
+                        title="próximo capítulo"><span class="section-number">1.3. </span>Funciones</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/01.partic/02.variables.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="03.funciones.html" title="1.3. Funciones"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="01.gener.html" title="1.1. Generalidades"
+             >anterior</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" ><span class="section-number">1. </span>Particularidades</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
+      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.3.
+    </div>
+  </body>
+</html>

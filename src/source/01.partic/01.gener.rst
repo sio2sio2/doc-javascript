@@ -1,0 +1,93 @@
+Generalidades
+*************
+
+Características
+===============
+Resumiendo enormemente, *Javascript* es un lenguaje:
+
+- Interpretado
+
+- Imperativo orientado a objetos (aunque :ref:`ya veremos <object-model>` que no
+  basado en clases), pero con muchas características propias de la
+  programación funcional.
+
+- De tipado dinámico y débil.
+
+Versiones
+=========
+*Javascript* nació en el `navegador Netscape <https://es.wikipedia.org/wiki/Netscape_Navigator>`_,
+aunque pronto fue adoptado e implementado *a su manera* (recibiendo el nombre de
+*JSScript*) en su competidor `Internet Explorer
+<https://es.wikipedia.org/wiki/Internet_Explorer>`_, con lo que surgieron toda
+una de incompatibilidades que lastraban el desarrollo de la web.
+
+En 1997, *Netscape* remitió a la *ECMA* el lenguaje para su estandarización y
+surgieron las distintas versiones del estándar *ECMAScript* (abreviado *ES* o
+*ES-262*, en donde el número hace referencia a que es la norma *ECMA* 262 la que
+recoge las especificaciones):
+
+* **ES1** (1997), **ES2** (1998), **ES3** (1999) y la nunca publicada versión 4, que
+  podemos agrupar juntas y son las versiones arcaicas del lenguaje.
+
+* **ES5** surgida en 2009.
+
+* **ES2015** (también conocida como *Javascript* v6) de 2015. La decisión de
+  sustituir el número de versión por el año de lanzamiento se debió a que *ECMA*
+  decidió editar nuevas versiones en los meses de junio de cada año. y así ha
+  seguido siendo. Esta versión incorporó bastantes novedades respecto a la
+  anterior.
+
+* **ES2016**, **ES2017**, etc. que son las versiones anuales posteriores. A fecha de
+  redacción de este documento la última versión publicada es la *ES2019* (o
+  *Javascript* v10).
+
+.. note:: A pesar del cambio de denominación es frecuente que algunos sigan
+   refiriendo las revisiones con su número de versión.
+
+Modo estricto
+=============
+En *ES5* se introdujo un modo estricto para el lenguaje que, simplemente, le
+indica al intérprete que sea menos permisivo al interpretarlo. Se puede
+interpretar *en modo estricto* todo un fichero entero o sólo una función
+particular. Para ello, la primera línea del fichero o la función debe contener
+esta cadena::
+
+   "use strict";
+
+El efecto de utilizar el modo estricto es que el intérprete falla al encontrarse
+con código que, por lo general, se debe a errores de digitalización o tienen
+efectos secundarios indeseados. Por ejemplo, en modo estricto no puede usarse
+una variable si previamente no se ha declarado explícitamente.
+
+.. note:: Es importante tener presente que la especificación de *ES2015*
+   prescribe que los módulos se interpreten siempre en modo estricto, aunque no
+   se haya indicado explícitamente.
+
+Bucles :code:`for`
+==================
+*Javascript* dispone de dos tipos de bucles iterativos:
+
+* El ``for`` con sintaxis de **C** que permite recorrer secuencias a través de
+  los ínjdices de sus componentes::
+
+   arr = ["a", "b", "c"];
+   str = "abc";
+
+   for(let i=0; i < arr.length; i++) console.log(arr[i]);
+   for(let i=0; i < str.length; i++) console.log(str[i]);
+
+* Un bucle de tipo *forach* que tiene dos variantes:
+
+  - Si se usa ``in`` se recorren a lps nombres de las propiedades
+    :ref:`enumerables <object-descriptors>` de cualquier objeto::
+
+      for(const idx of arr) {
+         console.log(idx);  // Imprime sucesivamente "0", "1", "2"
+      }
+
+  - A partir de *ES2015*, si se usa ``of`` se recorren los valores de las
+    propiedades enumerables de cualquier objeto::
+
+      for(const e of arr) {
+         console.log(e);  // Imprime sucesivamente "a", "b", "c"
+      }

@@ -396,13 +396,12 @@ podemos resumir en dos casos nuestras necesidades:</p>
 <li><p>Si generamos una aplicación final que contiene todos el código necesario,
 no tenemos por qué preocuparnos por la salida, ya que el código <em>Javascript</em>
 no tiene que relacionarse con ningún otro. Por tanto:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span>  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
-     <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
-  <span class="p">}</span>
-
-<span class="nx">es</span> <span class="nx">más</span> <span class="nx">que</span> <span class="nx">suficiente</span><span class="p">.</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+   <span class="nx">filename</span><span class="o">:</span> <span class="s2">&quot;js/[name].bundle.js&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 </pre></div>
 </div>
+<p>es más que suficiente.</p>
 </li>
 <li><p>Si generamos una librería y no una aplicación final, la solución universal
 es generar como fichero resultante <a class="reference internal" href="../../02.node/03.modulos.html#mod-umd"><span class="std std-ref">un módulo UMD</span></a>, ya que de

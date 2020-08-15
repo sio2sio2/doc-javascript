@@ -288,9 +288,9 @@ Escritura
      desarrollar la aplicación, pero sin las sentencias de importación y
      exportación.
 
-#. Por último, redactamos :file:`webpack.config.js`. Esta configuración es más
-   compleja que la anterior, puesto que codifica la generación de las cinco
-   salidas diferentes.
+#. Por último, redactamos :download:`files/plugin/webpack.config.js`. Esta
+   configuración es más compleja que la anterior, puesto que codifica la
+   generación de las cinco salidas diferentes.
 
    .. literalinclude:: files/plugin/webpack.config.js
       :language: js

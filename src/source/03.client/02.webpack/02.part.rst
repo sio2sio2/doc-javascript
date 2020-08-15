@@ -396,7 +396,7 @@ podemos resumir en dos casos nuestras necesidades:
         filename: "js/[name].bundle.js",
      }
 
-   es más que suficiente.
+  es más que suficiente.
 
 - Si generamos una librería y no una aplicación final, la solución universal
   es generar como fichero resultante :ref:`un módulo UMD <mod-umd>`, ya que de
