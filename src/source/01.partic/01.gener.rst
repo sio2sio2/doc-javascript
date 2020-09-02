@@ -7,9 +7,8 @@ Resumiendo enormemente, *Javascript* es un lenguaje:
 
 - Interpretado
 
-- Imperativo orientado a objetos (aunque :ref:`ya veremos <object-model>` que no
-  basado en clases), pero con muchas características propias de la
-  programación funcional.
+- A medio camino entre la programación imperativa y funcional, y orientado a
+  objetos (aunque :ref:`ya veremos <objetos>` que no basado en clases).
 
 - De tipado dinámico y débil.
 
@@ -76,7 +75,7 @@ Bucles :code:`for`
    for(let i=0; i < arr.length; i++) console.log(arr[i]);
    for(let i=0; i < str.length; i++) console.log(str[i]);
 
-* Un bucle de tipo *forach* que tiene dos variantes:
+* Un bucle de tipo *foreach* que tiene dos variantes:
 
   - Si se usa ``in`` se recorren a lps nombres de las propiedades
     :ref:`enumerables <object-descriptors>` de cualquier objeto::

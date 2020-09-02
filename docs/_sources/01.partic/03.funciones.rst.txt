@@ -1,3 +1,5 @@
+.. _func:
+
 Funciones
 *********
 Las funciones en *Javascript* tiene algunas particularidades que conviene
@@ -90,7 +92,7 @@ características especiales:
    suma(undefined, 200);  // 200 + 10 = 210.
    suma();                // 100 + 10 = 110.
 
- Antes, no obstante, era también bastante sencillo de implementar::
+  Antes, no obstante, era también bastante sencillo de implementar::
 
    function suma(a, b) {
       if(a === undefined) a = 10;
@@ -177,7 +179,7 @@ múltiples factores:
 
         ABC.foobar();  // Imprime 1.
    
-- Y aunque se entenderá al tratar el :ref:`modelo de objetos <object-model>`,
+- Y aunque se entenderá al tratar el :ref:`modelo de objetos <objetos>`,
   dentro de las funciones constructoras y en los métodos del prototipo de dicho
   constructor, this_ representa al propio objeto::
 

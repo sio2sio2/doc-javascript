@@ -49,28 +49,29 @@ Tipos
       const objeto = {};
       objeto[s] = "La clave es un símbolo";
 
-* Objetos:
+* Objetos: Fuera de los tipos primitivos encontramos los objetos entre los
+  cuales podemos distinguir:
 
-  * `Array
-    <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array>`_::
-
-      const arr = [1, 2, 3];
-
-  * `Fecha
-    <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date>`_::
-
-      const ahora = new Date();
-
-  * `Funciones
-    <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function>`_.
-
-  * Objetos equivalentes a los datos primitivos (como en *Java*)::
+  * Objetos equivalentes a datos primitivos (como ocurre en *Java*)::
 
       const s = new String("abc");
       const n = new Number(12);
       const b = new Boolean(true);
 
-  * Objetos en general::
+  * `Arrays
+    <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array>`_::
+
+      const arr = [1, 2, 3];
+
+  * Funciones, que :ref:`ya trataremos<func>`.
+
+  * Objetos de tipos predefinidos como las `fechas
+    <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date>`_ o
+    las `promesas
+    <https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Promise>`_.
+
+  * Objetos de usuario, que `trataremos específicamente también
+    <objetos>`_.
 
       const o = {};
 
@@ -111,7 +112,7 @@ Es preciso puntualizar que cuando existen diferentes ficheros, el
 comportamientdo difiere dependiendo de cuál sea el interprete:
 
 - En los navegadores, todos los ficheros comparten el mismo contexto que es un
-  contexto glonal, por lo que si nen el nivel superior definimos::
+  contexto glonal, por lo que si en el nivel superior definimos::
 
    var x = 2;
 
@@ -135,7 +136,7 @@ Al crearse un nuevo contexto de ejecución se crean un entorno léxico y un
 entorno de variable que, en principio, son idénticos. Cada entorno recoge la
 declaración de variables y funciones y una referencia al entorno externo. En
 consecuencia, en el entorno de la función ``f2()``, tenemos acceso a la variable
-``c``, pero también a la ``b`` y a la ``a``, ya que cuando un identificador no
+``c``, pero a la ``a``, ya que cuando un identificador no
 se encuentra en el propio entorno se sigue buscando en el entorno externo y, si
 tampoco se encuentra en este se busca en el externo del externo y así
 sucesivamente hasta llegar al entorno global, cuyo entorno externo es
@@ -196,15 +197,15 @@ por lo que ``b`` antes del bloque existe, aunque está indefinido::
 
 ``c``, en cambio, sólo existe dentro del bloque. La forma que usa el intérprete
 para implementar esto es la de apuntar ``b`` en el entorno de variables, pero
-``c`` en el entorno léxico. Por tanto, dentro del bloque el entorno de variables
-y el entorno de variables difiere.
+``c`` en el entorno léxico. Por tanto, dentro del bloque el entorno léxico y el
+entorno de variables difiere.
 
 .. _objeto-global:
 
 Objeto global
 =============
-:dfn:`Objeto global` es aquel que las definidas que pertenecen al alcance global.
-En un navegador el objeto global es *window*.
+:dfn:`Objeto global` es aquel al que pertenecen las definiciones del alcance
+global. En un navegador el objeto global es *window*.
 
 .. note:: Recuérdese que en modo **no estricto**, las asignaciones sin
    declaración se definen como variables globales, esto es, pasan a formar parte
@@ -231,7 +232,7 @@ podemos escribir:
          return self.width*self.height;
 
 En *Javascript*, tiene este significado (que se tratará al tratar el
-:ref:`modelo de objetos <object-model>`), pero no exclusivamente, ya que
+:ref:`modelo de objetos <objetos>`), pero no exclusivamente, ya que
 cualquier contexto de ejecución tiene definido un objeto this_.
 
 En el contexto global, el valor de this_ es:
@@ -262,7 +263,6 @@ En el contexto global, el valor de this_ es:
 
 La discusión sobre el valor de this_ dentro de las funciones, la incluiremos
 bajo el próximo epígrafe.
-
 
 .. rubric:: Notas al pie
 

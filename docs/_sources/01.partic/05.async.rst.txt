@@ -5,6 +5,10 @@ Programación asínscrona
 
    https://lemoncode.net/lemoncode-blog/2018/1/29/javascript-asincrono
 
+.. Explicación de ejecución síncrona/asíncrona:
+
+   https://medium.com/javascript-scene/10-interview-questions-every-javascript-developer-should-know-6fa6bdf5ad95#af67
+                                                                                                                            
 .. Explica con un ejemplo el infierno de los callbacks.
    https://dev.to/siwalikm/async-programming-basics-every-js-developer-should-know-in-2018-a9c
    

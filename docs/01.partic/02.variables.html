@@ -6,6 +6,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1.2. Variables &#8212; documentación de Javascript - </title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -36,7 +37,8 @@
           <a href="01.gener.html" title="1.1. Generalidades"
              accesskey="P">anterior</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U"><span class="section-number">1. </span>Particularidades</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U"><span class="section-number">1. </span>Particularidades</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.2. </span>Variables</a></li> 
       </ul>
     </div>  
 
@@ -94,30 +96,28 @@ como clave para las propiedades de los objetos:</p>
 </li>
 </ul>
 </li>
-<li><p>Objetos:</p>
+<li><p>Objetos: Fuera de los tipos primitivos encontramos los objetos entre los
+cuales podemos distinguir:</p>
 <ul>
-<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
-</pre></div>
-</div>
-</li>
-<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Fecha</a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">ahora</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">();</span>
-</pre></div>
-</div>
-</li>
-<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Funciones</a>.</p></li>
-<li><p>Objetos equivalentes a los datos primitivos (como en <em>Java</em>):</p>
+<li><p>Objetos equivalentes a datos primitivos (como ocurre en <em>Java</em>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">s</span> <span class="o">=</span> <span class="n">new</span> <span class="n">String</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">);</span>
 <span class="n">const</span> <span class="n">n</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Number</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
 <span class="n">const</span> <span class="n">b</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Boolean</span><span class="p">(</span><span class="n">true</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p>Objetos en general:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{};</span>
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Arrays</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
 </pre></div>
 </div>
+</li>
+<li><p>Funciones, que <a class="reference internal" href="03.funciones.html#func"><span class="std std-ref">ya trataremos</span></a>.</p></li>
+<li><p>Objetos de tipos predefinidos como las <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">fechas</a> o
+las <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Promise">promesas</a>.</p></li>
+<li><p>Objetos de usuario, que <a class="reference external" href="objetos">trataremos específicamente también</a>.</p>
+<blockquote>
+<div><p>const o = {};</p>
+</div></blockquote>
 </li>
 </ul>
 </li>
@@ -159,7 +159,7 @@ de por dónde se desarrolle la ejecución.</p>
 comportamientdo difiere dependiendo de cuál sea el interprete:</p>
 <ul>
 <li><p>En los navegadores, todos los ficheros comparten el mismo contexto que es un
-contexto glonal, por lo que si nen el nivel superior definimos:</p>
+contexto glonal, por lo que si en el nivel superior definimos:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -184,7 +184,7 @@ tiene su contexto particular.</p></li>
 entorno de variable que, en principio, son idénticos. Cada entorno recoge la
 declaración de variables y funciones y una referencia al entorno externo. En
 consecuencia, en el entorno de la función <code class="docutils literal notranslate"><span class="pre">f2()</span></code>, tenemos acceso a la variable
-<code class="docutils literal notranslate"><span class="pre">c</span></code>, pero también a la <code class="docutils literal notranslate"><span class="pre">b</span></code> y a la <code class="docutils literal notranslate"><span class="pre">a</span></code>, ya que cuando un identificador no
+<code class="docutils literal notranslate"><span class="pre">c</span></code>, pero a la <code class="docutils literal notranslate"><span class="pre">a</span></code>, ya que cuando un identificador no
 se encuentra en el propio entorno se sigue buscando en el entorno externo y, si
 tampoco se encuentra en este se busca en el externo del externo y así
 sucesivamente hasta llegar al entorno global, cuyo entorno externo es
@@ -246,13 +246,13 @@ por lo que <code class="docutils literal notranslate"><span class="pre">b</span>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">c</span></code>, en cambio, sólo existe dentro del bloque. La forma que usa el intérprete
 para implementar esto es la de apuntar <code class="docutils literal notranslate"><span class="pre">b</span></code> en el entorno de variables, pero
-<code class="docutils literal notranslate"><span class="pre">c</span></code> en el entorno léxico. Por tanto, dentro del bloque el entorno de variables
-y el entorno de variables difiere.</p>
+<code class="docutils literal notranslate"><span class="pre">c</span></code> en el entorno léxico. Por tanto, dentro del bloque el entorno léxico y el
+entorno de variables difiere.</p>
 </div>
 <div class="section" id="objeto-global">
 <span id="id2"></span><h2><span class="section-number">1.2.5. </span>Objeto global<a class="headerlink" href="#objeto-global" title="Enlazar permanentemente con este título">¶</a></h2>
-<p><em class="dfn">Objeto global</em> es aquel que las definidas que pertenecen al alcance global.
-En un navegador el objeto global es <em>window</em>.</p>
+<p><em class="dfn">Objeto global</em> es aquel al que pertenecen las definiciones del alcance
+global. En un navegador el objeto global es <em>window</em>.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>Recuérdese que en modo <strong>no estricto</strong>, las asignaciones sin
@@ -279,7 +279,7 @@ podemos escribir:</p>
 </pre></div>
 </div>
 <p>En <em>Javascript</em>, tiene este significado (que se tratará al tratar el
-<a class="reference internal" href="04.objetos.html#object-model"><span class="std std-ref">modelo de objetos</span></a>), pero no exclusivamente, ya que
+<a class="reference internal" href="04.objetos.html#objetos"><span class="std std-ref">modelo de objetos</span></a>), pero no exclusivamente, ya que
 cualquier contexto de ejecución tiene definido un objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>.</p>
 <p>En el contexto global, el valor de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> es:</p>
 <ul>
@@ -321,6 +321,7 @@ equivalencia.</p>
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -379,12 +380,13 @@ equivalencia.</p>
           <a href="01.gener.html" title="1.1. Generalidades"
              >anterior</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" ><span class="section-number">1. </span>Particularidades</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="index.html" ><span class="section-number">1. </span>Particularidades</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.2. </span>Variables</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
-      Creado con <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>
