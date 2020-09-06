@@ -1,5 +1,7 @@
-Programación asínscrona
-***********************
+.. highlight:: javascript
+
+Programación asíncrona
+**********************
 
 .. Para la introducción:
 
@@ -18,4 +20,54 @@ Programación asínscrona
 .. Explicación de objetos thenables (aquellos a los que se les puede aplicar await):
    https://dev.to/spaciecat/thenables-await-objects-and-cancel-or-defer-your-promises-1f12
 
+El manejo de la asincronía es fundamental en las aplicaciones web de
+*Javascript* en las que en muchas ocasiones se requiere la espera a la respuesta
+a una petición remota (p.e. si consultamos una |API| |REST|) sin que la interfaz
+quede bloqueada y al usuario le dé la sensación de que el navegador se ha quedado
+colgado.
 
+Observemos que mientras en una ejecución síncrona la ejecución de la orden
+posterior no comienza hasta que no haya acabado la ejecución de la función::
+
+   function contar(n) {
+      for(let i=0; i<n; i++) console.log(`Soy el ${i}.`);
+   }
+
+   contar(10);  // Hasta no acabar la cuenta no pasaremos a la siguiente instrucción
+   console.log("FIN");
+
+en una ejecución asíncrona sí se seguirá ejecutando las órdenes posteriores::
+
+   setTimeout(() => console.log("Ejecutado asíncronamente"), 1000);
+   console.log("SIGUIENTE");
+
+.. note:: Para una explicación detallada de cómo funciona la asincronía consulte
+   `Javascript asíncrono: la guía definitiva`_
+
+Existen varias estrategias asíncronas en *Javascript*:
+
+* Retrollamadas o *callbacks*.
+* Promesas.
+* Funciones asíncronas.
+* ``async``/``await``.
+* Objetos *thenables*.
+
+*Callbacks*
+===========
+
+Promesas
+========
+
+Funciones asíncronas
+====================
+
+``async``/``await``
+===================
+
+Objetos *thenables*
+===================
+
+.. |API| replace:: :abbr:`API (Application Programming Interface)`
+.. |REST| replace:: :abbr:`REST (Representational State Transfer)`
+
+.. _Javascript asíncrono\: la guía definitiva: https://lemoncode.net/lemoncode-blog/2018/1/29/javascript-asincrono

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1.5. Programación asínscrona &#8212; documentación de Javascript - </title>
+    <title>1.5. Programación asíncrona &#8212; documentación de Javascript - </title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -38,7 +38,7 @@
              accesskey="P">anterior</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U"><span class="section-number">1. </span>Particularidades</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.5. </span>Programación asínscrona</a></li> 
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.5. </span>Programación asíncrona</a></li> 
       </ul>
     </div>  
 
@@ -47,8 +47,56 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="programacion-asinscrona">
-<h1><span class="section-number">1.5. </span>Programación asínscrona<a class="headerlink" href="#programacion-asinscrona" title="Enlazar permanentemente con este título">¶</a></h1>
+  <div class="section" id="programacion-asincrona">
+<h1><span class="section-number">1.5. </span>Programación asíncrona<a class="headerlink" href="#programacion-asincrona" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>El manejo de la asincronía es fundamental en las aplicaciones web de
+<em>Javascript</em> en las que en muchas ocasiones se requiere la espera a la respuesta
+a una petición remota (p.e. si consultamos una <abbr title="Application Programming Interface">API</abbr> <abbr title="Representational State Transfer">REST</abbr>) sin que la interfaz
+quede bloqueada y al usuario le dé la sensación de que el navegador se ha quedado
+colgado.</p>
+<p>Observemos que mientras en una ejecución síncrona la ejecución de la orden
+posterior no comienza hasta que no haya acabado la ejecución de la función:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">contar</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">n</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Soy el </span><span class="si">${</span><span class="nx">i</span><span class="si">}</span><span class="sb">.`</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">contar</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>  <span class="c1">// Hasta no acabar la cuenta no pasaremos a la siguiente instrucción</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;FIN&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>en una ejecución asíncrona sí se seguirá ejecutando las órdenes posteriores:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Ejecutado asíncronamente&quot;</span><span class="p">),</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;SIGUIENTE&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Para una explicación detallada de cómo funciona la asincronía consulte
+<a class="reference external" href="https://lemoncode.net/lemoncode-blog/2018/1/29/javascript-asincrono">Javascript asíncrono: la guía definitiva</a></p>
+</div>
+<p>Existen varias estrategias asíncronas en <em>Javascript</em>:</p>
+<ul class="simple">
+<li><p>Retrollamadas o <em>callbacks</em>.</p></li>
+<li><p>Promesas.</p></li>
+<li><p>Funciones asíncronas.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">async</span></code>/<code class="docutils literal notranslate"><span class="pre">await</span></code>.</p></li>
+<li><p>Objetos <em>thenables</em>.</p></li>
+</ul>
+<div class="section" id="callbacks">
+<h2><span class="section-number">1.5.1. </span><em>Callbacks</em><a class="headerlink" href="#callbacks" title="Enlazar permanentemente con este título">¶</a></h2>
+</div>
+<div class="section" id="promesas">
+<h2><span class="section-number">1.5.2. </span>Promesas<a class="headerlink" href="#promesas" title="Enlazar permanentemente con este título">¶</a></h2>
+</div>
+<div class="section" id="funciones-asincronas">
+<h2><span class="section-number">1.5.3. </span>Funciones asíncronas<a class="headerlink" href="#funciones-asincronas" title="Enlazar permanentemente con este título">¶</a></h2>
+</div>
+<div class="section" id="async-await">
+<h2><span class="section-number">1.5.4. </span><code class="docutils literal notranslate"><span class="pre">async</span></code>/<code class="docutils literal notranslate"><span class="pre">await</span></code><a class="headerlink" href="#async-await" title="Enlazar permanentemente con este título">¶</a></h2>
+</div>
+<div class="section" id="objetos-thenables">
+<h2><span class="section-number">1.5.5. </span>Objetos <em>thenables</em><a class="headerlink" href="#objetos-thenables" title="Enlazar permanentemente con este título">¶</a></h2>
+</div>
 </div>
 
 
@@ -58,6 +106,18 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Tabla de contenido</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.5. Programación asíncrona</a><ul>
+<li><a class="reference internal" href="#callbacks">1.5.1. <em>Callbacks</em></a></li>
+<li><a class="reference internal" href="#promesas">1.5.2. Promesas</a></li>
+<li><a class="reference internal" href="#funciones-asincronas">1.5.3. Funciones asíncronas</a></li>
+<li><a class="reference internal" href="#async-await">1.5.4. <code class="docutils literal notranslate"><span class="pre">async</span></code>/<code class="docutils literal notranslate"><span class="pre">await</span></code></a></li>
+<li><a class="reference internal" href="#objetos-thenables">1.5.5. Objetos <em>thenables</em></a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Tema anterior</h4>
   <p class="topless"><a href="04.objetos.html"
                         title="capítulo anterior"><span class="section-number">1.4. </span>Objetos</a></p>
@@ -99,7 +159,7 @@
              >anterior</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" ><span class="section-number">1. </span>Particularidades</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.5. </span>Programación asínscrona</a></li> 
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.5. </span>Programación asíncrona</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

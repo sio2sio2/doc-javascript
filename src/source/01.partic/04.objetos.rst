@@ -341,7 +341,8 @@ atributo::
 
 Observación
 ============
-.. todo:: Hablar de **Proxy**.
+.. todo:: Breve explicación de `Proxy
+   <https://www.todojs.com/introduccion-a-proxy-de-es6/>`_.
 
 Manejo de objetos
 *****************
@@ -525,12 +526,12 @@ Nótese que para implementar el nuevo método el ejemplo usa:
          return Object.assign(self, extension)
       }
 
-   copia en objeto derivado de ``rectangulo`` (o sea, ``self`` los atributos
-   definidos en ``extension``). La función, además, devuelve el objeto que se
+   copiaen  el objeto derivado de ``rectangulo`` (o sea, ``self``) los atributos
+   definidos en ``extension``. La función, además, devuelve el objeto que se
    pasó como primer argumento, lo que aprovechamos para ahorrarnos una línea de
    código.
 
-   Obsérvese que utilizando esta técnica el nuevo objeto ``cuadradp`` dispondrá
+   Obsérvese que utilizando esta técnica el nuevo objeto ``cuadrado`` dispondrá
    de los atributos por dos vías:
 
    - Por :dfn:`delegación` (o sea, a través de su prototipo) de los atributos de
