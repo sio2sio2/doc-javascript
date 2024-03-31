@@ -1,0 +1,1327 @@
+
+
+
+
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>1.5. Objetos &#8212; documentación de Javascript - rolling</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cloud.css" />
+    <link rel="stylesheet" href="../_static/general.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/particular.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="1.6. Programación asíncrona" href="20.async.html" />
+    <link rel="prev" title="1.4. Funciones" href="05.funciones.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="20.async.html" title="1.6. Programación asíncrona"
+             accesskey="N">siguiente</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="05.funciones.html" title="1.4. Funciones"
+             accesskey="P">anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U"><span class="section-number">1. </span>Particularidades</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.5. </span>Objetos</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="objetos">
+<span id="id1"></span><h1><span class="section-number">1.5. </span>Objetos<a class="headerlink" href="#objetos" title="Enlace permanente a este encabezado">¶</a></h1>
+<p>En <em>Javascript</em> <strong>NO</strong> existen clases<a class="footnote-reference brackets" href="#id12" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, sólo objetos y éstos no son más que
+colecciones de atributos, los cuales pueden ser también funciones, esto es,
+métodos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">altura</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">anchura</span><span class="o">:</span><span class="w"> </span><span class="mf">7</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">area</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// Como este atributo es una función, actúa como método.</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="o">*</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">area</span><span class="p">());</span><span class="w">  </span><span class="c1">// 70.</span>
+<span class="nx">rectangulo</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">8</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">area</span><span class="p">());</span><span class="w">  </span><span class="c1">// 80.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Al ser las funciones ciudadanas de primera clase en <em>Javascript</em>, los
+métodos son atributos cuyo valor es una función. Por este motivo, podemos
+incluir los métodos dentro del término atributos y así se hará a lo largo del
+texto. La fórmula expuesta en el código para definir <code class="docutils literal notranslate"><span class="pre">rectangulo</span></code> deja
+clara esta equivalencia, puesto que <em>area</em> se define de modo análogo a
+<em>anchura</em> y <em>altura</em>. Sin embargo, hay una sintaxis simplificada para definir
+métodos que enmascara esta equivalencia:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">altura</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">anchura</span><span class="o">:</span><span class="w"> </span><span class="mf">7</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// Como este atributo es una función, actúa como método.</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="o">*</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La utilizaremos ya que hemos dejado clara la naturaleza de los métodos como
+<em>atributos función</em>.</p>
+</div>
+<p>Así, pues, hemos construido un objeto ex novo a diferencia de todos esos
+lenguajes orientados a objetos en que la creación de una clase implica la
+instanciación de una clase. Comenzaremos por describir cómo son estos objetos
+sin entrar a discutir estrategias para tener objetos semejantes (o sea, de una
+misma <em>clase</em>) o parecidos<a class="footnote-reference brackets" href="#id13" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<section id="caracteristicas">
+<h2><span class="section-number">1.5.1. </span>Características<a class="headerlink" href="#caracteristicas" title="Enlace permanente a este encabezado">¶</a></h2>
+<section id="definicion">
+<h3><span class="section-number">1.5.1.1. </span>Definición<a class="headerlink" href="#definicion" title="Enlace permanente a este encabezado">¶</a></h3>
+<p>En el ejemplo anterior, ya se expuesto la sintaxis básica para definir un
+objeto: un diccionario de pares clave/valor donde la clave es una cadena o un
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol">símbolo</a>
+y se separa del valor mediante dos puntos. Si los valores se encuentran en
+variables aparte cuyo nombre coincide con el que tendrá la clave:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">7</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">altura</span><span class="o">:</span><span class="w"> </span><span class="nx">altura</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">anchura</span><span class="o">:</span><span class="w"> </span><span class="nx">anchura</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="o">*</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>entonces puede usarse una sintaxis simplificada:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">7</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">altura</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">anchura</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="o">*</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>incluso para el método área, aunque como en este caso no hemos podido hacer uso
+de la simplificación al no haber definido aparte la función <em>area</em>,</p>
+<p>Por supuesto, tenemos total libertad para extender el objeto añadiendo nuevos
+atributos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">escalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">factor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">   </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>o para eliminar atributos ya definidos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="ow">delete</span><span class="w"> </span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">escalar</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Obsérvese que al hacer las definiciones, la clave no se ha escrito entre
+comillas, sino sin ellas, pese a lo cual se sobreentiende como un literal. Si la
+clave que se desea usar, se encuentra dentro de una variable, entonces se
+requiere una sintaxis especial que haga entender al procesador que la clave no
+es literal:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">d1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;altura&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">d2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;anchura&quot;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="p">[</span><span class="nx">d1</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span>
+<span class="w">   </span><span class="p">[</span><span class="nx">d2</span><span class="p">]</span><span class="o">:</span><span class="w">  </span><span class="mf">7</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">[</span><span class="nx">d1</span><span class="p">]</span><span class="o">*</span><span class="k">this</span><span class="p">[</span><span class="nx">d2</span><span class="p">];</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="uso">
+<h3><span class="section-number">1.5.1.2. </span>Uso<a class="headerlink" href="#uso" title="Enlace permanente a este encabezado">¶</a></h3>
+<p>Para utilizar los atributos basta con usar la sintaxis del punto:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">altura</span><span class="p">);</span><span class="w">  </span><span class="c1">// 10.</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">area</span><span class="p">());</span><span class="w">  </span><span class="c1">// 70.</span>
+<span class="nx">rectangulo</span><span class="p">.</span><span class="nx">area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">8</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">area</span><span class="p">());</span><span class="w">  </span><span class="c1">// 80.</span>
+</pre></div>
+</div>
+<p>aunque también podemos usar una sintaxis basada en corchetas:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">rectangulo</span><span class="p">[</span><span class="s2">&quot;anchura&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5</span><span class="p">;</span>
+<span class="nx">rectangulo</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">]();</span><span class="w">  </span><span class="c1">// 80.</span>
+</pre></div>
+</div>
+<p>Esta segunda sintaxis es interesante cuando el nombre de la propiedad la tenemos
+dentro de una variable:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="nx">dimension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;anchura&quot;</span><span class="p">;</span>
+<span class="nx">rectangulo</span><span class="p">[</span><span class="nx">dimension</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">6</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="descriptores">
+<span id="object-descriptors"></span><h3><span class="section-number">1.5.1.3. </span>Descriptores<a class="headerlink" href="#descriptores" title="Enlace permanente a este encabezado">¶</a></h3>
+<p>Hasta ahora, al añadir atributos a un objeto nos hemos dedicado a enchufarlos
+sin más. Sin embargo, cada atributo posee un descriptor que define las
+características del atributo dentro del objeto.</p>
+<dl id="object-getownpropertydescriptor">
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor">Object.getOwnPropertyDescriptor()</a></dt><dd><p>Muestra el desriptor del atributo de un objeto:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">getOwnPropertyDescriptor</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;altura&quot;</span><span class="p">)</span>
+<span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="nx">writable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">configurable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Además del valor, obtenemos que el atributo es:</p>
+<ul class="simple">
+<li><p><em class="dfn">writable</em>, razón por la cual podemos darle un valor distinto.</p></li>
+<li><p><em class="dfn">configurable</em>, razón por la cual podríamos cambiar estas propias
+características, haciendo que, por ejemplo, el valor fuera inmutable.</p></li>
+<li><p><em class="dfn">enumerable</em>, lo que significa que el atributo será más visible, esto es,
+que algunas funciones que veremos más adelante serán capaces de ver que este
+atributo existe<a class="footnote-reference brackets" href="#id14" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p></li>
+</ul>
+<p>Hay dos <strong>tipos</strong> de descriptores:</p>
+<ul class="simple">
+<li><p><em class="dfn">Descriptor de dato</em>, que describe un atributo normal como el anterior y
+que se caracteriza por tener un valor (<strong>value</strong>).</p></li>
+<li><p><em class="dfn">Descriptor de acceso</em>, que describe lo que en <em>Python</em> se denomina
+<em>propiedad</em>, esto es, un dato que dispone de un <em>setter</em> para establecer su
+valor y un <em>getter</em> para devolverlo. Por ejemplo, podríamos convertir las dos
+dimensiones de nuestro rectángulo en sendas propiedades para controlar que
+siempre introduzcan un número como valor. En este caso, el descriptor, en vez
+de disponer <em>value</em>, dispondrá <em>set</em> y <em>get</em>, Tampoco tendrá la
+característicva <em>writable</em>, que no tiene sentido, puesto que si se desea que
+la propiedad sea de sólo lectura, basta con no definir el <em>setter</em>. Las otras
+dos características, sin embargo, siguen teniendo validez. Dejaremos la
+discusión de las <a class="reference internal" href="#object-properties"><span class="std std-ref">propiedades</span></a> para el siguiente epígrafe.</p></li>
+</ul>
+<p>Al definir un atributo (bien al crear un objeto, bien añadiéndolo después), las
+características <code class="docutils literal notranslate"><span class="pre">writable</span></code>, <code class="docutils literal notranslate"><span class="pre">enumerable</span></code> o <code class="docutils literal notranslate"><span class="pre">configurable</span></code> estarán siempre
+a <em>true</em>. Para que adopten otro valor pueden usarse:</p>
+<dl id="object-defineproperty">
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty()</a></dt><dd><p>Permite definir o redefinir el descriptor de un atributo. Por ejemplo:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;color&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;negro&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">configurable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>De esta forma añadimos un nuevo atributo puesto que el atributo color no
+existía previamente, y, además, indicamos cuál será el descriptor del dato.
+En el código no hemos incluido dos características (<em>writable</em> y
+<em>enumerable</em>), por lo que estas se fijarán a <em>false</em>. Cuando lo que se hace
+es utilizar un atributo ya existente, las características no enunciadas
+mantendrán su valor.</p>
+<p>Con esta definición, no podremos cambiar el color del rectángulo (<em>writable</em>
+es <em>false</em>):</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;azul&quot;</span><span class="p">;</span>
+<span class="nx">rectangulo</span><span class="p">.</span><span class="nx">color</span><span class="p">;</span><span class="w">  </span><span class="c1">// Sigue siendo negro.</span>
+</pre></div>
+</div>
+<p>pero podremos alterar el descriptor puesto que <em>configurable</em> lo fijamos a
+verdadero. También podremos borrar el atributo ya que es <em>configurable</em> quien
+controla esta posibilidad.</p>
+</dd>
+</dl>
+<dl id="object-defineproperties">
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties">Object.defineProperties()</a></dt><dd><p>Como el anterior pero permite definir o redefinir a la vez los descriptores
+de varios atributos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">color</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">writable</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">altura</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">configurable</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">anchura</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">configurable</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">area</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Gracias a esto, no podremos borrar la altura ni la anchura del rectángulo.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Ambos métodos devuelven el propio objeto sobre el que se definen los
+descriptores (en este caso <em>rectangulo</em>).</p>
+</div>
+</section>
+<section id="lista-de-atributos">
+<h3><span class="section-number">1.5.1.4. </span>Lista de atributos<a class="headerlink" href="#lista-de-atributos" title="Enlace permanente a este encabezado">¶</a></h3>
+<p>Hay algunos modos de conocer cuáles son los atributos que tenemos disponibles en
+un objeto:</p>
+<dl>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames">Object.getOwnPropertyNames()</a></dt><dd><p>Devuelve un <em>array</em> con los nombres de todos los atributos propios del
+objetos, sean estos enumerables o no:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">getOwnPropertyNames</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">);</span><span class="w">  </span><span class="c1">// [ &#39;altura&#39;, &#39;anchura&#39;, &#39;area&#39;, &#39;color&#39; ]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl id="object-keys">
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys">Object.keys()</a></dt><dd><p>Devuelve un <em>array</em> con los nombres de los atributos enumerables disponibles
+en el objeto:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">getOwnPropertyNames</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">);</span><span class="w">  </span><span class="c1">// [ &#39;altura&#39;, &#39;anchura&#39;, &#39;color&#39; ]</span>
+</pre></div>
+</div>
+<p>donde no aparece <code class="docutils literal notranslate"><span class="pre">area</span></code> puesto que la definitmos antes como no enumerable.
+Sin embargo, la diferencia con respecto a la función anterior, va más allá de
+listar o no los atributos enumerables. <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys">Object.keys()</a> lista también atributos
+que, aunque no han sido definidos en el propio objetos, los ha heredado. Aún
+no hemos tratado las características de la <abbr title="Programación Orientada a Objetos">POO</abbr>. aplicadas a <em>Ĵavascript</em>,
+pero ya veremos cómo unos objetos pueden heredar de otros.</p>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty">.hasOwnProperty(name)</a></dt><dd><p>Es un método del objeto que comprueba si el objeto tiene un atributo propio
+con el nombre suministrado, sea enumerable o no:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;area&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// true.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Obsérvese que este método <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty">.hasOwnProperty(name)</a>  no lo hemos
+definido nosotros en el objeto, así que forzosamente debe ser un método
+heredado. Porque no es propio, no nos lo devolvió
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames">Object.getOwnPropertyNames()</a> y, porque no es enumerable, no lo hizo
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys">Object.keys()</a></p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="propiedades">
+<span id="object-properties"></span><h3><span class="section-number">1.5.1.5. </span>Propiedades<a class="headerlink" href="#propiedades" title="Enlace permanente a este encabezado">¶</a></h3>
+<p>Las propiedades son atributos que, en vez de definir un valor, definen un
+<em>setter</em> y un <em>getter</em>, aunque alguna de estas dos funciones puede no existir.
+Podemos definir un atributo de este tipo declarando el descriptor
+explícitamente (con <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty()</a> o <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties">Object.defineProperties()</a>):</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;perimetro&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">get</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">);</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="nx">rectangulo</span><span class="p">.</span><span class="nx">perimetro</span><span class="p">;</span><span class="w"> </span><span class="c1">// 34, o sea, 2*(10 + 7)</span>
+</pre></div>
+</div>
+<p>En este caso, hemos añadido una propiedad de sólo lectura, esto es, con
+<em>getter</em>, pero no con <em>setter</em>. Alternativamente, la definición puede hacerse
+así:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;perimetro&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">get</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">);</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Las propiedades también pueden definirse en el momento de crear el objeto. Por
+ejemplo, si quisiéramos crear el objeto <code class="docutils literal notranslate"><span class="pre">rectángulo</span></code> de manera que anchura y
+altura fueran propiedades, podríamos hacer lo siguiente:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">altura</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">_altura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">set</span><span class="w"> </span><span class="nx">altura</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">&#39;number&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Valor no numérico&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">_altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">value</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">anchura</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">_altura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">set</span><span class="w"> </span><span class="nx">anchura</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">&#39;number&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Valor no numérico&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">_anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">value</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">area</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// Como este atributo es una función, actúa como método.</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="o">*</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">rectangulo</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span>
+<span class="nx">rectangulo</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;No soy un número&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// Provoca error.</span>
+</pre></div>
+</div>
+<p>Nótese que en realidad los atributos <em>anchura</em> y <em>altura</em> no almacenan ningún
+valor, por lo que necesitamos crear sendos atributos adicionales pàra cumplir
+esta tarea.  Estos atributos, sin embargo, no han sido añadidos de ningún modo
+especial por lo que son perfectamente accesibles y enumerables. En el código
+anterior, nos hemos limitado a usar la notación del subrayado para hacer notar
+que el atributo no debería usarse. Podemos usar otras técnicas más elaboradas.
+Por ejemplo, utilizar como claves símbolo y, además, hacer no enumerable el
+atributo:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Symbol</span><span class="p">(</span><span class="s1">&#39;altura&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Symbol</span><span class="p">(</span><span class="s1">&#39;anchura&#39;</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">altura</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">[</span><span class="nx">altura</span><span class="p">];</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">set</span><span class="w"> </span><span class="nx">altura</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">&#39;number&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Valor no numérico&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="k">this</span><span class="p">[</span><span class="nx">altura</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">value</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="c1">// etc...</span>
+<span class="p">}</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="p">[</span><span class="nx">altura</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">},</span>
+<span class="w">   </span><span class="p">[</span><span class="nx">anchura</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="observacion">
+<h3><span class="section-number">1.5.1.6. </span>Observación<a class="headerlink" href="#observacion" title="Enlace permanente a este encabezado">¶</a></h3>
+<div class="admonition-todo admonition" id="id5">
+<p class="admonition-title">Por hacer</p>
+<p>Breve explicación de <a class="reference external" href="https://www.todojs.com/introduccion-a-proxy-de-es6/">Proxy</a>.</p>
+</div>
+</section>
+</section>
+<section id="manejo-de-objetos">
+<h2><span class="section-number">1.5.2. </span>Manejo de objetos<a class="headerlink" href="#manejo-de-objetos" title="Enlace permanente a este encabezado">¶</a></h2>
+<p>El ejemplo expuesto hasta aquí (un objeto único que definimos y usamos) no es un
+ejemplo en absoluto real. Lo habitual es que requiramos crear muchos objetos que
+comparten una misma naturaleza o bien una naturaleza semejante. Así, pues, el
+<em>quid</em> de la cuestión está en poder construir objetos de naturaleza idéntica o
+semejante de manera que se cumplan los principios de abstracción, encapsulación,
+reutilización y extensibilidad.</p>
+<p>Esto lo resuelven generalmente los lenguajes orientados a objetos recurriendo a
+las clases y convirtiendo a cada objeto en la instanciación de su clase
+correspondiente. La herencia, además, es el mecanismo que principalmente permite
+la reutilización del código. Tal es el caso de lenguajes como <em>C++</em>, <em>Java</em> o
+<em>Python</em>.  <em>Javascript</em> tiene una filosofía totalmente distinta; pero, como es
+enormemente versátil, es capaz de implementar los objetos usando esta estrategia
+hereditaria de clases. Sin embargo, hay voces extremadamente críticas con
+trasladar las clases a <em>Javascript</em> e, incluso, con utilizar la herencia como
+estrategia para la reutilización del código.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>A este respecto son muy interesantes las lecturas de:</p>
+<ul class="simple">
+<li><p>El artículo <a class="reference external" href="http://aaditmshah.github.io/why-prototypal-inheritance-matters/">Why prototypal inheritance matters</a> de Aadit M Shah, basado
+en la herencia (y la composición) prototípica.</p></li>
+<li><p>El demoledor artículo <a class="reference external" href="https://medium.com/javascript-scene/the-two-pillars-of-javascript-ee6f3281e7f3">Two pillars of Javascript (part I)</a> de Eric Elliott,
+que critica ferozmente la herencia.</p></li>
+<li><p>El artículo <a class="reference external" href="https://medium.com/&#64;cscalfani/goodbye-object-oriented-programming-a59cda4c0e53">Goodbye, Object Oriented Programming</a> de Charles Scalfani
+que profundiza en los problemas de <abbr title="Programación Orientada a Objetos">POO</abbr>. basada en la herencia de clases.</p></li>
+<li><p>El artículo, también de Eric Elliott, <a class="reference external" href="https://medium.com/javascript-scene/the-hidden-treasures-of-object-composition-60cd89480381">The Hidden Treasures of Object Composition</a>
+que discute sobre la composición de objetos</p></li>
+</ul>
+</div>
+<p>Con <em>Javascript</em> podemos practicas enfoques distintos:</p>
+<ul class="simple">
+<li><p>Utilizar la herencia sin recurrir a la clases, sino basándonos en el concepto
+del prototipo, que es realmente en lo que se basa la <abbr title="Programación Orientada a Objetos">POO</abbr>. de <em>Javascript</em>
+(<em>composición de objetos por delegación</em>).</p></li>
+<li><p>Recrear el modelo de <em>clases</em> jerárquicas y herencia.</p></li>
+<li><p>Ensayar la <em>composición de objetos por concatenación</em> como alternativa a la
+herencia.</p></li>
+</ul>
+<section id="composicion-por-delegacion-herencia">
+<span id="object-herencia"></span><h3><span class="section-number">1.5.2.1. </span>Composición por delegación (herencia)<a class="headerlink" href="#composicion-por-delegacion-herencia" title="Enlace permanente a este encabezado">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Advertencia</p>
+<p>Como ya se formuló, hay bastantes voces críticas con el uso de la
+herencia para la reutilización de código. Revise la <a class="reference internal" href="#object-compos"><span class="std std-ref">composición</span></a> como alternativa. Otras opiniones sostienen que para escoger
+si es mejor reutilizar a través de la herencia o a través de la composición
+debe aplicarse el <a class="reference external" href="https://es.wikipedia.org/wiki/Principio_de_sustituci%C3%B3n_de_Liskov">principio de sustitución de Liskov</a>.</p>
+</div>
+<p>En los lenguajes que utilizan clases, cada clase constituye la generalización de
+un tipo distinto de objeto, de manera que a la definición de una clase
+(<em class="dfn">superclase</em>) se añaden nuevas definiciones de atributos y métodos para
+constituir una clase derivada (<em class="dfn">subclase</em>). A conservar los atributos y
+métodos de la superclase (o clase padre) es a lo que se denomina <em class="dfn">herencia</em>:</p>
+<img alt="../_images/jerarquiaclases.png" src="../_images/jerarquiaclases.png" />
+<p>La filosofía de <em>Javascript</em> es, sin embargo, totalmente distinta en la medida
+en que no existen clases<a class="footnote-reference brackets" href="#id15" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>. La herencia de este lenguaje se conoce como
+<em class="dfn">herencia prototípica</em> y consiste en que un objeto deriva (hereda) de
+otro llamado <em class="dfn">prototipo</em>. Por tanto, si el objeto «b» deriva del objeto
+«a», «a» es el prototipo de «b». El prototipo «a», a su vez, puede tener otro
+prototipo del que deriva y así sucesivamente en lo que se conoce como
+<em class="dfn">cadena de prototipos</em>. Obviamente, la cadena no puede ser infinita, sino
+que tiene un final en el que el último prototipo deriva de <code class="docutils literal notranslate"><span class="pre">null</span></code>:</p>
+<img alt="../_images/cadena_proto.png" src="../_images/cadena_proto.png" />
+<p>Para implementar la cadena cada objeto posee una propiedad <code class="docutils literal notranslate"><span class="pre">[[Proto]]</span></code>, que
+oficiosamente se nombró <code class="docutils literal notranslate"><span class="pre">__proto__</span></code> y con tal nombre acabó pasando al
+estándar, que apunta al prototipo. Cuando se invoca el atributo de un objeto,
+primero se comprueba si éste está definido en el propio atributo, si lo está se
+devuelve su valor y, si no, se comprueba si se encuentra definido en el
+prototipo. Esta operación se repite sucesivamente de prototito a prototipo hasta
+que o bien se encuentra el valor del atributo o se llega al final de la cadena
+sin encontrarlo. En este segundo caso, <em>Javascript</em> devolverá <code class="docutils literal notranslate"><span class="pre">undefined</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>La asignación no funciona así, si se da valor a un atributo, este se
+define sobre el propio objeto.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>El prototipo de un objeto creado <em>ex novo</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+</pre></div>
+</div>
+<p>no es <em>null</em>, sino aquel en que se encuentran definidos métodos como
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty">.hasOwnProperty(name)</a>: <code class="docutils literal notranslate"><span class="pre">Object.prototype</span></code>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">obj</span><span class="p">.</span><span class="nx">__proto__</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span><span class="w">  </span><span class="c1">// true</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Object.prototype</span></code> si es el último objeto de la cadena y por tanto su
+prototipo es <em>null</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">__proto__</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">  </span><span class="c1">// true.</span>
+</pre></div>
+</div>
+<p>De dónde sale este <code class="docutils literal notranslate"><span class="pre">Object.prototype</span></code>, se entenderá mejor al tratar las
+<a class="reference internal" href="#object-class"><span class="std std-ref">funciones constructoras</span></a>.</p>
+</div>
+<section id="prototipado-con-objetos">
+<span id="object-create"></span><span id="proto-obj"></span><h4><span class="section-number">1.5.2.1.1. </span>Prototipado con objetos<a class="headerlink" href="#prototipado-con-objetos" title="Enlace permanente a este encabezado">¶</a></h4>
+<p>En la práctica, la forma de crear un objeto cuyo prototipo sea otro objeto es
+utilizar <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create()</a><a class="footnote-reference brackets" href="#id16" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a> que permite la clonación:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Objeto prototipo para los rectángulos</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// Adicionalmente, podríamos definir</span>
+<span class="w">   </span><span class="c1">// getters y setters para altura y anchura.</span>
+
+<span class="w">   </span><span class="nx">dimensiones</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="w"> </span><span class="c1">// Atributo estático.</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">perimetro</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">);</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">escalar</span><span class="p">(</span><span class="nx">factor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Ya podemos definir rectángulos, primero definiendo su prototipo</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">rect1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">);</span>
+<span class="c1">// Y después añadiéndole los valores particulares de sus atributos.</span>
+<span class="nx">rect1</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5</span><span class="p">;</span>
+<span class="nx">rect1</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">6</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Esta es, ciertamente, una forma muy sucia de construir nuevos objetos a partir
+del prototipo, pero podriamos pulirla añadiendo un método de creación, sabiendo
+que  <a class="reference internal" href="#object-create">Object.create</a> admite como segundo argumento un objeto que describa
+propiedades adicionales del objeto a la manera que lo hace
+<a class="reference internal" href="#object-defineproperties">Object.defineProperties</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// Genera rectángulos definiendo su altura y anchura.</span>
+<span class="hll"><span class="w">   </span><span class="nx">crear</span><span class="p">(</span><span class="nx">altura</span><span class="p">,</span><span class="w"> </span><span class="nx">anchura</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">         </span><span class="nx">altura</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">            </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="nx">anchura</span><span class="p">,</span>
+</span><span class="hll"><span class="w">            </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+</span><span class="hll"><span class="w">         </span><span class="p">},</span>
+</span><span class="hll"><span class="w">         </span><span class="nx">anchura</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">            </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="nx">altura</span><span class="p">,</span>
+</span><span class="hll"><span class="w">            </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+</span><span class="hll"><span class="w">         </span><span class="p">}</span>
+</span><span class="hll"><span class="w">      </span><span class="p">});</span>
+</span><span class="hll"><span class="w">   </span><span class="p">},</span>
+</span>
+<span class="w">   </span><span class="nx">dimension</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">perimetro</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">);</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">escalar</span><span class="p">(</span><span class="nx">factor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">rect1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">crear</span><span class="p">(</span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">6</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">rect2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">crear</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">8</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/rectangulo_proto.png" src="../_images/rectangulo_proto.png" />
+<p>Para implementar la herencia (por ejemplo, generar cuadrados) deberíamos hacer
+que el prototipo de la clase derivada fuera <em>rectangulo</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">cuadrado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">crear</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">lado</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">anchura</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">get</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">altura</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">get</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">   </span><span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">cua</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">cuadrado</span><span class="p">.</span><span class="nx">crear</span><span class="p">(</span><span class="mf">10</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>El método de derivación es bastante artesanal y, además, nos obliga a definir
+todos los métodos mediante descriptores. Una alternativa más explícita es
+definir un método para extender el prototipo del que queremos que deriven otros
+prototipos<a class="footnote-reference brackets" href="#id17" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// ...  definición de rectángulo ...</span>
+
+<span class="cm">/* Extiende cualquier prototipo */</span>
+<span class="nx">rectangulo</span><span class="p">.</span><span class="nx">extender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="nx">props</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Pero esta definición del método seguiría obligándonos a hacer todas las
+definiciones mediante descriptores. Además, <code class="docutils literal notranslate"><span class="pre">extender</span></code> es un método
+absolutamente general, así que no lo definiremos en <code class="docutils literal notranslate"><span class="pre">rectangulo</span></code>, sino en una
+clase más general llamada <code class="docutils literal notranslate"><span class="pre">base</span></code> del que partan nuestras derivaciones:</p>
+<img alt="../_images/cuadrado_proto.png" src="../_images/cuadrado_proto.png" />
+<p>Para lo cual deberíamos escribir:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Obtiene los descriptores de todas los atributos enumerables de un objeto</span>
+<span class="hll"><span class="kd">function</span><span class="w"> </span><span class="nx">attrs2descr</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">fromEntries</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{}).</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nx">e</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">getOwnPropertyDescriptor</span><span class="p">(</span><span class="nx">obj</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nx">e</span><span class="p">)]));</span>
+</span><span class="hll"><span class="p">}</span>
+</span>
+<span class="hll"><span class="kd">const</span><span class="w"> </span><span class="nx">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">   </span><span class="cm">/* Genera un objeto a partir del prototipo */</span>
+</span><span class="hll"><span class="w">   </span><span class="nx">crear</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">self</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class="hll"><span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">self</span><span class="o">?</span><span class="p">.</span><span class="nx">inicializar</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;function&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">inicializar</span><span class="p">(...</span><span class="nx">arguments</span><span class="p">);</span>
+</span><span class="hll"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">;</span>
+</span><span class="hll"><span class="w">   </span><span class="p">},</span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">   </span><span class="cm">/* Genera un nuevo prototipo extendiendo éste */</span>
+</span><span class="hll"><span class="w">   </span><span class="nx">extender</span><span class="p">(</span><span class="nx">attrs</span><span class="p">,</span><span class="w"> </span><span class="nx">props</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">attrs2descr</span><span class="p">(</span><span class="nx">attrs</span><span class="p">),</span><span class="w"> </span><span class="nx">props</span><span class="p">));</span>
+</span><span class="hll"><span class="w">   </span><span class="p">},</span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">   </span><span class="cm">/* Añade o modifica atributos al propio prototipo */</span>
+</span><span class="hll"><span class="w">   </span><span class="nx">incluir</span><span class="p">(</span><span class="nx">attrs</span><span class="p">,</span><span class="w"> </span><span class="nx">props</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">attrs2descr</span><span class="p">(</span><span class="nx">attrs</span><span class="p">),</span><span class="w"> </span><span class="nx">props</span><span class="p">));</span>
+</span><span class="hll"><span class="w">   </span><span class="p">}</span>
+</span><span class="hll"><span class="p">}</span>
+</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">base</span><span class="p">.</span><span class="nx">extender</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">inicializar</span><span class="p">(</span><span class="nx">anchura</span><span class="p">,</span><span class="w"> </span><span class="nx">altura</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">anchura</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">altura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">dimension</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">perimetro</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">);</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">escalar</span><span class="p">(</span><span class="nx">factor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">rec1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">cuadrado</span><span class="p">.</span><span class="nx">crear</span><span class="p">(</span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">7</span><span class="p">),</span>
+<span class="w">      </span><span class="nx">rec2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">cuadrado</span><span class="p">.</span><span class="nx">crear</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">cuadrado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">rectangulo</span><span class="p">.</span><span class="nx">extender</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">inicializar</span><span class="p">(</span><span class="nx">lado</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">anchura</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">altura</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">cua1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">cuadrado</span><span class="p">.</span><span class="nx">crear</span><span class="p">(</span><span class="mf">10</span><span class="p">),</span>
+<span class="w">      </span><span class="nx">cua2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">cuadrado</span><span class="p">.</span><span class="nx">crear</span><span class="p">(</span><span class="mf">5</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>El código es largo, así que vayamos por partes:</p>
+<ol class="arabic">
+<li><p>La función <code class="docutils literal notranslate"><span class="pre">attrs2decr</span></code> obtiene los descriptores de los atributos
+enumerables del argumento. Por ejemplo, del objeto:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">   </span><span class="nx">a</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">b</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>obtiene:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">   </span><span class="nx">a</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">writable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">configurable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nx">b</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">writable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">configurable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Así evitamos nosotros el engorro de tener que escribir los descriptores como
+en nuestro primer ejemplo. Dos de los métodos que hemos usado para ello ya
+están explicados (<a class="reference internal" href="#object-keys"><span class="std std-ref">Object.keys()</span></a>  y
+<a class="reference internal" href="#object-getownpropertydescriptor"><span class="std std-ref">Object.getOwnPropertyDescriptor()</span></a>) y
+se justifica claramente su uso: el primero devuelve en una secuencia el
+nombre de los atributos enumerables de un objeto y el segundo sirve para
+obtener el descriptor a partir del nombre del atributo. Como la operación
+hay que repetirla para cada atributo, se usa <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.prototype.map()</a>, con el
+que logramos obtener una secuencia de tuplas <code class="docutils literal notranslate"><span class="pre">(nombre_atributo,</span>
+<span class="pre">descriptor_atributo)</span></code>. Finalmente, se genera el objeto con los descriptores
+gracias a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries">Object.fromEntries()</a>.</p>
+</li>
+<li id="object-assign"><p>Como nuestra intención es permitir que el usuario pueda también escribir en un
+segundo argumento directamente descriptores (por eso, el método es
+<code class="docutils literal notranslate"><span class="pre">extender(attrs,</span> <span class="pre">props)</span></code>), necesitamos juntar ambos objetos en uno solo.
+Para ello utilizamos <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign">Object.assign()</a>. Este método copia en el objeto proporcionado
+como primer argumento, los atributos que contiene el objeto proporcionado
+como segundo argumento (y tercero y cuarto, etc.). Devuelve, además, el
+objeto que se pasó como primer argumento.</p></li>
+<li><p>Hemos aprovechado la creación de un prototipo <code class="docutils literal notranslate"><span class="pre">base</span></code> para definir tres
+métodos:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">extender</span></code>, que es el que buscábamos inicialmente y que con
+<a class="reference internal" href="#object-create"><span class="std std-ref">Object.create()</span></a>, como en la versión anterior, genera
+un nuevo prototipo a partir de otro añadiendo o redefiniendo ciertos atributos.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">incluir</span></code> que, en vez de generar un nuevo objeto, modifica el propio
+prototipo, de ahí que use <a class="reference internal" href="#object-defineproperties"><span class="std std-ref">Object.defineProperties()</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">crear</span></code> que tiene la finalidad de generar un objeto (un rectángulo
+particular, por ejemplo) a partir del prototipo (el prototipo
+<code class="docutils literal notranslate"><span class="pre">rectangulo</span></code>). Utiliza <a class="reference internal" href="#object-create"><span class="std std-ref">Object.create()</span></a> para tal
+fin e invoca un método llamado <code class="docutils literal notranslate"><span class="pre">inicializar</span></code>, que es el encargado de
+definir los valores iniciales del objeto.</p></li>
+</ul>
+</li>
+<li><p>Gracias a todo anterior nos abstraemos de la técnica de derivación y derivar
+un nuevo prototipo a partir de otro implica únicamente utilizar el método
+<code class="docutils literal notranslate"><span class="pre">extender</span></code> definiendo los nuevos atributos o redefiniendo alguno ya
+existente. Si los objetos del nuevo prototipo se inicializan de distinta
+forma, habrá que indicarlo escribiendo un método <code class="docutils literal notranslate"><span class="pre">inicializar</span></code>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Si <code class="docutils literal notranslate"><span class="pre">Object.assign()</span></code> es capaz de juntar varios objetos en uno solo,
+¿por qué no hemos usado esta versión simplificada que no requiere la función
+<cite>attrs2decr</cite>?</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">extender</span><span class="p">(</span><span class="nx">attr</span><span class="p">,</span><span class="w"> </span><span class="nx">prop</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="nx">prop</span><span class="p">),</span><span class="w"> </span><span class="nx">attrs</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>En ella creamos primero el objeto cuyo prototipo es rectángulo y luego
+añadimos los atributos contenidos en <em>attrs</em>. El problema de esta solución
+es que <code class="docutils literal notranslate"><span class="pre">Object.assign()</span></code> copia correctamente los atributos normales y los
+métodos, pero no las propiedades para las cuales copia simplemente el valor
+evaluado en el momento y no la función getter asociada.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">attrs2dec</span></code> y <code class="docutils literal notranslate"><span class="pre">base</span></code> son código totalmente genérico, así que podríamos
+tomarlo para construir cualquier jerarquía de objetos usando esta técnica. Si
+usamos el <a class="reference internal" href="../02.node/03.modulos.html#js-module-pattern"><span class="std std-ref">patrón del módulo</span></a>, lo dejamos listo para
+futuros usos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Base para derivar prototipos y crear objetos */</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// Obtiene los descriptores de todas los atributos enumerables de un objeto</span>
+<span class="w">   </span><span class="kd">function</span><span class="w"> </span><span class="nx">attrs2descr</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">fromEntries</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{}).</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nx">e</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">getOwnPropertyDescriptor</span><span class="p">(</span><span class="nx">obj</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nx">e</span><span class="p">)]));</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="cm">/* Genera un objeto a partir del prototipo */</span>
+<span class="w">      </span><span class="nx">crear</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="kd">const</span><span class="w"> </span><span class="nx">self</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">self</span><span class="o">?</span><span class="p">.</span><span class="nx">inicializar</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;function&quot;</span><span class="p">)</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">inicializar</span><span class="p">(...</span><span class="nx">arguments</span><span class="p">);</span>
+<span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">;</span>
+<span class="w">      </span><span class="p">},</span>
+
+<span class="w">      </span><span class="cm">/* Genera un nuevo prototipo extendiendo éste */</span>
+<span class="w">      </span><span class="nx">extender</span><span class="p">(</span><span class="nx">attrs</span><span class="p">,</span><span class="w"> </span><span class="nx">props</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">attrs2descr</span><span class="p">(</span><span class="nx">attrs</span><span class="p">),</span><span class="w"> </span><span class="nx">props</span><span class="p">));</span>
+<span class="w">      </span><span class="p">},</span>
+
+<span class="w">      </span><span class="cm">/* Añade o modifica atributos al propio prototipo */</span>
+<span class="w">      </span><span class="nx">incluir</span><span class="p">(</span><span class="nx">attrs</span><span class="p">,</span><span class="w"> </span><span class="nx">props</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">attrs2descr</span><span class="p">(</span><span class="nx">attrs</span><span class="p">),</span><span class="w"> </span><span class="nx">props</span><span class="p">));</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">})();</span>
+</pre></div>
+</div>
+<dl>
+<dt><strong>Manipulación del prototipo</strong></dt><dd><div class="admonition warning">
+<p class="admonition-title">Advertencia</p>
+<p>Alterar la cadena de prototipos afecta drásticamente al rendimiento
+de la aplicación, así que está fuertemente desaconsejado.</p>
+</div>
+<p>Ya se ha dejado apuntado más arriba que todo objeto dispone de un atributo
+<code class="docutils literal notranslate"><span class="pre">__proto__</span></code> que apunta al prototipo del objeto. Esta atributo es tanto de
+lectura como de escritura, por lo que sirve tanto para consultar cuál es el
+prototipo de un objeto como para cambiarlo. Sin embargo, en principio, fue una
+extensión ajena al estándar que se aceptó en <em>ES2015</em> por compatibilidad
+con los navegadores. La consulta y manipulación del prototipo debe hacerse con:</p>
+<dl class="simple">
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf">Object.getPrototypeOf()</a></dt><dd><p>Devuelve el prototipo del objeto.</p>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf">Object.setPrototypeOf()</a></dt><dd><p>Cambia el prototipo del objeto.</p>
+</dd>
+</dl>
+<p>Por ejemplo:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">};</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">getPrototypeOf</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span><span class="w"> </span><span class="c1">// true</span>
+<span class="nx">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
+<span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">getPrototypeOf</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">o</span><span class="p">;</span><span class="w"> </span><span class="c1">// true</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">setPrototype</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span><span class="w">  </span><span class="c1">// El prototipo de p ya no es o.</span>
+<span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span><span class="w">  </span><span class="c1">// undefined</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">getPrototypeOf</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span><span class="w"> </span><span class="c1">// true</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+<section id="prototipado-con-constructores">
+<span id="proto-constr"></span><h4><span class="section-number">1.5.2.1.2. </span>Prototipado con constructores<a class="headerlink" href="#prototipado-con-constructores" title="Enlace permanente a este encabezado">¶</a></h4>
+<p>El método anterior, basado en prototipar directamente con objetos, es el modo
+más claro de entender la composición por delegación. Sin embargo, no es el
+original de <em>Javascript</em> que, en un principio, intentó acercarse a los
+programadores formados en lenguajes como Java o C++ utilizando un constructor y
+el operador <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new">new</a><a class="footnote-reference brackets" href="#id18" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a>.</p>
+<p>Para entender este método debemos acercarnos al concepto de <em class="dfn">función
+constructora</em> (o <em class="dfn">constructor</em>):</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">(</span><span class="nx">altura</span><span class="p">,</span><span class="w"> </span><span class="nx">anchura</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">altura</span><span class="p">;</span>
+<span class="w">   </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">anchura</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">rect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">(</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">7</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>En este caso <code class="docutils literal notranslate"><span class="pre">Rectangulo</span></code> es una función constructora que se caracteriza por:</p>
+<ol class="arabic simple">
+<li><p>Debe usarse utilizando el operador <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new">new</a>.</p></li>
+<li><p>El uso de tal operador provoca que el contexto (<code class="docutils literal notranslate"><span class="pre">this</span></code>) de la función sea
+el propio objeto que se esté construyendo y que implícitamente se devuelva
+tal objeto.</p></li>
+<li><p>Que el atributo <code class="docutils literal notranslate"><span class="pre">prototype</span></code> de la función es el prototipo del objeto
+generado. Por tanto, en este caso:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">rect</span><span class="p">.</span><span class="nx">__proto__</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">.</span><span class="nx">prototype</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Como consecuencia de esto último, para crear atributos comunes a todos los
+objetos construidos con la función, es necesario añadirlos a
+<code class="docutils literal notranslate"><span class="pre">Rectangulo.prototype</span></code>. Por tanto:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">(</span><span class="nx">altura</span><span class="p">,</span><span class="w"> </span><span class="nx">anchura</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">altura</span><span class="p">;</span>
+<span class="w">   </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">anchura</span>
+<span class="p">}</span>
+
+<span class="c1">// Cuidado con usar Object.assign: no funcionarán las propiedades.</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="nx">Rectangulo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">dimension</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="w"> </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">area</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">get</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">perimetro</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">       </span><span class="nx">get</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">escalar</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">factor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">         </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">rect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">(</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">7</span><span class="p">);</span>
+<span class="nx">rect</span><span class="p">.</span><span class="kr">constructor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">;</span><span class="w"> </span><span class="c1">// El constructor del objeto es Rectangulo.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Con este método, el atributo estático tiene el inconveniente de que
+estará disponible en <code class="docutils literal notranslate"><span class="pre">rect.dimensiones</span></code>, pero no en
+<code class="docutils literal notranslate"><span class="pre">Rectangulo.dimensiones</span></code>.</p>
+</div>
+<p>Visto esto, ¿cómo podríamos derivar otro tipo de objetos? Esto nuevos objetos
+deberían disponer de su propia función constructora cuyo atributo <code class="docutils literal notranslate"><span class="pre">prototype</span></code>
+tuviera por prototipo el atributo <code class="docutils literal notranslate"><span class="pre">prototype</span></code> del constructor del que deriva.
+Por tanto:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="kd">function</span><span class="w"> </span><span class="nx">Cuadrado</span><span class="p">(</span><span class="nx">lado</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">   </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">lado</span><span class="p">;</span>
+</span><span class="hll"><span class="p">}</span>
+</span><span class="hll"><span class="nx">Cuadrado</span><span class="p">.</span><span class="nx">prototype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">();</span>
+</span><span class="hll"><span class="nx">Cuadrado</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="kr">constructor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Cuadrado</span><span class="p">;</span>
+</span>
+<span class="cm">/* Atributos adicionales */</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="nx">Cuadrado</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">anchura</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">get</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">altura</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">get</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>La clave está en:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">Cuadrado</span><span class="p">.</span><span class="nx">prototype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>ya que provoca que el prototipo de los <em>objetos cuadrados</em>
+(<code class="docutils literal notranslate"><span class="pre">Cuadrado.prototype</span></code>) enlace con el prototipo de los objetos <em>rectangulares</em>
+(<code class="docutils literal notranslate"><span class="pre">Rectangulo.prototype</span></code>)<a class="footnote-reference brackets" href="#id19" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a>.  Ahora que ya sabemos cómo se deriva usando
+constructores, perfilemos está técnica para abstraernos de ella tal como hicimos
+al <a class="reference internal" href="#proto-obj"><span class="std std-ref">prototipar con objetos</span></a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">attrs2descr</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">fromEntries</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{}).</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nx">e</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">getOwnPropertyDescriptor</span><span class="p">(</span><span class="nx">obj</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nx">e</span><span class="p">)]));</span>
+<span class="p">}</span>
+
+<span class="hll"><span class="kd">function</span><span class="w"> </span><span class="nx">Base</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">inicializar</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;function&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">inicializar</span><span class="p">(...</span><span class="nx">arguments</span><span class="p">);</span>
+</span><span class="hll"><span class="p">}</span>
+</span><span class="hll"><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">Base</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">   </span><span class="nx">extender</span><span class="p">(</span><span class="nx">attrs</span><span class="p">,</span><span class="w"> </span><span class="nx">props</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="kr">constructor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Base</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">arguments</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+</span><span class="hll"><span class="w">      </span><span class="kr">constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="k">this</span><span class="p">();</span>
+</span><span class="hll"><span class="w">      </span><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="kr">constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">attrs2descr</span><span class="p">(</span><span class="nx">attrs</span><span class="p">),</span><span class="w"> </span><span class="nx">props</span><span class="p">));</span>
+</span><span class="hll"><span class="w">      </span><span class="kr">constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="kr">constructor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">constructor</span><span class="p">;</span>
+</span><span class="hll"><span class="w">      </span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="kr">constructor</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+</span><span class="hll"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="kr">constructor</span>
+</span><span class="hll"><span class="w">   </span><span class="p">},</span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">   </span><span class="nx">incluir</span><span class="p">(</span><span class="nx">attrs</span><span class="p">,</span><span class="w"> </span><span class="nx">props</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">      </span><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">attrs2descr</span><span class="p">(</span><span class="nx">attrs</span><span class="p">),</span><span class="w"> </span><span class="nx">props</span><span class="p">));</span>
+</span><span class="hll"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span>
+</span><span class="hll"><span class="w">   </span><span class="p">}</span>
+</span><span class="hll"><span class="p">});</span>
+</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Base</span><span class="p">.</span><span class="nx">extender</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">inicializar</span><span class="p">(</span><span class="nx">altura</span><span class="p">,</span><span class="w"> </span><span class="nx">anchura</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">altura</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">anchura</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">dimension</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">perimetro</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">);</span><span class="w"> </span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">escalar</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="nx">factor</span><span class="p">;</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="p">});</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">rec1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">(</span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">7</span><span class="p">),</span>
+<span class="w">      </span><span class="nx">rec2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">Cuadrado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">.</span><span class="nx">extender</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">inicializar</span><span class="p">(</span><span class="nx">lado</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">lado</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">anchura</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">   </span><span class="p">},</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">altura</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">cua1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Cuadrado</span><span class="p">(</span><span class="mf">10</span><span class="p">),</span>
+<span class="w">      </span><span class="nx">cua2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Cuadrado</span><span class="p">(</span><span class="mf">5</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>La única diferencia en el uso se encuentra en la forma de construir objetos: se
+usa el operador <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new">new</a> en vez del método <code class="docutils literal notranslate"><span class="pre">crear</span></code>. Por lo demás, todo  es igual:
+al extender el prototipo hay que definir los nuevos atributos y, en su caso, el
+método inicializador. La cadena resulta un poco más complicada porque el
+constructor no forma parte de ella:</p>
+<img alt="../_images/cuadrado_proto-constr.png" src="../_images/cuadrado_proto-constr.png" />
+<div class="admonition caution">
+<p class="admonition-title">Prudencia</p>
+<p>La técnica de enlazar unos objetos con otros es, definitivamente,
+más sencilla que esta de hacerlo a través de un constructor. Sin embargo, las
+implementaciones actuales optimizan muchísimo más la delegación mediante
+constructores, por lo que por motivos de rendimiento conviente esta última.
+Véase <a class="reference external" href="https://mrale.ph/blog/2014/07/30/constructor-vs-objectcreate.html">new Fn(…) vs Object.create(P)</a>.</p>
+</div>
+</section>
+<section id="clases">
+<span id="object-class"></span><h4><span class="section-number">1.5.2.1.3. </span>«Clases»<a class="headerlink" href="#clases" title="Enlace permanente a este encabezado">¶</a></h4>
+<p>Para satisfacer a los programadores procedentes de lenguajes donde sí existen
+clases, a partir de 2015 <em>Javascript</em> introdujo una sintaxis para simplificar la
+creación de clases, que realmente son funciones constructoras. La sintaxis tiene
+la ventaja de solventar algunos problemas (como el de la herencia de métodos
+estáticos), pero enmascara aún más al programador la herencia prototípica de
+<em>Javascript</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">   </span><span class="k">static</span><span class="w"> </span><span class="nx">dimensiones</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2</span><span class="p">;</span>
+
+<span class="w">   </span><span class="kr">constructor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">inicializar</span><span class="p">(...</span><span class="nx">arguments</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="nx">inicializar</span><span class="p">(</span><span class="nx">altura</span><span class="p">,</span><span class="w"> </span><span class="nx">anchura</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">altura</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">anchura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">perimetro</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">rec1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">(</span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">7</span><span class="p">),</span>
+<span class="w">      </span><span class="nx">rec2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">);</span>
+
+<span class="kd">class</span><span class="w"> </span><span class="nx">Cuadrado</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">Rectangulo</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">   </span><span class="nx">inicializar</span><span class="p">(</span><span class="nx">lado</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">anchura</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">altura</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">lado</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="cm">/* Sobreescribimos a modo de ejemplo */</span>
+<span class="w">   </span><span class="nx">get</span><span class="w"> </span><span class="nx">area</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Estoy calculando el área para </span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="kr">constructor</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">super</span><span class="p">.</span><span class="nx">area</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">cua1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Cuadrado</span><span class="p">(</span><span class="mf">10</span><span class="p">),</span>
+<span class="w">      </span><span class="nx">cua2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Cuadrado</span><span class="p">(</span><span class="mf">5</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>La sintaxis, conociendo la general de <em>Javascript</em>, es bastante sencilla. Al
+ejemplo, habría que añadir:</p>
+<ul class="simple">
+<li><p>Pueden definirse atributos y métodos privados anteponiendo al nombre una
+almohadilla.</p></li>
+<li><p>Dentro de los métodos, <code class="docutils literal notranslate"><span class="pre">super</span></code> hace referencia a la clase padre. En
+consecuencia, <code class="docutils literal notranslate"><span class="pre">super(...args)</span></code> invoca al constructor y
+<code class="docutils literal notranslate"><span class="pre">super.metodo(...args)</span></code> invoca un determinado método.</p></li>
+<li><p>Se usa la misma sintaxis que en los objetos para los <em>getters</em> y <em>setters</em>.</p></li>
+<li><p>No hay sintaxis para la herencia múltiple.</p></li>
+</ul>
+</section>
+</section>
+<section id="composicion-por-concatenacion">
+<span id="object-compos"></span><h3><span class="section-number">1.5.2.2. </span>Composición por concatenación<a class="headerlink" href="#composicion-por-concatenacion" title="Enlace permanente a este encabezado">¶</a></h3>
+<p>La composición de objetos por concatenación es el método alternativo para la
+reutilización de código, que pretende resolver los problemas consustanciales a
+la herencia de clases<a class="footnote-reference brackets" href="#id20" id="id11" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a>:</p>
+<ul class="simple">
+<li><p>El <a class="reference external" href="https://medium.com/codemonday/banana-gorilla-jungle-oop-5052b2e4d588">problema del gorila y el plátano</a>.</p></li>
+<li><p>El <a class="reference external" href="https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem">problema del diamante</a> (en herencia múltiple).</p></li>
+<li><p>El <a class="reference external" href="https://en.wikipedia.org/wiki/Fragile_base_class">problema de la superclase frágil</a>.</p></li>
+<li><p>El <a class="reference external" href="https://mail.mozilla.org/pipermail/es-discuss/2013-June/031614.html">problema de la duplicación por necesidad</a>,
+tal como lo llama Eric Elliott.</p></li>
+</ul>
+<p>En vez de basarse en el concepto de que los <em>objetos son</em>, se basa en el
+concepto de que los <em>objetos tienen</em>, es decir, para nuestro diseño no pensamos
+en cuál es la naturaleza del objeto, sino en que debe contener tal objeto para
+comportarse como deseamos. Por tanto, al construir un objeto nos centramos
+(mediante la composición) en dotarlo de los atributos y métodos que requiere.</p>
+<p>A diferencia de la herencia basada en clases en que se componen objetos por
+delegación heredando bloques monolíticos (las superclases), la composición por
+concatenación intenta componer los objetos ensamblando pequeños aspectos de su
+comportamiento. Esta circunstancia favorece la modificación futura de la
+aplicación: una jerarquía de clases en que unas clases heredan de otras es una
+construcción muchísimo más rígida que componer objetos añadiendo a cada tipo de
+objetos todos los atributos necesarios. La modificación en el segundo caso
+podría limitarse a crear algunos nuevos comportamientos (funciones) y añadirlos
+a los tipos de objetos que los necesiten y a crear nuevos tipos de objetos
+emsamblando los comportamientos adecuandos, mientras que el primer caso quizás
+se requiera una restructuración completa de la jerarquía de clases.</p>
+<div class="admonition seealso">
+<p class="admonition-title">Ver también</p>
+<p>Échese un vistazo a este <a class="reference external" href="https://www.youtube.com/watch?v=wfMtDGfHWpA">vídeo de youtube</a> donde hay un ejemplo muy claro
+de ello.</p>
+</div>
+<p class="rubric">Enlaces de interés</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="http://aaditmshah.github.io/why-prototypal-inheritance-matters/">Why prototypal inheritance matters</a>.</p></li>
+<li><p><a class="reference external" href="https://medium.com/javascript-scene/the-two-pillars-of-javascript-ee6f3281e7f3">Two pillars of Javascript (part I)</a>.</p></li>
+<li><p><a class="reference external" href="https://medium.com/&#64;cscalfani/goodbye-object-oriented-programming-a59cda4c0e53">Goodbye, Object Oriented Programming</a>.</p></li>
+<li><p><a class="reference external" href="https://medium.com/javascript-scene/the-hidden-treasures-of-object-composition-60cd89480381">The Hidden Treasures of Object Composition</a>.</p></li>
+<li><p><a class="reference external" href="https://alligator.io/js/class-composition">Class composition in Javascript</a>.</p></li>
+<li><p><a class="reference external" href="https://medium.com/front-end-weekly/classless-javascript-composition-over-inheritance-6b27c35893b1">Classless Javascript (composition over inheritance)</a>.</p></li>
+</ol>
+<p class="rubric">Notas al pie</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id12" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p>No, no existen, ni siquiera a partir de <em>ES2015</em> donde aparece una
+sintaxis para <em>definir</em> clases. Abundaremos más adelante en esta aparente
+paradoja.</p>
+</aside>
+<aside class="footnote brackets" id="id13" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
+<p>Lo cual conseguiríamos en las <abbr title="Programación Orientada a Objetos">POO</abbr>. basada en clases mediante herencia de
+clases.</p>
+</aside>
+<aside class="footnote brackets" id="id14" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">3</a><span class="fn-bracket">]</span></span>
+<p>Que un atributo no sea <em>enumerable</em> no es equivalente a que, en la
+terminología de otros lenguajes, sea privado. El atributo, aun no siendo
+enumerable, seguirá siendo accesible desde fuera.</p>
+</aside>
+<aside class="footnote brackets" id="id15" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">4</a><span class="fn-bracket">]</span></span>
+<p>De hecho, llevamos ya un buen rato exponiendo ejemplos en los que hemos
+trabajado con objetos sin definir ninguna clase.</p>
+</aside>
+<aside class="footnote brackets" id="id16" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">5</a><span class="fn-bracket">]</span></span>
+<p>Aunque, dada la naturaleza prototípica de la herencia en <em>Javascript</em>,
+esta es la forma natural de que un objeto herede de otro, <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create()</a>
+fue introducida en <em>ES5</em> a <a class="reference external" href="https://crockford.com/javascript/prototypal.html">sugerencia de Douglas Crockford</a>. La propia referencia
+contiene se podía implementar esta con el operador <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new">new</a>.</p>
+</aside>
+<aside class="footnote brackets" id="id17" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">6</a><span class="fn-bracket">]</span></span>
+<p>Construir objetos usando el operador <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new">new</a> no casa excesivanente bien
+con la naturaleza funcional de <em>Javascript</em>. Sin embargo, es el método
+original (<a class="reference internal" href="#object-create"><span class="std std-ref">Object.create()</span></a> apareció bastante después),
+lo cual se debe en gran parte a la pretensión de <em>Ĵavascript</em> de aprovechar
+el entonces tirón de <em>Java</em> y del mismo modo que copió su nombre (su nombre
+original fue <em>Mocha</em> y luego <em>LiveScript</em>) también copió el operador <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new">new</a>
+para crear objetos.</p>
+</aside>
+<aside class="footnote brackets" id="id18" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">7</a><span class="fn-bracket">]</span></span>
+<p>Como comprenderemos más adelante todos los objetos derivan de
+<code class="docutils literal notranslate"><span class="pre">Object.prototype</span></code> por lo que podríamos añadirle esta método para poder
+extender cualquier objeto. No obstante, quizás no sea buena idea hacer
+definiciones que afecten de forma global.</p>
+</aside>
+<aside class="footnote brackets" id="id19" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">8</a><span class="fn-bracket">]</span></span>
+<p>La línea es equivalente a:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">Cuadrado</span><span class="p">.</span><span class="nx">prototype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Rectangulo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>que quizás se entienda mejor.</p>
+</aside>
+<aside class="footnote brackets" id="id20" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">9</a><span class="fn-bracket">]</span></span>
+<p>De nuevo recomedamos la lecturas de <a class="reference external" href="https://medium.com/&#64;cscalfani/goodbye-object-oriented-programming-a59cda4c0e53">Goodbye, Object Oriented Programming</a>.</p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/logo.png" alt="Logo"/>
+        </a></p><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">1.5. Objetos</a><ul>
+<li><a class="reference internal" href="#caracteristicas">1.5.1. Características</a><ul>
+<li><a class="reference internal" href="#definicion">1.5.1.1. Definición</a></li>
+<li><a class="reference internal" href="#uso">1.5.1.2. Uso</a></li>
+<li><a class="reference internal" href="#descriptores">1.5.1.3. Descriptores</a></li>
+<li><a class="reference internal" href="#lista-de-atributos">1.5.1.4. Lista de atributos</a></li>
+<li><a class="reference internal" href="#propiedades">1.5.1.5. Propiedades</a></li>
+<li><a class="reference internal" href="#observacion">1.5.1.6. Observación</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manejo-de-objetos">1.5.2. Manejo de objetos</a><ul>
+<li><a class="reference internal" href="#composicion-por-delegacion-herencia">1.5.2.1. Composición por delegación (herencia)</a><ul>
+<li><a class="reference internal" href="#prototipado-con-objetos">1.5.2.1.1. Prototipado con objetos</a></li>
+<li><a class="reference internal" href="#prototipado-con-constructores">1.5.2.1.2. Prototipado con constructores</a></li>
+<li><a class="reference internal" href="#clases">1.5.2.1.3. «Clases»</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#composicion-por-concatenacion">1.5.2.2. Composición por concatenación</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="05.funciones.html"
+                          title="Previous page">&larr; <span class="section-number">1.4. </span>Funciones</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="20.async.html"
+                          title="Next page">&rarr; <span class="section-number">1.6. </span>Programación asíncrona</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/01.partic/10.objetos.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="20.async.html" title="1.6. Programación asíncrona"
+             >siguiente</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="05.funciones.html" title="1.4. Funciones"
+             >anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" ><span class="section-number">1. </span>Particularidades</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.5. </span>Objetos</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor CC BY 4.0, 2019-2024, José Miguel Sánchez Alés.
+      Creado usando <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

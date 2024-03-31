@@ -1,0 +1,465 @@
+
+
+
+
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>1.3. Arrays &#8212; documentación de Javascript - rolling</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cloud.css" />
+    <link rel="stylesheet" href="../_static/general.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/particular.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="1.4. Funciones" href="05.funciones.html" />
+    <link rel="prev" title="1.2. Datos" href="02.datos.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="05.funciones.html" title="1.4. Funciones"
+             accesskey="N">siguiente</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="02.datos.html" title="1.2. Datos"
+             accesskey="P">anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U"><span class="section-number">1. </span>Particularidades</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.3. </span>Arrays</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="arrays">
+<span id="id1"></span><h1><span class="section-number">1.3. </span>Arrays<a class="headerlink" href="#arrays" title="Enlace permanente a este encabezado">¶</a></h1>
+<p>El tipo más básico para almacenar una secuencia ordenada de valores es el
+<strong>array</strong>, que es un tipo particular de objeto:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span><span class="w"> </span><span class="c1">// Una secuencia vacía.</span>
+<span class="nx">sec</span><span class="w"> </span><span class="ow">instanceof</span><span class="w"> </span><span class="nb">Array</span><span class="p">;</span><span class="w">  </span><span class="c1">// true</span>
+<span class="nx">sec</span><span class="w"> </span><span class="ow">instanceof</span><span class="w"> </span><span class="nb">Object</span><span class="p">;</span><span class="w"> </span><span class="c1">// true</span>
+<span class="ow">typeof</span><span class="w"> </span><span class="nx">sec</span><span class="p">;</span><span class="w"> </span><span class="c1">// &#39;object&#39;</span>
+</pre></div>
+</div>
+<p>Para crear uno podemos usar la notación del corchete o bien usar el constructor
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="nx">sec1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">],</span>
+<span class="w">    </span><span class="nx">sec2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Array</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>En ambos casos, se obtiene lo mismo. Como en otros lenguajes de programación, la
+secuencia no tiene por qué ser de datos del mismo tipo:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">},</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Hola&quot;</span><span class="p">);</span><span class="w"> </span><span class="p">}];</span>
+</pre></div>
+</div>
+<p>y es de naturaleza dinámica, por lo que podremos alterar los valores de sus
+elementos, añadir otros o eliminar algunos.</p>
+<section id="acceso-y-manipulacion">
+<h2><span class="section-number">1.3.1. </span>Acceso y manipulación<a class="headerlink" href="#acceso-y-manipulacion" title="Enlace permanente a este encabezado">¶</a></h2>
+<p>Para acceder a sus elementos puede usarse la notación del corchete:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">[</span><span class="mf">1</span><span class="p">];</span><span class="w">        </span><span class="c1">// 1</span>
+<span class="nx">sec</span><span class="p">[</span><span class="mf">3</span><span class="p">];</span><span class="w">        </span><span class="c1">// null</span>
+<span class="nx">sec</span><span class="p">[</span><span class="mf">4</span><span class="p">].</span><span class="nx">x</span><span class="p">;</span><span class="w">      </span><span class="c1">// 1</span>
+<span class="nx">sec</span><span class="p">[</span><span class="mf">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;b&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// Sustituimos la función anónima por &quot;b&quot;.</span>
+</pre></div>
+</div>
+<p>También existe el método <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/at">.at</a>
+que permite indicar un índice como argumento para devolver:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span><span class="w">    </span><span class="c1">// 1</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="mf">3</span><span class="p">);</span><span class="w">    </span><span class="c1">// null</span>
+</pre></div>
+</div>
+<p>La ventaja de este método es que permite indicar índices negativos y, entonces,
+se cuenta desde atrás como en el caso de <em>Python</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="o">-</span><span class="mf">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// &quot;b&quot;, último elemento.</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="o">-</span><span class="mf">3</span><span class="p">);</span><span class="w">   </span><span class="c1">// null, antepenúltimo elemento.</span>
+</pre></div>
+</div>
+<p>Tanto de una forma o de la otra, cuando se intenta obtener el valor de un
+elemento que no existe, se devuelve <code class="docutils literal notranslate"><span class="pre">undefined</span></code> en vez de generarse un error:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">[</span><span class="mf">20</span><span class="p">];</span><span class="w">     </span><span class="c1">// undefined</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="mf">100</span><span class="p">);</span><span class="w"> </span><span class="c1">// undefined</span>
+</pre></div>
+</div>
+<p>Si nos interesa obtener la posición de un elemento por su valor, podemos echar
+mano de <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">.indexOf()</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">                     </span><span class="c1">// 2</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;Este valor no existe&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// -1, porque no se encuentra.</span>
+</pre></div>
+</div>
+<p>Puede añadirse un seguno argumento con el índice desde el que se desea comenzar
+la búsqueda:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">);</span><span class="w">   </span><span class="c1">// -1, porque no hay otro true.</span>
+</pre></div>
+</div>
+<p>En caso de que, simplemente, nos interese saber si el valor existe o no, sin
+importar su posición, puede usarse <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/includes">.includes()</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w">     </span><span class="c1">// true</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">)</span><span class="w">  </span><span class="c1">// false, ya que no vuelve a encontrarse.</span>
+</pre></div>
+</div>
+<p>Podemos eliminar el valor de un elemento (que no el elemento mismo) con el
+operador <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete">delete</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="ow">delete</span><span class="w"> </span><span class="nx">sec</span><span class="p">[</span><span class="mf">1</span><span class="p">];</span><span class="w">  </span><span class="c1">// La posición 1 queda vacía, pero sigue existiendo como undefined</span>
+<span class="nx">sec</span><span class="p">[</span><span class="mf">2</span><span class="p">];</span><span class="w">         </span><span class="c1">// true</span>
+<span class="nx">sec</span><span class="p">[</span><span class="mf">1</span><span class="p">];</span><span class="w">         </span><span class="c1">// undefined</span>
+</pre></div>
+</div>
+<p>Puede conocerse su longitud a través de la propiedad <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/at">.length</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="w">  </span><span class="c1">// 6.</span>
+</pre></div>
+</div>
+<p>La dinamicidad del tipo es tal que podemos alterar la longitud de la secuencia modificando el valor de esta propiedad:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">8</span><span class="p">;</span><span class="w">  </span><span class="c1">// Ahora las posiciones 6 y 7, existen pero están vacías (undefined).</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="w">      </span><span class="c1">// 8, no 6.</span>
+</pre></div>
+</div>
+<p>Si le asignamos un valor más pequeño, entonces eliminaremos los elementos
+sobrantes:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5</span><span class="p">;</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="o">-</span><span class="mf">1</span><span class="p">);</span><span class="w">      </span><span class="c1">// {x: 1}, ya que se ha perdido &quot;b&quot; y las otras dos posiciones indefinidas</span>
+</pre></div>
+</div>
+<p>También alteraremos el tamaño del array, si asignamos valor a una posición sin
+elemento:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">[</span><span class="mf">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Final&quot;</span><span class="p">;</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="o">-</span><span class="mf">1</span><span class="p">)</span><span class="w">          </span><span class="c1">// &#39;Final&#39;</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="w">         </span><span class="c1">// 10. Entre la posición 5 y 8 hay valores indefinidos.</span>
+</pre></div>
+</div>
+<p>Además, dispone del método <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/slice">.slice()</a>
+que permite extraer una parte de la secuencia indicando la posición inicial y la
+final (esta última sin incluir):</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">);</span><span class="w">   </span><span class="c1">// [undefined, true], la 3 no.</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="p">);</span><span class="w">  </span><span class="c1">// [true, null], la última no.</span>
+</pre></div>
+</div>
+<p>Si se deja sin especificar la primera posición se sobreentiende que es desde el
+principio y si se deja sin especificar la segundo hasta el final:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">2</span><span class="p">);</span><span class="w">            </span><span class="c1">// [true, null, {x: 1}]</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">);</span><span class="w"> </span><span class="c1">// [&quot;a&quot;, undefined, true]</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">slice</span><span class="p">();</span><span class="w">             </span><span class="c1">// Copia completa.</span>
+</pre></div>
+</div>
+<p>Por último, es posible manipular una parte de su contenido usando el método <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/splice">.splice()</a>,
+que exige indicar la posición inicial, el número de posiciones y el valor de
+sustitución. Para indicar más valores de sustitución, pueden añadirse más
+argumentos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">);</span><span class="w">                 </span><span class="c1">// Sustituye exclusivamente la posición 1.</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Nuevo elemento&quot;</span><span class="p">);</span><span class="w">     </span><span class="c1">// Antes el último elemento, añade la cadena.</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span><span class="w">                        </span><span class="c1">// Elimina los dos primeros elementos.</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">);</span><span class="w">              </span><span class="c1">// Sustituye la posición 1 por [&quot;A&quot;, &quot;B&quot;]</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="p">...[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">]);</span><span class="w">         </span><span class="c1">// Lo mismo.</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">splice</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">sec</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">]);</span><span class="w"> </span><span class="c1">// Lo mismo, pero sin usar la notación ...</span>
+</pre></div>
+</div>
+<p>El método, además, devuelve un array con los elementos sustituidos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">];</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">desocupados</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sec</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Ocupante&quot;</span><span class="p">);</span>
+<span class="nx">sec</span><span class="p">;</span><span class="w">          </span><span class="c1">// [1,&quot;Ocupante&quot;, 4, 5]</span>
+<span class="nx">desocupados</span><span class="p">;</span><span class="w">  </span><span class="c1">// [2, 3]</span>
+</pre></div>
+</div>
+</section>
+<section id="pila">
+<h2><span class="section-number">1.3.2. </span>Pila<a class="headerlink" href="#pila" title="Enlace permanente a este encabezado">¶</a></h2>
+<p>En una <em class="dfn">pila</em> los elementos se añaden o se consumen por el final:</p>
+<img alt="../_images/pila.png" src="../_images/pila.png" />
+<p>Para poder usar un array como una pila, existen los métodos <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/push">.push()</a>,
+que añade elementos al final de la pila y <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">.pop()</a>,
+que los consume:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span><span class="w">         </span><span class="c1">// Pila vacía.</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span><span class="w">   </span><span class="c1">// Añadimos al final dos elementos: [1, 2]</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mf">3</span><span class="p">);</span><span class="w">      </span><span class="c1">// Añadimos otros: [1, 2, 3]</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span><span class="w">        </span><span class="c1">// Devuelve el último elemento (3) y lo elimina: [1, 2]</span>
+</pre></div>
+</div>
+</section>
+<section id="cola">
+<h2><span class="section-number">1.3.3. </span>Cola<a class="headerlink" href="#cola" title="Enlace permanente a este encabezado">¶</a></h2>
+<p>En una <em class="dfn">cola</em>, por su parte, se consumen elementos por la cabeza y se
+añaden por el final:</p>
+<img alt="../_images/cola.png" src="../_images/cola.png" />
+<p>Para tratar un array como una cola necesitamos método ya visto <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/push">.push()</a> y el
+método <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">.shift()</a> para eliminar el primer elemento:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span><span class="w">         </span><span class="c1">// Cola vacía.</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span><span class="w">   </span><span class="c1">// Añadimos al final dos elementos: [1, 2]</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mf">3</span><span class="p">);</span><span class="w">      </span><span class="c1">// Añadimos otros: [1, 2, 3]</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span><span class="w">      </span><span class="c1">// Devuelve el primer elemento (1) y lo elimina: [2, 3]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Existe también el método <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">.unshift()</a>, que
+añade elementos por la cabeza y es análogo a <code class="docutils literal notranslate"><span class="pre">.push()</span></code>.</p>
+</div>
+</section>
+<section id="recorrido">
+<h2><span class="section-number">1.3.4. </span>Recorrido<a class="headerlink" href="#recorrido" title="Enlace permanente a este encabezado">¶</a></h2>
+<p>Para recorrer todos los elementos tenemos varias alternativas:</p>
+<p>La clásica de C:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="kd">let</span><span class="w"> </span><span class="nx">i</span><span class="o">=</span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">sec</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// Hacemos algo con el elemento sec[i].</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La versión que recorre directamente elementos, más parecida a lenguajes como
+<em>Python</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">sec</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// of, no in.</span>
+<span class="w">   </span><span class="c1">// Hacemos algo con el elemento e.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Una variante funcional a través del método <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">.forEach()</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">e</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="nx">arr</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// También puede usarse una función tradicional</span>
+<span class="w">   </span><span class="c1">// Hacemos algo con e (elemento), i (indice) o arr (el array completo).</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Muchos métodos y funciones cuyo argumento es una
+<a class="reference external" href="https://es.wikipedia.org/wiki/Retrollamada_(inform%C3%A1tica)">función de callback</a>, permite
+incluir un segundo argumento que defina el objeto de contexto (<code class="docutils literal notranslate"><span class="pre">this</span></code>) de
+la función de <em>callback</em>. <code class="docutils literal notranslate"><span class="pre">.forEach()</span></code> no es una excepción:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// Hacemos algo con e.</span>
+<span class="w">   </span><span class="c1">// El this de esta función es la cadena &quot;Soy el contexto&quot;.</span>
+<span class="p">},</span><span class="w"> </span><span class="s2">&quot;Soy el contexto&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Por supuesto para poder redefinir el contexto es necesario usar funciones
+tradicional, no <a class="reference internal" href="05.funciones.html#func-flecha"><span class="std std-ref">funciones flecha</span></a>.</p>
+</div>
+</section>
+<section id="otros-metodos">
+<h2><span class="section-number">1.3.5. </span>Otros métodos<a class="headerlink" href="#otros-metodos" title="Enlace permanente a este encabezado">¶</a></h2>
+<p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> dispone de bastante métodos, algunos de los cuales son muy útiles:</p>
+<dl>
+<dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/from">Array.from()</a></dt><dd><p>Devuelve un array con todos los valores que contenga un dato iterable. Por
+ejemplo, una cadena es un dato iterable, así que:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Array</span><span class="p">.</span><span class="kr">from</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// [ &#39;a&#39;, &#39;b&#39;, &#39;c&#39; ]</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/join">.join()</a></dt><dd><p>Yuxtapone todos los elementos del array, utilizando el separador indicado:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Uno&quot;</span><span class="w"> </span><span class="p">,</span><span class="s2">&quot;que&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;sabe&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;reñir&quot;</span><span class="p">];</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span><span class="w">    </span><span class="c1">// Uno que sabe reñir</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/flat">.flat()</a></dt><dd><p>Deshace los subarrays que contiene un array hasta la profundidad que defina
+el argumento (un nivel, si no se especifica nada):</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="nx">profundo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">2</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">]]]];</span>
+<span class="nx">profundo</span><span class="p">.</span><span class="nx">flat</span><span class="p">();</span><span class="w">          </span><span class="c1">// Devuelve [1, 2, [3, [4, 5]]]</span>
+<span class="nx">profundo</span><span class="p">.</span><span class="nx">flat</span><span class="p">(</span><span class="mf">2</span><span class="p">)</span><span class="w">          </span><span class="c1">// Devuelve [1, 2, 3, [4, 5]]</span>
+<span class="nx">profundo</span><span class="p">.</span><span class="nx">flat</span><span class="p">(</span><span class="kc">Infinity</span><span class="p">);</span><span class="w">  </span><span class="c1">// Devuelve [1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/find">.find()</a>, <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex">.findIndex()</a></dt><dd><p>Permite encontrar el primer valor (o su índice asociado, si es
+<code class="docutils literal notranslate"><span class="pre">.findIndex()</span></code>) que cumpla con una determinada condición. La condición
+se define mediante la función que se le proporciona com primer argumento:
+cuando tal función devuelve <code class="docutils literal notranslate"><span class="pre">true</span></code> la condición se considera satisfecha.
+Por ejemplo:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">6</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">7</span><span class="p">,</span><span class="w"> </span><span class="mf">9</span><span class="p">,</span><span class="w"> </span><span class="mf">10</span><span class="p">];</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mf">3</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span><span class="w">         </span><span class="c1">// Devuelve 6 (el primer múltiplo de 3)</span>
+</pre></div>
+</div>
+<p>La función de <em>callback</em>, como en el caso de <code class="docutils literal notranslate"><span class="pre">.forEach()</span></code>, también tiene
+acceso al índice (segundo argumento) y al propio array (tercer argumento).</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Estos métodos son una generalización de <code class="docutils literal notranslate"><span class="pre">.indexOf()</span></code>, pero no
+admiten como segundo argumento un índice a partir del cual buscar, sino,
+como en el caso de otros métodos que admiten funciones de <em>callback</em>, un
+objeto de contexto alternativo para la función.</p>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/every">.every()</a>, <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/some">.some()</a></dt><dd><p>Comprueba si todos (<code class="docutils literal notranslate"><span class="pre">.every()</span></code>) o al menos uno (<code class="docutils literal notranslate"><span class="pre">.some()</span></code>) de los
+elementos del array cumplen con la condición expresada en la función de
+<em>callback</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span><span class="w">  </span><span class="c1">//false, porque ningún elemento es negativo.</span>
+<span class="nx">sec</span><span class="p">.</span><span class="nx">every</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span><span class="w"> </span><span class="c1">//true, todos los elementos son positivos.</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">.filter()</a></dt><dd><p>Obtiene un array que contiene los elementos que pasan el filtro de la función
+de <em>callback</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mf">3</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// [6, 9], o sea, los elementos múltiplos de 3.</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/map">.map()</a></dt><dd><p>Obtiene un nuevo array cuyos elementos son el resultado de aplicar a los
+elementos del original la función de <em>callback</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span><span class="w">  </span><span class="c1">// [1, 0, 0, 0, 1, 1, 1, 0]</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce">.reduce()</a></dt><dd><p>Obtiene un único valor como consecuencia de aplicar la función de <em>callback</em>
+sobre todos los elementos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">e</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="nx">arr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">e</span><span class="p">;</span>
+<span class="p">},</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>El primer argumento es la variable que recoge el valor de la iteración
+anterior. En este caso, lo único que se hace es devolver la suma de todos los
+elementos del array. El segundo argumento es el valor inicial que tomará
+<code class="docutils literal notranslate"><span class="pre">res</span></code> la primera vez. Si no se proporciona, en la primera iteración <code class="docutils literal notranslate"><span class="pre">res</span></code>
+tomará el valor del primer elemento y la función se ejecutará a partir del
+segundo.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Estos últimos cinco métodos son muy habituales en los lenguajes de
+programación funcional.</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/logo.png" alt="Logo"/>
+        </a></p><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">1.3. Arrays</a><ul>
+<li><a class="reference internal" href="#acceso-y-manipulacion">1.3.1. Acceso y manipulación</a></li>
+<li><a class="reference internal" href="#pila">1.3.2. Pila</a></li>
+<li><a class="reference internal" href="#cola">1.3.3. Cola</a></li>
+<li><a class="reference internal" href="#recorrido">1.3.4. Recorrido</a></li>
+<li><a class="reference internal" href="#otros-metodos">1.3.5. Otros métodos</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="02.datos.html"
+                          title="Previous page">&larr; <span class="section-number">1.2. </span>Datos</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="05.funciones.html"
+                          title="Next page">&rarr; <span class="section-number">1.4. </span>Funciones</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/01.partic/03.arrays.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="05.funciones.html" title="1.4. Funciones"
+             >siguiente</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="02.datos.html" title="1.2. Datos"
+             >anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" ><span class="section-number">1. </span>Particularidades</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.3. </span>Arrays</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor CC BY 4.0, 2019-2024, José Miguel Sánchez Alés.
+      Creado usando <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

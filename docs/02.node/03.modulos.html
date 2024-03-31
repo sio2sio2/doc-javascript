@@ -1,29 +1,54 @@
 
 
 
+
+
 <!DOCTYPE html>
 
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2.3. Módulos &#8212; documentación de Javascript - </title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>2.3. Módulos &#8212; documentación de Javascript - rolling</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cloud.css" />
+    <link rel="stylesheet" href="../_static/general.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/particular.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
+
     
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Búsqueda" href="../search.html" />
     <link rel="next" title="3. Programación en el cliente" href="../03.client/index.html" />
     <link rel="prev" title="2.2. Paquetes" href="02.npm.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
+    <div class="relbar-top">
+        
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navegación</h3>
       <ul>
@@ -32,15 +57,18 @@
              accesskey="I">índice</a></li>
         <li class="right" >
           <a href="../03.client/index.html" title="3. Programación en el cliente"
-             accesskey="N">siguiente</a> |</li>
+             accesskey="N">siguiente</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="02.npm.html" title="2.2. Paquetes"
-             accesskey="P">anterior</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+             accesskey="P">anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U"><span class="section-number">2. </span>NodeJS</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><span class="section-number">2.3. </span>Módulos</a></li> 
       </ul>
-    </div>  
+    </div>
+    </div>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -49,8 +77,8 @@
             
   <blockquote>
 <div></div></blockquote>
-<div class="section" id="modulos">
-<span id="js-modules"></span><h1><span class="section-number">2.3. </span>Módulos<a class="headerlink" href="#modulos" title="Enlazar permanentemente con este título">¶</a></h1>
+<section id="modulos">
+<span id="js-modules"></span><h1><span class="section-number">2.3. </span>Módulos<a class="headerlink" href="#modulos" title="Enlace permanente a este encabezado">¶</a></h1>
 <p>Cuando se requiere programar una aplicación de mediano tamaño es indispensable
 disponer de un mencanismo para encapsular el código, de modo que esta se
 componga de una serie de módulos independientes que interrelacionan entre sí.
@@ -66,69 +94,69 @@ experimental en <a class="reference external" href="https://nodejs.org">NodeJS</
 </ul>
 <p>Primero, sin embargo, describiremos cómo se estructuraba el código antes de la
 aparación de estos sistemas.</p>
-<div class="section" id="el-patron-del-modulo">
-<span id="js-module-pattern"></span><h2><span class="section-number">2.3.1. </span>El <em>patrón del módulo</em><a class="headerlink" href="#el-patron-del-modulo" title="Enlazar permanentemente con este título">¶</a></h2>
+<section id="el-patron-del-modulo">
+<span id="js-module-pattern"></span><h2><span class="section-number">2.3.1. </span>El <em>patrón del módulo</em><a class="headerlink" href="#el-patron-del-modulo" title="Enlace permanente a este encabezado">¶</a></h2>
 <p>El <em>patrón del módulo</em> (y sus variantes) logran la encapsulación mediante el uso
 de una función envolvente que actúa como clausura y que expone al exterior sólo
 aquello que se desea hacer visible. Un ejemplo de este patrón (en realidad, de
 su variante <abbr title="Revealing Module Patron">RMP</abbr> o patrón del módulo revelado) es la siguiente:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">circunferencia</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="kd">var</span> <span class="nx">default_r</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="nx">circunferencia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">var</span><span class="w"> </span><span class="nx">default_r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span>
 
-   <span class="kd">function</span> <span class="nx">calcLongitud</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">r</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">default_r</span><span class="p">;</span>
-      <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
-   <span class="p">}</span>
+<span class="w">   </span><span class="kd">function</span><span class="w"> </span><span class="nx">calcLongitud</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">undefined</span><span class="p">)</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">default_r</span><span class="p">;</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
 
-   <span class="kd">function</span> <span class="nx">calcArea</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">r</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">default_r</span><span class="p">;</span>
-      <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
-   <span class="p">}</span>
+<span class="w">   </span><span class="kd">function</span><span class="w"> </span><span class="nx">calcArea</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">undefined</span><span class="p">)</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">default_r</span><span class="p">;</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mf">2</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
 
-   <span class="k">return</span> <span class="p">{</span>
-      <span class="nx">calcLongitud</span><span class="o">:</span> <span class="nx">calcLongitud</span><span class="p">,</span>
-      <span class="nx">calcArea</span><span class="o">:</span> <span class="nx">calcArea</span>
-   <span class="p">}</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">calcLongitud</span><span class="o">:</span><span class="w"> </span><span class="nx">calcLongitud</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">calcArea</span><span class="o">:</span><span class="w"> </span><span class="nx">calcArea</span>
+<span class="w">   </span><span class="p">}</span>
 <span class="p">})();</span>
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circunferencia</span><span class="p">.</span><span class="nx">calLongitud</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circunferencia</span><span class="p">.</span><span class="nx">calLongitud</span><span class="p">(</span><span class="mf">10</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>Este mismo patrón es el que usa se para encapsular la definición de una clase de
 objetos a partir de su constructor:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Persona</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="nx">Persona</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 
-   <span class="c1">// Constructor de objetos.</span>
-   <span class="kd">function</span> <span class="nx">Persona</span><span class="p">(</span><span class="nx">nombre</span><span class="p">,</span> <span class="nx">nacimiento</span><span class="p">,</span> <span class="nx">sexo</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">nombre</span> <span class="o">=</span> <span class="nx">nombre</span><span class="p">;</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">nacimiento</span> <span class="o">=</span> <span class="nx">nacimiento</span><span class="p">;</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">sexo</span> <span class="o">=</span> <span class="nx">sexo</span><span class="p">;</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">defuncion</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-   <span class="p">}</span>
+<span class="w">   </span><span class="c1">// Constructor de objetos.</span>
+<span class="w">   </span><span class="kd">function</span><span class="w"> </span><span class="nx">Persona</span><span class="p">(</span><span class="nx">nombre</span><span class="p">,</span><span class="w"> </span><span class="nx">nacimiento</span><span class="p">,</span><span class="w"> </span><span class="nx">sexo</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">nombre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">nombre</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">nacimiento</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">nacimiento</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">sexo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sexo</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">defuncion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
 
-   <span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">matar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fecha</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">defuncion</span> <span class="o">=</span> <span class="nx">fecha</span><span class="p">;</span>
-   <span class="p">}</span>
+<span class="w">   </span><span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">matar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">fecha</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">defuncion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fecha</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
 
-   <span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">estaMuerto</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">defuncion</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">;</span>
-   <span class="p">}</span>
+<span class="w">   </span><span class="nx">Persona</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">estaMuerto</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">defuncion</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
 
-   <span class="c1">// Se devuelve el constructor</span>
-   <span class="k">return</span> <span class="nx">Persona</span><span class="p">;</span>
+<span class="w">   </span><span class="c1">// Se devuelve el constructor</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">Persona</span><span class="p">;</span>
 
 <span class="p">}();</span>
 
-<span class="nx">pepe</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Persona</span><span class="p">(</span><span class="s2">&quot;Pepe Monagas&quot;</span><span class="p">,</span> <span class="s2">&quot;2000-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;Varón&quot;</span><span class="p">);</span>
+<span class="nx">pepe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Persona</span><span class="p">(</span><span class="s2">&quot;Pepe Monagas&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;2000-01-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Varón&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>La estrategia que se sigue es acoplar la definición (<em>circunferencia</em> o
 <em>Persona</em> en nuestros ejemplos) al objeto global, que en el caso de un navegador
 es el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/API/Window">window</a>. De esta manera, la
 definición esta disponible siempre en el resto del código.</p>
-</div>
-<div class="section" id="commonjs">
-<span id="module-commonjs"></span><h2><span class="section-number">2.3.2. </span>CommonJS<a class="headerlink" href="#commonjs" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="commonjs">
+<span id="module-commonjs"></span><h2><span class="section-number">2.3.2. </span>CommonJS<a class="headerlink" href="#commonjs" title="Enlace permanente a este encabezado">¶</a></h2>
 <div class="admonition warning" id="webpack-import-path">
 <p class="admonition-title">Advertencia</p>
 <p>Tanto para este sistema como para el siguiente, obsérvese que al
@@ -143,15 +171,15 @@ el fichero principal que en él se declare.</p>
 <p>En el módulo, para hacer accesible a aquello que se desea exportar, basta con
 usar <code class="code docutils literal notranslate"><span class="pre">exports</span></code>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// circunferencia.js</span>
-<span class="nx">exports</span><span class="p">.</span><span class="nx">calcLongitud</span> <span class="o">=</span> <span class="nx">r</span> <span class="p">=&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
-<span class="nx">exports</span><span class="p">.</span><span class="nx">calcArea</span> <span class="o">=</span> <span class="nx">r</span> <span class="p">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">calcLongitud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">calcArea</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mf">2</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Y en el código invocante usar <code class="code docutils literal notranslate"><span class="pre">require</span></code> para acceder a lo exportado:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// main.js</span>
-<span class="kr">const</span> <span class="nx">circ</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./circunferencia.js&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">circ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./circunferencia.js&quot;</span><span class="p">);</span>
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circ</span><span class="p">.</span><span class="nx">calcArea</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circ</span><span class="p">.</span><span class="nx">calcArea</span><span class="p">(</span><span class="mf">10</span><span class="p">));</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -168,7 +196,7 @@ directorio. En ese caso, basta con que lo exportable se encuentre en el fichero
 </div>
 <p>Además puede encontrarse en cualquier localización, si se añade al
 <code class="file docutils literal notranslate"><span class="pre">package.json</span></code> el atributo <em>main</em>:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;main&quot;</span><span class="o">:</span> <span class="s2">&quot;lib/index.js&quot;</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;main&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;lib/index.js&quot;</span>
 </pre></div>
 </div>
 <p>Con lo cual el módulo podría ser así:</p>
@@ -185,15 +213,15 @@ añadido atributos al objeto <code class="code docutils literal notranslate"><sp
 <code class="code docutils literal notranslate"><span class="pre">module.exports</span></code> y <code class="code docutils literal notranslate"><span class="pre">exports</span></code> apuntan al mismo objeto. Por tanto, si
 se quiere exportar un objeto debe usarse <code class="code docutils literal notranslate"><span class="pre">module.exports</span></code>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// circunferencia.js</span>
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
-   <span class="nx">calcLongitud</span><span class="o">:</span> <span class="nx">r</span> <span class="p">=&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">,</span>
-   <span class="nx">calcArea</span><span class="o">:</span> <span class="nx">r</span> <span class="p">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">calcLongitud</span><span class="o">:</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">calcArea</span><span class="o">:</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mf">2</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="ecmascript2015">
-<span id="module-es2015"></span><h2><span class="section-number">2.3.3. </span>ECMAScript2015<a class="headerlink" href="#ecmascript2015" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="ecmascript2015">
+<span id="module-es2015"></span><h2><span class="section-number">2.3.3. </span>ECMAScript2015<a class="headerlink" href="#ecmascript2015" title="Enlace permanente a este encabezado">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
 <p>El estándar propuesto en ES2015 es soportado experimentalmente por
@@ -201,7 +229,7 @@ se quiere exportar un objeto debe usarse <code class="code docutils literal notr
 <ul>
 <li><p>Que la extensión de los ficheros sea <code class="code docutils literal notranslate"><span class="pre">.mjs</span></code>, no <code class="code docutils literal notranslate"><span class="pre">.js</span></code>.</p></li>
 <li><p>Ejecutar con el argumento <code class="code docutils literal notranslate"><span class="pre">--experimental-modules</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> nodejs --experimental-modules script.mjs
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nodejs<span class="w"> </span>--experimental-modules<span class="w"> </span>script.mjs
 </pre></div>
 </div>
 </li>
@@ -210,72 +238,72 @@ se quiere exportar un objeto debe usarse <code class="code docutils literal notr
 <p>La principal característica del estándar es que, a diferencia del sistema
 anterior que sirve únicamente para programación en el lado del servidor, éste
 funciona también en los navegadores (<a class="reference external" href="https://caniuse.com/#feat=es6-module">muy modernos</a>, eso sí).</p>
-<div class="section" id="lado-del-servidor">
-<h3><span class="section-number">2.3.3.1. </span>Lado del servidor<a class="headerlink" href="#lado-del-servidor" title="Enlazar permanentemente con este título">¶</a></h3>
+<section id="lado-del-servidor">
+<h3><span class="section-number">2.3.3.1. </span>Lado del servidor<a class="headerlink" href="#lado-del-servidor" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>En el módulo se exporta lo que se precisa mediante la palabra <code class="code docutils literal notranslate"><span class="pre">export</span></code>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// circunferencia.mjs</span>
-<span class="kr">export</span> <span class="kr">const</span> <span class="nx">PI</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">PI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>
 
-<span class="kr">export</span> <span class="kd">function</span> <span class="nx">calcLongitud</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nx">reutrn</span> <span class="mi">2</span><span class="o">*</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">calcLongitud</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">reutrn</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kr">export</span> <span class="kd">function</span> <span class="nx">calcArea</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">calcArea</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mf">2</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Y en el código invocante, debe usarse <code class="code docutils literal notranslate"><span class="pre">import</span></code> del siguiente modo:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// main.mjs</span>
-<span class="kr">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">circ</span> <span class="nx">from</span> <span class="s2">&quot;./circunferencia.mjs&quot;</span>
+<span class="k">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">circ</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;./circunferencia.mjs&quot;</span>
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circ</span><span class="p">.</span><span class="nx">calcLongitud</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circ</span><span class="p">.</span><span class="nx">calcArea</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circ</span><span class="p">.</span><span class="nx">calcLongitud</span><span class="p">(</span><span class="mf">4</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">circ</span><span class="p">.</span><span class="nx">calcArea</span><span class="p">(</span><span class="mf">3</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>También puede exportarse al espacio de nombres del código principal:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// main.mjs</span>
-<span class="kr">import</span> <span class="p">{</span><span class="nx">PI</span><span class="p">,</span> <span class="nx">calcLongitud</span><span class="p">,</span> <span class="nx">calcArea</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./circunferencia.mjs&quot;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="nx">PI</span><span class="p">,</span><span class="w"> </span><span class="nx">calcLongitud</span><span class="p">,</span><span class="w"> </span><span class="nx">calcArea</span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;./circunferencia.mjs&quot;</span>
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">calcLongitud</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">calcArea</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">calcLongitud</span><span class="p">(</span><span class="mf">4</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">calcArea</span><span class="p">(</span><span class="mf">3</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>A la vez que se importa, se puede cambiar de nombre:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span><span class="nx">PI</span> <span class="nx">as</span> <span class="nx">pi</span><span class="p">,</span> <span class="nx">calcLongitud</span><span class="p">,</span> <span class="nx">calcArea</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./circunferencia.mjs&quot;</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="nx">PI</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">pi</span><span class="p">,</span><span class="w"> </span><span class="nx">calcLongitud</span><span class="p">,</span><span class="w"> </span><span class="nx">calcArea</span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;./circunferencia.mjs&quot;</span>
 </pre></div>
 </div>
 <p>Al exportar es posible también declarar primero lo exportable y usar luego
 <code class="code docutils literal notranslate"><span class="pre">export</span></code>:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// circunferencia.mjs</span>
-<span class="kr">const</span> <span class="nx">PI</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">PI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>
 
-<span class="kd">function</span> <span class="nx">calcLongitud</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nx">reutrn</span> <span class="mi">2</span><span class="o">*</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">calcLongitud</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">reutrn</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">calcArea</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">calcArea</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">PI</span><span class="o">*</span><span class="nx">r</span><span class="o">**</span><span class="mf">2</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kr">export</span> <span class="p">{</span><span class="nx">PI</span><span class="p">,</span> <span class="nx">calcLongitud</span><span class="p">,</span> <span class="nx">calcArea</span><span class="p">}</span>
+<span class="k">export</span><span class="w"> </span><span class="p">{</span><span class="nx">PI</span><span class="p">,</span><span class="w"> </span><span class="nx">calcLongitud</span><span class="p">,</span><span class="w"> </span><span class="nx">calcArea</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>Además es posible importar por defecto una función anónima:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Módulo modulo.mjs</span>
-<span class="kr">export</span> <span class="nx">funcion</span> <span class="nx">doble</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="nx">x</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="nx">funcion</span><span class="w"> </span><span class="nx">doble</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="nx">x</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="kr">export</span> <span class="k">default</span> <span class="nx">x</span> <span class="p">=&gt;</span> <span class="nx">x</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="o">/</span><span class="mf">2</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>En este caso, se puede dar cualquier nombre en el código invocante a la
 definición:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">mitad</span> <span class="nx">from</span> <span class="s2">&quot;./modulo.mjs&quot;</span><span class="p">;</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">mitad</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;./modulo.mjs&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>y si se quiere importar también el resto de definiciones:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">mitad</span><span class="p">,</span> <span class="p">{</span><span class="nx">doble</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./modulo.mjs&quot;</span><span class="p">;</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">mitad</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nx">doble</span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;./modulo.mjs&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Si el módulo lo compone un directorio, es aplicable todo lo explicado para
@@ -284,13 +312,13 @@ definición:</p>
 <p class="admonition-title">Nota</p>
 <p>Cuando la carga de un módulo no exporta nada, puede usarse la
 sintaxis:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="s2">&quot;./modulo_sin_export.mjs&quot;</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="s2">&quot;./modulo_sin_export.mjs&quot;</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="lado-del-cliente">
-<h3><span class="section-number">2.3.3.2. </span>Lado del cliente<a class="headerlink" href="#lado-del-cliente" title="Enlazar permanentemente con este título">¶</a></h3>
+</section>
+<section id="lado-del-cliente">
+<h3><span class="section-number">2.3.3.2. </span>Lado del cliente<a class="headerlink" href="#lado-del-cliente" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Para el cliente los ficheros se escriben exactamente de la misma forma y se
 cargan en el navegador así:</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;module&quot;</span> <span class="na">script</span><span class="o">=</span><span class="s">&quot;main.mjs&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
@@ -307,7 +335,7 @@ principio debería haber hecho el primero.</p>
 <p class="admonition-title">Nota</p>
 <p>Si escribimos módulos para el cliente, es totalmente lícita la
 siguiente carga:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">circ</span> <span class="nx">from</span> <span class="s2">&quot;https://server.com/js/circunferencia.mjs&quot;</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">circ</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;https://server.com/js/circunferencia.mjs&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -328,35 +356,35 @@ servidor, tantas como módulos compongan la aplicación, sino convertir el códi
 fuente modular en otro compacto que, además, será válido para navegadores sin
 soporte para módulos. Se tratará de ello, al <a class="reference internal" href="../03.client/02.webpack/index.html#webpack"><span class="std std-ref">exponer la programación para
 clientes</span></a>.</p>
-</div>
-</div>
-<div class="section" id="otros-sistemas">
-<h2><span class="section-number">2.3.4. </span>Otros sistemas<a class="headerlink" href="#otros-sistemas" title="Enlazar permanentemente con este título">¶</a></h2>
-<div class="section" id="amd">
-<h3><span class="section-number">2.3.4.1. </span><abbr title="Asynchronous Module Definition">AMD</abbr><a class="headerlink" href="#amd" title="Enlazar permanentemente con este título">¶</a></h3>
+</section>
+</section>
+<section id="otros-sistemas">
+<h2><span class="section-number">2.3.4. </span>Otros sistemas<a class="headerlink" href="#otros-sistemas" title="Enlace permanente a este encabezado">¶</a></h2>
+<section id="amd">
+<h3><span class="section-number">2.3.4.1. </span><abbr title="Asynchronous Module Definition">AMD</abbr><a class="headerlink" href="#amd" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Este sistema permite la carga asíncrona de módulos (a diferencia de <a class="reference external" href="https://nodejs.org/docs/latest/api/modules.html">CommonJS</a>).
 La definición de un módulo que depende de <a class="reference external" href="https://jquery.com">JQuery</a> y <a class="reference external" href="https://leafletjs.com">Leaflet</a> se llevaría a cabo
 así:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">define</span><span class="p">([</span><span class="s2">&quot;jquery&quot;</span><span class="p">,</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">L</span><span class="p">)</span> <span class="p">{</span>
-   <span class="c1">// Aquí la implementación del módulo</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">define</span><span class="p">([</span><span class="s2">&quot;jquery&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;leaflet&quot;</span><span class="p">],</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">,</span><span class="w"> </span><span class="nx">L</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// Aquí la implementación del módulo</span>
 
-   <span class="kd">function</span> <span class="nx">fn1</span><span class="p">()</span> <span class="p">{</span>
-      <span class="c1">// Implementación de la función</span>
-   <span class="p">}</span>
+<span class="w">   </span><span class="kd">function</span><span class="w"> </span><span class="nx">fn1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// Implementación de la función</span>
+<span class="w">   </span><span class="p">}</span>
 
-   <span class="kr">const</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">12</span><span class="p">;</span>
 
-   <span class="c1">// Esto es lo exportable</span>
-   <span class="k">return</span> <span class="p">{</span>
-      <span class="nx">fn1</span><span class="o">:</span> <span class="nx">fn1</span><span class="p">,</span>
-      <span class="nx">c</span><span class="o">:</span> <span class="nx">c</span>
-   <span class="p">}</span>
+<span class="w">   </span><span class="c1">// Esto es lo exportable</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">fn1</span><span class="o">:</span><span class="w"> </span><span class="nx">fn1</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">c</span><span class="o">:</span><span class="w"> </span><span class="nx">c</span>
+<span class="w">   </span><span class="p">}</span>
 <span class="p">});</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="umd">
-<span id="mod-umd"></span><h3><span class="section-number">2.3.4.2. </span><abbr title="Universal Module Definition">UMD</abbr><a class="headerlink" href="#umd" title="Enlazar permanentemente con este título">¶</a></h3>
+</section>
+<section id="umd">
+<span id="mod-umd"></span><h3><span class="section-number">2.3.4.2. </span><abbr title="Universal Module Definition">UMD</abbr><a class="headerlink" href="#umd" title="Enlace permanente a este encabezado">¶</a></h3>
 <p><abbr title="Universal Module Definition">UMD</abbr> no es, en realidad, otro sistema de módulos, sino un patrón de
 programación que permite cargar código cuando el intérprete soporta uno de estos
 tres sistemas:</p>
@@ -376,18 +404,18 @@ nombres «<em>jquery</em>» y «<em>leaflet</em>» respectivamente.</p></li>
 <code class="docutils literal notranslate"><span class="pre">L</span></code> (en realidad, <code class="docutils literal notranslate"><span class="pre">window.$</span></code> y <code class="docutils literal notranslate"><span class="pre">window.L</span></code>).</p></li>
 </ul>
 <p>En estas condiciones el patrón se implementa así:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">global</span><span class="p">,</span> <span class="nx">factory</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">define</span> <span class="o">===</span> <span class="s2">&quot;function&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">define</span><span class="p">.</span><span class="nx">amd</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">define</span><span class="p">([</span><span class="s2">&quot;jquery&quot;</span><span class="p">,</span> <span class="s2">&quot;leaflet&quot;</span><span class="p">],</span> <span class="nx">factory</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">exports</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">factory</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;jquery&quot;</span><span class="p">),</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;leafter&quot;</span><span class="p">));</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">global</span><span class="p">.</span><span class="nx">MiLibreria</span> <span class="o">=</span> <span class="nx">factory</span><span class="p">(</span><span class="nx">global</span><span class="p">.</span><span class="nx">$</span><span class="p">,</span> <span class="nx">glonal</span><span class="p">.</span><span class="nx">L</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">L</span><span class="p">)</span> <span class="p">{</span>
-   <span class="c1">// Implementación del módulo (usando $ y L)</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nb">global</span><span class="p">,</span><span class="w"> </span><span class="nx">factory</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">define</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;function&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">define</span><span class="p">.</span><span class="nx">amd</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">define</span><span class="p">([</span><span class="s2">&quot;jquery&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;leaflet&quot;</span><span class="p">],</span><span class="w"> </span><span class="nx">factory</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">exports</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">factory</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;jquery&quot;</span><span class="p">),</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;leafter&quot;</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">global</span><span class="p">.</span><span class="nx">MiLibreria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">factory</span><span class="p">(</span><span class="nb">global</span><span class="p">.</span><span class="nx">$</span><span class="p">,</span><span class="w"> </span><span class="nx">glonal</span><span class="p">.</span><span class="nx">L</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">$</span><span class="p">,</span><span class="w"> </span><span class="nx">L</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// Implementación del módulo (usando $ y L)</span>
 
-    <span class="k">return</span> <span class="nx">resultado</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">resultado</span><span class="p">;</span>
 <span class="p">}));</span>
 </pre></div>
 </div>
@@ -407,9 +435,9 @@ cliente..</p>
 <li><p><a class="reference external" href="https://v8.dev/features/modules">JavaScript modules</a></p></li>
 </ul>
 <p class="rubric">Notas al pie</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -418,8 +446,11 @@ cliente..</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Tabla de contenido</a></h3>
-  <ul>
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/logo.png" alt="Logo"/>
+        </a></p><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">2.3. Módulos</a><ul>
 <li><a class="reference internal" href="#el-patron-del-modulo">2.3.1. El <em>patrón del módulo</em></a></li>
 <li><a class="reference internal" href="#commonjs">2.3.2. CommonJS</a></li>
@@ -437,12 +468,17 @@ cliente..</p>
 </li>
 </ul>
 
-  <h4>Tema anterior</h4>
-  <p class="topless"><a href="02.npm.html"
-                        title="capítulo anterior"><span class="section-number">2.2. </span>Paquetes</a></p>
-  <h4>Próximo tema</h4>
-  <p class="topless"><a href="../03.client/index.html"
-                        title="próximo capítulo"><span class="section-number">3. </span>Programación en el cliente</a></p>
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="02.npm.html"
+                          title="Previous page">&larr; <span class="section-number">2.2. </span>Paquetes</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="../03.client/index.html"
+                          title="Next page">&rarr; <span class="section-number">3. </span>Programación en el cliente</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>Esta página</h3>
     <ul class="this-page-menu">
@@ -454,16 +490,35 @@ cliente..</p>
   <h3 id="searchlabel">Búsqueda rápida</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Ir a" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
       <div class="clearer"></div>
     </div>
+    <div class="relbar-bottom">
+        
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navegación</h3>
       <ul>
@@ -472,18 +527,22 @@ cliente..</p>
              >índice</a></li>
         <li class="right" >
           <a href="../03.client/index.html" title="3. Programación en el cliente"
-             >siguiente</a> |</li>
+             >siguiente</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="02.npm.html" title="2.2. Paquetes"
-             >anterior</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+             >anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
           <li class="nav-item nav-item-1"><a href="index.html" ><span class="section-number">2. </span>NodeJS</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><span class="section-number">2.3. </span>Módulos</a></li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor CC BY 4.0, 2019-2024, José Miguel Sánchez Alés.
+      Creado usando <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
   </body>
 </html>

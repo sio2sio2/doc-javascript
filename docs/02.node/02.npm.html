@@ -1,29 +1,54 @@
 
 
 
+
+
 <!DOCTYPE html>
 
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2.2. Paquetes &#8212; documentación de Javascript - </title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>2.2. Paquetes &#8212; documentación de Javascript - rolling</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cloud.css" />
+    <link rel="stylesheet" href="../_static/general.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/particular.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
+
     
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Búsqueda" href="../search.html" />
     <link rel="next" title="2.3. Módulos" href="03.modulos.html" />
     <link rel="prev" title="2.1. Uso" href="01.nodejs.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
+    <div class="relbar-top">
+        
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navegación</h3>
       <ul>
@@ -32,30 +57,33 @@
              accesskey="I">índice</a></li>
         <li class="right" >
           <a href="03.modulos.html" title="2.3. Módulos"
-             accesskey="N">siguiente</a> |</li>
+             accesskey="N">siguiente</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="01.nodejs.html" title="2.1. Uso"
-             accesskey="P">anterior</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+             accesskey="P">anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U"><span class="section-number">2. </span>NodeJS</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><span class="section-number">2.2. </span>Paquetes</a></li> 
       </ul>
-    </div>  
+    </div>
+    </div>
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="paquetes">
-<span id="npm"></span><h1><span class="section-number">2.2. </span>Paquetes<a class="headerlink" href="#paquetes" title="Enlazar permanentemente con este título">¶</a></h1>
+  <section id="paquetes">
+<span id="npm"></span><h1><span class="section-number">2.2. </span>Paquetes<a class="headerlink" href="#paquetes" title="Enlace permanente a este encabezado">¶</a></h1>
 <p>Hay muchas librerías y aplicaciones que se distribuyen en paquetes <code class="docutils literal notranslate"><span class="pre">npm</span></code> y que
 podemos integrar en nuestros propios desarrollos. Por otro lado, también
 podemos contribuir a la comunidad aportando nuestros propios desarrollos.</p>
-<div class="section" id="gestion">
-<h2><span class="section-number">2.2.1. </span>Gestión<a class="headerlink" href="#gestion" title="Enlazar permanentemente con este título">¶</a></h2>
-<div class="section" id="instalacion">
-<h3><span class="section-number">2.2.1.1. </span>Instalación<a class="headerlink" href="#instalacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<section id="gestion">
+<h2><span class="section-number">2.2.1. </span>Gestión<a class="headerlink" href="#gestion" title="Enlace permanente a este encabezado">¶</a></h2>
+<section id="instalacion">
+<h3><span class="section-number">2.2.1.1. </span>Instalación<a class="headerlink" href="#instalacion" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Antes de proceder a la instalación de cualquier paquete es necesario saber que
 estos se pueden instalar:</p>
 <ul class="simple">
@@ -78,7 +106,7 @@ Por ejemplo, si desarrollamos una aplicación de cliente, necesitaremos
 <a class="reference internal" href="../03.client/02.webpack/index.html#webpack"><span class="std std-ref">webpack</span></a> para darle forma de aplicación de cliente.</p>
 <p>Para instalar paquetes de desarrollo, es necesario añadir la opción
 <code class="docutils literal notranslate"><span class="pre">--save-dev</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save-dev webpack
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>install<span class="w"> </span>--save-dev<span class="w"> </span>webpack
 </pre></div>
 </div>
 </li>
@@ -86,7 +114,7 @@ Por ejemplo, si desarrollamos una aplicación de cliente, necesitaremos
 ejemplo, si desarrollamos una aplicación <abbr title="Geographic Information System">GIS</abbr>, podemos basarnos en la
 libreria <a class="reference external" href="https://leafletjs.com">Leaflet</a>.</p>
 <p>En este caso es necesario añadir la opción <code class="docutils literal notranslate"><span class="pre">--save</span></code> (o nada en absoluto):</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install --save leaflet
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>install<span class="w"> </span>--save<span class="w"> </span>leaflet
 </pre></div>
 </div>
 </li>
@@ -95,7 +123,7 @@ libreria <a class="reference external" href="https://leafletjs.com">Leaflet</a>.
 lo cual posibilita que si se obtiene un directorio de una tercera persona (por
 ejemplo, porque haya subido el desarrollo a <a class="reference external" href="https://github.com">Github</a> y nosotros lo hayamos clonado),
 podemos instalar todas las dependencias simplemente haciendo:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>install
 </pre></div>
 </div>
 <p>La instalación global tiene la ventaja de que permite compartir una misma
@@ -108,46 +136,46 @@ repositorio del proyecto y, sin demasiadas preocupaciones, pueda instalar el
 <p class="admonition-title">Nota</p>
 <p>Es también posible instalar directamente un repositorio de <a class="reference external" href="https://github.com">Github</a> si
 éste está construido apropiadamente (tiene un fichero <code class="file docutils literal notranslate"><span class="pre">package.json</span></code>):</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm install git+https://github.com/usuario/proyecto.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>install<span class="w"> </span>git+https://github.com/usuario/proyecto.git
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="busqueda">
-<h3><span class="section-number">2.2.1.2. </span>Búsqueda<a class="headerlink" href="#busqueda" title="Enlazar permanentemente con este título">¶</a></h3>
+</section>
+<section id="busqueda">
+<h3><span class="section-number">2.2.1.2. </span>Búsqueda<a class="headerlink" href="#busqueda" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Podemos buscar paquetes instalables con <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">search</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm search webpack
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>search<span class="w"> </span>webpack
 </pre></div>
 </div>
 <p>Y paquetes instalados con <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">list</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm list -g --depth<span class="o">=</span><span class="m">0</span>
-<span class="gp">$</span> npm list --depth<span class="o">=</span><span class="m">0</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>list<span class="w"> </span>-g<span class="w"> </span>--depth<span class="o">=</span><span class="m">0</span>
+<span class="gp">$ </span>npm<span class="w"> </span>list<span class="w"> </span>--depth<span class="o">=</span><span class="m">0</span>
 </pre></div>
 </div>
 <p>La primera orden busca exclusivamente paquetes instalados globalmente. Además,
 incluyendo <code class="code docutils literal notranslate"><span class="pre">--depth=0</span></code> no se listan dependencias.</p>
-</div>
-<div class="section" id="actualizacion">
-<h3><span class="section-number">2.2.1.3. </span>Actualización<a class="headerlink" href="#actualizacion" title="Enlazar permanentemente con este título">¶</a></h3>
+</section>
+<section id="actualizacion">
+<h3><span class="section-number">2.2.1.3. </span>Actualización<a class="headerlink" href="#actualizacion" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Para actualizar un paquete concreto, puede usarse:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm update paquete
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>update<span class="w"> </span>paquete
 </pre></div>
 </div>
 <p>y para actualizar todos, basta con prescindir de cualquier nombre:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm update
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>update
 </pre></div>
 </div>
-</div>
-<div class="section" id="desinstalacion">
-<h3><span class="section-number">2.2.1.4. </span>Desinstalación<a class="headerlink" href="#desinstalacion" title="Enlazar permanentemente con este título">¶</a></h3>
+</section>
+<section id="desinstalacion">
+<h3><span class="section-number">2.2.1.4. </span>Desinstalación<a class="headerlink" href="#desinstalacion" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Puede usar <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">uninstall</span></code> (o su sinónimo <code class="code docutils literal notranslate"><span class="pre">npm</span> <span class="pre">remove</span></code>):</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm uninstall leaflet
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>uninstall<span class="w"> </span>leaflet
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="publicacion">
-<h2><span class="section-number">2.2.2. </span>Publicación<a class="headerlink" href="#publicacion" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+</section>
+<section id="publicacion">
+<h2><span class="section-number">2.2.2. </span>Publicación<a class="headerlink" href="#publicacion" title="Enlace permanente a este encabezado">¶</a></h2>
 <p>Si lo consideramos oportuno, también es posible publicar nuestros propios
 desarrollos en los repositorios de <strong class="program">npm</strong>. Lo indispensable es tener
 guardado el desarrollo en un <a class="reference internal" href="01.nodejs.html#workdir"><span class="std std-ref">directorio de trabajo</span></a> (o sea, que
@@ -162,40 +190,40 @@ disponga de un fichero <code class="file docutils literal notranslate"><span cla
 <p>La importancia estriba en que <strong class="program">npm</strong> lee este fichero para extraer los
 datos de la aplicación, por lo que exclusivamente esos valores serán los que
 permitan al servicio de paquetería identificar y clasificar al <em>software</em>.</p>
-<div class="section" id="registro">
-<h3><span class="section-number">2.2.2.1. </span>Registro<a class="headerlink" href="#registro" title="Enlazar permanentemente con este título">¶</a></h3>
+<section id="registro">
+<h3><span class="section-number">2.2.2.1. </span>Registro<a class="headerlink" href="#registro" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Lo primero es registrar nuestro propio usuario en la <a class="reference external" href="https://www.npmjs.com/">página oficial</a>, para lo cual nos requerirán un nombre de usuario,
 una contraseña y un correo electrónico.</p>
-</div>
-<div class="section" id="subida">
-<h3><span class="section-number">2.2.2.2. </span>Subida<a class="headerlink" href="#subida" title="Enlazar permanentemente con este título">¶</a></h3>
+</section>
+<section id="subida">
+<h3><span class="section-number">2.2.2.2. </span>Subida<a class="headerlink" href="#subida" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>La subida del paquete es sumamente sencilla. Basta con situarse en el directorio
 de trabajo y:</p>
 <ol class="arabic">
 <li><p>Ingreso:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm login
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>login
 </pre></div>
 </div>
 <p>El ingreso nos proporcionará un <em>token</em>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm token list
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>token<span class="w"> </span>list
 </pre></div>
 </div>
 <p>que servirá como método de autenticación al publicar el paquete.</p>
 </li>
 <li><p>Publicación del paquete:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm publish
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span>publish
 </pre></div>
 </div>
 </li>
 <li><p>Opcionalmente, podemos deslogearnos:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> npm <span class="nb">logout</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>npm<span class="w"> </span><span class="nb">logout</span>
 </pre></div>
 </div>
 </li>
 </ol>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -204,8 +232,11 @@ de trabajo y:</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Tabla de contenido</a></h3>
-  <ul>
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/logo.png" alt="Logo"/>
+        </a></p><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">2.2. Paquetes</a><ul>
 <li><a class="reference internal" href="#gestion">2.2.1. Gestión</a><ul>
 <li><a class="reference internal" href="#instalacion">2.2.1.1. Instalación</a></li>
@@ -223,12 +254,17 @@ de trabajo y:</p>
 </li>
 </ul>
 
-  <h4>Tema anterior</h4>
-  <p class="topless"><a href="01.nodejs.html"
-                        title="capítulo anterior"><span class="section-number">2.1. </span>Uso</a></p>
-  <h4>Próximo tema</h4>
-  <p class="topless"><a href="03.modulos.html"
-                        title="próximo capítulo"><span class="section-number">2.3. </span>Módulos</a></p>
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="01.nodejs.html"
+                          title="Previous page">&larr; <span class="section-number">2.1. </span>Uso</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="03.modulos.html"
+                          title="Next page">&rarr; <span class="section-number">2.3. </span>Módulos</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>Esta página</h3>
     <ul class="this-page-menu">
@@ -240,16 +276,35 @@ de trabajo y:</p>
   <h3 id="searchlabel">Búsqueda rápida</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Ir a" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
       <div class="clearer"></div>
     </div>
+    <div class="relbar-bottom">
+        
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navegación</h3>
       <ul>
@@ -258,18 +313,22 @@ de trabajo y:</p>
              >índice</a></li>
         <li class="right" >
           <a href="03.modulos.html" title="2.3. Módulos"
-             >siguiente</a> |</li>
+             >siguiente</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="01.nodejs.html" title="2.1. Uso"
-             >anterior</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+             >anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
           <li class="nav-item nav-item-1"><a href="index.html" ><span class="section-number">2. </span>NodeJS</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><span class="section-number">2.2. </span>Paquetes</a></li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor CC BY 4.0, 2019-2024, José Miguel Sánchez Alés.
+      Creado usando <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
   </body>
 </html>

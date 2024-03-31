@@ -1,29 +1,54 @@
 
 
 
+
+
 <!DOCTYPE html>
 
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1.1. Generalidades &#8212; documentación de Javascript - </title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>1.1. Generalidades &#8212; documentación de Javascript - rolling</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cloud.css" />
+    <link rel="stylesheet" href="../_static/general.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/particular.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
+
     
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
     <link rel="index" title="Índice" href="../genindex.html" />
     <link rel="search" title="Búsqueda" href="../search.html" />
-    <link rel="next" title="1.2. Variables" href="02.variables.html" />
+    <link rel="next" title="1.2. Datos" href="02.datos.html" />
     <link rel="prev" title="1. Particularidades" href="index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
+    <div class="relbar-top">
+        
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navegación</h3>
       <ul>
@@ -31,50 +56,53 @@
           <a href="../genindex.html" title="Índice General"
              accesskey="I">índice</a></li>
         <li class="right" >
-          <a href="02.variables.html" title="1.2. Variables"
-             accesskey="N">siguiente</a> |</li>
+          <a href="02.datos.html" title="1.2. Datos"
+             accesskey="N">siguiente</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="index.html" title="1. Particularidades"
-             accesskey="P">anterior</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+             accesskey="P">anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U"><span class="section-number">1. </span>Particularidades</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.1. </span>Generalidades</a></li> 
       </ul>
-    </div>  
+    </div>
+    </div>
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="generalidades">
-<h1><span class="section-number">1.1. </span>Generalidades<a class="headerlink" href="#generalidades" title="Enlazar permanentemente con este título">¶</a></h1>
-<div class="section" id="caracteristicas">
-<h2><span class="section-number">1.1.1. </span>Características<a class="headerlink" href="#caracteristicas" title="Enlazar permanentemente con este título">¶</a></h2>
+  <section id="generalidades">
+<h1><span class="section-number">1.1. </span>Generalidades<a class="headerlink" href="#generalidades" title="Enlace permanente a este encabezado">¶</a></h1>
+<section id="caracteristicas">
+<h2><span class="section-number">1.1.1. </span>Características<a class="headerlink" href="#caracteristicas" title="Enlace permanente a este encabezado">¶</a></h2>
 <p>Resumiendo enormemente, <em>Javascript</em> es un lenguaje:</p>
 <ul class="simple">
 <li><p>Interpretado</p></li>
 <li><p>A medio camino entre la programación imperativa y funcional, y orientado a
-objetos (aunque <a class="reference internal" href="04.objetos.html#objetos"><span class="std std-ref">ya veremos</span></a> que no basado en clases).</p></li>
+objetos (aunque <a class="reference internal" href="10.objetos.html#objetos"><span class="std std-ref">ya veremos</span></a> que no basado en clases).</p></li>
 <li><p>De tipado dinámico y débil.</p></li>
 </ul>
-</div>
-<div class="section" id="versiones">
-<h2><span class="section-number">1.1.2. </span>Versiones<a class="headerlink" href="#versiones" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="versiones">
+<h2><span class="section-number">1.1.2. </span>Versiones<a class="headerlink" href="#versiones" title="Enlace permanente a este encabezado">¶</a></h2>
 <p><em>Javascript</em> nació en el <a class="reference external" href="https://es.wikipedia.org/wiki/Netscape_Navigator">navegador Netscape</a>,
 aunque pronto fue adoptado e implementado <em>a su manera</em> (recibiendo el nombre de
 <em>JSScript</em>) en su competidor <a class="reference external" href="https://es.wikipedia.org/wiki/Internet_Explorer">Internet Explorer</a>, con lo que surgieron toda
 una de incompatibilidades que lastraban el desarrollo de la web.</p>
-<p>En 1997, <em>Netscape</em> remitió a la <em>ECMA</em> el lenguaje para su estandarización y
+<p>En 1997, <em>Netscape</em> remitió a la <abbr title="European Computer Manufacturers Association">ECMA</abbr><a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> el lenguaje para su estandarización y
 surgieron las distintas versiones del estándar <em>ECMAScript</em> (abreviado <em>ES</em> o
-<em>ES-262</em>, en donde el número hace referencia a que es la norma <em>ECMA</em> 262 la que
+<em>ES-262</em>, en donde el número hace referencia a que es la norma <abbr title="European Computer Manufacturers Association">ECMA</abbr> 262 la que
 recoge las especificaciones):</p>
 <ul class="simple">
 <li><p><strong>ES1</strong> (1997), <strong>ES2</strong> (1998), <strong>ES3</strong> (1999) y la nunca publicada versión 4, que
 podemos agrupar juntas y son las versiones arcaicas del lenguaje.</p></li>
 <li><p><strong>ES5</strong> surgida en 2009.</p></li>
 <li><p><strong>ES2015</strong> (también conocida como <em>Javascript</em> v6) de 2015. La decisión de
-sustituir el número de versión por el año de lanzamiento se debió a que <em>ECMA</em>
+sustituir el número de versión por el año de lanzamiento se debió a que <abbr title="European Computer Manufacturers Association">ECMA</abbr>
 decidió editar nuevas versiones en los meses de junio de cada año. y así ha
 seguido siendo. Esta versión incorporó bastantes novedades respecto a la
 anterior.</p></li>
@@ -87,9 +115,9 @@ redacción de este documento la última versión publicada es la <em>ES2019</em>
 <p>A pesar del cambio de denominación es frecuente que algunos sigan
 refiriendo las revisiones con su número de versión.</p>
 </div>
-</div>
-<div class="section" id="modo-estricto">
-<h2><span class="section-number">1.1.3. </span>Modo estricto<a class="headerlink" href="#modo-estricto" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="modo-estricto">
+<h2><span class="section-number">1.1.3. </span>Modo estricto<a class="headerlink" href="#modo-estricto" title="Enlace permanente a este encabezado">¶</a></h2>
 <p>En <em>ES5</em> se introdujo un modo estricto para el lenguaje que, simplemente, le
 indica al intérprete que sea menos permisivo al interpretarlo. Se puede
 interpretar <em>en modo estricto</em> todo un fichero entero o sólo una función
@@ -108,13 +136,13 @@ una variable si previamente no se ha declarado explícitamente.</p>
 prescribe que los módulos se interpreten siempre en modo estricto, aunque no
 se haya indicado explícitamente.</p>
 </div>
-</div>
-<div class="section" id="bucles-for">
-<h2><span class="section-number">1.1.4. </span>Bucles <code class="code docutils literal notranslate"><span class="pre">for</span></code><a class="headerlink" href="#bucles-for" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="bucles-for">
+<h2><span class="section-number">1.1.4. </span>Bucles <code class="code docutils literal notranslate"><span class="pre">for</span></code><a class="headerlink" href="#bucles-for" title="Enlace permanente a este encabezado">¶</a></h2>
 <p><em>Javascript</em> dispone de dos tipos de bucles iterativos:</p>
 <ul>
 <li><p>El <code class="docutils literal notranslate"><span class="pre">for</span></code> con sintaxis de <strong>C</strong> que permite recorrer secuencias a través de
-los ínjdices de sus componentes:</p>
+los índices de sus componentes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">];</span>
 <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;abc&quot;</span><span class="p">;</span>
 
@@ -125,8 +153,8 @@ los ínjdices de sus componentes:</p>
 </li>
 <li><p>Un bucle de tipo <em>foreach</em> que tiene dos variantes:</p>
 <ul>
-<li><p>Si se usa <code class="docutils literal notranslate"><span class="pre">in</span></code> se recorren a lps nombres de las propiedades
-<a class="reference internal" href="04.objetos.html#object-descriptors"><span class="std std-ref">enumerables</span></a> de cualquier objeto:</p>
+<li><p>Si se usa <code class="docutils literal notranslate"><span class="pre">in</span></code> se recorren a los nombres de las propiedades
+<a class="reference internal" href="10.objetos.html#object-descriptors"><span class="std std-ref">enumerables</span></a> de cualquier objeto:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="n">const</span> <span class="n">idx</span> <span class="n">of</span> <span class="n">arr</span><span class="p">)</span> <span class="p">{</span>
    <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="n">sucesivamente</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span>
 <span class="p">}</span>
@@ -144,8 +172,17 @@ propiedades enumerables de cualquier objeto:</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
+<p class="rubric">Notas al pie</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>En realidad, el nombre <abbr title="European Computer Manufacturers Association">ECMA</abbr> como acrónimo dejó de ser el nombre oficial
+de la organización en 1994. A partir de esa fecha, se redominó como <em>Ecma
+International</em>.</p>
+</aside>
+</aside>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -154,8 +191,11 @@ propiedades enumerables de cualquier objeto:</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Tabla de contenido</a></h3>
-  <ul>
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/logo.png" alt="Logo"/>
+        </a></p><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">1.1. Generalidades</a><ul>
 <li><a class="reference internal" href="#caracteristicas">1.1.1. Características</a></li>
 <li><a class="reference internal" href="#versiones">1.1.2. Versiones</a></li>
@@ -165,12 +205,17 @@ propiedades enumerables de cualquier objeto:</p>
 </li>
 </ul>
 
-  <h4>Tema anterior</h4>
-  <p class="topless"><a href="index.html"
-                        title="capítulo anterior"><span class="section-number">1. </span>Particularidades</a></p>
-  <h4>Próximo tema</h4>
-  <p class="topless"><a href="02.variables.html"
-                        title="próximo capítulo"><span class="section-number">1.2. </span>Variables</a></p>
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="index.html"
+                          title="Previous page">&larr; <span class="section-number">1. </span>Particularidades</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="02.datos.html"
+                          title="Next page">&rarr; <span class="section-number">1.2. </span>Datos</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>Esta página</h3>
     <ul class="this-page-menu">
@@ -182,16 +227,35 @@ propiedades enumerables de cualquier objeto:</p>
   <h3 id="searchlabel">Búsqueda rápida</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Ir a" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
       <div class="clearer"></div>
     </div>
+    <div class="relbar-bottom">
+        
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navegación</h3>
       <ul>
@@ -199,19 +263,23 @@ propiedades enumerables de cualquier objeto:</p>
           <a href="../genindex.html" title="Índice General"
              >índice</a></li>
         <li class="right" >
-          <a href="02.variables.html" title="1.2. Variables"
-             >siguiente</a> |</li>
+          <a href="02.datos.html" title="1.2. Datos"
+             >siguiente</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="index.html" title="1. Particularidades"
-             >anterior</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">documentación de Javascript - </a> &#187;</li>
+             >anterior</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">documentación de Javascript - rolling</a> &#187;</li>
+
           <li class="nav-item nav-item-1"><a href="index.html" ><span class="section-number">1. </span>Particularidades</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><span class="section-number">1.1. </span>Generalidades</a></li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Derechos de autor 2019, José Miguel Sánchez Alés.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor CC BY 4.0, 2019-2024, José Miguel Sánchez Alés.
+      Creado usando <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
   </body>
 </html>
