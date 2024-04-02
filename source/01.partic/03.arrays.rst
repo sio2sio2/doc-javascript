@@ -20,8 +20,16 @@ Array_:
    let sec1 = [1, 2, 3],
        sec2 = new Array("a", "b", "c");
 
-En ambos casos, se obtiene lo mismo. Como en otros lenguajes de programación, la
-secuencia no tiene por qué ser de datos del mismo tipo:
+En ambos casos, se obtiene lo mismo.  Es posible también, crear un array sin
+valores de una longitud determinada:
+
+.. code-block:: javascript
+
+   const arr1 = Array(10),        // arr1 tiene diez posiciones, pero sin valor las diez.
+         arr2 = Array(5).fill(0); // arr2 tiene 5, pero con valor 0.
+
+Como en otros lenguajes de programación, la secuencia no tiene por qué ser de
+datos del mismo tipo:
 
 .. code-block:: javascript
 
@@ -288,6 +296,42 @@ Array_ dispone de bastante métodos, algunos de los cuales son muy útiles:
       profundo.flat(2)          // Devuelve [1, 2, 3, [4, 5]]
       profundo.flat(Infinity);  // Devuelve [1, 2, 3, 4, 5]
 
+`.fill()`_
+   Rellena todo el array con el valor que se da como argumento:
+
+   .. code-block:: javascript
+
+      const arr = Array(10);
+
+      arr.fill("XXX");
+
+   .. note:: Observe que ``arr`` es una constante, pero el array que representa
+      puede cambiar de valor. Esto es así, porque ``arr`` es una referencia a
+      un objeto (un *array* en este caso particular) y que éste cambie su valor,
+      no implica que la referencia cambie: la referencia sigue siendo al mismo
+      objeto. En cambio, sí provocaría error:
+
+      .. code-block:: javascript
+
+         arr = ["soy", "otro", "array"]  // Error.
+
+      En cambio:
+
+      .. code-block:: javascript
+
+         const numero = 2;
+
+      provoca que la variable sea dos y siempre valga dos, porque hacer que
+      número valga 3 implica hacer una nueva asignación y, por tanto, una nueva
+      referencia:
+
+      .. code-block:: javascript
+
+         numero = 3;
+
+      No hay forma de original de que el dato 2 se transforme en un 3. Esto es
+      lo que distingue a los datos primitivos de los que no lo son.
+
 `.find()`_, `.findIndex()`_
    Permite encontrar el primer valor (o su índice asociado, si es
    ``.findIndex()``) que cumpla con una determinada condición. La condición 
@@ -365,6 +409,7 @@ Array_ dispone de bastante métodos, algunos de los cuales son muy útiles:
 .. _Array.from(): https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/from
 .. _.join(): https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/join
 .. _.flat(): https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+.. _.fill(): https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/fill
 .. _.every(): https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/every
 .. _.some(): https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/some
 .. _.filter(): https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/filter

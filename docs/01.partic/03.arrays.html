@@ -91,8 +91,14 @@
 <span class="w">    </span><span class="nx">sec2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Array</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>En ambos casos, se obtiene lo mismo. Como en otros lenguajes de programación, la
-secuencia no tiene por qué ser de datos del mismo tipo:</p>
+<p>En ambos casos, se obtiene lo mismo.  Es posible también, crear un array sin
+valores de una longitud determinada:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">arr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Array</span><span class="p">(</span><span class="mf">10</span><span class="p">),</span><span class="w">        </span><span class="c1">// arr1 tiene diez posiciones, pero sin valor las diez.</span>
+<span class="w">      </span><span class="nx">arr2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Array</span><span class="p">(</span><span class="mf">5</span><span class="p">).</span><span class="nx">fill</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// arr2 tiene 5, pero con valor 0.</span>
+</pre></div>
+</div>
+<p>Como en otros lenguajes de programación, la secuencia no tiene por qué ser de
+datos del mismo tipo:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">},</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Hola&quot;</span><span class="p">);</span><span class="w"> </span><span class="p">}];</span>
 </pre></div>
 </div>
@@ -299,6 +305,36 @@ el argumento (un nivel, si no se especifica nada):</p>
 <span class="nx">profundo</span><span class="p">.</span><span class="nx">flat</span><span class="p">(</span><span class="mf">2</span><span class="p">)</span><span class="w">          </span><span class="c1">// Devuelve [1, 2, 3, [4, 5]]</span>
 <span class="nx">profundo</span><span class="p">.</span><span class="nx">flat</span><span class="p">(</span><span class="kc">Infinity</span><span class="p">);</span><span class="w">  </span><span class="c1">// Devuelve [1, 2, 3, 4, 5]</span>
 </pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/fill">.fill()</a></dt><dd><p>Rellena todo el array con el valor que se da como argumento:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Array</span><span class="p">(</span><span class="mf">10</span><span class="p">);</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">fill</span><span class="p">(</span><span class="s2">&quot;XXX&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Observe que <code class="docutils literal notranslate"><span class="pre">arr</span></code> es una constante, pero el array que representa
+puede cambiar de valor. Esto es así, porque <code class="docutils literal notranslate"><span class="pre">arr</span></code> es una referencia a
+un objeto (un <em>array</em> en este caso particular) y que éste cambie su valor,
+no implica que la referencia cambie: la referencia sigue siendo al mismo
+objeto. En cambio, sí provocaría error:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;soy&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;otro&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">]</span><span class="w">  </span><span class="c1">// Error.</span>
+</pre></div>
+</div>
+<p>En cambio:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">numero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>provoca que la variable sea dos y siempre valga dos, porque hacer que
+número valga 3 implica hacer una nueva asignación y, por tanto, una nueva
+referencia:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">numero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>No hay forma de original de que el dato 2 se transforme en un 3. Esto es
+lo que distingue a los datos primitivos de los que no lo son.</p>
 </div>
 </dd>
 <dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/find">.find()</a>, <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex">.findIndex()</a></dt><dd><p>Permite encontrar el primer valor (o su índice asociado, si es
