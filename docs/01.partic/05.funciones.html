@@ -84,44 +84,49 @@ conocer.</p>
 <p>Hay dos formas de definir funciones:</p>
 <ul>
 <li><p>La <strong>tradicional</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">suma</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span> <span class="p">{</span>
-    <span class="o">//</span> <span class="n">Implementación</span><span class="o">...</span>
-    <span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">suma</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span><span class="w"> </span><span class="nx">arg2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Implementación...</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">arg1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">arg2</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li id="func-flecha"><p>A partir de <em>ES2015</em>, la <strong>función flecha</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-   <span class="o">//</span> <span class="n">Implementación</span><span class="o">...</span>
-   <span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span><span class="w"> </span><span class="nx">arg2</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">// Implementación...</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">arg1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">arg2</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>En caso de que la función conste de una única sentencia podemos simplificar la
 construcción eliminado las llaves y la sentencia <code class="code docutils literal notranslate"><span class="pre">return</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span><span class="w"> </span><span class="nx">arg2</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">arg1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">arg2</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>Si se quiere devolver un objeto, entonces es forzoso encerrarlo entre
 paréntesis para evitar ambigüedad:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">desc</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="n">desc</span><span class="p">})</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">desc</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">({</span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="nx">desc</span><span class="p">})</span>
 </pre></div>
 </div>
+</div>
+<p>Además, si la función sólo tiene un argumento podemos prescindir de los
+paréntesis:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">arg1</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="nx">arg1</span>
+</pre></div>
 </div>
 </li>
 </ul>
 <p>Las funciones flecha no expresan el nombre, pero podemos asignarlas a un
 identificador (como por otro lado también puede hacerse con las funciones
 anónimas en sintaxis tradicional):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Función</span> <span class="n">flecha</span> <span class="n">asociada</span> <span class="n">a</span> <span class="n">un</span> <span class="n">identificador</span><span class="o">.</span>
-<span class="n">var</span> <span class="n">suma</span> <span class="o">=</span> <span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Función flecha asociada a un identificador.</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">suma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span><span class="w"> </span><span class="nx">arg2</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">arg1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">arg2</span><span class="p">;</span>
 
-<span class="o">//</span> <span class="n">Una</span> <span class="n">forma</span> <span class="n">más</span> <span class="n">enrevesada</span> <span class="n">de</span> <span class="n">definir</span> <span class="n">la</span> <span class="n">primera</span> <span class="n">función</span><span class="p">:</span>
-<span class="n">var</span> <span class="n">suma</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span><span class="p">;</span>
+<span class="c1">// Una forma más enrevesada de definir la primera función:</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">suma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span><span class="w"> </span><span class="nx">arg2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">arg1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">arg2</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -129,19 +134,19 @@ anónimas en sintaxis tradicional):</p>
 diferencia capital entre ellas y las funciones tradicionales: <strong>no crean un
 contexto de ejecución propio</strong>, sino que heredan el contexto externo. Por
 ejemplo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">uno</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
-   <span class="n">const</span> <span class="p">[</span><span class="n">args</span><span class="p">,</span> <span class="n">that</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">arguments</span><span class="p">,</span> <span class="n">this</span><span class="p">]</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">uno</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">args</span><span class="p">,</span><span class="w"> </span><span class="nx">that</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nx">arguments</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">]</span>
 
-   <span class="n">var</span> <span class="n">dos1</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;Tradicional&quot;</span><span class="p">,</span> <span class="n">this</span> <span class="o">===</span> <span class="n">that</span><span class="p">,</span> <span class="n">arguments</span> <span class="o">===</span> <span class="n">args</span><span class="p">);</span>
-   <span class="p">}</span>
-   <span class="n">var</span> <span class="n">dos2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;Flecha&quot;</span><span class="p">,</span> <span class="n">this</span> <span class="o">===</span> <span class="n">that</span><span class="p">,</span> <span class="n">arguments</span> <span class="o">===</span> <span class="n">args</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">var</span><span class="w"> </span><span class="nx">dos1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Tradicional&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">that</span><span class="p">,</span><span class="w"> </span><span class="nx">arguments</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">args</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="kd">var</span><span class="w"> </span><span class="nx">dos2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Flecha&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">that</span><span class="p">,</span><span class="w"> </span><span class="nx">arguments</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">args</span><span class="p">);</span>
 
-   <span class="n">dos1</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Tradicional</span><span class="p">,</span> <span class="n">false</span><span class="p">,</span> <span class="n">false</span>
-   <span class="n">dos2</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Flecha</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">true</span>
+<span class="w">   </span><span class="nx">dos1</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span><span class="w">  </span><span class="c1">// Tradicional, false, false</span>
+<span class="w">   </span><span class="nx">dos2</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span><span class="w">  </span><span class="c1">// Flecha, true, true</span>
 <span class="p">}</span>
 
-<span class="n">uno</span><span class="o">.</span><span class="n">call</span><span class="p">({</span><span class="n">desc</span><span class="p">:</span> <span class="s2">&quot;Soy el contexto&quot;</span><span class="p">},</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="nx">uno</span><span class="p">.</span><span class="nx">call</span><span class="p">({</span><span class="nx">desc</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Soy el contexto&quot;</span><span class="p">},</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Si ejecutamos el ejemplo, la función tradicional <em>dos1</em> generará un nuevo
@@ -155,37 +160,37 @@ características especiales:</p>
 <ul>
 <li><p><em>Javascript</em> no es estricto con el número de parámetros proporcionados. Si se
 pasan más de los que se definieron, no se producirá ningún fallo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="nb">sum</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
-<span class="nb">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>       <span class="o">//</span> <span class="n">Devuelve</span> <span class="mf">3.</span>
-<span class="n">suma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Sobra</span> <span class="n">el</span> <span class="mi">10</span><span class="p">,</span> <span class="n">pero</span> <span class="n">sigue</span> <span class="n">devolviendo</span> <span class="mf">3.</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">b</span><span class="p">;</span>
+<span class="nx">sum</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span><span class="w">       </span><span class="c1">// Devuelve 3.</span>
+<span class="nx">suma</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// Sobra el 10, pero sigue devolviendo 3.</span>
 </pre></div>
 </div>
 </li>
 <li><p>Si se pasan menos parámetros de los declarados, los parámetros restantes
 tomarán el valor <code class="docutils literal notranslate"><span class="pre">undefined</span></code>.</p></li>
 <li><p>Desde <em>ES2015</em> pueden definirse valores predeterminados:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="nb">sum</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">;</span>
-<span class="nb">sum</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>               <span class="o">//</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">=</span> <span class="mf">120.</span>
-<span class="n">suma</span><span class="p">(</span><span class="n">undefined</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>  <span class="o">//</span> <span class="mi">200</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">=</span> <span class="mf">210.</span>
-<span class="n">suma</span><span class="p">();</span>                <span class="o">//</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">=</span> <span class="mf">110.</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">100</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">a</span><span class="o">+</span><span class="nx">b</span><span class="p">;</span>
+<span class="nx">sum</span><span class="p">(</span><span class="mf">20</span><span class="p">);</span><span class="w">               </span><span class="c1">// 100 + 20 = 120.</span>
+<span class="nx">suma</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span><span class="w"> </span><span class="mf">200</span><span class="p">);</span><span class="w">  </span><span class="c1">// 200 + 10 = 210.</span>
+<span class="nx">suma</span><span class="p">();</span><span class="w">                </span><span class="c1">// 100 + 10 = 110.</span>
 </pre></div>
 </div>
 <p>Antes, no obstante, era también bastante sencillo de implementar:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">suma</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
-   <span class="k">if</span><span class="p">(</span><span class="n">a</span> <span class="o">===</span> <span class="n">undefined</span><span class="p">)</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-   <span class="k">if</span><span class="p">(</span><span class="n">b</span> <span class="o">===</span> <span class="n">undefined</span><span class="p">)</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">suma</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="nx">a</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">undefined</span><span class="p">)</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">undefined</span><span class="p">)</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">100</span><span class="p">;</span>
 
-   <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">b</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Las funciones disponen de un pseudo-array denominado <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments">arguments</a> que contiene
 el valor de cada uno de los argumentos:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="n">valor</span> <span class="n">de</span> <span class="n">a</span><span class="o">.</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">//</span> <span class="n">valor</span> <span class="n">de</span> <span class="n">b</span><span class="o">.</span>
-   <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">sum</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mf">0</span><span class="p">])</span><span class="w"> </span><span class="c1">// valor de a.</span>
+<span class="w">   </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mf">1</span><span class="p">])</span><span class="w"> </span><span class="c1">// valor de b.</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">b</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -193,22 +198,63 @@ el valor de cada uno de los argumentos:</p>
 acceder por posición a sus elementos y consultar su longitud con <code class="docutils literal notranslate"><span class="pre">length</span></code>.
 En modo no estricto, dispone además de un atributo <code class="docutils literal notranslate"><span class="pre">callee</span></code> que refiere la
 propia función:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">sum</span> <span class="o">===</span> <span class="n">arguments</span><span class="o">.</span><span class="n">callee</span><span class="p">);</span>  <span class="o">//</span> <span class="n">true</span><span class="o">.</span>
-   <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">sum</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sum</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">arguments</span><span class="p">.</span><span class="nx">callee</span><span class="p">);</span><span class="w">  </span><span class="c1">// true.</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">b</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>A partir de <em>ES2015</em>, es posible también definir funciones con una cantidad
 fija de argumentos nominados, y otra variable:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">foobar</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">...</span><span class="n">rest</span><span class="p">)</span> <span class="p">{</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>      <span class="o">//</span> <span class="mi">1</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>      <span class="o">//</span> <span class="mi">2</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">rest</span><span class="p">);</span>   <span class="o">//</span> <span class="p">[</span><span class="mf">3.</span> <span class="mi">4</span><span class="p">]</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="kd">function</span><span class="w"> </span><span class="nx">foobar</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">rest</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+<span class="w">     </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
+<span class="w">     </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rest</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="nx">foobar</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">);</span><span class="w">  </span><span class="c1">// a=1, b=2, rest=[3, 4]</span>
+</pre></div>
+</div>
+</li>
+<li><p>En <em>Javascript</em> es muy común pasar como argumento de la función un objeto,
+sobre todo si la función necesita varios argumentos, ya que no es necesario
+recordar el orden en que deben escribirse<a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// punto es un objeto de la forma {x: valor1, y: valor2}</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">foobar</span><span class="p">(</span><span class="nx">punto</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`(x=</span><span class="si">${</span><span class="nx">punto</span><span class="p">.</span><span class="nx">x</span><span class="si">}</span><span class="sb">, y=</span><span class="si">${</span><span class="nx">punto</span><span class="p">.</span><span class="nx">y</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="n">foobar</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+<span class="nx">foobar</span><span class="p">({</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">});</span>
+</pre></div>
+</div>
+<p>Como los objetos que se pasan a la función suele tener los mismos atributos
+(el <code class="docutils literal notranslate"><span class="pre">x</span></code> y el <code class="docutils literal notranslate"><span class="pre">y</span></code> en este caso), los argumentos puede definirse
+también de la siguiente forma:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">foobar</span><span class="p">({</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`(x=</span><span class="si">${</span><span class="nx">x</span><span class="si">}</span><span class="sb">, y=</span><span class="si">${</span><span class="nx">y</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">foobar</span><span class="p">({</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">});</span><span class="w">   </span><span class="c1">// x=1, y=2</span>
+<span class="nx">foobar</span><span class="p">({</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">});</span><span class="w">         </span><span class="c1">// x=1, y=undefined</span>
+</pre></div>
+</div>
+<p>De este modo, podremos usar dentro de la función directamente las variables
+<code class="docutils literal notranslate"><span class="pre">x</span></code> e <code class="docutils literal notranslate"><span class="pre">y</span></code>, en vez de que estas sean atributos del objeto que se pasa como
+argumento, que fue lo que ocurrió en la primera definición. ¿Qué sucede si
+el objeto que se pasa tiene otras atributos?</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">foobar</span><span class="p">({</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="nx">t</span><span class="o">:</span><span class="w"> </span><span class="mf">4</span><span class="p">});</span>
+</pre></div>
+</div>
+<p>En principio, dentro de la función sólo se podrá acceder a ellos a través del
+<em>seudoarray</em> <code class="docutils literal notranslate"><span class="pre">arguments</span></code>, cuyo primer elemento es el objeto completo. Sin
+embargo, podríamos definir así la función:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">foobar</span><span class="p">({</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">rest</span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`(x=</span><span class="si">${</span><span class="nx">x</span><span class="si">}</span><span class="sb">, y=</span><span class="si">${</span><span class="nx">y</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Todo lo demás: </span><span class="si">${</span><span class="nx">rest</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">foobar</span><span class="p">({</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="nx">t</span><span class="o">:</span><span class="w"> </span><span class="mf">4</span><span class="p">});</span><span class="w">  </span><span class="c1">// x=1, y=2, rest={z: 3, t: 4}</span>
 </pre></div>
 </div>
 </li>
@@ -223,34 +269,34 @@ múltiples factores:</p>
 <ul>
 <li><p>En las <em>funciones flecha</em> se conserva el del entorno externo.</p></li>
 <li><p>En funciones independendientes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">foobar</span><span class="p">()</span> <span class="p">{</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Objeto</span> <span class="k">global</span> <span class="n">o</span> <span class="n">undefined</span><span class="o">.</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">foobar</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">  </span><span class="c1">// Objeto global o undefined.</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>depende del modo: en modo estricto queda indefnido (<code class="docutils literal notranslate"><span class="pre">undefined</span></code>), mientras
-que en otro caso, es el objetp global.</p>
+que en otro caso, es el objeto global.</p>
 </li>
 <li><p>En métodos de un objeto, representa al propio objeto:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">objeto</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">};</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">objeto</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">a</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">};</span>
 
-<span class="n">objeto</span><span class="o">.</span><span class="n">foobar</span> <span class="o">=</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">a</span><span class="p">);</span>
+<span class="nx">objeto</span><span class="p">.</span><span class="nx">foobar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="n">objecto</span><span class="o">.</span><span class="n">foobar</span><span class="p">();</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="mf">1.</span>
+<span class="nx">objeto</span><span class="p">.</span><span class="nx">foobar</span><span class="p">();</span><span class="w">  </span><span class="c1">// Imprime 1.</span>
 
-<span class="o">//</span> <span class="n">Pero</span><span class="p">:</span>
+<span class="c1">// Pero:</span>
 
-<span class="n">foobar2</span> <span class="o">=</span> <span class="n">objeto</span><span class="o">.</span><span class="n">foobar</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">foobar2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">objeto</span><span class="p">.</span><span class="nx">foobar</span><span class="p">;</span>
 
-<span class="n">foobar2</span><span class="p">();</span>  <span class="o">//</span> <span class="n">Imprime</span> <span class="n">undefined</span> <span class="n">en</span> <span class="n">modo</span> <span class="n">estricto</span> <span class="p">(</span><span class="n">error</span> <span class="n">en</span> <span class="n">otro</span> <span class="n">caso</span><span class="p">)</span><span class="o">.</span>
+<span class="nx">foobar2</span><span class="p">();</span><span class="w">  </span><span class="c1">// Imprime undefined en modo normal (y error en modo estricto).</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>Una función también podemos considerarla un objeto:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">ABC</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">ABC</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
 <span class="nx">ABC</span><span class="p">.</span><span class="nx">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span>
 
 <span class="nx">ABC</span><span class="p">.</span><span class="nx">foobar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
@@ -264,17 +310,17 @@ que en otro caso, es el objetp global.</p>
 </li>
 <li><p>Y aunque se entenderá al tratar el <a class="reference internal" href="10.objetos.html#proto-constr"><span class="std std-ref">prototipado con constructores</span></a>, dentro de las funciones constructoras y en los métodos del
 prototipo de dicho constructor, <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> representa al propio objeto:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Constructor</span>
-<span class="n">function</span> <span class="n">Foobar</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">{</span>
-   <span class="n">this</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Constructor</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">Foobar</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">a</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="n">Foobar</span><span class="o">.</span><span class="n">prototype</span><span class="o">.</span><span class="n">metodo</span> <span class="o">=</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">a</span><span class="p">);</span>
+<span class="nx">Foobar</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">metodo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="n">const</span> <span class="n">objeto</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Foobar</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Se</span> <span class="n">asigna</span> <span class="mi">1</span> <span class="n">a</span> <span class="n">objeto</span><span class="o">.</span><span class="n">a</span><span class="p">;</span>
-<span class="n">objeto</span><span class="o">.</span><span class="n">metodo</span><span class="p">();</span>               <span class="o">//</span> <span class="n">Imprime</span> <span class="mf">1.</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">objeto</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Foobar</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span><span class="w">  </span><span class="c1">// Se asigna 1 a objeto.a;</span>
+<span class="nx">objeto</span><span class="p">.</span><span class="nx">metodo</span><span class="p">();</span><span class="w">               </span><span class="c1">// Imprime 1.</span>
 </pre></div>
 </div>
 </li>
@@ -286,40 +332,50 @@ prototipo de dicho constructor, <a class="reference external" href="https://deve
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> dependendiendo de cómo se haya definido la función, es posible alterar
 dinámicamente el contexto a través de diversas herramientas. Para ilustrarlas
 tomemos de ejemplo la función:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">foobar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="n">this</span><span class="p">);</span>
-   <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">foobar</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;this&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<span class="w">   </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <dl>
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">.bind()</a></dt><dd><p>Permite crear una nueva función en que se definen de antemano el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">.bind()</a></dt><dd><blockquote>
+<div><p>Permite crear una nueva función en que se definen de antemano el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>
 y todos los argumentos que se le proporcionen:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">barfoo</span> <span class="o">=</span> <span class="n">foobar</span><span class="o">.</span><span class="n">bind</span><span class="p">({},</span> <span class="mi">1</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Proporcionamos</span> <span class="n">this</span> <span class="n">y</span> <span class="n">el</span> <span class="n">primer</span> <span class="n">argumento</span><span class="o">.</span>
-<span class="n">barfoo</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>                          <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">barfoo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">foobar</span><span class="p">.</span><span class="nx">bind</span><span class="p">({},</span><span class="w"> </span><span class="mf">1</span><span class="p">);</span><span class="w">  </span><span class="c1">// Proporcionamos this y el primer argumento.</span>
+<span class="nx">barfoo</span><span class="p">(</span><span class="mf">2</span><span class="p">);</span><span class="w">                          </span><span class="c1">// this= {}; x= 1; y= 2.</span>
 </pre></div>
 </div>
+</div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p><code class="docutils literal notranslate"><span class="pre">.bind()</span></code> puede cumplir la función que hace <a class="reference external" href="https://docs.python.org/3.7/library/functools.html#partial-objects">partial</a> en
 <em>Python</em>, aunque tiene el efecto añadido de modificar el objeto
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>. Para una solución que no lo modifique puede usarse el
 siguiente código:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">partial</span> <span class="o">=</span> <span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">...</span><span class="n">args</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="o">...</span><span class="n">rest</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">func</span><span class="p">(</span><span class="o">..</span><span class="n">args</span><span class="p">,</span> <span class="o">...</span><span class="n">rest</span><span class="p">);</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">partial</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">func</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">args</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">(...</span><span class="nx">rest</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">func</span><span class="p">(..</span><span class="nx">args</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">rest</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 </dd>
 <dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call">.call()</a></dt><dd><p>Ejecuta la función permitiendo modificar el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>, que pasa a
 ser el primer argumento:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foobar</span><span class="o">.</span><span class="n">call</span><span class="p">({},</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">):</span>  <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">foobar</span><span class="p">.</span><span class="nx">call</span><span class="p">({},</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="mf">2</span><span class="p">)</span><span class="o">:</span><span class="w">  </span><span class="c1">// this= {}; x= 1; y= 2.</span>
 </pre></div>
 </div>
 </dd>
 <dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply">.apply()</a></dt><dd><p>Actúa como <code class="docutils literal notranslate"><span class="pre">.call()</span></code> modificando el objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>, pero pasa el resto
 de argumentos en forma de <em>array</em>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foobar</span><span class="o">.</span><span class="n">apply</span><span class="p">({},</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]);</span>  <span class="o">//</span> <span class="n">this</span><span class="o">=</span> <span class="p">{};</span> <span class="n">x</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">y</span><span class="o">=</span> <span class="mf">2.</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">foobar</span><span class="p">.</span><span class="nx">apply</span><span class="p">({},</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">]);</span><span class="w">  </span><span class="c1">// this= {}; x= 1; y= 2.</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Desde que existe el desempaquetado de <em>arrays</em> también puede
+hacerse:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">foobar</span><span class="p">.</span><span class="nx">call</span><span class="p">({},</span><span class="w"> </span><span class="p">...[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">]);</span><span class="w"> </span><span class="c1">// this= {}; x= 1; y= 2.</span>
+</pre></div>
+</div>
 </div>
 </dd>
 </dl>
@@ -328,6 +384,14 @@ de argumentos en forma de <em>array</em>:</p>
 <p>Las definiciones hechas con <code class="code docutils literal notranslate"><span class="pre">.bind()</span></code> provocan que quede anulado
 el efecto de <code class="docutils literal notranslate"><span class="pre">.call()</span></code> y <code class="docutils literal notranslate"><span class="pre">.apply()</span></code>.</p>
 </div>
+<p class="rubric">Notas al pie</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Pasar a una función un objeto en <em>Javascript</em> equivale a utilizar
+<a class="reference external" href="https://aprendepython.es/core/modularity/functions/#argumentos-nominales">argumentos nominales en Python</a>.</p>
+</aside>
+</aside>
 </section>
 </section>
 </section>

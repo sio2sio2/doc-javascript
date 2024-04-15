@@ -15,12 +15,14 @@ asignado. Las otras dos, en cambio, pueden declararse sin recibir valor. En tal
 caso, su valor es :code:`undefined`, hasta que no se le asigne un valor.
 
 Hay otra diferencia capital entre estas tres declaraciones relacionada con su
-ámbito de existencia: las declaradas con ``var`` tiene como ámbito la
+ámbito de existencia: las declaradas con ``var`` tienen como ámbito la
 función dentro de la que se definen, mientras que las declaradas con :code:`let`
 y :code:`const` el bloque. Se profundizará más adelante en ello.
 
 Una misma sentencia ``var``, ``let`` o ``const`` se puede usar para definir
-varias variables: basta con separar con comas::
+varias variables: basta con separar con comas. Por ejemplo:
+
+.. code-block:: javascript
 
    var x = 5,  // El cambio de línea sólo es para mejorar la legibilidad
        y,
@@ -28,7 +30,9 @@ varias variables: basta con separar con comas::
 
 .. _decl-no-var:
 
-Cuando se lleva a cabo una asignación sin haber hecho una declaración previa::
+Cuando se lleva a cabo una asignación sin haber hecho una declaración previa:
+
+.. code-block:: javascript
 
    t = 2; // Pero antes en el código no se escribió 'var t;' o 'let t'.
 
@@ -52,7 +56,7 @@ Tipos
     para enteros.
   * Indefinido, sin valor (``undefined``).
   * Símbolo: es un tipo que sirve para definir valores únicos. Puede usarse como
-    como clave para las propiedades de los objetos::
+    clave para las propiedades de los objetos::
 
       const s = Symbol();
       const objeto = {};
@@ -159,7 +163,7 @@ se destruye al acabar el programa. Obsérvese que la *pila de contextos* depende
 de por dónde se desarrolle la ejecución.
 
 Es preciso puntualizar que cuando existen diferentes ficheros, el
-comportamientdo difiere dependiendo de cuál sea el interprete:
+comportamiento difiere dependiendo de cuál sea el interprete:
 
 - En los navegadores, todos los ficheros comparten el mismo contexto que es un
   contexto global, por lo que si en el nivel superior definimos::
@@ -265,7 +269,7 @@ global. En un navegador el objeto global es *window*.
 Objeto this_
 ------------
 Cada contexto de ejecución tiene asociado un objeto this_. Es importante tener
-presente que el significado de this_ en *Javascript* es mucho amplio del que
+presente que el significado de this_ en *Javascript* es mucho más amplio del que
 tiene comúnmente en lenguajes orientados a objetos como *Java* o *Python*
 (aunque en este se pueda llamar de cualquier manera). En estos lenguajes, this_
 representa al objeto mismo dentro de sus propios métodos. Por eso, en *Python*
@@ -291,7 +295,7 @@ En el contexto global, el valor de this_ es:
 - El objeto global (o sea, *window*) en los navegadores. Además, los contextos
   globales de todos los ficheros de código son exactamente el mismo.
 
-- En NodeJS_. en cambio, cada fichero tiene un contexto diferente y el valor de
+- En NodeJS_, en cambio, cada fichero tiene un contexto diferente y el valor de
   this_ coincide con el objeto de importación (en caso de que se use
   :ref:`CommonJS <module-commonjs>`)::
 
@@ -309,7 +313,7 @@ En el contexto global, el valor de this_ es:
       console.log(this);  // {a: 1, c: [Function: c]}
 
 
-  .. seealso:: A su debido tiempo. requerirá echarle un ojo a los :ref:`módulos
+  .. seealso:: A su debido tiempo, requerirá echarle un ojo a los :ref:`módulos
      en Javascript <js-modules>`.
 
 La discusión sobre el valor de this_ dentro de las funciones, la incluiremos

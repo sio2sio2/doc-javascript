@@ -112,7 +112,7 @@ Para utilizar los atributos basta con usar la sintaxis del punto::
    rectangulo.area = 8;
    console.log(rectangulo.area());  // 80.
 
-aunque también podemos usar una sintaxis basada en corchetas::
+aunque también podemos usar una sintaxis basada en corchetes::
 
    rectangulo["anchura"] = 5;
    rectangulo["area"]();  // 80.
@@ -321,7 +321,9 @@ especial por lo que son perfectamente accesibles y enumerables. En el código
 anterior, nos hemos limitado a usar la notación del subrayado para hacer notar
 que el atributo no debería usarse. Podemos usar otras técnicas más elaboradas.
 Por ejemplo, utilizar como claves símbolo y, además, hacer no enumerable el
-atributo::
+atributo:
+
+.. code-block:: js
 
    const altura = Symbol('altura');
    const anchura = Symbol('anchura');
@@ -342,10 +344,34 @@ atributo::
       [anchura]: {enumerable: false}
    });
 
+Creación de objetos
+===================
+Para la construcción simple de objetos podemos valernos de diferentes
+estrategias:
+
++ La construcción literal con llaves que ya se ha visto:
+
+  .. code-block:: javascript
+
+     const o = {x: 1, y: 2}
+
++ Usando el :ref:`constructor <proto-constr>` Object_:
+
+  .. code-block:: javascript
+
+     const o = new Object()
+     [o.x, o.y] = [1, 2]
+
+.. Object.assign.
+   desempaquetado.
+   Object.freeze()
+
 Observación
 ============
 .. todo:: Breve explicación de `Proxy
    <https://www.todojs.com/introduccion-a-proxy-de-es6/>`_.
+
+.. _manejo-obj:
 
 Manejo de objetos
 *****************
@@ -948,6 +974,7 @@ se requiera una restructuración completa de la jerarquía de clases.
 
 .. |POO| replace:: :abbr:`POO (Programación Orientada a Objetos)`.
 .. _Object.create(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
+.. _Object: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
 .. _new: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new
 .. _Object.keys(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 .. _Object.defineProperty(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty

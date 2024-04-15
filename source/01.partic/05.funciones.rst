@@ -9,7 +9,9 @@ Sintaxis
 ========
 Hay dos formas de definir funciones:
 
-* La **tradicional**::
+* La **tradicional**:
+
+  .. code-block:: javascript
 
      function suma(arg1, arg2) {
          // Implementación...
@@ -18,26 +20,41 @@ Hay dos formas de definir funciones:
 
   .. _func-flecha:
 
-* A partir de *ES2015*, la **función flecha**::
+* A partir de *ES2015*, la **función flecha**:
 
-   (arg1, arg2) => {
-      // Implementación...
-      return arg1 + arg2;
-   }
+  .. code-block:: javascript
+
+     (arg1, arg2) => {
+        // Implementación...
+        return arg1 + arg2;
+     }
 
   En caso de que la función conste de una única sentencia podemos simplificar la
-  construcción eliminado las llaves y la sentencia :code:`return`::
+  construcción eliminado las llaves y la sentencia :code:`return`:
 
-   (arg1, arg2) => arg1 + arg2
+  .. code-block:: javascript
+
+     (arg1, arg2) => arg1 + arg2
 
   .. note:: Si se quiere devolver un objeto, entonces es forzoso encerrarlo entre
-     paréntesis para evitar ambigüedad::
+     paréntesis para evitar ambigüedad:
 
-      (name), desc) => ({name: name, description: desc})
+     .. code-block:: javascript
+
+        (name, desc) => ({name: name, description: desc})
+
+  Además, si la función sólo tiene un argumento podemos prescindir de los
+  paréntesis:
+
+  .. code-block:: javascript
+
+     arg1 => 2*arg1
 
 Las funciones flecha no expresan el nombre, pero podemos asignarlas a un
 identificador (como por otro lado también puede hacerse con las funciones
-anónimas en sintaxis tradicional)::
+anónimas en sintaxis tradicional):
+
+.. code-block:: javascript
 
   // Función flecha asociada a un identificador.
   var suma = (arg1, arg2) => arg1 + arg2;
@@ -51,7 +68,9 @@ Las **funciones flecha** no son simple `azúcar sintáctico
 <https://es.wikipedia.org/wiki/Az%C3%BAcar_sint%C3%A1ctico>`_, sino que hay una
 diferencia capital entre ellas y las funciones tradicionales: **no crean un
 contexto de ejecución propio**, sino que heredan el contexto externo. Por
-ejemplo::
+ejemplo:
+
+.. code-block:: javascript
 
    function uno(a, b) {
       const [args, that] = [arguments, this]
@@ -78,60 +97,120 @@ Los argumentos de las funciones son posicionales, pero con algunas
 características especiales:
 
 * *Javascript* no es estricto con el número de parámetros proporcionados. Si se
-  pasan más de los que se definieron, no se producirá ningún fallo::
+  pasan más de los que se definieron, no se producirá ningún fallo:
 
-   const sum = (a, b) => a + b;
-   sum(1, 2);       // Devuelve 3.
-   suma(1, 2, 10);  // Sobra el 10, pero sigue devolviendo 3.
+  .. code-block:: javascript
+
+     const sum = (a, b) => a + b;
+     sum(1, 2);       // Devuelve 3.
+     suma(1, 2, 10);  // Sobra el 10, pero sigue devolviendo 3.
 
 * Si se pasan menos parámetros de los declarados, los parámetros restantes
   tomarán el valor ``undefined``.
 
-* Desde *ES2015* pueden definirse valores predeterminados::
+* Desde *ES2015* pueden definirse valores predeterminados:
 
-   const sum = (a = 10, b = 100) => a+b;
-   sum(20);               // 100 + 20 = 120.
-   suma(undefined, 200);  // 200 + 10 = 210.
-   suma();                // 100 + 10 = 110.
+  .. code-block:: javascript
 
-  Antes, no obstante, era también bastante sencillo de implementar::
+     const sum = (a = 10, b = 100) => a+b;
+     sum(20);               // 100 + 20 = 120.
+     suma(undefined, 200);  // 200 + 10 = 210.
+     suma();                // 100 + 10 = 110.
 
-   function suma(a, b) {
-      if(a === undefined) a = 10;
-      if(b === undefined) b = 100;
+  Antes, no obstante, era también bastante sencillo de implementar:
 
-      return a + b;
-   }
+  .. code-block:: javascript
+
+     function suma(a, b) {
+        if(a === undefined) a = 10;
+        if(b === undefined) b = 100;
+
+        return a + b;
+     }
 
 * Las funciones disponen de un pseudo-array denominado arguments_ que contiene
-  el valor de cada uno de los argumentos::
+  el valor de cada uno de los argumentos:
 
-   function sum(a, b) {
-      console.log(arguments[0]) // valor de a.
-      console.log(arguments[1]) // valor de b.
-      return a + b;
-   }
+  .. code-block:: javascript
+
+     function sum(a, b) {
+        console.log(arguments[0]) // valor de a.
+        console.log(arguments[1]) // valor de b.
+        return a + b;
+     }
 
   :code:`arguments` no es un array propiamente dicho y sólo permite recorrerlo,
   acceder por posición a sus elementos y consultar su longitud con ``length``.
   En modo no estricto, dispone además de un atributo ``callee`` que refiere la
-  propia función::
+  propia función:
 
-   function sum(a, b) {
-      console.log(sum === arguments.callee);  // true.
-      return a + b;
-   }
+  .. code-block:: javascript
+
+     function sum(a, b) {
+        console.log(sum === arguments.callee);  // true.
+        return a + b;
+     }
 
 * A partir de *ES2015*, es posible también definir funciones con una cantidad
-  fija de argumentos nominados, y otra variable::
+  fija de argumentos nominados, y otra variable:
 
-   function foobar(a, b, ...rest) {
-      console.log(a);      // 1
-      console.log(b);      // 2
-      console.log(rest);   // [3. 4]
-   }
+  .. code-block:: javascript
 
-   foobar(1, 2, 3, 4);
+     function foobar(a, b, ...rest) {
+        console.log(a);
+        console.log(b);
+        console.log(rest);
+     }
+
+   foobar(1, 2, 3, 4);  // a=1, b=2, rest=[3, 4]
+
+* En *Javascript* es muy común pasar como argumento de la función un objeto,
+  sobre todo si la función necesita varios argumentos, ya que no es necesario
+  recordar el orden en que deben escribirse\ [#]_:
+
+  .. code-block:: javascript
+
+     // punto es un objeto de la forma {x: valor1, y: valor2}
+     function foobar(punto) {
+         console.log(`(x=${punto.x}, y=${punto.y}`);
+     }
+
+     foobar({x: 1, y: 2});
+
+  Como los objetos que se pasan a la función suele tener los mismos atributos
+  (el ``x`` y el ``y`` en este caso), los argumentos puede definirse
+  también de la siguiente forma:
+
+  .. code-block:: javascript
+
+     function foobar({x, y}) {
+         console.log(`(x=${x}, y=${y}`);
+     }
+
+     foobar({x: 1, y: 2});   // x=1, y=2
+     foobar({x: 1});         // x=1, y=undefined
+
+  De este modo, podremos usar dentro de la función directamente las variables
+  ``x`` e ``y``, en vez de que estas sean atributos del objeto que se pasa como
+  argumento, que fue lo que ocurrió en la primera definición. ¿Qué sucede si
+  el objeto que se pasa tiene otras atributos?
+
+  .. code-block:: javascript
+
+     foobar({x: 1, y: 2, z: 3, t: 4});
+
+  En principio, dentro de la función sólo se podrá acceder a ellos a través del
+  *seudoarray* ``arguments``, cuyo primer elemento es el objeto completo. Sin
+  embargo, podríamos definir así la función:
+
+  .. code-block:: javascript
+
+     function foobar({x, y, ...rest}) {
+         console.log(`(x=${x}, y=${y}`);
+         console.log(`Todo lo demás: ${rest}`);
+     }
+
+     foobar({x: 1, y: 2, z: 3, t: 4});  // x=1, y=2, rest={z: 3, t: 4}
 
 Contexto
 ========
@@ -143,34 +222,38 @@ El objeto this_ del contexto ejecución que crea cada función depende de
 múltiples factores:
 
 - En las *funciones flecha* se conserva el del entorno externo.
-- En funciones independendientes::
+- En funciones independendientes:
 
-   function foobar() {
-      console.log(this);  // Objeto global o undefined.
-   }
+  .. code-block:: javascript
+
+     function foobar() {
+        console.log(this);  // Objeto global o undefined.
+     }
 
   depende del modo: en modo estricto queda indefnido (``undefined``), mientras
-  que en otro caso, es el objetp global.
+  que en otro caso, es el objeto global.
 
-- En métodos de un objeto, representa al propio objeto::
+- En métodos de un objeto, representa al propio objeto:
 
-   const objeto = {a: 1, b: 2, c: 3};
+  .. code-block:: javascript
 
-   objeto.foobar = function() {
-      console.log(this.a);
-   }
+     const objeto = {a: 1, b: 2, c: 3};
 
-   objecto.foobar();  // Imprime 1.
+     objeto.foobar = function() {
+        console.log(this.a);
+     }
 
-   // Pero:
+     objeto.foobar();  // Imprime 1.
 
-   foobar2 = objeto.foobar;
+     // Pero:
 
-   foobar2();  // Imprime undefined en modo estricto (error en otro caso).
+     const foobar2 = objeto.foobar;
+
+     foobar2();  // Imprime undefined en modo normal (y error en modo estricto).
 
   .. note:: Una función también podemos considerarla un objeto:
 
-     .. code-block:: js
+     .. code-block:: javascript
 
         function ABC() {}
         ABC.a = 1;
@@ -183,26 +266,30 @@ múltiples factores:
    
 - Y aunque se entenderá al tratar el :ref:`prototipado con constructores
   <proto-constr>`, dentro de las funciones constructoras y en los métodos del
-  prototipo de dicho constructor, this_ representa al propio objeto::
+  prototipo de dicho constructor, this_ representa al propio objeto:
 
-   // Constructor
-   function Foobar(a) {
-      this.a = a;
-   }
+  .. code-block:: javascript
 
-   Foobar.prototype.metodo = function() {
-      console.log(this.a);
-   }
+     // Constructor
+     function Foobar(a) {
+        this.a = a;
+     }
 
-   const objeto = new Foobar(1);  // Se asigna 1 a objeto.a;
-   objeto.metodo();               // Imprime 1.
+     Foobar.prototype.metodo = function() {
+        console.log(this.a);
+     }
+
+     const objeto = new Foobar(1);  // Se asigna 1 a objeto.a;
+     objeto.metodo();               // Imprime 1.
 
 Manipulación de this_
 ---------------------
 Aunque lo establecido bajo el epígrafe anterior son los valores que adquiere
 this_ dependendiendo de cómo se haya definido la función, es posible alterar
 dinámicamente el contexto a través de diversas herramientas. Para ilustrarlas
-tomemos de ejemplo la función::
+tomemos de ejemplo la función:
+
+.. code-block:: javascript
 
    function foobar(x, y) {
       console.log("this", this);
@@ -211,33 +298,54 @@ tomemos de ejemplo la función::
 
 `.bind()`_
    Permite crear una nueva función en que se definen de antemano el objeto this_
-   y todos los argumentos que se le proporcionen::
+   y todos los argumentos que se le proporcionen:
+
+   .. code-block:: javascript
 
       const barfoo = foobar.bind({}, 1);  // Proporcionamos this y el primer argumento.
       barfoo(2);                          // this= {}; x= 1; y= 2.
 
-   .. note::  ``.bind()`` puede cumplir la función que hace `partial
-      <https://docs.python.org/3.7/library/functools.html#partial-objects>`_ en
-      *Python*, aunque tiene el efecto añadido de modificar el objeto
-      this_. Para una solución que no lo modifique puede usarse el
-      siguiente código::
+  .. note::  ``.bind()`` puede cumplir la función que hace `partial
+     <https://docs.python.org/3.7/library/functools.html#partial-objects>`_ en
+     *Python*, aunque tiene el efecto añadido de modificar el objeto
+     this_. Para una solución que no lo modifique puede usarse el
+     siguiente código:
 
-         const partial = (func, ...args) => (...rest) => func(..args, ...rest);
+     .. code-block:: javascript
+
+        const partial = (func, ...args) => (...rest) => func(..args, ...rest);
 
 `.call()`_
    Ejecuta la función permitiendo modificar el objeto this_, que pasa a
-   ser el primer argumento::
+   ser el primer argumento:
+
+   .. code-block:: javascript
 
       foobar.call({}, 1 2):  // this= {}; x= 1; y= 2.
 
 `.apply()`_
    Actúa como ``.call()`` modificando el objeto this_, pero pasa el resto
-   de argumentos en forma de *array*::
+   de argumentos en forma de *array*:
+
+   .. code-block:: javascript
 
       foobar.apply({}, [1, 2]);  // this= {}; x= 1; y= 2.
 
+   .. note:: Desde que existe el desempaquetado de *arrays* también puede
+      hacerse:
+
+      .. code-block:: javascript
+
+         foobar.call({}, ...[1, 2]); // this= {}; x= 1; y= 2.
+
 .. caution:: Las definiciones hechas con :code:`.bind()` provocan que quede anulado
    el efecto de ``.call()`` y ``.apply()``.
+
+.. rubric:: Notas al pie
+
+.. [#] Pasar a una función un objeto en *Javascript* equivale a utilizar
+   `argumentos nominales en Python
+   <https://aprendepython.es/core/modularity/functions/#argumentos-nominales>`_.
 
 .. _arguments: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments
 .. _.bind(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind

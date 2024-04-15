@@ -16,7 +16,7 @@ Versiones
 aunque pronto fue adoptado e implementado *a su manera* (recibiendo el nombre de
 *JSScript*) en su competidor `Internet Explorer
 <https://es.wikipedia.org/wiki/Internet_Explorer>`_, con lo que surgieron toda
-una de incompatibilidades que lastraban el desarrollo de la web.
+una de serie de incompatibilidades que lastraban el desarrollo de la web.
 
 En 1997, *Netscape* remitió a la |ECMA|\ [#]_ el lenguaje para su estandarización y
 surgieron las distintas versiones del estándar *ECMAScript* (abreviado *ES* o
@@ -30,11 +30,11 @@ recoge las especificaciones):
 
 * **ES2015** (también conocida como *Javascript* v6) de 2015. La decisión de
   sustituir el número de versión por el año de lanzamiento se debió a que |ECMA|
-  decidió editar nuevas versiones en los meses de junio de cada año. y así ha
+  decidió editar nuevas versiones en los meses de junio de cada año, y así ha
   seguido siendo. Esta versión incorporó bastantes novedades respecto a la
   anterior.
 
-* **ES2016**, **ES2017**, etc. que son las versiones anuales posteriores. A fecha de
+* **ES2016**, **ES2017**, etc., que son las versiones anuales posteriores. A fecha de
   redacción de este documento la última versión publicada es la *ES2019* (o
   *Javascript* v10).
 
@@ -92,7 +92,7 @@ Bucles :code:`for`
 .. rubric:: Notas al pie
 
 .. [#] En realidad, el nombre |ECMA| como acrónimo dejó de ser el nombre oficial
-   de la organización en 1994. A partir de esa fecha, se redominó como *Ecma
+   de la organización en 1994. A partir de esa fecha, se redenominó como *Ecma
    International*.
 
 .. |ECMA| replace:: :abbr:`ECMA (European Computer Manufacturers Association)`

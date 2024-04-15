@@ -92,18 +92,18 @@ definir constantes y requiere obligatoriamente declarar cuál es el valor
 asignado. Las otras dos, en cambio, pueden declararse sin recibir valor. En tal
 caso, su valor es <code class="code docutils literal notranslate"><span class="pre">undefined</span></code>, hasta que no se le asigne un valor.</p>
 <p>Hay otra diferencia capital entre estas tres declaraciones relacionada con su
-ámbito de existencia: las declaradas con <code class="docutils literal notranslate"><span class="pre">var</span></code> tiene como ámbito la
+ámbito de existencia: las declaradas con <code class="docutils literal notranslate"><span class="pre">var</span></code> tienen como ámbito la
 función dentro de la que se definen, mientras que las declaradas con <code class="code docutils literal notranslate"><span class="pre">let</span></code>
 y <code class="code docutils literal notranslate"><span class="pre">const</span></code> el bloque. Se profundizará más adelante en ello.</p>
 <p>Una misma sentencia <code class="docutils literal notranslate"><span class="pre">var</span></code>, <code class="docutils literal notranslate"><span class="pre">let</span></code> o <code class="docutils literal notranslate"><span class="pre">const</span></code> se puede usar para definir
-varias variables: basta con separar con comas:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>  <span class="o">//</span> <span class="n">El</span> <span class="n">cambio</span> <span class="n">de</span> <span class="n">línea</span> <span class="n">sólo</span> <span class="n">es</span> <span class="n">para</span> <span class="n">mejorar</span> <span class="n">la</span> <span class="n">legibilidad</span>
-    <span class="n">y</span><span class="p">,</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+varias variables: basta con separar con comas. Por ejemplo:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w">  </span><span class="c1">// El cambio de línea sólo es para mejorar la legibilidad</span>
+<span class="w">    </span><span class="nx">y</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3</span><span class="p">;</span>
 </pre></div>
 </div>
 <p id="decl-no-var">Cuando se lleva a cabo una asignación sin haber hecho una declaración previa:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="o">//</span> <span class="n">Pero</span> <span class="n">antes</span> <span class="n">en</span> <span class="n">el</span> <span class="n">código</span> <span class="n">no</span> <span class="n">se</span> <span class="n">escribió</span> <span class="s1">&#39;var t;&#39;</span> <span class="n">o</span> <span class="s1">&#39;let t&#39;</span><span class="o">.</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2</span><span class="p">;</span><span class="w"> </span><span class="c1">// Pero antes en el código no se escribió &#39;var t;&#39; o &#39;let t&#39;.</span>
 </pre></div>
 </div>
 <p>pueden ocurrir dos cosas:</p>
@@ -124,7 +124,7 @@ varias variables: basta con separar con comas:</p>
 para enteros.</p></li>
 <li><p>Indefinido, sin valor (<code class="docutils literal notranslate"><span class="pre">undefined</span></code>).</p></li>
 <li><p>Símbolo: es un tipo que sirve para definir valores únicos. Puede usarse como
-como clave para las propiedades de los objetos:</p>
+clave para las propiedades de los objetos:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">();</span>
 <span class="n">const</span> <span class="n">objeto</span> <span class="o">=</span> <span class="p">{};</span>
 <span class="n">objeto</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;La clave es un símbolo&quot;</span><span class="p">;</span>
@@ -237,7 +237,7 @@ la función <code class="code docutils literal notranslate"><span class="pre">f1
 se destruye al acabar el programa. Obsérvese que la <em>pila de contextos</em> depende
 de por dónde se desarrolle la ejecución.</p>
 <p>Es preciso puntualizar que cuando existen diferentes ficheros, el
-comportamientdo difiere dependiendo de cuál sea el interprete:</p>
+comportamiento difiere dependiendo de cuál sea el interprete:</p>
 <ul>
 <li><p>En los navegadores, todos los ficheros comparten el mismo contexto que es un
 contexto global, por lo que si en el nivel superior definimos:</p>
@@ -345,7 +345,7 @@ del objeto global.</p>
 <section id="objeto-this">
 <h3><span class="section-number">1.2.3.4. </span>Objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a><a class="headerlink" href="#objeto-this" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Cada contexto de ejecución tiene asociado un objeto <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>. Es importante tener
-presente que el significado de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> en <em>Javascript</em> es mucho amplio del que
+presente que el significado de <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> en <em>Javascript</em> es mucho más amplio del que
 tiene comúnmente en lenguajes orientados a objetos como <em>Java</em> o <em>Python</em>
 (aunque en este se pueda llamar de cualquier manera). En estos lenguajes, <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a>
 representa al objeto mismo dentro de sus propios métodos. Por eso, en <em>Python</em>
@@ -367,7 +367,7 @@ cualquier contexto de ejecución tiene definido un objeto <a class="reference ex
 <ul>
 <li><p>El objeto global (o sea, <em>window</em>) en los navegadores. Además, los contextos
 globales de todos los ficheros de código son exactamente el mismo.</p></li>
-<li><p>En <a class="reference external" href="https://nodejs.org">NodeJS</a>. en cambio, cada fichero tiene un contexto diferente y el valor de
+<li><p>En <a class="reference external" href="https://nodejs.org">NodeJS</a>, en cambio, cada fichero tiene un contexto diferente y el valor de
 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">this</a> coincide con el objeto de importación (en caso de que se use
 <a class="reference internal" href="../02.node/03.modulos.html#module-commonjs"><span class="std std-ref">CommonJS</span></a>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exports</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
@@ -386,7 +386,7 @@ globales de todos los ficheros de código son exactamente el mismo.</p></li>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p>A su debido tiempo. requerirá echarle un ojo a los <a class="reference internal" href="../02.node/03.modulos.html#js-modules"><span class="std std-ref">módulos
+<p>A su debido tiempo, requerirá echarle un ojo a los <a class="reference internal" href="../02.node/03.modulos.html#js-modules"><span class="std std-ref">módulos
 en Javascript</span></a>.</p>
 </div>
 </li>
