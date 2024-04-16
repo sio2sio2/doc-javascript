@@ -42,6 +42,24 @@ pueden ocurrir dos cosas:
 - En otro caso, la variable pasa a ser un atributo del :ref:`objeto global
   <objeto-global>`.
 
+.. note:: Acabemos de ver cómo asignar valores a una variable. Desde *ES2015*
+   pueden hacerse asignaciones múltiples mediante desempaquetado (como, por otro
+   lado se hacen en *Python*, aunque con distinta sintaxis):
+
+   .. code-block:: javascript
+   
+      var x, y;
+
+      [x, y] = [1, 2];  // x=1, y=2
+      [x, y] = [y, x];  // Intercambiamos valores.
+
+      // Se puede usar el desempaquetado a la vez que se hace la declaración
+      let [t, z] = ["a", "b"];  // t="a", z="b"
+
+      // [] es la sintaxis para definir arrays, así que puede usarse un array directamente
+      const arr = ["q", "w"];
+      [t, z] = arr;  // t="q", z="w"
+
 Tipos
 =====
 *Javascript* define los siguientes tipos:

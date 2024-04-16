@@ -201,7 +201,7 @@ dentro de una variable:</p>
 sin más. Sin embargo, cada atributo posee un descriptor que define las
 características del atributo dentro del objeto.</p>
 <dl id="object-getownpropertydescriptor">
-<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor">Object.getOwnPropertyDescriptor()</a></dt><dd><p>Muestra el desriptor del atributo de un objeto:</p>
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor">Object.getOwnPropertyDescriptor()</a></dt><dd><p>Muestra el descriptor del atributo de un objeto:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">getOwnPropertyDescriptor</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;altura&quot;</span><span class="p">)</span>
 <span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="nx">writable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">configurable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
 </pre></div>
@@ -210,13 +210,22 @@ características del atributo dentro del objeto.</p>
 </dl>
 <p>Además del valor, obtenemos que el atributo es:</p>
 <ul class="simple">
-<li><p><em class="dfn">writable</em>, razón por la cual podemos darle un valor distinto.</p></li>
-<li><p><em class="dfn">configurable</em>, razón por la cual podríamos cambiar estas propias
-características, haciendo que, por ejemplo, el valor fuera inmutable.</p></li>
-<li><p><em class="dfn">enumerable</em>, lo que significa que el atributo será más visible, esto es,
-que algunas funciones que veremos más adelante serán capaces de ver que este
-atributo existe<a class="footnote-reference brackets" href="#id14" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p></li>
+<li><p><em class="dfn">writable</em>, esto es, que puede cambiar su valor.</p></li>
+<li><p><em class="dfn">enumerable</em>, lo que significa que el atributo será más <em>visible</em>, esto
+es, que algunas funciones que veremos más adelante lo incluirán en la lista de
+atributos del objeto<a class="footnote-reference brackets" href="#id14" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p></li>
+<li><p><em class="dfn">configurable</em>, esto es, que podemos modificar el propio descriptor para
+por ejemplo, alterar <em>enumerable</em> y que el atributo pase a no ser listado por
+algunas funciones. El atributo tampoco puede borrarse con <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete">delete</a>. La única
+excepción a esta inmutabilidad es que <em>writable</em> podrá pasar de verdadero a
+falso.</p></li>
 </ul>
+<div class="admonition caution">
+<p class="admonition-title">Prudencia</p>
+<p>Cambiar a <em>false</em> el valor de <em>configurable</em> es irreversible: no
+podremos cambiar el descriptor en absoluto, lo que provocará que no podremos
+volver a fijar <em>configurable</em> como <em>true</em>.</p>
+</div>
 <p>Hay dos <strong>tipos</strong> de descriptores:</p>
 <ul class="simple">
 <li><p><em class="dfn">Descriptor de dato</em>, que describe un atributo normal como el anterior y
@@ -227,11 +236,21 @@ valor y un <em>getter</em> para devolverlo. Por ejemplo, podríamos convertir la
 dimensiones de nuestro rectángulo en sendas propiedades para controlar que
 siempre introduzcan un número como valor. En este caso, el descriptor, en vez
 de disponer <em>value</em>, dispondrá <em>set</em> y <em>get</em>, Tampoco tendrá la
-característicva <em>writable</em>, que no tiene sentido, puesto que si se desea que
+característica <em>writable</em>, que no tiene sentido, puesto que si se desea que
 la propiedad sea de sólo lectura, basta con no definir el <em>setter</em>. Las otras
 dos características, sin embargo, siguen teniendo validez. Dejaremos la
 discusión de las <a class="reference internal" href="#object-properties"><span class="std std-ref">propiedades</span></a> para el siguiente epígrafe.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Un atributo (su descriptor contiene <em>value</em>) puede convertirse en
+propiedad, simplemente redefiniendo su descriptor, como se verá a
+continuación, de manera que contenga <em>get</em> (o <em>get</em> y <em>set</em>). Al hacerlo,
+desaparecerán automáticamente <em>value</em> y <em>writable</em> del descriptor y tendremos
+una propiedad. La conversión inversa también es posible: una propiedad puede
+convertirse en un atributo redefiniciendo su descriptor de manera que
+contenga <em>value</em>.</p>
+</div>
 <p>Al definir un atributo (bien al crear un objeto, bien añadiéndolo después), las
 características <code class="docutils literal notranslate"><span class="pre">writable</span></code>, <code class="docutils literal notranslate"><span class="pre">enumerable</span></code> o <code class="docutils literal notranslate"><span class="pre">configurable</span></code> estarán siempre
 a <em>true</em>. Para que adopten otro valor pueden usarse:</p>
@@ -329,8 +348,31 @@ heredado. Porque no es propio, no nos lo devolvió
 </dd>
 </dl>
 </section>
+<section id="congelacion">
+<h3><span class="section-number">1.5.1.5. </span>Congelación<a class="headerlink" href="#congelacion" title="Enlace permanente a este encabezado">¶</a></h3>
+<p>Manipulando el descriptor de cada atributo podemos hacer que éste pueda o no
+cambiar de valor (<em>writable</em>) o que deje de poderse manipular el propio
+descriptor (<em>configurable</em>). De hecho, si tomásemos todas los atributos de un
+objeto y fijásemos a <em>false</em> para cada uno de ellos ambas características nos
+encontraríamos con un objeto <em>casi</em> congelado del que no podemos cambiar los
+valores de sus atributos, ni borrarlos, ni reconfigurar este comportamiento.
+Pero ¿por qué están <em>casi</em> congelado el objeto y no congelado del todo? No lo
+está completamente porque se le pueden seguir añadiendo atributos. Si queremos
+también evitar esto tenemos dos métodos:</p>
+<dl class="simple">
+<dt><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze">Object.freeze()</a>/<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/seal">Object.seal()</a></dt><dd><p>Congelan de forma efectiva el objeto que se les pasa como argumento, de
+manera que no se le podrán añadir nuevos atributos y, además, fijan la
+característica <em>configurable</em> del descriptor de cada uno de sus atributos a
+<em>false</em>. La diferencia entre la primera y la segunda es que la primera,
+además, fija <em>writable</em> también a <em>false</em> con lo que los atributos existentes
+tampoco podrán cambiar de valor. La segunda, en cambio, respeta los valores
+de <em>writable</em> previos con lo que todos aquellos atributos que podían cambiar
+de valor, podrán seguir haciéndolo.</p>
+</dd>
+</dl>
+</section>
 <section id="propiedades">
-<span id="object-properties"></span><h3><span class="section-number">1.5.1.5. </span>Propiedades<a class="headerlink" href="#propiedades" title="Enlace permanente a este encabezado">¶</a></h3>
+<span id="object-properties"></span><h3><span class="section-number">1.5.1.6. </span>Propiedades<a class="headerlink" href="#propiedades" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Las propiedades son atributos que, en vez de definir un valor, definen un
 <em>setter</em> y un <em>getter</em>, aunque alguna de estas dos funciones puede no existir.
 Podemos definir un atributo de este tipo declarando el descriptor
@@ -345,9 +387,9 @@ explícitamente (con <a class="reference external" href="https://developer.mozil
 <span class="nx">rectangulo</span><span class="p">.</span><span class="nx">perimetro</span><span class="p">;</span><span class="w"> </span><span class="c1">// 34, o sea, 2*(10 + 7)</span>
 </pre></div>
 </div>
-<p>En este caso, hemos añadido una propiedad de sólo lectura, esto es, con
-<em>getter</em>, pero no con <em>setter</em>. Alternativamente, la definición puede hacerse
-así:</p>
+<p>En este caso, hemos añadido una propiedad de sólo lectura puesto que hemos
+definido un <em>getter</em>, pero no un <em>setter</em>. Alternativamente, la definición puede
+hacerse así:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">rectangulo</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;perimetro&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
 <span class="w">   </span><span class="nx">get</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mf">2</span><span class="o">*</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">anchura</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">altura</span><span class="p">);</span>
@@ -384,7 +426,7 @@ altura fueran propiedades, podríamos hacer lo siguiente:</p>
 </pre></div>
 </div>
 <p>Nótese que en realidad los atributos <em>anchura</em> y <em>altura</em> no almacenan ningún
-valor, por lo que necesitamos crear sendos atributos adicionales pàra cumplir
+valor, por lo que necesitamos crear sendos atributos adicionales para cumplir
 esta tarea.  Estos atributos, sin embargo, no han sido añadidos de ningún modo
 especial por lo que son perfectamente accesibles y enumerables. En el código
 anterior, nos hemos limitado a usar la notación del subrayado para hacer notar
@@ -413,25 +455,68 @@ atributo:</p>
 </div>
 </section>
 <section id="creacion-de-objetos">
-<h3><span class="section-number">1.5.1.6. </span>Creación de objetos<a class="headerlink" href="#creacion-de-objetos" title="Enlace permanente a este encabezado">¶</a></h3>
+<h3><span class="section-number">1.5.1.7. </span>Creación de objetos<a class="headerlink" href="#creacion-de-objetos" title="Enlace permanente a este encabezado">¶</a></h3>
 <p>Para la construcción simple de objetos podemos valernos de diferentes
 estrategias:</p>
 <ul>
-<li><p>La construcción literal con llaves que ya se ha visto:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">}</span>
+<li><p>La construcción literal con llaves que ya se ha visto y permite crear objetos <em>ex novo</em>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">};</span>
 </pre></div>
 </div>
 </li>
-<li><p>Usando el <a class="reference internal" href="#proto-constr"><span class="std std-ref">constructor</span></a> <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Object</span><span class="p">()</span>
+<li><p>Para lo mismo, puede usarse el <a class="reference internal" href="#proto-constr"><span class="std std-ref">constructor</span></a> <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Object</span><span class="p">();</span>
 <span class="p">[</span><span class="nx">o</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">o</span><span class="p">.</span><span class="nx">y</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">]</span>
 </pre></div>
 </div>
 </li>
+<li id="object-assign"><p>Cuando nuestra intención es crear objetos basándonos en los atributos de
+otros, es conveniente usar <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign">Object.assign()</a>, que traslada al objeto incluido
+en el primer argumento, los atributos de los objetos proporcionados en los
+siguientes argumentos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">o1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">},</span>
+<span class="w">      </span><span class="nx">o2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">},</span>
+<span class="w">      </span><span class="nx">o3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">z</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">};</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">o1</span><span class="p">,</span><span class="w"> </span><span class="nx">o2</span><span class="p">,</span><span class="w"> </span><span class="nx">o3</span><span class="p">);</span><span class="w">  </span><span class="c1">// El método devuelve el propio o1 ya modificado.</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">o1</span><span class="p">);</span><span class="w">  </span><span class="c1">// {x: 1, y: 2, z: 3}</span>
+</pre></div>
+</div>
+<p>El método se puede usar para hacer una copia rápida de un objeto:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">};</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">o_copia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({},</span><span class="w"> </span><span class="nx">o</span><span class="p">);</span><span class="w"> </span><span class="c1">// copiamos o en o_copia.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Es prácticamente equivalente a lo anterior, usar el operador de dispersión para
+desempaquetar los objetos:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">o1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">},</span>
+<span class="w">        </span><span class="nx">o2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">},</span>
+<span class="w">        </span><span class="nx">o3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nx">z</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">};</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">oo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{...</span><span class="nx">o1</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">o2</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">o3</span><span class="p">};</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">oo</span><span class="p">);</span><span class="w"> </span><span class="c1">// {x: 1, y: 2, z: 3}</span>
+
+<span class="nx">En</span><span class="w"> </span><span class="nx">este</span><span class="w"> </span><span class="nx">caso</span><span class="p">,</span><span class="w"> </span><span class="nx">ninguno</span><span class="w"> </span><span class="nx">de</span><span class="w"> </span><span class="nx">los</span><span class="w"> </span><span class="nx">elementos</span><span class="w"> </span><span class="nx">originales</span><span class="w"> </span><span class="nx">se</span><span class="w"> </span><span class="nx">ve</span><span class="w"> </span><span class="nx">modificado</span><span class="p">.</span>
+</pre></div>
+</div>
+</li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Advertencia</p>
+<p>Ni <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign">Object.assign()</a> ni el desempaquetado crean copias exactas de
+los atributos originales por dos motivos:</p>
+<ul class="simple">
+<li><p>No reproducen el descriptor del atributo original. Por ejemplo, si el
+atributo <code class="docutils literal notranslate"><span class="pre">o1.x</span></code> no es <em>writable</em> esa característica no se trasladará a
+<code class="docutils literal notranslate"><span class="pre">oo.x</span></code>, que sí lo será.</p></li>
+<li><p>Las propiedades (o sea, atributos con descriptores de acceso) se convierten
+en atributos (o sea, atributos con descriptores de valor), es decir, se
+pierde el <em>getter</em> (y, en su caso, el <em>setter</em> si lo hubiera) y su valor
+será el valor evaluado por el <em>getter</em> en el momento de hacer la copia.</p></li>
+</ul>
+</div>
 </section>
 <section id="observacion">
-<h3><span class="section-number">1.5.1.7. </span>Observación<a class="headerlink" href="#observacion" title="Enlace permanente a este encabezado">¶</a></h3>
+<h3><span class="section-number">1.5.1.8. </span>Observación<a class="headerlink" href="#observacion" title="Enlace permanente a este encabezado">¶</a></h3>
 <div class="admonition-todo admonition" id="id5">
 <p class="admonition-title">Por hacer</p>
 <p>Breve explicación de <a class="reference external" href="https://www.todojs.com/introduccion-a-proxy-de-es6/">Proxy</a>.</p>
@@ -760,10 +845,10 @@ que logramos obtener una secuencia de tuplas <code class="docutils literal notra
 <span class="pre">descriptor_atributo)</span></code>. Finalmente, se genera el objeto con los descriptores
 gracias a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries">Object.fromEntries()</a>.</p>
 </li>
-<li id="object-assign"><p>Como nuestra intención es permitir que el usuario pueda también escribir en un
+<li><p>Como nuestra intención es permitir que el usuario pueda también escribir en un
 segundo argumento directamente descriptores (por eso, el método es
 <code class="docutils literal notranslate"><span class="pre">extender(attrs,</span> <span class="pre">props)</span></code>), necesitamos juntar ambos objetos en uno solo.
-Para ello utilizamos <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign">Object.assign()</a>. Este método copia en el objeto proporcionado
+Para ello utilizamos <a class="reference internal" href="#object-assign"><span class="std std-ref">Object.assign()</span></a>. Este método copia en el objeto proporcionado
 como primer argumento, los atributos que contiene el objeto proporcionado
 como segundo argumento (y tercero y cuarto, etc.). Devuelve, además, el
 objeto que se pasó como primer argumento.</p></li>
@@ -1247,9 +1332,10 @@ definiciones que afecten de forma global.</p>
 <li><a class="reference internal" href="#uso">1.5.1.2. Uso</a></li>
 <li><a class="reference internal" href="#descriptores">1.5.1.3. Descriptores</a></li>
 <li><a class="reference internal" href="#lista-de-atributos">1.5.1.4. Lista de atributos</a></li>
-<li><a class="reference internal" href="#propiedades">1.5.1.5. Propiedades</a></li>
-<li><a class="reference internal" href="#creacion-de-objetos">1.5.1.6. Creación de objetos</a></li>
-<li><a class="reference internal" href="#observacion">1.5.1.7. Observación</a></li>
+<li><a class="reference internal" href="#congelacion">1.5.1.5. Congelación</a></li>
+<li><a class="reference internal" href="#propiedades">1.5.1.6. Propiedades</a></li>
+<li><a class="reference internal" href="#creacion-de-objetos">1.5.1.7. Creación de objetos</a></li>
+<li><a class="reference internal" href="#observacion">1.5.1.8. Observación</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#manejo-de-objetos">1.5.2. Manejo de objetos</a><ul>

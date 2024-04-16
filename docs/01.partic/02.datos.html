@@ -111,6 +111,25 @@ varias variables: basta con separar con comas. Por ejemplo:</p>
 <li><p>En modo <em>estricto</em>, se produce un error.</p></li>
 <li><p>En otro caso, la variable pasa a ser un atributo del <a class="reference internal" href="#objeto-global"><span class="std std-ref">objeto global</span></a>.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Acabemos de ver cómo asignar valores a una variable. Desde <em>ES2015</em>
+pueden hacerse asignaciones múltiples mediante desempaquetado (como, por otro
+lado se hacen en <em>Python</em>, aunque con distinta sintaxis):</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">;</span>
+
+<span class="p">[</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">];</span><span class="w">  </span><span class="c1">// x=1, y=2</span>
+<span class="p">[</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">];</span><span class="w">  </span><span class="c1">// Intercambiamos valores.</span>
+
+<span class="c1">// Se puede usar el desempaquetado a la vez que se hace la declaración</span>
+<span class="kd">let</span><span class="w"> </span><span class="p">[</span><span class="nx">t</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;b&quot;</span><span class="p">];</span><span class="w">  </span><span class="c1">// t=&quot;a&quot;, z=&quot;b&quot;</span>
+
+<span class="c1">// [] es la sintaxis para definir arrays, así que puede usarse un array directamente</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;q&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;w&quot;</span><span class="p">];</span>
+<span class="p">[</span><span class="nx">t</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">arr</span><span class="p">;</span><span class="w">  </span><span class="c1">// t=&quot;q&quot;, z=&quot;w&quot;</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="tipos">
 <h2><span class="section-number">1.2.2. </span>Tipos<a class="headerlink" href="#tipos" title="Enlace permanente a este encabezado">¶</a></h2>

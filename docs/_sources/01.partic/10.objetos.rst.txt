@@ -134,19 +134,26 @@ características del atributo dentro del objeto.
 .. _object.getownpropertydescriptor:
 
 `Object.getOwnPropertyDescriptor()`_
-   Muestra el desriptor del atributo de un objeto::
+   Muestra el descriptor del atributo de un objeto::
 
       Object.getOwnPropertyDescriptor(rectangulo, "altura")
       { value: 10, writable: true, enumerable: true, configurable: true }
 
 Además del valor, obtenemos que el atributo es:
 
-* :dfn:`writable`, razón por la cual podemos darle un valor distinto.
-* :dfn:`configurable`, razón por la cual podríamos cambiar estas propias
-  características, haciendo que, por ejemplo, el valor fuera inmutable.
-* :dfn:`enumerable`, lo que significa que el atributo será más visible, esto es,
-  que algunas funciones que veremos más adelante serán capaces de ver que este
-  atributo existe\ [#]_. 
+* :dfn:`writable`, esto es, que puede cambiar su valor.
+* :dfn:`enumerable`, lo que significa que el atributo será más *visible*, esto
+  es, que algunas funciones que veremos más adelante lo incluirán en la lista de
+  atributos del objeto\ [#]_.
+* :dfn:`configurable`, esto es, que podemos modificar el propio descriptor para
+  por ejemplo, alterar *enumerable* y que el atributo pase a no ser listado por
+  algunas funciones. El atributo tampoco puede borrarse con delete_. La única
+  excepción a esta inmutabilidad es que *writable* podrá pasar de verdadero a
+  falso.
+
+.. caution:: Cambiar a *false* el valor de *configurable* es irreversible: no
+   podremos cambiar el descriptor en absoluto, lo que provocará que no podremos
+   volver a fijar *configurable* como *true*.
 
 Hay dos **tipos** de descriptores:
 
@@ -158,10 +165,18 @@ Hay dos **tipos** de descriptores:
   dimensiones de nuestro rectángulo en sendas propiedades para controlar que
   siempre introduzcan un número como valor. En este caso, el descriptor, en vez
   de disponer *value*, dispondrá *set* y *get*, Tampoco tendrá la
-  característicva *writable*, que no tiene sentido, puesto que si se desea que
+  característica *writable*, que no tiene sentido, puesto que si se desea que
   la propiedad sea de sólo lectura, basta con no definir el *setter*. Las otras
   dos características, sin embargo, siguen teniendo validez. Dejaremos la
   discusión de las :ref:`propiedades <object-properties>` para el siguiente epígrafe.
+
+.. note:: Un atributo (su descriptor contiene *value*) puede convertirse en
+   propiedad, simplemente redefiniendo su descriptor, como se verá a
+   continuación, de manera que contenga *get* (o *get* y *set*). Al hacerlo,
+   desaparecerán automáticamente *value* y *writable* del descriptor y tendremos
+   una propiedad. La conversión inversa también es posible: una propiedad puede
+   convertirse en un atributo redefiniciendo su descriptor de manera que
+   contenga *value*.
 
 Al definir un atributo (bien al crear un objeto, bien añadiéndolo después), las
 características ``writable``, ``enumerable`` o ``configurable`` estarán siempre
@@ -258,6 +273,28 @@ un objeto:
       `Object.getOwnPropertyNames()`_ y, porque no es enumerable, no lo hizo
       `Object.keys()`_
 
+Congelación
+===========
+Manipulando el descriptor de cada atributo podemos hacer que éste pueda o no
+cambiar de valor (*writable*) o que deje de poderse manipular el propio
+descriptor (*configurable*). De hecho, si tomásemos todas los atributos de un
+objeto y fijásemos a *false* para cada uno de ellos ambas características nos
+encontraríamos con un objeto *casi* congelado del que no podemos cambiar los
+valores de sus atributos, ni borrarlos, ni reconfigurar este comportamiento.
+Pero ¿por qué están *casi* congelado el objeto y no congelado del todo? No lo
+está completamente porque se le pueden seguir añadiendo atributos. Si queremos
+también evitar esto tenemos dos métodos:
+
+`Object.freeze()`_/`Object.seal()`_
+   Congelan de forma efectiva el objeto que se les pasa como argumento, de
+   manera que no se le podrán añadir nuevos atributos y, además, fijan la
+   característica *configurable* del descriptor de cada uno de sus atributos a
+   *false*. La diferencia entre la primera y la segunda es que la primera,
+   además, fija *writable* también a *false* con lo que los atributos existentes
+   tampoco podrán cambiar de valor. La segunda, en cambio, respeta los valores
+   de *writable* previos con lo que todos aquellos atributos que podían cambiar
+   de valor, podrán seguir haciéndolo.
+
 .. _object-properties:
 
 Propiedades
@@ -276,9 +313,9 @@ explícitamente (con `Object.defineProperty()`_ o `Object.defineProperties()`_):
 
    rectangulo.perimetro; // 34, o sea, 2*(10 + 7)
 
-En este caso, hemos añadido una propiedad de sólo lectura, esto es, con
-*getter*, pero no con *setter*. Alternativamente, la definición puede hacerse
-así::
+En este caso, hemos añadido una propiedad de sólo lectura puesto que hemos
+definido un *getter*, pero no un *setter*. Alternativamente, la definición puede
+hacerse así::
 
    Object.defineProperty(rectangulo, "perimetro", {
       get() {
@@ -315,7 +352,7 @@ altura fueran propiedades, podríamos hacer lo siguiente::
    rectangulo.anchura = "No soy un número";  // Provoca error.
 
 Nótese que en realidad los atributos *anchura* y *altura* no almacenan ningún
-valor, por lo que necesitamos crear sendos atributos adicionales pàra cumplir
+valor, por lo que necesitamos crear sendos atributos adicionales para cumplir
 esta tarea.  Estos atributos, sin embargo, no han sido añadidos de ningún modo
 especial por lo que son perfectamente accesibles y enumerables. En el código
 anterior, nos hemos limitado a usar la notación del subrayado para hacer notar
@@ -349,22 +386,65 @@ Creación de objetos
 Para la construcción simple de objetos podemos valernos de diferentes
 estrategias:
 
-+ La construcción literal con llaves que ya se ha visto:
++ La construcción literal con llaves que ya se ha visto y permite crear objetos *ex novo*:
 
   .. code-block:: javascript
 
-     const o = {x: 1, y: 2}
+     const o = {x: 1, y: 2};
 
-+ Usando el :ref:`constructor <proto-constr>` Object_:
++ Para lo mismo, puede usarse el :ref:`constructor <proto-constr>` Object_:
 
   .. code-block:: javascript
 
-     const o = new Object()
+     const o = new Object();
      [o.x, o.y] = [1, 2]
 
-.. Object.assign.
-   desempaquetado.
-   Object.freeze()
+  .. _object.assign:
+
++ Cuando nuestra intención es crear objetos basándonos en los atributos de
+  otros, es conveniente usar `Object.assign()`_, que traslada al objeto incluido
+  en el primer argumento, los atributos de los objetos proporcionados en los
+  siguientes argumentos:
+
+  .. code-block:: javascript
+
+     const o1 = {x: 1},
+           o2 = {y: 2},
+           o3 = {z: 3};
+     Object.assign(o1, o2, o3);  // El método devuelve el propio o1 ya modificado.
+     console.log(o1);  // {x: 1, y: 2, z: 3}
+
+  El método se puede usar para hacer una copia rápida de un objeto:
+
+  .. code-block:: javascript
+
+     const o = {x: 1, y: 2};
+     const o_copia = Object.assign({}, o); // copiamos o en o_copia.
+
++ Es prácticamente equivalente a lo anterior, usar el operador de dispersión para
+  desempaquetar los objetos:
+
+  .. code-block:: javascript
+
+     const o1 = {x: 1},
+           o2 = {y: 2},
+           o3 = {z: 3};
+     const oo = {...o1, ...o2, ...o3};
+     console.log(oo); // {x: 1, y: 2, z: 3}
+
+   En este caso, ninguno de los elementos originales se ve modificado.
+
+.. warning:: Ni `Object.assign()`_ ni el desempaquetado crean copias exactas de
+   los atributos originales por dos motivos:
+
+   + No reproducen el descriptor del atributo original. Por ejemplo, si el
+     atributo ``o1.x`` no es *writable* esa característica no se trasladará a
+     ``oo.x``, que sí lo será.
+
+   + Las propiedades (o sea, atributos con descriptores de acceso) se convierten
+     en atributos (o sea, atributos con descriptores de valor), es decir, se
+     pierde el *getter* (y, en su caso, el *setter* si lo hubiera) y su valor
+     será el valor evaluado por el *getter* en el momento de hacer la copia.
 
 Observación
 ============
@@ -642,12 +722,10 @@ El código es largo, así que vayamos por partes:
    descriptor_atributo)``. Finalmente, se genera el objeto con los descriptores
    gracias a `Object.fromEntries()`_.
 
-   .. _object.assign:
-
 #. Como nuestra intención es permitir que el usuario pueda también escribir en un
    segundo argumento directamente descriptores (por eso, el método es
    ``extender(attrs, props)``), necesitamos juntar ambos objetos en uno solo.
-   Para ello utilizamos `Object.assign()`_. Este método copia en el objeto proporcionado
+   Para ello utilizamos :ref:`Object.assign() <object.assign>`. Este método copia en el objeto proporcionado
    como primer argumento, los atributos que contiene el objeto proporcionado
    como segundo argumento (y tercero y cuarto, etc.). Devuelve, además, el
    objeto que se pasó como primer argumento.
@@ -976,7 +1054,10 @@ se requiera una restructuración completa de la jerarquía de clases.
 .. _Object.create(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
 .. _Object: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
 .. _new: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new
+.. _delete: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete
 .. _Object.keys(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+.. _Object.freeze(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
+.. _Object.seal(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/seal
 .. _Object.defineProperty(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
 .. _Object.defineProperties(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties
 .. _Object.values(): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values
