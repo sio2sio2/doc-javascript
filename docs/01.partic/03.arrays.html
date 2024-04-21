@@ -149,7 +149,7 @@ mano de <a class="reference external" href="https://developer.mozilla.org/es/doc
 <span class="nx">sec</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;Este valor no existe&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// -1, porque no se encuentra.</span>
 </pre></div>
 </div>
-<p>Puede añadirse un seguno argumento con el índice desde el que se desea comenzar
+<p>Puede añadirse un segundo argumento con el índice desde el que se desea comenzar
 la búsqueda:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">);</span><span class="w">   </span><span class="c1">// -1, porque no hay otro true.</span>
 </pre></div>
@@ -197,7 +197,7 @@ final (esta última sin incluir):</p>
 </pre></div>
 </div>
 <p>Si se deja sin especificar la primera posición se sobreentiende que es desde el
-principio y si se deja sin especificar la segundo hasta el final:</p>
+principio y si se deja sin especificar la segunda hasta el final:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">2</span><span class="p">);</span><span class="w">            </span><span class="c1">// [true, null, {x: 1}]</span>
 <span class="nx">sec</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">);</span><span class="w"> </span><span class="c1">// [&quot;a&quot;, undefined, true]</span>
 <span class="nx">sec</span><span class="p">.</span><span class="nx">slice</span><span class="p">();</span><span class="w">             </span><span class="c1">// Copia completa.</span>
@@ -242,7 +242,7 @@ que los consume:</p>
 <p>En una <em class="dfn">cola</em>, por su parte, se consumen elementos por la cabeza y se
 añaden por el final:</p>
 <img alt="../_images/cola.png" src="../_images/cola.png" />
-<p>Para tratar un array como una cola necesitamos método ya visto <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/push">.push()</a> y el
+<p>Para tratar un array como una cola necesitamos el método ya visto <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/push">.push()</a> y el
 método <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">.shift()</a> para eliminar el primer elemento:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span><span class="w">         </span><span class="c1">// Cola vacía.</span>
 <span class="nx">sec</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span><span class="w">   </span><span class="c1">// Añadimos al final dos elementos: [1, 2]</span>
@@ -345,13 +345,13 @@ referencia:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">numero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>No hay forma de original de que el dato 2 se transforme en un 3. Esto es
+<p>No hay forma de que el dato 2 se transforme en un 3. Esto es
 lo que distingue a los datos primitivos de los que no lo son.</p>
 </div>
 </dd>
 <dt><a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/find">.find()</a>, <a class="reference external" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex">.findIndex()</a></dt><dd><p>Permite encontrar el primer valor (o su índice asociado, si es
 <code class="docutils literal notranslate"><span class="pre">.findIndex()</span></code>) que cumpla con una determinada condición. La condición
-se define mediante la función que se le proporciona com primer argumento:
+se define mediante la función que se le proporciona como primer argumento:
 cuando tal función devuelve <code class="docutils literal notranslate"><span class="pre">true</span></code> la condición se considera satisfecha.
 Por ejemplo:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">6</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">7</span><span class="p">,</span><span class="w"> </span><span class="mf">9</span><span class="p">,</span><span class="w"> </span><span class="mf">10</span><span class="p">];</span>

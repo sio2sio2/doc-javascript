@@ -2,7 +2,7 @@
 
 Funciones
 *********
-Las funciones en *Javascript* tiene algunas particularidades que conviene
+Las funciones en *Javascript* tienen algunas particularidades que conviene
 conocer.
 
 Sintaxis

@@ -96,7 +96,7 @@ mano de `.indexOf()`_:
    sec.indexOf(true);                     // 2
    sec.indexOf("Este valor no existe");   // -1, porque no se encuentra.
 
-Puede añadirse un seguno argumento con el índice desde el que se desea comenzar
+Puede añadirse un segundo argumento con el índice desde el que se desea comenzar
 la búsqueda:
 
 .. code-block:: javascript
@@ -162,7 +162,7 @@ final (esta última sin incluir):
    sec.slice(2, -1);  // [true, null], la última no.
 
 Si se deja sin especificar la primera posición se sobreentiende que es desde el
-principio y si se deja sin especificar la segundo hasta el final:
+principio y si se deja sin especificar la segunda hasta el final:
 
 .. code-block:: javascript
 
@@ -220,7 +220,7 @@ añaden por el final:
 
 .. image:: files/cola.png
 
-Para tratar un array como una cola necesitamos método ya visto `.push()`_ y el
+Para tratar un array como una cola necesitamos el método ya visto `.push()`_ y el
 método `.shift() <https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/shift>`_ para eliminar el primer elemento:
 
 .. code-block:: javascript
@@ -343,13 +343,13 @@ Array_ dispone de bastante métodos, algunos de los cuales son muy útiles:
 
          numero = 3;
 
-      No hay forma de original de que el dato 2 se transforme en un 3. Esto es
+      No hay forma de que el dato 2 se transforme en un 3. Esto es
       lo que distingue a los datos primitivos de los que no lo son.
 
 `.find()`_, `.findIndex()`_
    Permite encontrar el primer valor (o su índice asociado, si es
    ``.findIndex()``) que cumpla con una determinada condición. La condición 
-   se define mediante la función que se le proporciona com primer argumento:
+   se define mediante la función que se le proporciona como primer argumento:
    cuando tal función devuelve ``true`` la condición se considera satisfecha.
    Por ejemplo:
 

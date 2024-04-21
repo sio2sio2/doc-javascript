@@ -986,8 +986,8 @@ construcción muchísimo más rígida que componer objetos añadiendo a cada tip
 objetos todos los atributos necesarios. La modificación en el segundo caso
 podría limitarse a crear algunos nuevos comportamientos (funciones) y añadirlos
 a los tipos de objetos que los necesiten y a crear nuevos tipos de objetos
-emsamblando los comportamientos adecuandos, mientras que el primer caso quizás
-se requiera una restructuración completa de la jerarquía de clases.
+ensamblando los comportamientos adecuandos, mientras que el primer caso quizás
+requiera una restructuración completa de la jerarquía de clases.
 
 .. seealso:: Échese un vistazo a este `vídeo de youtube
    <https://www.youtube.com/watch?v=wfMtDGfHWpA>`_ donde hay un ejemplo muy claro
